@@ -234,6 +234,9 @@ namespace ResxTranslator
 
 		private void ApplyFilterCondition()
 		{
+            if (gridEXStrings.RootTable == null)
+                return;
+
 			if (hideNontranslatedToolStripMenuItem.Checked)
 			{
 				Janus.Windows.GridEX.GridEXFilterCondition filter =
@@ -274,6 +277,18 @@ namespace ResxTranslator
 				e.Cancel = true;
 			}
 		}
+
+        private void gridEXStrings_DoubleClick(object sender, EventArgs e)
+        {
+            if (gridEXStrings.RowCount == 0)
+                return;
+
+            ZoomWindow frm = new ZoomWindow();
+            object value = gridEXStrings.GetValue(gridEXStrings.Col);
+            frm.textBoxString.Text = (string)value;
+            frm.ShowDialog();
+            gridEXStrings.SetValue(gridEXStrings.Col, frm.textBoxString.Text);
+        }
 
 
 	}
