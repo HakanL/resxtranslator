@@ -565,7 +565,7 @@ namespace ResxTranslator
 					value = (string)row[languageHolder.Id];
 				if (!string.IsNullOrEmpty(value))
 					foundOne = true;
-				if (string.IsNullOrEmpty(value) || value.StartsWith("[") && value.EndsWith("]"))
+				if (string.IsNullOrEmpty(value) || value.StartsWith("[") && value.Contains("]"))
 					oneMissing = true;
 			}
 
