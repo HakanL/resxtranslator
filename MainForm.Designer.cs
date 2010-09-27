@@ -36,6 +36,7 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideNontranslatedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.keysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gridEXStrings = new Janus.Windows.GridEX.GridEX();
             this.splitContainerMain = new System.Windows.Forms.SplitContainer();
             this.treeViewResx = new System.Windows.Forms.TreeView();
@@ -43,6 +44,8 @@
             this.checkedListBoxLanguages = new System.Windows.Forms.CheckedListBox();
             this.panelTitle = new System.Windows.Forms.Panel();
             this.labelTitle = new System.Windows.Forms.Label();
+            this.addNewKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridEXStrings)).BeginInit();
             this.splitContainerMain.Panel1.SuspendLayout();
@@ -58,10 +61,11 @@
             // 
             this.menuStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.settingsToolStripMenuItem});
+            this.settingsToolStripMenuItem,
+            this.keysToolStripMenuItem});
             this.menuStripMain.Location = new System.Drawing.Point(0, 0);
             this.menuStripMain.Name = "menuStripMain";
-            this.menuStripMain.Size = new System.Drawing.Size(904, 24);
+            this.menuStripMain.Size = new System.Drawing.Size(946, 24);
             this.menuStripMain.TabIndex = 0;
             this.menuStripMain.Text = "menuStrip1";
             // 
@@ -119,6 +123,15 @@
             this.hideNontranslatedToolStripMenuItem.Text = "Hide non-translated";
             this.hideNontranslatedToolStripMenuItem.Click += new System.EventHandler(this.hideNontranslatedToolStripMenuItem_Click);
             // 
+            // keysToolStripMenuItem
+            // 
+            this.keysToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addNewKeyToolStripMenuItem,
+            this.deleteKeyToolStripMenuItem});
+            this.keysToolStripMenuItem.Name = "keysToolStripMenuItem";
+            this.keysToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
+            this.keysToolStripMenuItem.Text = "Keys";
+            // 
             // gridEXStrings
             // 
             this.gridEXStrings.ColumnAutoResize = true;
@@ -126,7 +139,7 @@
             this.gridEXStrings.GroupByBoxVisible = false;
             this.gridEXStrings.Location = new System.Drawing.Point(0, 35);
             this.gridEXStrings.Name = "gridEXStrings";
-            this.gridEXStrings.Size = new System.Drawing.Size(663, 347);
+            this.gridEXStrings.Size = new System.Drawing.Size(696, 364);
             this.gridEXStrings.TabIndex = 1;
             this.gridEXStrings.DoubleClick += new System.EventHandler(this.gridEXStrings_DoubleClick);
             // 
@@ -143,8 +156,8 @@
             // splitContainerMain.Panel2
             // 
             this.splitContainerMain.Panel2.Controls.Add(this.splitContainerResource);
-            this.splitContainerMain.Size = new System.Drawing.Size(904, 466);
-            this.splitContainerMain.SplitterDistance = 237;
+            this.splitContainerMain.Size = new System.Drawing.Size(946, 486);
+            this.splitContainerMain.SplitterDistance = 246;
             this.splitContainerMain.TabIndex = 2;
             // 
             // treeViewResx
@@ -153,7 +166,7 @@
             this.treeViewResx.HideSelection = false;
             this.treeViewResx.Location = new System.Drawing.Point(0, 0);
             this.treeViewResx.Name = "treeViewResx";
-            this.treeViewResx.Size = new System.Drawing.Size(237, 466);
+            this.treeViewResx.Size = new System.Drawing.Size(246, 486);
             this.treeViewResx.TabIndex = 0;
             this.treeViewResx.DoubleClick += new System.EventHandler(this.treeViewResx_DoubleClick);
             // 
@@ -172,8 +185,8 @@
             // 
             this.splitContainerResource.Panel2.Controls.Add(this.gridEXStrings);
             this.splitContainerResource.Panel2.Controls.Add(this.panelTitle);
-            this.splitContainerResource.Size = new System.Drawing.Size(663, 466);
-            this.splitContainerResource.SplitterDistance = 80;
+            this.splitContainerResource.Size = new System.Drawing.Size(696, 486);
+            this.splitContainerResource.SplitterDistance = 83;
             this.splitContainerResource.TabIndex = 2;
             // 
             // checkedListBoxLanguages
@@ -184,7 +197,7 @@
             this.checkedListBoxLanguages.Location = new System.Drawing.Point(0, 0);
             this.checkedListBoxLanguages.MultiColumn = true;
             this.checkedListBoxLanguages.Name = "checkedListBoxLanguages";
-            this.checkedListBoxLanguages.Size = new System.Drawing.Size(663, 72);
+            this.checkedListBoxLanguages.Size = new System.Drawing.Size(696, 83);
             this.checkedListBoxLanguages.TabIndex = 0;
             this.checkedListBoxLanguages.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkedListBoxLanguages_ItemCheck);
             // 
@@ -194,7 +207,7 @@
             this.panelTitle.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTitle.Location = new System.Drawing.Point(0, 0);
             this.panelTitle.Name = "panelTitle";
-            this.panelTitle.Size = new System.Drawing.Size(663, 35);
+            this.panelTitle.Size = new System.Drawing.Size(696, 35);
             this.panelTitle.TabIndex = 2;
             // 
             // labelTitle
@@ -204,16 +217,30 @@
             this.labelTitle.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelTitle.Location = new System.Drawing.Point(4, 4);
             this.labelTitle.Name = "labelTitle";
-            this.labelTitle.Size = new System.Drawing.Size(656, 28);
+            this.labelTitle.Size = new System.Drawing.Size(689, 28);
             this.labelTitle.TabIndex = 0;
             this.labelTitle.Text = "{Title}";
             this.labelTitle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // addNewKeyToolStripMenuItem
+            // 
+            this.addNewKeyToolStripMenuItem.Name = "addNewKeyToolStripMenuItem";
+            this.addNewKeyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.addNewKeyToolStripMenuItem.Text = "Add New Key";
+            this.addNewKeyToolStripMenuItem.Click += new System.EventHandler(this.addNewKeyToolStripMenuItem_Click);
+            // 
+            // deleteKeyToolStripMenuItem
+            // 
+            this.deleteKeyToolStripMenuItem.Name = "deleteKeyToolStripMenuItem";
+            this.deleteKeyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.deleteKeyToolStripMenuItem.Text = "Delete Key";
+            this.deleteKeyToolStripMenuItem.Click += new System.EventHandler(this.deleteKeyToolStripMenuItem_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(904, 490);
+            this.ClientSize = new System.Drawing.Size(946, 510);
             this.Controls.Add(this.splitContainerMain);
             this.Controls.Add(this.menuStripMain);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -252,7 +279,10 @@
 		private System.Windows.Forms.Panel panelTitle;
 		private System.Windows.Forms.Label labelTitle;
 		private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem hideNontranslatedToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem hideNontranslatedToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem keysToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addNewKeyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteKeyToolStripMenuItem;
 	}
 }
 
