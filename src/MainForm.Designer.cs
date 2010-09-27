@@ -32,11 +32,14 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideNontranslatedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.keysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addNewKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gridEXStrings = new Janus.Windows.GridEX.GridEX();
             this.splitContainerMain = new System.Windows.Forms.SplitContainer();
             this.treeViewResx = new System.Windows.Forms.TreeView();
@@ -44,8 +47,6 @@
             this.checkedListBoxLanguages = new System.Windows.Forms.CheckedListBox();
             this.panelTitle = new System.Windows.Forms.Panel();
             this.labelTitle = new System.Windows.Forms.Label();
-            this.addNewKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridEXStrings)).BeginInit();
             this.splitContainerMain.Panel1.SuspendLayout();
@@ -74,6 +75,7 @@
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openToolStripMenuItem,
             this.saveToolStripMenuItem,
+            this.closeToolStripMenuItem,
             this.toolStripMenuItem1,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -95,6 +97,13 @@
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.saveToolStripMenuItem.Text = "&Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            // 
+            // closeToolStripMenuItem
+            // 
+            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.closeToolStripMenuItem.Text = "&Close";
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -132,6 +141,20 @@
             this.keysToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
             this.keysToolStripMenuItem.Text = "Keys";
             // 
+            // addNewKeyToolStripMenuItem
+            // 
+            this.addNewKeyToolStripMenuItem.Name = "addNewKeyToolStripMenuItem";
+            this.addNewKeyToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.addNewKeyToolStripMenuItem.Text = "Add New Key";
+            this.addNewKeyToolStripMenuItem.Click += new System.EventHandler(this.addNewKeyToolStripMenuItem_Click);
+            // 
+            // deleteKeyToolStripMenuItem
+            // 
+            this.deleteKeyToolStripMenuItem.Name = "deleteKeyToolStripMenuItem";
+            this.deleteKeyToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.deleteKeyToolStripMenuItem.Text = "Delete Key";
+            this.deleteKeyToolStripMenuItem.Click += new System.EventHandler(this.deleteKeyToolStripMenuItem_Click);
+            // 
             // gridEXStrings
             // 
             this.gridEXStrings.ColumnAutoResize = true;
@@ -168,6 +191,7 @@
             this.treeViewResx.Name = "treeViewResx";
             this.treeViewResx.Size = new System.Drawing.Size(246, 486);
             this.treeViewResx.TabIndex = 0;
+            this.treeViewResx.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewResx_AfterSelect);
             this.treeViewResx.DoubleClick += new System.EventHandler(this.treeViewResx_DoubleClick);
             // 
             // splitContainerResource
@@ -222,20 +246,6 @@
             this.labelTitle.Text = "{Title}";
             this.labelTitle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
-            // addNewKeyToolStripMenuItem
-            // 
-            this.addNewKeyToolStripMenuItem.Name = "addNewKeyToolStripMenuItem";
-            this.addNewKeyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.addNewKeyToolStripMenuItem.Text = "Add New Key";
-            this.addNewKeyToolStripMenuItem.Click += new System.EventHandler(this.addNewKeyToolStripMenuItem_Click);
-            // 
-            // deleteKeyToolStripMenuItem
-            // 
-            this.deleteKeyToolStripMenuItem.Name = "deleteKeyToolStripMenuItem";
-            this.deleteKeyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.deleteKeyToolStripMenuItem.Text = "Delete Key";
-            this.deleteKeyToolStripMenuItem.Click += new System.EventHandler(this.deleteKeyToolStripMenuItem_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -283,6 +293,7 @@
         private System.Windows.Forms.ToolStripMenuItem keysToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addNewKeyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteKeyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
 	}
 }
 
