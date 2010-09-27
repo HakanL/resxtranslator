@@ -1,0 +1,30 @@
+﻿<Window x:Class="Hauksoft.ResxTranslator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:cmds="clr-namespace:Hauksoft.ResxTranslator.Commands"
+        Title="Resx Translator" Height="441" Width="779" Icon="/ResxTranslator;component/app.ico" xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors">
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Open" Executed="CommandBinding_Executed_1" />
+        <CommandBinding Command="ApplicationCommands.Close" />
+        <CommandBinding Command="cmds:FileCommands.Exit" Executed="CommandBinding_Executed" />
+    </Window.CommandBindings>
+        <DockPanel Name="dockPanel">
+        <Menu DockPanel.Dock="Top" Height="22" Name="mainMenu">
+            <MenuItem Header="_File">
+                <MenuItem Command="ApplicationCommands.Open" />
+                <MenuItem Command="ApplicationCommands.Save" />
+                <MenuItem Command="ApplicationCommands.Close" />
+                <Separator />
+                <MenuItem Command="cmds:FileCommands.Exit" />
+            </MenuItem>
+            <MenuItem Header="Settings" />
+            <MenuItem Header="Keys" />
+        </Menu>
+        <StatusBar DockPanel.Dock="Bottom" Height="23" Name="statusBar">
+                <StatusBarItem FontSize="10" Padding="0">
+                    <Label Height="20" HorizontalAlignment="Left" Name="label1" VerticalAlignment="Center">Label</Label>
+                </StatusBarItem>
+            </StatusBar>
+            <Frame Name="mainFrame"/>
+        </DockPanel>
+</Window>
