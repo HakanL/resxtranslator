@@ -147,6 +147,13 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>COPY $(TargetDir)\ResxTranslator.exe $(SolutionDir)..\bin\
+COPY $(SolutionDir)..\lib\Janus.Data.v3.dll $(SolutionDir)..\bin\
+COPY $(SolutionDir)..\lib\Janus.Windows.Common.v3.dll $(SolutionDir)..\bin\
+COPY $(SolutionDir)..\lib\Janus.Windows.GridEX.v3.dll $(SolutionDir)..\bin\
+</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
