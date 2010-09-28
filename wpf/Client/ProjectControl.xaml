@@ -26,14 +26,14 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <TreeView Name="treeView1" Grid.RowSpan="3">
+        <TreeView Name="treeView1" Grid.RowSpan="3" SelectedItemChanged="treeView1_SelectedItemChanged">
             <TreeViewItem Header="test1">
                 <TreeViewItem Header="test3" />
             </TreeViewItem>
             <TreeViewItem Header="test2" />
         </TreeView>
         <Label Content="{}{ResourceName}" Name="labelResource" Grid.Column="2" Margin="0,0,0,10" FontWeight="Bold" HorizontalContentAlignment="Center" Height="28" VerticalAlignment="Top" />
-        <DataGrid AutoGenerateColumns="False" Name="dataGrid1" Grid.Column="2" Grid.Row="2" />
+        <DataGrid AutoGenerateColumns="False" Name="dataGrid1" Grid.Column="2" Grid.Row="2" SelectionChanged="dataGrid1_SelectionChanged" />
         <GridSplitter HorizontalAlignment="Right" 
                   VerticalAlignment="Stretch" 
                   Grid.Column="1" ResizeBehavior="PreviousAndNext"

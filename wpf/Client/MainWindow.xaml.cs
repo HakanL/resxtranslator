@@ -71,7 +71,7 @@ namespace Hauksoft.ResxTranslator
         private void CommandBindingOpen_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Data.Solution solution =
-                new Data.Scanner().ScanRootFolder(@"C:\Projects\Kick\KickP4\Client");
+                new Data.Scanner().ScanRootFolder(@"C:\Projects\Kick\KickP4");
 
             ProjectControl project = new ProjectControl(solution);
 

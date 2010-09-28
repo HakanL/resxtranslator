@@ -8,7 +8,7 @@
     <ProjectGuid>{E3B961B5-C139-4E39-9517-5A4DF6BA5559}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Hauksoft.ResxManager.Data</RootNamespace>
+    <RootNamespace>Hauksoft.ResxTranslator.Data</RootNamespace>
     <AssemblyName>Data</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
@@ -37,6 +37,8 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="IFileHolder.cs" />
+    <Compile Include="Folder.cs" />
     <Compile Include="ResourceData.cs" />
     <Compile Include="Language.cs" />
     <Compile Include="Project.cs" />

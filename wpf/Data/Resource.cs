@@ -9,17 +9,37 @@ namespace Hauksoft.ResxTranslator.Data
 {
     public class Resource
     {
+        private string name;
         private string relativeFilename;
         private string dependentUpon;
         private Dictionary<string, ResourceData> resourceData;
 
 
-        public Resource(string relativeFilename, string dependentUpon)
+        public Resource(string name, string relativeFilename, string dependentUpon)
         {
+            this.name = name;
             this.relativeFilename = relativeFilename;
             this.dependentUpon = dependentUpon;
 
             this.resourceData = new Dictionary<string, ResourceData>();
+        }
+
+
+        public string Name
+        {
+            get { return name; }
+        }
+
+
+        public Dictionary<string, ResourceData> ResourceData
+        {
+            get { return resourceData; }
+        }
+
+
+        public bool HasData
+        {
+            get { return resourceData.Count > 0; }
         }
 
 
@@ -51,7 +71,7 @@ namespace Hauksoft.ResxTranslator.Data
                     ResourceData data;
                     if (!resourceData.TryGetValue(key, out data))
                     {
-                        data = new ResourceData(key);
+                        data = new ResourceData(this, key);
                         resourceData.Add(key, data);
                     }
                     if (string.IsNullOrEmpty(data.Comments) && !string.IsNullOrEmpty(dataNode.Comment))

@@ -10,14 +10,16 @@ namespace Hauksoft.ResxTranslator.Data
     public class Project
     {
         private Solution parent;
+        private string name;
         private string fullFilename;
         private string relativeFilename;
         private List<Resource> resources;
 
 
-        public Project(Solution parent, string fullFilename, string relativeFilename)
+        public Project(Solution parent, string name, string fullFilename, string relativeFilename)
         {
             this.parent = parent;
+            this.name = name;
             this.fullFilename = fullFilename;
             this.relativeFilename = relativeFilename;
 
@@ -69,7 +71,8 @@ namespace Hauksoft.ResxTranslator.Data
                         if (!baseResources.TryGetValue(baseName, out baseResource))
                         {
                             // Create new
-                            baseResource = new Resource(baseHolder.Filename, baseHolder.DependentUpon);
+                            baseResource = new Resource(Path.GetFileName(baseHolder.Filename),
+                                baseHolder.Filename, baseHolder.DependentUpon);
                             baseResources.Add(baseName, baseResource);
                         }
 
@@ -91,7 +94,7 @@ namespace Hauksoft.ResxTranslator.Data
                     if (!baseResources.TryGetValue(kvp.Key, out baseResource))
                     {
                         // Create new
-                        baseResource = new Resource(kvp.Value.Filename, kvp.Value.DependentUpon);
+                        baseResource = new Resource(Path.GetFileName(kvp.Value.Filename), kvp.Value.Filename, kvp.Value.DependentUpon);
                         baseResources.Add(kvp.Key, baseResource);
                     }
 
@@ -104,6 +107,31 @@ namespace Hauksoft.ResxTranslator.Data
             this.resources = baseResources.Values.ToList();
         }
 
+
+        public bool HasData
+        {
+            get
+            {
+                foreach (var resource in resources)
+                    if (resource.HasData)
+                        return true;
+
+                return false;
+            }
+        }
+
+
+        public string Name
+        {
+            get { return name; }
+        }
+
+
+        public List<Resource> Resources
+        {
+            get { return resources; }
+        }
+        
 
         private class ResourceHolder
         {
