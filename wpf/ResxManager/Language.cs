@@ -15,5 +15,11 @@ namespace Hauksoft.ResxManager
         {
             this.id = id;
         }
+
+
+        public string Id
+        {
+            get { return id; }
+        }
     }
 }

@@ -23,6 +23,17 @@ namespace Hauksoft.ResxManager
 
         public string RootPath { get { return rootPath; } }
 
+        public List<Language> Languages
+        {
+            get
+            {
+                List<Language> list = new List<Language>(languages.Values);
+
+                list.Sort((a, b) => a.Id.CompareTo(b.Id));
+
+                return list;
+            }
+        }
 
         internal void AddProject(string relativeFilename)
         {
@@ -38,6 +49,12 @@ namespace Hauksoft.ResxManager
                 Language language = new Language(id);
                 languages.Add(id.ToLower(), language);
             }
+        }
+
+
+        public void Save()
+        {
+            throw new NotImplementedException();
         }
     }
 }
