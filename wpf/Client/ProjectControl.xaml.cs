@@ -12,16 +12,34 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
 namespace Hauksoft.ResxTranslator
 {
     /// <summary>
-    /// Interaction logic for Project.xaml
+    /// Interaction logic for ProjectControl.xaml
     /// </summary>
-    public partial class Project : Page
+    public partial class ProjectControl : UserControl
     {
-        public Project()
+        private Data.Solution solution;
+
+        
+        public ProjectControl(Data.Solution solution)
         {
             InitializeComponent();
+
+            this.solution = solution;
         }
+
+
+        public Data.Solution Solution
+        {
+            get { return solution; }
+        }
+
+
+        private void CommandBindingSave_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            MessageBox.Show("Save");
+       }
     }
 }

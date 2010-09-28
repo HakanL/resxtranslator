@@ -17,4 +17,15 @@ namespace Hauksoft.ResxTranslator.Commands
 
         public static RoutedUICommand Exit { get; private set; }
     }
+
+
+    public class LanguageCommands
+    {
+        static LanguageCommands()
+        {
+            FlipLanguage = new RoutedUICommand(null, null, typeof(LanguageCommands));
+        }
+
+        public static RoutedUICommand FlipLanguage { get; private set; }
+    }
 }

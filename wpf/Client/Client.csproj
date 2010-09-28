@@ -84,14 +84,18 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Project.xaml">
+    <Page Include="ProjectControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Shared.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Project.xaml.cs">
-      <DependentUpon>Project.xaml</DependentUpon>
+    <Compile Include="ProjectControl.xaml.cs">
+      <DependentUpon>ProjectControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -120,9 +124,9 @@
     <Resource Include="app.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ResxManager\ResxManager.csproj">
+    <ProjectReference Include="..\Data\Data.csproj">
       <Project>{E3B961B5-C139-4E39-9517-5A4DF6BA5559}</Project>
-      <Name>ResxManager</Name>
+      <Name>Data</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

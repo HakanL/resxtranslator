@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{B9DEB9E8-1D8D-4CAB-AE35-7C09F09F0570}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResxManager", "ResxManager\ResxManager.csproj", "{E3B961B5-C139-4E39-9517-5A4DF6BA5559}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{E3B961B5-C139-4E39-9517-5A4DF6BA5559}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

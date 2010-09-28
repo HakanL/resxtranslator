@@ -20,31 +20,68 @@ namespace Hauksoft.ResxTranslator
     /// </summary>
     public partial class MainWindow : Window
     {
+        private ProjectControl activeProject = null;
+
+
         public MainWindow()
         {
             InitializeComponent();
+
+            ActiveProject = null;
         }
 
-        private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void CommandBindingExit_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Close();
         }
 
-        private void CommandBinding_Executed_1(object sender, ExecutedRoutedEventArgs e)
+        private ProjectControl ActiveProject
         {
-            Project project = new Project();
-            mainFrame.Content = project;
+            get { return activeProject; }
+            set
+            {
+                if (value == null)
+                {
+                    menuItemLanguages.IsEnabled = false;
+                    mainGrid.Children.Clear();
+                }
+                else
+                {
+                    activeProject = value;
 
-            ResxManager.Solution solution =
-                new ResxManager.Scanner().ScanRootFolder(@"C:\Projects\Kick\KickP4\Client");
+                    mainGrid.Children.Clear();
+                    mainGrid.Children.Add(activeProject);
+
+                    menuItemLanguages.IsEnabled = true;
+                    menuItemLanguages.Items.Clear();
+                    foreach (var language in activeProject.Solution.Languages)
+                    {
+                        MenuItem menuItem = new MenuItem
+                        {
+                            Header = language.Id,
+                            IsCheckable = true,
+                            IsChecked = true
+                        };
+                        menuItemLanguages.Items.Add(menuItem);
+                    }
+                }
+            }
         }
 
-        private void SetAsMainContent(UIElement uiElement)
+        private void CommandBindingOpen_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            //mainFrame.Content = uiChildren.Clear();
-            //mainFrame.Children.Add(uiElement);
-            uiElement.SetValue(WidthProperty, Double.NaN);
-            uiElement.SetValue(HeightProperty, Double.NaN);
+            Data.Solution solution =
+                new Data.Scanner().ScanRootFolder(@"C:\Projects\Kick\KickP4\Client");
+
+            ProjectControl project = new ProjectControl(solution);
+
+            ActiveProject = project;
         }
+
+        private void CommandBindingClose_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            ActiveProject = null;
+        }
+
     }
 }
