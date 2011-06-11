@@ -34,7 +34,6 @@ namespace ResxTranslator
         private void FindDialog_Load(object sender, EventArgs e)
         {
             SearchParams sp = new SearchParams();
-            sp.Reload();
             this.textBoxSearch.Text = sp.Text;
             this.checkBoxLang.Checked = sp.SearchLanguage;
             this.checkBoxKey.Checked = sp.SearchKeys;
