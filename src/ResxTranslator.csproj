@@ -17,6 +17,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -29,7 +30,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -41,7 +41,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -54,25 +54,13 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Janus.Data.v3, Version=3.5.0.0, Culture=neutral, PublicKeyToken=21d5517571b185bf, processorArchitecture=MSIL">
-      <HintPath>.\Janus.Data.v3.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Janus.Windows.Common.v3, Version=3.5.0.0, Culture=neutral, PublicKeyToken=21d5517571b185bf, processorArchitecture=MSIL">
-      <HintPath>.\Janus.Windows.Common.v3.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Janus.Windows.GridEX.v3, Version=3.5.0.0, Culture=neutral, PublicKeyToken=21d5517571b185bf, processorArchitecture=MSIL">
-      <HintPath>.\Janus.Windows.GridEX.v3.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -92,7 +80,21 @@
     <Compile Include="AddKey.Designer.cs">
       <DependentUpon>AddKey.cs</DependentUpon>
     </Compile>
+    <Compile Include="BingParams.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BingParams.Designer.cs">
+      <DependentUpon>BingParams.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BingTranslator.cs" />
     <Compile Include="Common.cs" />
+    <Compile Include="FindDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FindDialog.Designer.cs">
+      <DependentUpon>FindDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InprojectTranslator.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,10 +106,15 @@
     <EmbeddedResource Include="AddKey.resx">
       <DependentUpon>AddKey.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="BingParams.resx">
+      <DependentUpon>BingParams.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FindDialog.resx">
+      <DependentUpon>FindDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="ZoomWindow.resx">
       <DependentUpon>ZoomWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -122,12 +129,38 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="ResourceHolder.cs" />
+    <Compile Include="SearchParams.cs" />
+    <Compile Include="Service References\TranslatorSvc\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="ZoomWindow.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ZoomWindow.Designer.cs">
       <DependentUpon>ZoomWindow.cs</DependentUpon>
     </Compile>
+    <None Include="Service References\TranslatorSvc\ResxTranslator.TranslatorSvc.GetTranslationsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TranslatorSvc\ResxTranslator.TranslatorSvc.TranslateArrayResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TranslatorSvc\soap.wsdl" />
+    <None Include="Service References\TranslatorSvc\soap.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TranslatorSvc\soap1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TranslatorSvc\soap2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TranslatorSvc\soap3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TranslatorSvc\SoapService.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -146,12 +179,27 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\TranslatorSvc\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TranslatorSvc\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TranslatorSvc\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TranslatorSvc\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>COPY $(TargetDir)\ResxTranslator.exe $(SolutionDir)..\bin\
-COPY $(SolutionDir)..\lib\Janus.Data.v3.dll $(SolutionDir)..\bin\
-COPY $(SolutionDir)..\lib\Janus.Windows.Common.v3.dll $(SolutionDir)..\bin\
-COPY $(SolutionDir)..\lib\Janus.Windows.GridEX.v3.dll $(SolutionDir)..\bin\
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

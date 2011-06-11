@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("ResxTranslator")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Hakan Lindestaf")]
+[assembly: AssemblyCompany("ResxTranslator")]
 [assembly: AssemblyProduct("ResxTranslator")]
 [assembly: AssemblyCopyright("Copyright © Hakan Lindestaf 2010")]
 [assembly: AssemblyTrademark("")]
