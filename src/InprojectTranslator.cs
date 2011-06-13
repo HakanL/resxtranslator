@@ -47,7 +47,7 @@ namespace ResxTranslator
             }
             lock (this._lockObject)
             {
-                Dictionary<string, bool> tWord = GetTranslatorItem(fromWord, from, to);
+                Dictionary<string, bool> tWord = GetTranslatorItem(fromWord, "", to);
 
                 // add translation if new
                 if (!tWord.ContainsKey(toWord))
@@ -61,6 +61,7 @@ namespace ResxTranslator
         {
             from = (from.Length > 2 ? from.Substring(0, 2) : from).Trim().ToLower();
             to = (to.Length > 2 ? to.Substring(0, 2) : to).Trim().ToLower();
+            from = "";
 
             var language = this._lookuptables.ContainsKey(from)
                                ? this._lookuptables[from]
@@ -213,7 +214,7 @@ namespace ResxTranslator
                 KeyValuePair<string, int> ret=new KeyValuePair<string, int>("", 0);
                 foreach(var x in list)
                 {
-                    if (ret.Value > x.Value )
+                    if (ret.Value < x.Value )
                         ret = x;
                 }
 
@@ -234,6 +235,7 @@ namespace ResxTranslator
             {
                 from = (from.Length > 2 ? from.Substring(0, 2) : from).Trim().ToLower();
                 to = (to.Length > 2 ? to.Substring(0, 2) : to).Trim().ToLower();
+                from = "";
 
                 var language = this._lookuptables.ContainsKey(from)
                                 ? this._lookuptables[from]
@@ -262,6 +264,8 @@ namespace ResxTranslator
             string[] rest = (from tr in wordsTr
                              where wordsNonTr.Contains(tr) == false
                              select tr).ToArray();
+            if (rest.Length * 20 < wordsTr.Length)
+                return wordsTr;
             return rest;
         }
     }

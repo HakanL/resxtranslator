@@ -23,6 +23,7 @@ namespace ResxTranslator
                 , this.checkBoxLang.Checked
                 , this.checkBoxKey.Checked
                 , this.checkBoxText.Checked
+                , this.checkBoxFile.Checked
                 , this.radioButtonRegexp.Checked
                 , this.checkBoxCS.Checked
                 , this.checkBoxWord.Checked);
@@ -38,6 +39,7 @@ namespace ResxTranslator
             this.checkBoxLang.Checked = sp.SearchLanguage;
             this.checkBoxKey.Checked = sp.SearchKeys;
             this.checkBoxText.Checked = sp.SearchText;
+            this.checkBoxFile.Checked = sp.SearchFileName;
             this.radioButtonRegexp.Checked = sp.UseRegex;
             this.checkBoxCS.Checked = sp.OptCase;
             this.checkBoxWord.Checked = sp.OptWord;

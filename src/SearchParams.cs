@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace ResxTranslator
 {
+    [SettingsProvider("System.Configuration.LocalFileSettingsProvider")]
+    [SettingsGroupName("FindParameters")]
     public class SearchParams : ApplicationSettingsBase
     {
         #region TargetType enum
@@ -14,136 +13,141 @@ namespace ResxTranslator
         {
             Lang,
             Key,
-            Text
+            Text,
+            File
         }
         #endregion
 
-        private bool _optCase;
-        private bool _optWord;
-        private bool _searchKeys;
-        private bool _searchLanguage;
-        private bool _searchText;
-        private string _text;
-        private bool _useRegex;
-
-        private Regex _re=null;
+        private Regex _re;
 
         public SearchParams()
         {
         }
 
-        public SearchParams(
-            string text,
-            bool searchLanguage,
-            bool searchKeys,
-            bool searchText,
-            bool useRegex,
-            bool optCase,
-            bool optWord
-            )
+        public SearchParams(string text
+            , bool searchLanguage
+            , bool searchKeys
+            , bool searchText
+            , bool searchFileName
+            , bool useRegex
+            , bool optCase
+            , bool optWord)
         {
-            this._text = text;
+            this.Text = text;
 
-            this._searchLanguage = searchLanguage;
-            this._searchKeys = searchKeys;
-            this._searchText = searchText;
-            this._useRegex = useRegex;
-            this._optCase = optCase;
-            this._optWord = optWord;
+            this.SearchLanguage = searchLanguage;
+            this.SearchKeys = searchKeys;
+            this.SearchText = searchText;
+            this.SearchFileName = searchFileName;
+            this.UseRegex = useRegex;
+            this.OptCase = optCase;
+            this.OptWord = optWord;
         }
 
-        private void Initialize ()
+        private void Initialize()
         {
-            if (this._useRegex)
+            if (this.UseRegex  )
             {
-                string pattern = this._text;
-                if (this._optWord)
+                string pattern = this.Text;
+                if (this.OptWord)
                 {
                     pattern = "\\W" + pattern + "\\W";
                 }
-                this._re = new Regex(pattern, RegexOptions.Compiled | (this._optCase ? RegexOptions.None : RegexOptions.IgnoreCase));
+                this._re = new Regex(pattern, RegexOptions.Compiled | (this.OptCase ? RegexOptions.None : RegexOptions.IgnoreCase));
             }
             else
             {
-                string pattern = Regex.Escape(this._text);
-                if (this._optWord)
+                string pattern = Regex.Escape(this.Text);
+                if (this.OptWord)
                 {
                     pattern = "\\W" + pattern + "\\W";
                 }
-                this._re = new Regex(pattern, RegexOptions.Compiled | (this._optCase ? RegexOptions.None : RegexOptions.IgnoreCase));
+                this._re = new Regex(pattern, RegexOptions.Compiled | (this.OptCase ? RegexOptions.None : RegexOptions.IgnoreCase));
             }
         }
 
-        [UserScopedSetting()]
+        [UserScopedSetting]
         [DefaultSettingValue("false")]
         public bool OptCase
         {
-            get { return this._optCase; }
-            set { this._optCase = value; }
+            get { return (bool)this["optCase"]; }
+            set { this["optCase"] = value; }
         }
 
-        [UserScopedSetting()]
+        [UserScopedSetting]
         [DefaultSettingValue("false")]
         public bool OptWord
         {
-            get { return this._optWord; }
-            set { this._optWord = value; }
+            get { return (bool) this["optWord"]; }
+            set { this["optWord"] = value; }
         }
 
-        [UserScopedSetting()]
+        [UserScopedSetting]
         [DefaultSettingValue("false")]
         public bool SearchKeys
         {
-            get { return this._searchKeys; }
-            set { this._searchKeys = value; }
+            get { return (bool) this["searchKeys"]; }
+            set { this["searchKeys"] = value; }
         }
 
-        [UserScopedSetting()]
+        [UserScopedSetting]
         [DefaultSettingValue("false")]
         public bool SearchLanguage
         {
-            get { return this._searchLanguage; }
-            set { this._searchLanguage = value; }
+            get { return (bool) this["searchLanguage"]; }
+            set { this["searchLanguage"] = value; }
         }
 
-        [UserScopedSetting()]
+        [UserScopedSetting]
         [DefaultSettingValue("true")]
         public bool SearchText
         {
-            get { return this._searchText; }
-            set { this._searchText = value; }
+            get { return (bool) this["searchText"]; }
+            set { this["searchText"] = value; }
         }
 
-        [UserScopedSetting()]
+        [UserScopedSetting]
+        [DefaultSettingValue("false")]
+        public bool SearchFileName
+        {
+            get { return (bool)this["searchFileName"]; }
+            set { this["searchFileName"] = value; }
+        }
+
+        [UserScopedSetting]
         [DefaultSettingValue("")]
         public string Text
         {
-            get { return this._text; }
-            set { this._text = value; }
+            get { return (string) this["text"]; }
+            set { this["text"] = value; }
         }
 
-        [UserScopedSetting()]
+        [UserScopedSetting]
         [DefaultSettingValue("false")]
         public bool UseRegex
         {
-            get { return this._useRegex; }
-            set { this._useRegex = value; }
+            get { return (bool) this["useRegex"]; }
+            set { this["useRegex"] = value; }
         }
 
         public bool Match(TargetType targType, string matchText)
         {
-            if (_re==null)
+            if (_re == null)
                 this.Initialize();
 
-            if (targType == TargetType.Key && this._searchKeys && this._re.IsMatch(matchText))
+            if (targType == TargetType.Key && this.SearchKeys && this._re.IsMatch(matchText))
             {
                 return true;
             }
-            if (targType == TargetType.Lang && this._searchLanguage && this._re.IsMatch(matchText))
+            if (targType == TargetType.Lang && this.SearchLanguage && this._re.IsMatch(matchText))
             {
                 return true;
             }
-            if (targType == TargetType.Text && this._searchText && this._re.IsMatch(matchText))
+            if (targType == TargetType.Text && this.SearchText && this._re.IsMatch(matchText))
+            {
+                return true;
+            }
+            if (targType == TargetType.File && this.SearchFileName && this._re.IsMatch(matchText))
             {
                 return true;
             }

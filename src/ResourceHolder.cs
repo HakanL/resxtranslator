@@ -7,21 +7,25 @@ using System.IO;
 using System.Linq;
 using System.Resources;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
 using System.Xml;
 
 namespace ResxTranslator
 {
     public class ResourceHolder
     {
+        private readonly object lockObject = new object();
+        public EventHandler DirtyChanged = null;
+        public EventHandler LanguageChange = null;
+        private Dictionary<string, bool> _deletedKeys = new Dictionary<string, bool>();
+        private string _noLanguageLanguage = "";
         private bool dirty;
         private DataTable stringsTable;
-        private readonly object lockObject = new object();
+
         public ResourceHolder()
         {
             this.Languages = new SortedDictionary<string, LanguageHolder>();
             this.Dirty = false;
+            this._deletedKeys = new Dictionary<string, bool>();
         }
 
         public string Filename { get; set; }
@@ -33,7 +37,7 @@ namespace ResxTranslator
         {
             get
             {
-                lock (lockObject)
+                lock (this.lockObject)
                 {
                     if (this.stringsTable == null)
                     {
@@ -44,8 +48,10 @@ namespace ResxTranslator
             }
             private set
             {
-                lock (lockObject)
-                { this.stringsTable = value; }
+                lock (this.lockObject)
+                {
+                    this.stringsTable = value;
+                }
             }
         }
 
@@ -62,74 +68,75 @@ namespace ResxTranslator
             }
         }
 
-        public EventHandler DirtyChanged = null;
         public bool Dirty
         {
             get { return this.dirty; }
             set
             {
-                if (value != dirty)
+                if (value != this.dirty)
                 {
                     this.dirty = value;
-                    if (DirtyChanged != null)
+                    if (this.DirtyChanged != null)
                     {
-                        DirtyChanged(this, EventArgs.Empty);
+                        this.DirtyChanged(this, EventArgs.Empty);
                     }
                 }
             }
         }
 
-        public EventHandler LanguageChange = null;
-        private string _noLanguageLanguage = "";
         /// <summary>
-        /// The educated guess of the language code for the non translated column
+        ///     The educated guess of the language code for the non translated column
         /// </summary>
         public string NoLanguageLanguage
         {
             get
             {
-                string oldLanguage = _noLanguageLanguage;
-                if (string.IsNullOrEmpty(_noLanguageLanguage))
-                    NoLanguageLanguage = FindDefaultLanguage();
+                string oldLanguage = this._noLanguageLanguage;
+                if (string.IsNullOrEmpty(this._noLanguageLanguage))
+                {
+                    this.NoLanguageLanguage = this.FindDefaultLanguage();
+                }
                 return this._noLanguageLanguage;
             }
             set
             {
-                if (value != _noLanguageLanguage)
+                if (value != this._noLanguageLanguage)
                 {
                     this._noLanguageLanguage = value;
-                    OnLanguageChange();
+                    this.OnLanguageChange();
                 }
             }
         }
 
         /// <summary>
-        /// Text shown in the tree view for this resourceholder
+        ///     Text shown in the tree view for this resourceholder
         /// </summary>
         public string Caption
         {
             get
             {
-                string languages = Languages.Keys.Aggregate(
+                string languages = this.Languages.Keys.Aggregate(
                     ""
                     , (agg, curr) => agg + "," + curr
                     , agg => (agg.Length > 2 ? agg.Substring(1) : ""));
 
-                return string.Format("{0} [{1}] ({2})", Id, _noLanguageLanguage, languages);
+                return string.Format("{0} [{1}] ({2})", this.Id, this._noLanguageLanguage, languages);
             }
         }
 
         /// <summary>
-        /// Trigger LanguageChange event when default language is set
+        ///     Trigger LanguageChange event when default language is set
         /// </summary>
         private void OnLanguageChange()
         {
             if (this.LanguageChange != null)
+            {
                 this.LanguageChange(this, EventArgs.Empty);
+            }
         }
 
         /// <summary>
-        /// Evaluate the non translated langauage using the InprojectTranslator or Bing
+        ///     Evaluate the non translated langauage using the InprojectTranslator or Bing
         /// </summary>
         private string FindDefaultLanguage()
         {
@@ -137,7 +144,7 @@ namespace ResxTranslator
             {
                 return "";
             }
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             //collect a few entries to decide language of default version
             foreach (DataRow row in this.StringsTable.Rows)
@@ -166,12 +173,32 @@ namespace ResxTranslator
 
 
         /// <summary>
-        /// Save one resource file
+        ///     Save one resource file
         /// </summary>
-   private void UpdateFile(string filename, string valueColumn)
+        private void UpdateFile(string filename, string valueColumn)
         {
             var xmlDoc = new XmlDocument();
             xmlDoc.Load(filename);
+
+            XmlNode rootNode = xmlDoc.SelectSingleNode("/root");
+
+            // first delete all nodes that have been deleted
+            // if they since have been added the new ones will be saved later on
+
+            foreach (XmlNode dataNode in xmlDoc.SelectNodes("/root/data"))
+            {
+                string key = dataNode.Attributes["name"].Value;
+                if (this._deletedKeys.ContainsKey(key))
+                {
+                    if (dataNode.Attributes["type"] != null)
+                    {
+                        // Only support strings don't want to delete random other resource
+                        continue;
+                    }
+                    rootNode.RemoveChild(dataNode);
+                }
+            }
+
 
             var usedKeys = new HashSet<string>();
             var nodesToBeDeleted = new List<XmlNode>();
@@ -275,7 +302,6 @@ namespace ResxTranslator
                 }
             }
 
-            XmlNode rootNode = xmlDoc.SelectSingleNode("/root");
             foreach (XmlNode deleteNode in nodesToBeDeleted)
             {
                 rootNode.RemoveChild(deleteNode);
@@ -330,7 +356,7 @@ namespace ResxTranslator
         }
 
         /// <summary>
-        /// Save this resource holders data
+        ///     Save this resource holders data
         /// </summary>
         public void Save()
         {
@@ -344,12 +370,12 @@ namespace ResxTranslator
         }
 
         /// <summary>
-        /// Read one resource fil
+        ///     Read one resource fil
         /// </summary>
         private void ReadResourceFile(string filename, DataTable stringsTable,
                                        string valueColumn, bool isTranslated)
         {
-           // Regex reCleanup = new Regex(@"__designer:mapid="".+?""");
+            // Regex reCleanup = new Regex(@"__designer:mapid="".+?""");
             using (var reader =
                 new ResXResourceReader(filename))
             {
@@ -420,7 +446,7 @@ namespace ResxTranslator
         }
 
         /// <summary>
-        /// Sets error field on the row depending on missing translations etc
+        ///     Sets error field on the row depending on missing translations etc
         /// </summary>
         public void EvaluateRow(DataRow row)
         {
@@ -442,7 +468,6 @@ namespace ResxTranslator
                     if (!string.IsNullOrEmpty(value))
                     {
                         foundOne = true;
-
                     }
                 }
 
@@ -469,12 +494,13 @@ namespace ResxTranslator
         }
 
         /// <summary>
-        /// Read the resource files correspondning with this resource holder
+        ///     Read the resource files correspondning with this resource holder
         /// </summary>
         public void LoadResource()
         {
-            lock (lockObject)
+            lock (this.lockObject)
             {
+                this._deletedKeys = new Dictionary<string, bool>();
 
                 this.stringsTable = new DataTable("Strings");
 
@@ -507,23 +533,23 @@ namespace ResxTranslator
 
                 this.stringsTable.ColumnChanging += this.stringsTable_ColumnChanging;
                 this.stringsTable.ColumnChanged += this.stringsTable_ColumnChanged;
-                this.stringsTable.RowDeleted += this.stringsTable_RowDeleted;
+                this.stringsTable.RowDeleting += this.stringsTable_RowDeleting;
                 this.stringsTable.TableNewRow += this.stringsTable_RowInserted;
             }
-            OnLanguageChange();
-
+            this.OnLanguageChange();
         }
 
         /// <summary>
-        /// Eventhandler for the datatable of strings
+        ///     Eventhandler for the datatable of strings
         /// </summary>
-        private void stringsTable_RowDeleted(object sender, DataRowChangeEventArgs e)
+        private void stringsTable_RowDeleting(object sender, DataRowChangeEventArgs e)
         {
+            this._deletedKeys[e.Row["Key"].ToString()] = true;
             this.Dirty = true;
         }
 
         /// <summary>
-        /// Eventhandler for the datatable of strings
+        ///     Eventhandler for the datatable of strings
         /// </summary>
         private void stringsTable_RowInserted(object sender, DataTableNewRowEventArgs e)
         {
@@ -531,7 +557,7 @@ namespace ResxTranslator
         }
 
         /// <summary>
-        /// Eventhandler for the datatable of strings
+        ///     Eventhandler for the datatable of strings
         /// </summary>
         private void stringsTable_ColumnChanged(object sender, DataColumnChangeEventArgs e)
         {
@@ -543,7 +569,7 @@ namespace ResxTranslator
         }
 
         /// <summary>
-        /// Eventhandler for the datatable of strings
+        ///     Eventhandler for the datatable of strings
         /// </summary>
         private void stringsTable_ColumnChanging(object sender, DataColumnChangeEventArgs e)
         {
@@ -561,7 +587,7 @@ namespace ResxTranslator
         }
 
         /// <summary>
-        /// Add one key
+        ///     Add one key
         /// </summary>
         public void AddString(string key, string noXlateValue, string defaultValue)
         {
@@ -582,7 +608,7 @@ namespace ResxTranslator
         }
 
         /// <summary>
-        /// Check if such a key exists.
+        ///     Check if such a key exists.
         /// </summary>
         public bool KeyExists(string key)
         {
@@ -590,7 +616,7 @@ namespace ResxTranslator
         }
 
         /// <summary>
-        /// Add the specified language to this object
+        ///     Add the specified language to this object
         /// </summary>
         public void AddLanguage(string languageCode)
         {
@@ -617,13 +643,12 @@ namespace ResxTranslator
                         this.EvaluateRow(row);
                     }
                 }
-                OnLanguageChange();
-
+                this.OnLanguageChange();
             }
         }
 
         /// <summary>
-        /// Auto translate all non-translated text in this object
+        ///     Auto translate all non-translated text in this object
         /// </summary>
         public void AutoTranslate()
         {
@@ -634,7 +659,7 @@ namespace ResxTranslator
         }
 
         /// <summary>
-        /// Delete a language from this object (including its file)
+        ///     Delete a language from this object (including its file)
         /// </summary>
         public void DeleteLanguage(string languageCode)
         {
@@ -645,20 +670,23 @@ namespace ResxTranslator
                 newFile = mainfile.Directory.FullName + "\\" + newFile;
                 (new FileInfo(newFile)).Delete();
                 this.Languages.Remove(languageCode.ToLower());
+                this.stringsTable.Columns.RemoveAt(this.stringsTable.Columns[languageCode].Ordinal);
 
-                OnLanguageChange();
+                this.OnLanguageChange();
             }
         }
 
         /// <summary>
-        /// Revert all non saved changes and reload
+        ///     Revert all non saved changes and reload
         /// </summary>
         public void Revert()
         {
             this.StringsTable = null;
             this.LoadResource();
+            this.Dirty = false;
+            this._deletedKeys = new Dictionary<string, bool>();
 
-            OnLanguageChange();
+            this.OnLanguageChange();
         }
     }
 }

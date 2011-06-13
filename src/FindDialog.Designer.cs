@@ -43,6 +43,7 @@
             this.checkBoxWord = new System.Windows.Forms.CheckBox();
             this.checkBoxCS = new System.Windows.Forms.CheckBox();
             this.buttonFind = new System.Windows.Forms.Button();
+            this.checkBoxFile = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -125,6 +126,7 @@
             // 
             this.groupBox3.Controls.Add(this.checkBoxText);
             this.groupBox3.Controls.Add(this.checkBoxKey);
+            this.groupBox3.Controls.Add(this.checkBoxFile);
             this.groupBox3.Controls.Add(this.checkBoxLang);
             this.groupBox3.Location = new System.Drawing.Point(16, 68);
             this.groupBox3.Name = "groupBox3";
@@ -148,7 +150,7 @@
             // checkBoxKey
             // 
             this.checkBoxKey.AutoSize = true;
-            this.checkBoxKey.Location = new System.Drawing.Point(87, 19);
+            this.checkBoxKey.Location = new System.Drawing.Point(102, 19);
             this.checkBoxKey.Name = "checkBoxKey";
             this.checkBoxKey.Size = new System.Drawing.Size(44, 17);
             this.checkBoxKey.TabIndex = 0;
@@ -158,7 +160,7 @@
             // checkBoxLang
             // 
             this.checkBoxLang.AutoSize = true;
-            this.checkBoxLang.Location = new System.Drawing.Point(156, 19);
+            this.checkBoxLang.Location = new System.Drawing.Point(194, 19);
             this.checkBoxLang.Name = "checkBoxLang";
             this.checkBoxLang.Size = new System.Drawing.Size(74, 17);
             this.checkBoxLang.TabIndex = 0;
@@ -206,6 +208,16 @@
             this.buttonFind.UseVisualStyleBackColor = true;
             this.buttonFind.Click += new System.EventHandler(this.buttonFind_Click);
             // 
+            // checkBoxFile
+            // 
+            this.checkBoxFile.AutoSize = true;
+            this.checkBoxFile.Location = new System.Drawing.Point(316, 19);
+            this.checkBoxFile.Name = "checkBoxFile";
+            this.checkBoxFile.Size = new System.Drawing.Size(71, 17);
+            this.checkBoxFile.TabIndex = 0;
+            this.checkBoxFile.Text = "File name";
+            this.checkBoxFile.UseVisualStyleBackColor = true;
+            // 
             // FindDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -248,5 +260,6 @@
         private System.Windows.Forms.CheckBox checkBoxWord;
         private System.Windows.Forms.CheckBox checkBoxCS;
         private System.Windows.Forms.Button buttonFind;
+        private System.Windows.Forms.CheckBox checkBoxFile;
     }
 }

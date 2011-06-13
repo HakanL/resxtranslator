@@ -67,5 +67,17 @@ namespace ResxTranslator.Properties {
                 this["NeutralLanguageCode"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("en")]
+        public string PreferredSourceLanguage {
+            get {
+                return ((string)(this["PreferredSourceLanguage"]));
+            }
+            set {
+                this["PreferredSourceLanguage"] = value;
+            }
+        }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -73,6 +72,12 @@ namespace ResxTranslator
                 {
                     var resource = treeNode.Tag as ResourceHolder;
                     if (this.CurrentSearch.Match(SearchParams.TargetType.Lang, resource.NoLanguageLanguage))
+                    {
+                        treeNode.BackColor = matchColor;
+                    }
+                    string[] file = resource.Filename.Split('\\');
+
+                    if (this.CurrentSearch.Match(SearchParams.TargetType.File, file[file.Length - 1]))
                     {
                         treeNode.BackColor = matchColor;
                     }
@@ -205,6 +210,7 @@ namespace ResxTranslator
         private void revertCurrentToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.CurrentResource.Revert();
+            this.ShowResourceInGrid(this.CurrentResource);
         }
 
         private void saveCurrentToolStripMenuItem_Click(object sender, EventArgs e)
@@ -275,6 +281,8 @@ namespace ResxTranslator
             this.labelTitle.Visible = false;
 
             this.CurrentResource = null;
+            Settings.Default.Save();
+
         }
 
         private void findToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -288,123 +296,130 @@ namespace ResxTranslator
         private void StartDictBuilderThread()
         {
             // Make the logic for building the dictionary an anonymous delegate to keep it only callable on the separate thread
-            ThreadStart buildDictionary
+            var buildDictionary
                 = (ThreadStart)
-                delegate
-                {
-                    #region Dictionary building loop (long)
-                    int rescount = 0;
-                    this.InvokeIfRequired(
-                        c =>
-                        {
-                            c.toolStripStatusLabel1.Text = "Building language lookup";
-                            c.toolStripProgressBar1.Value = 0;
-                            c.toolStripStatusLabelCurrentItem.Text = "";
-                        });
+                  delegate
+                  {
+                      #region Dictionary building loop (long)
+                      int rescount = 0;
+                      this.InvokeIfRequired(
+                          c =>
+                          {
+                              c.toolStripStatusLabel1.Text = "Building language lookup";
+                              c.toolStripProgressBar1.Value = 0;
+                              c.toolStripStatusLabelCurrentItem.Text = "";
+                          });
 
-                    foreach (ResourceHolder res in this.Resources.Values)
-                    {
-                        if (this.RequestDictBuilderStop)
-                        {
-                            break;
-                        }
-                        ResourceHolder res1 = res;
-                        this.InvokeIfRequired(
-                            c =>
-                            {
-                                c.toolStripStatusLabelCurrentItem.Text = res1.Filename;
-                            });
+                      foreach (ResourceHolder res in this.Resources.Values)
+                      {
+                          if (this.RequestDictBuilderStop)
+                          {
+                              break;
+                          }
+                          ResourceHolder res1 = res;
+                          this.InvokeIfRequired(
+                              c =>
+                              {
+                                  c.toolStripStatusLabelCurrentItem.Text = res1.Filename;
+                              });
 
-                        foreach (DataRow row in res.StringsTable.Rows)
-                        {
-                            string nontranslated = row["NoLanguageValue"].ToString();
+                          var translator = InprojectTranslator.Instance;
 
-                            foreach (string lang in res.Languages.Keys)
-                            {
-                                if (row[lang.ToLower()] != DBNull.Value && row[lang.ToLower()].ToString().Trim() != "")
-                                {
-                                    string translated = row[lang.ToLower()].ToString().Trim();
-                                    var translator=InprojectTranslator.Instance;
-                                    translator.AddWordsToLanguageChecker(lang.ToLower()
-                                                            , translator.RemoveWords(nontranslated, translated));
-                                }
-                            }
-                        }
-                        ++rescount;
-                        int rescount1 = rescount;
-                        this.InvokeIfRequired(
-                            c =>
-                            {
-                                c.toolStripProgressBar1.Value = rescount1;
-                            });
-                    }
-                    this.InvokeIfRequired(
-                        c =>
-                        {
-                            c.toolStripStatusLabel1.Text = "Building local translations dictionary";
-                            c.toolStripProgressBar1.Value = this.Resources.Count / 50;
-                            c.toolStripStatusLabelCurrentItem.Text = "";
+                          foreach (string lang in res.Languages.Keys)
+                          {
+                              StringBuilder sbAllNontranslated = new StringBuilder();
+                              StringBuilder sbAllTranslated = new StringBuilder();
+                              foreach (DataRow row in res.StringsTable.Rows)
+                              {
+                                  sbAllNontranslated.Append(row["NoLanguageValue"].ToString());
+                                  sbAllNontranslated.Append(" ");
 
-                        });
+                                  if (row[lang.ToLower()] != DBNull.Value && row[lang.ToLower()].ToString().Trim() != "")
+                                  {
+                                      sbAllTranslated.Append(row[lang.ToLower()].ToString().Trim());
+                                      sbAllTranslated.Append(" ");
+                                  }
+                              }
+                              var diffArray = translator.RemoveWords(sbAllNontranslated.ToString(), sbAllTranslated.ToString());
+                              translator.AddWordsToLanguageChecker(lang.ToLower()
+                                                                   , diffArray);
 
-                    rescount = 0;
-                    foreach (ResourceHolder res in this.Resources.Values)
-                    {
-                        if (this.RequestDictBuilderStop)
-                        {
-                            break;
-                        }
-                        ResourceHolder res1 = res;
-                        this.InvokeIfRequired(
-                            c =>
-                            {
-                                c.toolStripStatusLabelCurrentItem.Text = res1.Filename;
-                            });
+                          }
+                          ++rescount;
+                          int rescount1 = rescount;
+                          this.InvokeIfRequired(
+                              c =>
+                              {
+                                  c.toolStripProgressBar1.Value = rescount1;
+                              });
+                      }
+                      this.InvokeIfRequired(
+                          c =>
+                          {
+                              c.toolStripStatusLabel1.Text = "Building local translations dictionary";
+                              c.toolStripProgressBar1.Value = this.Resources.Count / 50;
+                              c.toolStripStatusLabelCurrentItem.Text = "";
+                          });
 
-                        string resDeflang = res.NoLanguageLanguage;
-                        var sb = new StringBuilder();
-                        foreach (DataRow row in res.StringsTable.Rows)
-                        {
-                            string nontranslated = row["NoLanguageValue"].ToString();
-                            if (!string.IsNullOrEmpty(nontranslated) && nontranslated.Trim() != "")
-                            {
-                                foreach (string lang in res.Languages.Keys)
-                                {
-                                    if (row[lang.ToLower()] != DBNull.Value && row[lang.ToLower()].ToString().Trim() != "")
-                                    {
-                                        sb.Append(" ");
-                                        sb.Append(row[lang.ToLower()].ToString());
+                      rescount = 0;
+                      foreach (ResourceHolder res in this.Resources.Values)
+                      {
+                          if (this.RequestDictBuilderStop)
+                          {
+                              break;
+                          }
+                          ResourceHolder res1 = res;
+                          this.InvokeIfRequired(
+                              c =>
+                              {
+                                  c.toolStripStatusLabelCurrentItem.Text = res1.Filename;
+                              });
 
-                                        InprojectTranslator.Instance.AddTranslation(resDeflang
-                                                                                    , nontranslated
-                                                                                    , lang.ToLower()
-                                                                                    , row[lang.ToLower()].ToString().Trim());
-                                        InprojectTranslator.Instance.AddTranslation(lang.ToLower()
-                                                                                    , row[lang.ToLower()].ToString().Trim()
-                                                                                    , resDeflang
-                                                                                    , nontranslated);
-                                    }
-                                }
-                            }
-                            InprojectTranslator.Instance.AddWordsToLanguageChecker(resDeflang, InprojectTranslator.Instance.RemoveWords(sb.ToString(), nontranslated));
-                        }
-                        ++rescount;
-                        int rescount1 = rescount;
-                        this.InvokeIfRequired(
-                            c =>
-                            {
-                                c.toolStripProgressBar1.Value = rescount1;
-                            });
-                    }
-                    this.InvokeIfRequired(
-                        c =>
-                        {
-                            c.toolStripStatusLabel1.Text = "Done";
-                            c.toolStripProgressBar1.Visible = false;
-                            c.toolStripStatusLabelCurrentItem.Text = "";
-                        });
-                    #endregion
-                };
+                          string resDeflang = res.NoLanguageLanguage;
+                          var sb = new StringBuilder();
+                          foreach (DataRow row in res.StringsTable.Rows)
+                          {
+                              string nontranslated = row["NoLanguageValue"].ToString();
+                              if (!string.IsNullOrEmpty(nontranslated) && nontranslated.Trim() != "")
+                              {
+                                  foreach (string lang in res.Languages.Keys)
+                                  {
+                                      if (row[lang.ToLower()] != DBNull.Value && row[lang.ToLower()].ToString().Trim() != "")
+                                      {
+                                          sb.Append(" ");
+                                          sb.Append(row[lang.ToLower()].ToString());
+
+                                          InprojectTranslator.Instance.AddTranslation(resDeflang
+                                                                                      , nontranslated
+                                                                                      , lang.ToLower()
+                                                                                      , row[lang.ToLower()].ToString().Trim());
+                                          InprojectTranslator.Instance.AddTranslation(lang.ToLower()
+                                                                                      , row[lang.ToLower()].ToString().Trim()
+                                                                                      , resDeflang
+                                                                                      , nontranslated);
+                                      }
+                                  }
+                              }
+                              if (resDeflang != "")
+                                  InprojectTranslator.Instance.AddWordsToLanguageChecker(resDeflang, InprojectTranslator.Instance.RemoveWords(sb.ToString(), nontranslated));
+                          }
+                          ++rescount;
+                          int rescount1 = rescount;
+                          this.InvokeIfRequired(
+                              c =>
+                              {
+                                  c.toolStripProgressBar1.Value = rescount1;
+                              });
+                      }
+                      this.InvokeIfRequired(
+                          c =>
+                          {
+                              c.toolStripStatusLabel1.Text = "Done";
+                              c.toolStripProgressBar1.Visible = false;
+                              c.toolStripStatusLabelCurrentItem.Text = "";
+                          });
+                      #endregion
+                  };
 
             this.DictBuilderThread = new Thread(buildDictionary);
             this.DictBuilderThread.Name = "DictBuilder";
@@ -632,17 +647,21 @@ namespace ResxTranslator
 
         private void treeViewResx_DoubleClick(object sender, EventArgs e)
         {
-            this.SelectResource();
+            this.SelectResourceFromTree();
         }
 
         private void treeViewResx_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            this.SelectResource();
+            this.SelectResourceFromTree();
         }
 
-        private void OpenResource(ResourceHolder resource)
+        private void ShowResourceInGrid(ResourceHolder resource)
         {
+            this.CurrentResource = resource;
+
             this.labelTitle.Text = resource.Id;
+            this.labelTitle.Visible = true;
+
             this.dataGridView1.DataSource = resource.StringsTable;
 
             this.checkedListBoxLanguages.Items.Clear();
@@ -668,7 +687,7 @@ namespace ResxTranslator
         }
 
 
-        private void SelectResource()
+        private void SelectResourceFromTree()
         {
             TreeNode selectedTreeNode = this.treeViewResx.SelectedNode;
             if (selectedTreeNode == null)
@@ -689,9 +708,7 @@ namespace ResxTranslator
 
             var resource = selectedTreeNode.Tag as ResourceHolder;
 
-            this.OpenResource(resource);
-            this.CurrentResource = resource;
-            this.labelTitle.Visible = true;
+            this.ShowResourceInGrid(resource);
         }
 
         #region ================== Top checkboxes ==================================
@@ -723,7 +740,7 @@ namespace ResxTranslator
         private void addLanguageToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             this.CurrentResource.AddLanguage(e.ClickedItem.Text);
-            this.OpenResource(this.CurrentResource);
+            this.ShowResourceInGrid(this.CurrentResource);
         }
 
         private void translateUsingBingToolStripMenuItem_Click(object sender, EventArgs e)
@@ -744,16 +761,13 @@ namespace ResxTranslator
                 if (theStrip != null)
                 {
                     //The SourceControl is the control that opened the contextmenustrip.
-                    //In my case it could be a linkLabel
                     var box = theStrip.SourceControl as CheckedListBox;
                     if (box != null)
                     {
                         if (MessageBox.Show("Do you really want to delete file for language " + box.Items[this.LastClickedLanguageIndex]) == DialogResult.OK)
                         {
-                            this.SetLanguageColumnVisible(box.Items[this.LastClickedLanguageIndex].ToString(), false);
-
                             this.CurrentResource.DeleteLanguage(box.Items[this.LastClickedLanguageIndex].ToString());
-                            box.Items.RemoveAt(this.LastClickedLanguageIndex);
+                            this.ShowResourceInGrid(this.CurrentResource);
                         }
                     }
                 }
@@ -778,10 +792,6 @@ namespace ResxTranslator
                     }
                 }
             }
-        }
-
-        private void checkedListBoxLanguages_Click(object sender, EventArgs e)
-        {
         }
 
         private void checkedListBoxLanguages_MouseDown(object sender, MouseEventArgs e)
@@ -862,9 +872,24 @@ namespace ResxTranslator
             int colIndex = this.dataGridView1.CurrentCell.ColumnIndex;
             string column = this.dataGridView1.Columns[colIndex].Name;
             string source = this.dataGridView1.CurrentCell.Value.ToString();
+
+            var autoTranslate = this.contextMenuStripCell.Items["autoTranslateThisCellToolStripMenuItem"] as ToolStripMenuItem;
+
+            var preferred = "NoLanguageValue";
+            if (!(autoTranslate.DropDownItems[1] as ToolStripMenuItem).Checked)
+            {
+                int subChk = FindCheckedSubItemIndex(autoTranslate);
+                if (subChk > -1)
+                {
+                    preferred = autoTranslate.DropDownItems[subChk].Text;
+                }
+                else
+                    preferred = Settings.Default.PreferredSourceLanguage;
+            }
+
             if (string.IsNullOrEmpty(source.Trim()))
             {
-                source = this.dataGridView1.Rows[this.dataGridView1.CurrentCell.RowIndex].Cells["NoLanguageValue"].Value.ToString();
+                source = this.dataGridView1.Rows[this.dataGridView1.CurrentCell.RowIndex].Cells[preferred].Value.ToString();
             }
             if (column == "NoLanguageValue")
             {
@@ -876,6 +901,32 @@ namespace ResxTranslator
             this.dataGridView1.EndEdit();
         }
 
+        private void autoTranslateThisCellToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            var checkedItem = e.ClickedItem as ToolStripMenuItem;
+            var autoTranslate = this.contextMenuStripCell.Items["autoTranslateThisCellToolStripMenuItem"] as ToolStripMenuItem;
+
+            foreach (ToolStripMenuItem item in autoTranslate.DropDownItems)
+                item.Checked = false;
+            checkedItem.Checked = true;
+            var preferred = ("" + checkedItem.Tag) == "NoLanguageValue" ? "NoLanguageValue" : checkedItem.Text;
+
+            Settings.Default.PreferredSourceLanguage = preferred;
+
+            int colIndex = this.dataGridView1.CurrentCell.ColumnIndex;
+            string column = this.dataGridView1.Columns[colIndex].Name;
+            if (column == "NoLanguageValue")
+            {
+                column = this.CurrentResource.NoLanguageLanguage;
+            }
+            string source = this.dataGridView1.Rows[this.dataGridView1.CurrentCell.RowIndex].Cells[preferred].Value.ToString();
+
+            string translation = BingTranslator.TranslateString(source, column);
+            this.dataGridView1.CurrentCell.Value = translation;
+            this.dataGridView1.EndEdit();
+
+        }
+
         private void dataGridView1_CellContextMenuStripNeeded(object sender, DataGridViewCellContextMenuStripNeededEventArgs e)
         {
             if (e.ColumnIndex < 0)
@@ -883,8 +934,54 @@ namespace ResxTranslator
                 return;
             }
             e.ContextMenuStrip = this.contextMenuStripCell;
+
+            var autoTranslate = this.contextMenuStripCell.Items["autoTranslateThisCellToolStripMenuItem"] as ToolStripMenuItem;
+
+            if (autoTranslate.DropDownItems.Count < 3)
+            {
+                //rebuild the language select drop down
+                int subChk = FindCheckedSubItemIndex(autoTranslate);
+                string chkedLang = "";
+                if (subChk > -1)
+                {
+                    chkedLang = autoTranslate.DropDownItems[subChk].Text;
+                }
+                else
+                {
+                    (autoTranslate.DropDownItems[0] as ToolStripMenuItem).Checked = true;
+                }
+
+                for (int i = autoTranslate.DropDownItems.Count - 1
+                     ; i > 1
+                     ; --i)
+                {
+                    autoTranslate.DropDownItems.RemoveAt(i);
+                }
+
+                foreach (var lang in this.CurrentResource.Languages.Keys)
+                {
+                    autoTranslate.DropDownItems.Add(lang);
+                    var newItem = (autoTranslate.DropDownItems[autoTranslate.DropDownItems.Count - 1] as ToolStripMenuItem);
+                    if (chkedLang == lang)
+                    {
+                        newItem.Checked = true;
+                    }
+                }
+            }
+
+
+            var preferred = "NoLanguageValue";
+            if (!(autoTranslate.DropDownItems[1] as ToolStripMenuItem).Checked)
+            {
+                int subChk = FindCheckedSubItemIndex(autoTranslate);
+                if (subChk > -1)
+                {
+                    preferred = autoTranslate.DropDownItems[subChk].Text;
+                }
+            }
+
             this.dataGridView1.CurrentCell = this.dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex];
-            string source = this.dataGridView1.Rows[this.dataGridView1.CurrentCell.RowIndex].Cells["NoLanguageValue"].Value.ToString();
+            string source = this.dataGridView1.Rows[this.dataGridView1.CurrentCell.RowIndex].Cells[preferred].Value.ToString();
             int colIndex = this.dataGridView1.CurrentCell.ColumnIndex;
             string column = this.dataGridView1.Columns[colIndex].Name;
 
@@ -911,6 +1008,19 @@ namespace ResxTranslator
                                                     };
                 newItem.Name = "Transl_" + alt;
             }
+        }
+
+        private static int FindCheckedSubItemIndex(ToolStripMenuItem autoTranslate)
+        {
+            for (int index = 0; index < autoTranslate.DropDownItems.Count; index++)
+            {
+                var item = (autoTranslate.DropDownItems[index] as ToolStripMenuItem);
+                if (item.Checked)
+                {
+                    return index;
+                }
+            }
+            return -1;
         }
 
         private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -945,7 +1055,7 @@ namespace ResxTranslator
                     {
                         this.dataGridView1.AllowDrop = true;
                         this.DoDragDrop(text, DragDropEffects.All);
-                        dndInProgress = true;
+                        this.dndInProgress = true;
                     }
                 }
             }
@@ -965,7 +1075,7 @@ namespace ResxTranslator
                     this.dataGridView1.Rows[info.RowIndex].Cells[info.ColumnIndex].Value = value.ToString();
                 }
             }
-            dndInProgress = false;
+            this.dndInProgress = false;
         }
 
         private void dataGridView1_DragEnter(object sender, DragEventArgs e)
@@ -975,7 +1085,7 @@ namespace ResxTranslator
 
         private void dataGridView1_DragOver(object sender, DragEventArgs e)
         {
-            if (dndInProgress)
+            if (this.dndInProgress)
             {
                 if ((ModifierKeys & Keys.Control) != 0)
                 {
@@ -986,8 +1096,16 @@ namespace ResxTranslator
                     e.Effect = DragDropEffects.None;
                 }
             }
-
         }
+
+        private void dataGridView1_UserAddedRow(object sender, DataGridViewRowEventArgs e)
+        {
+        }
+
+        private void dataGridView1_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
+        {
+        }
+
 
 
         //=========================================================================================
