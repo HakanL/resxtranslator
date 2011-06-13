@@ -118,11 +118,22 @@ namespace ResxTranslator
             if (args.Length > 2 && args[1].Trim() == "-f" && !string.IsNullOrEmpty(args[2]))
             {
                 string path = args[2].Trim();
-                if (path.Substring(0) == "\"")
+                if (path.Contains("\""))
                 {
-                    path = path.Substring(1, path.Length - 2);
+                    path = path.Replace("\"","").Trim();
                 }
-                this.OpenProject(path);
+                try
+                {
+                    DirectoryInfo fldr = new DirectoryInfo(path);
+                    if (!fldr.Exists)
+                        throw new ArgumentException("Folder '" + path + "' does not exist.");
+                    path = (fldr.FullName + "\\").Replace("\\\\", "\\");
+                    this.OpenProject(path);
+                }
+                catch (Exception inner)
+                {
+                    throw new ArgumentException("Invalid command line \r\n" + Environment.CommandLine + "\r\nPath: " + path, inner);
+                }
             }
             else
             {
