@@ -258,11 +258,14 @@ namespace ResxTranslator
         /// </summary>
         public string[] RemoveWords(string nontranslated, string translated)
         {
-            var wordsNonTr = this.MakeCleanWordArray(ref nontranslated).ToLookup(k => k, e => true, StringComparer.InvariantCultureIgnoreCase);
+            string[] nonTr = this.MakeCleanWordArray(ref nontranslated);
+            var wordsNonTr = new Dictionary<string,bool>( StringComparer.InvariantCultureIgnoreCase);
+            foreach (var s in nonTr)
+                wordsNonTr[s] = true;
             string[] wordsTr = this.MakeCleanWordArray(ref translated);
 
             string[] rest = (from tr in wordsTr
-                             where wordsNonTr.Contains(tr) == false
+                             where wordsNonTr.ContainsKey(tr) == false
                              select tr).ToArray();
             if (rest.Length * 20 < wordsTr.Length)
                 return wordsTr;

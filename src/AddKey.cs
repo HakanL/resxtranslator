@@ -54,7 +54,7 @@ namespace ResxTranslator
             txtNoXlateValue.Text = Common.GetDefaultValue(txtKey.Text);
 
             string error = null;
-            if (resourceHolder.KeyExists(txtKey.Text))
+            if (resourceHolder.FindByKey(txtKey.Text)!=null)
                 error = "Key exists";
 
             errorProvider.SetError(txtKey, error);
