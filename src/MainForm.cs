@@ -212,6 +212,11 @@ namespace ResxTranslator
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Save
+            SaveAll();
+        }
+
+        private void SaveAll ()
+        {
             foreach (ResourceHolder resource in this.Resources.Values)
             {
                 SaveResourceHolder(resource);
@@ -486,14 +491,19 @@ namespace ResxTranslator
 
             if (isDirty)
             {
-                if (MessageBox.Show("Are you sure you want to lose all your changes without saving?", "Lose changes?",
-                                    MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
+                DialogResult dialogResult = MessageBox.Show("Do you want save your changes before closing?", "Save Changes",
+                                                            MessageBoxButtons.YesNoCancel);
+
+                if (dialogResult == DialogResult.Yes)
                 {
                     this.StopDictBuilderThread();
-
+                    this.SaveAll();
                     return true;
                 }
+                else if (dialogResult == DialogResult.No)
+                    return true;
 
+                this.StopDictBuilderThread();
                 return false;
             }
             this.StopDictBuilderThread();
