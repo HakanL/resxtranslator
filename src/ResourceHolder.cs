@@ -377,7 +377,8 @@ namespace ResxTranslator
                     var key = (string)de.Key;
                     if (key.StartsWith(">>") || key.StartsWith("$"))
                     {
-                        continue;
+                        if(key != "$this.Text")
+                            continue;
                     }
 
                     var dataNode = de.Value as ResXDataNode;
