@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ResxTranslator")]
 [assembly: AssemblyProduct("ResxTranslator")]
-[assembly: AssemblyCopyright("Copyright © Hakan Lindestaf 2010, Jörgen Lindell 2011")]
+[assembly: AssemblyCopyright("Copyright © Hakan Lindestaf 2010, Jörgen Lindell 2011, Marcin Szeniak 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
