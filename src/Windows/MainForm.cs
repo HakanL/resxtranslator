@@ -15,7 +15,6 @@ namespace ResxTranslator.Windows
     {
         protected readonly Dictionary<string, ResourceHolder> Resources;
 
-
         protected ResourceHolder CurrentResource;
         protected Thread DictBuilderThread;
 
@@ -114,14 +113,14 @@ namespace ResxTranslator.Windows
                     throw new ArgumentException(
                         "Invalid command line \r\n" + Environment.CommandLine + "\r\nPath: " + path, inner);
                 }
-            }
+            }/*
             else
             {
                 if (string.IsNullOrEmpty(Settings.Default.BingAppId))
                 {
                     MessageBox.Show("Note! to use auto translate you need to get a Bing AppID.", "ResxTranslator");
                 }
-            }
+            }*/
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
