@@ -75,9 +75,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\ResourceGrid.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ResourceGrid.Designer.cs">
+      <DependentUpon>ResourceGrid.cs</DependentUpon>
+    </Compile>
     <Compile Include="Extensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Controls\ResourceGrid.resx">
+      <DependentUpon>ResourceGrid.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Windows\AddResourceKeyWindow.resx">
       <DependentUpon>AddResourceKeyWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -104,6 +113,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="ResourceOperations\BingTranslator.cs" />
+    <Compile Include="ResourceOperations\LanguageHolder.cs" />
     <Compile Include="ResourceOperations\ResourceHolder.cs" />
     <Compile Include="ResourceOperations\ResourceLoader.cs" />
     <Compile Include="ResourceOperations\ResourceLoadProgressEventArgs.cs" />
