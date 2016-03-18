@@ -1,6 +1,6 @@
 ﻿namespace ResxTranslator.Windows
 {
-    partial class AddKey
+    partial class AddResourceKeyWindow
     {
         /// <summary>
         /// Required designer variable.
@@ -153,7 +153,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(442, 103);
             this.Controls.Add(this.tableLayoutPanel);
-            this.Name = "AddKey";
+            this.Name = "AddResourceKeyWindow";
             this.Text = "Add new key";
             this.tableLayoutPanel.ResumeLayout(false);
             this.tableLayoutPanel.PerformLayout();

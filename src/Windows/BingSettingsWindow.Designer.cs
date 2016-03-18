@@ -1,6 +1,6 @@
 ﻿namespace ResxTranslator.Windows
 {
-    partial class BingParams
+    partial class BingSettingsWindow
     {
         /// <summary>
         /// Required designer variable.
@@ -114,7 +114,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Name = "BingParams";
+            this.Name = "BingSettingsWindow";
             this.Text = "Bing Parameters";
             this.Load += new System.EventHandler(this.BingParams_Load);
             this.ResumeLayout(false);

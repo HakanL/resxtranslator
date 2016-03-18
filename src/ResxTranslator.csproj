@@ -75,22 +75,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BingTranslator.cs" />
-    <Compile Include="Common.cs" />
-    <Compile Include="InprojectTranslator.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Windows\AddKey.resx">
-      <DependentUpon>AddKey.cs</DependentUpon>
+    <EmbeddedResource Include="Windows\AddResourceKeyWindow.resx">
+      <DependentUpon>AddResourceKeyWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Windows\BingParams.resx">
-      <DependentUpon>BingParams.cs</DependentUpon>
+    <EmbeddedResource Include="Windows\BingSettingsWindow.resx">
+      <DependentUpon>BingSettingsWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Windows\FindDialog.resx">
-      <DependentUpon>FindDialog.cs</DependentUpon>
+    <EmbeddedResource Include="Windows\FindWindow.resx">
+      <DependentUpon>FindWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Windows\MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
+    <EmbeddedResource Include="Windows\MainWindow.resx">
+      <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\ZoomWindow.resx">
       <DependentUpon>ZoomWindow.cs</DependentUpon>
@@ -105,36 +103,40 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="ResourceHolder.cs" />
-    <Compile Include="SearchParams.cs" />
+    <Compile Include="ResourceOperations\BingTranslator.cs" />
+    <Compile Include="ResourceOperations\ResourceHolder.cs" />
+    <Compile Include="ResourceOperations\ResourceLoader.cs" />
+    <Compile Include="ResourceOperations\ResourceLoadProgressEventArgs.cs" />
+    <Compile Include="ResourceOperations\SearchParams.cs" />
+    <Compile Include="ResourceOperations\InprojectTranslator.cs" />
     <Compile Include="Service References\TranslatorSvc\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Windows\AddKey.cs">
+    <Compile Include="Windows\AddResourceKeyWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Windows\AddKey.Designer.cs">
-      <DependentUpon>AddKey.cs</DependentUpon>
+    <Compile Include="Windows\AddResourceKeyWindow.Designer.cs">
+      <DependentUpon>AddResourceKeyWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Windows\BingParams.cs">
+    <Compile Include="Windows\BingSettingsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Windows\BingParams.Designer.cs">
-      <DependentUpon>BingParams.cs</DependentUpon>
+    <Compile Include="Windows\BingSettingsWindow.Designer.cs">
+      <DependentUpon>BingSettingsWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Windows\FindDialog.cs">
+    <Compile Include="Windows\FindWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Windows\FindDialog.Designer.cs">
-      <DependentUpon>FindDialog.cs</DependentUpon>
+    <Compile Include="Windows\FindWindow.Designer.cs">
+      <DependentUpon>FindWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Windows\MainForm.cs">
+    <Compile Include="Windows\MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Windows\MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
+    <Compile Include="Windows\MainWindow.Designer.cs">
+      <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\ZoomWindow.cs">
       <SubType>Form</SubType>

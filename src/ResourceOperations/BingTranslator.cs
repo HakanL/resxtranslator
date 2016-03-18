@@ -1,16 +1,16 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using ResxTranslator.Properties;
 using ResxTranslator.TranslatorSvc;
 
-namespace ResxTranslator
+namespace ResxTranslator.ResourceOperations
 {
     public class BingTranslator
     {
         public static void AutoTranslate(ResourceHolder resourceHolder, string languageCode)
         {
-            var appID = Settings.Default.BingAppId;
+            var appId = Settings.Default.BingAppId;
 
             var toTranslate = new List<string>();
 
@@ -25,7 +25,7 @@ namespace ResxTranslator
             }
 
 
-            if (string.IsNullOrEmpty(appID))
+            if (string.IsNullOrEmpty(appId))
             {
                 return;
             }
@@ -33,7 +33,7 @@ namespace ResxTranslator
             var svc = new LanguageServiceClient();
 
             var translatedTexts
-                = svc.TranslateArray(appID
+                = svc.TranslateArray(appId
                     , toTranslate.ToArray()
                     , Settings.Default.NeutralLanguageCode
                     , languageCode.ToLower().Substring(0, 2)
@@ -57,9 +57,9 @@ namespace ResxTranslator
 
         public static string GetDefaultLanguage(ResourceHolder resourceHolder)
         {
-            var appID = Settings.Default.BingAppId;
+            var appId = Settings.Default.BingAppId;
 
-            if (string.IsNullOrEmpty(appID))
+            if (string.IsNullOrEmpty(appId))
             {
                 return "";
             }
@@ -85,7 +85,7 @@ namespace ResxTranslator
             }
 
             var svc = new LanguageServiceClient();
-            var translatedTexts = svc.TranslateArray(appID, toTranslate.ToArray(), Settings.Default.NeutralLanguageCode,
+            var translatedTexts = svc.TranslateArray(appId, toTranslate.ToArray(), Settings.Default.NeutralLanguageCode,
                 "en", new TranslateOptions());
 
             // find most frequent language
@@ -99,14 +99,14 @@ namespace ResxTranslator
 
         public static string TranslateString(string src, string to)
         {
-            var appID = Settings.Default.BingAppId;
+            var appId = Settings.Default.BingAppId;
             var svc = new LanguageServiceClient();
             var tolanguage = string.IsNullOrEmpty(to.Trim()) ? "" : (to.Trim() + "  ").Substring(0, 2);
             var translateOptions = new TranslateOptions();
             translateOptions.ContentType = "text/html";
             translateOptions.Category = "general";
 
-            var translatedTexts = svc.TranslateArray(appID, new[] {src}, Settings.Default.NeutralLanguageCode,
+            var translatedTexts = svc.TranslateArray(appId, new[] {src}, Settings.Default.NeutralLanguageCode,
                 tolanguage, translateOptions);
 
             return translatedTexts[0].TranslatedText;

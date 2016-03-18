@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -10,7 +10,7 @@ using System.Text;
 using System.Xml;
 using ResxTranslator.Windows;
 
-namespace ResxTranslator
+namespace ResxTranslator.ResourceOperations
 {
     public class ResourceHolder
     {

@@ -1,6 +1,6 @@
 ﻿namespace ResxTranslator.Windows
 {
-    partial class FindDialog
+    partial class FindWindow
     {
         /// <summary>
         /// Required designer variable.
@@ -228,7 +228,7 @@
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox1);
-            this.Name = "FindDialog";
+            this.Name = "FindWindow";
             this.Text = "Find";
             this.Load += new System.EventHandler(this.FindDialog_Load);
             this.groupBox1.ResumeLayout(false);

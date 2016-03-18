@@ -5,9 +5,9 @@ using ResxTranslator.Properties;
 
 namespace ResxTranslator.Windows
 {
-    public partial class BingParams : Form
+    public partial class BingSettingsWindow : Form
     {
-        public BingParams()
+        public BingSettingsWindow()
         {
             InitializeComponent();
         }
@@ -17,7 +17,7 @@ namespace ResxTranslator.Windows
             Settings.Default.BingAppId = textBoxAppId.Text;
             Settings.Default.NeutralLanguageCode = textBoxLanguage.Text;
             Settings.Default.Save();
-            ((MainForm) Owner).SetTranslationAvailable(!string.IsNullOrEmpty(Settings.Default.BingAppId));
+            ((MainWindow) Owner).SetTranslationAvailable(!string.IsNullOrEmpty(Settings.Default.BingAppId));
             Close();
         }
 

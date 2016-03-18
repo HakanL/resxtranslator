@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Windows.Forms;
+using ResxTranslator.ResourceOperations;
 
 namespace ResxTranslator.Windows
 {
-    public partial class FindDialog : Form
+    public partial class FindWindow : Form
     {
-        public FindDialog()
+        public FindWindow()
         {
             InitializeComponent();
         }
 
-        private MainForm MyForm => (MainForm) Owner;
+        private MainWindow MyWindow => (MainWindow) Owner;
         
         private void buttonFind_Click(object sender, EventArgs e)
         {
@@ -24,7 +25,7 @@ namespace ResxTranslator.Windows
                 , checkBoxCS.Checked
                 , checkBoxWord.Checked);
             sp.Save();
-            MyForm.CurrentSearch = sp;
+            MyWindow.CurrentSearch = sp;
             Close();
         }
 

@@ -1,36 +1,53 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 using ResxTranslator.Properties;
+using ResxTranslator.ResourceOperations;
 
 namespace ResxTranslator.Windows
 {
-    public partial class MainForm : Form
+    public partial class MainWindow : Form
     {
-        protected readonly Dictionary<string, ResourceHolder> Resources;
-
         protected ResourceHolder CurrentResource;
-        protected Thread DictBuilderThread;
+        public ResourceLoader ResourceLoader { get; }
 
-        protected Dictionary<string, int> LanguagesInUse
-            = new Dictionary<string, int>(StringComparer.InvariantCultureIgnoreCase);
+        private SearchParams _currentSearch;
+
+        public SearchParams CurrentSearch
+        {
+            get { return _currentSearch; }
+            set
+            {
+                _currentSearch = value;
+                ExecuteFind();
+            }
+        }
 
         protected int LastClickedLanguageIndex;
 
-        protected string RootPath;
-
-        public MainForm()
+        public MainWindow()
         {
             InitializeComponent();
 
-            Resources = new Dictionary<string, ResourceHolder>();
             labelTitle.Visible = false;
+            ResourceLoader = new ResourceLoader();
+            ResourceLoader.ResourceLoadProgress += (sender, args) => this.InvokeIfRequired(x =>
+            {
+                toolStripStatusLabelCurrentItem.Text = args.CurrentlyProcessedItem ?? string.Empty;
+                toolStripStatusLabel1.Text = args.CurrentProcess ?? string.Empty;
+                if (args.Progress < args.ProgressTop)
+                {
+                    toolStripProgressBar1.Visible = true;
+                    toolStripProgressBar1.Maximum = args.ProgressTop;
+                    toolStripProgressBar1.Value = args.Progress;
+                }
+                else
+                {
+                    toolStripProgressBar1.Visible = false;
+                }
+            });
         }
 
         private void ExecuteFind()
@@ -106,7 +123,7 @@ namespace ResxTranslator.Windows
                     if (!fldr.Exists)
                         throw new ArgumentException("Folder '" + path + "' does not exist.");
                     path = (fldr.FullName + "\\").Replace("\\\\", "\\");
-                    OpenProject(path);
+                    LoadResourcesFromFolder(path);
                 }
                 catch (Exception inner)
                 {
@@ -123,9 +140,27 @@ namespace ResxTranslator.Windows
             }*/
         }
 
+        private void LoadResourcesFromFolder(string path)
+        {
+            ResourceLoader.OpenProject(path);
+
+            treeViewResx.Nodes.Clear();
+            foreach (var resource in ResourceLoader.Resources.Values)
+            {
+                BuildTreeView(resource);
+            }
+
+            treeViewResx.ExpandAll();
+            addLanguageToolStripMenuItem.DropDownItems.Clear();
+            foreach (var s in ResourceLoader.LanguagesInUse.Keys)
+            {
+                addLanguageToolStripMenuItem.DropDownItems.Add(s);
+            }
+        }
+
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!CanClose())
+            if (!ResourceLoader.CanClose())
             {
                 e.Cancel = true;
             }
@@ -138,7 +173,7 @@ namespace ResxTranslator.Windows
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!CanClose())
+            if (!ResourceLoader.CanClose())
             {
                 return;
             }
@@ -148,60 +183,17 @@ namespace ResxTranslator.Windows
                 SelectedPath = Settings.Default.Mrud,
                 Description = "Browse to the root of the project, typically where the sln file is"
             };
-            if (folderDialog.ShowDialog(this) != DialogResult.OK)
+
+            if (folderDialog.ShowDialog(this) == DialogResult.OK)
             {
-                return;
+                LoadResourcesFromFolder(folderDialog.SelectedPath);
             }
-            var selectedPath = folderDialog.SelectedPath;
-
-            OpenProject(selectedPath);
-        }
-
-        private void OpenProject(string selectedPath)
-        {
-            StopDictBuilderThread();
-
-            toolStripStatusLabel1.Text = "Building tree";
-            RootPath = selectedPath;
-
-            Settings.Default.Mrud = RootPath;
-            Settings.Default.Save();
-
-
-            FindResx(RootPath);
-
-            treeViewResx.Nodes.Clear();
-            foreach (var resource in Resources.Values)
-            {
-                BuildTreeView(resource);
-            }
-
-            treeViewResx.ExpandAll();
-            addLanguageToolStripMenuItem.DropDownItems.Clear();
-            foreach (var s in LanguagesInUse.Keys)
-            {
-                addLanguageToolStripMenuItem.DropDownItems.Add(s);
-            }
-            toolStripStatusLabel1.Text = "Building local dictionary";
-            toolStripProgressBar1.Visible = true;
-            toolStripProgressBar1.Maximum = Resources.Count;
-            toolStripProgressBar1.Value = Resources.Count/50; //make it green a little..
-
-            StartDictBuilderThread();
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Save
-            SaveAll();
-        }
-
-        private void SaveAll()
-        {
-            foreach (var resource in Resources.Values)
-            {
-                SaveResourceHolder(resource);
-            }
+            ResourceLoader.SaveAll();
         }
 
         private void revertCurrentToolStripMenuItem_Click(object sender, EventArgs e)
@@ -212,12 +204,12 @@ namespace ResxTranslator.Windows
 
         private void saveCurrentToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveResourceHolder(CurrentResource);
+            ResourceLoader.SaveResourceHolder(CurrentResource);
         }
 
         private void setBingAppIdToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var frm = new BingParams();
+            var frm = new BingSettingsWindow();
             frm.ShowDialog(this);
         }
 
@@ -230,20 +222,9 @@ namespace ResxTranslator.Windows
 
         private void addNewKeyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (CurrentResource == null)
+            if (CurrentResource != null)
             {
-                return;
-            }
-
-            using (var form = new AddKey(CurrentResource))
-            {
-                var result = form.ShowDialog();
-
-                if (result == DialogResult.OK)
-                {
-                    // Add key
-                    CurrentResource.AddString(form.Key, form.NoXlateValue, form.DefaultValue);
-                }
+                AddResourceKeyWindow.ShowDialog(this, CurrentResource);
             }
         }
 
@@ -254,10 +235,8 @@ namespace ResxTranslator.Windows
                 return;
             }
 
-            if (
-                MessageBox.Show("Are you sure you want to delete the current key?", "Delete",
-                    MessageBoxButtons.YesNoCancel) ==
-                DialogResult.Yes)
+            if (MessageBox.Show("Are you sure you want to delete the current key?", "Delete",
+                MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
             {
                 var dataRow = dataGridView1.SelectedRows[0].DataBoundItem as DataRowView;
 
@@ -267,7 +246,7 @@ namespace ResxTranslator.Windows
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!CanClose())
+            if (!ResourceLoader.CanClose())
             {
                 return;
             }
@@ -282,151 +261,12 @@ namespace ResxTranslator.Windows
 
         private void findToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            var frm = new FindDialog();
+            var frm = new FindWindow();
             frm.ShowDialog(this);
         }
 
 
         //================== General structures ==================================
-        private void StartDictBuilderThread()
-        {
-            // Make the logic for building the dictionary an anonymous delegate to keep it only callable on the separate thread
-            var buildDictionary
-                = (ThreadStart)
-                    delegate
-                    {
-                        #region Dictionary building loop (long)
-
-                        var rescount = 0;
-                        this.InvokeIfRequired(
-                            c =>
-                            {
-                                c.toolStripStatusLabel1.Text = "Building language lookup";
-                                c.toolStripProgressBar1.Value = 0;
-                                c.toolStripStatusLabelCurrentItem.Text = "";
-                            });
-
-                        foreach (var res in Resources.Values)
-                        {
-                            if (RequestDictBuilderStop)
-                            {
-                                break;
-                            }
-                            var res1 = res;
-                            this.InvokeIfRequired(
-                                c => { c.toolStripStatusLabelCurrentItem.Text = res1.Filename; });
-
-                            var translator = InprojectTranslator.Instance;
-
-                            foreach (var lang in res.Languages.Keys)
-                            {
-                                var sbAllNontranslated = new StringBuilder();
-                                var sbAllTranslated = new StringBuilder();
-                                foreach (DataRow row in res.StringsTable.Rows)
-                                {
-                                    sbAllNontranslated.Append(row["NoLanguageValue"]);
-                                    sbAllNontranslated.Append(" ");
-
-                                    if (row[lang.ToLower()] != DBNull.Value &&
-                                        row[lang.ToLower()].ToString().Trim() != "")
-                                    {
-                                        sbAllTranslated.Append(row[lang.ToLower()].ToString().Trim());
-                                        sbAllTranslated.Append(" ");
-                                    }
-                                }
-                                var diffArray = translator.RemoveWords(sbAllNontranslated.ToString(),
-                                    sbAllTranslated.ToString());
-                                translator.AddWordsToLanguageChecker(lang.ToLower()
-                                    , diffArray);
-                            }
-                            ++rescount;
-                            var rescount1 = rescount;
-                            this.InvokeIfRequired(
-                                c => { c.toolStripProgressBar1.Value = rescount1; });
-                        }
-                        this.InvokeIfRequired(
-                            c =>
-                            {
-                                c.toolStripStatusLabel1.Text = "Building local translations dictionary";
-                                c.toolStripProgressBar1.Value = Resources.Count/50;
-                                c.toolStripStatusLabelCurrentItem.Text = "";
-                            });
-
-                        rescount = 0;
-                        foreach (var res in Resources.Values)
-                        {
-                            if (RequestDictBuilderStop)
-                            {
-                                break;
-                            }
-                            var res1 = res;
-                            this.InvokeIfRequired(
-                                c => { c.toolStripStatusLabelCurrentItem.Text = res1.Filename; });
-
-                            var resDeflang = res.NoLanguageLanguage;
-                            var sb = new StringBuilder();
-                            foreach (DataRow row in res.StringsTable.Rows)
-                            {
-                                var nontranslated = row["NoLanguageValue"].ToString();
-                                if (!string.IsNullOrEmpty(nontranslated) && nontranslated.Trim() != "")
-                                {
-                                    foreach (var lang in res.Languages.Keys)
-                                    {
-                                        if (row[lang.ToLower()] != DBNull.Value &&
-                                            row[lang.ToLower()].ToString().Trim() != "")
-                                        {
-                                            sb.Append(" ");
-                                            sb.Append(row[lang.ToLower()]);
-
-                                            InprojectTranslator.Instance.AddTranslation(resDeflang
-                                                , nontranslated
-                                                , lang.ToLower()
-                                                , row[lang.ToLower()].ToString().Trim());
-                                            InprojectTranslator.Instance.AddTranslation(lang.ToLower()
-                                                , row[lang.ToLower()].ToString().Trim()
-                                                , resDeflang
-                                                , nontranslated);
-                                        }
-                                    }
-                                }
-                                if (resDeflang != "")
-                                    InprojectTranslator.Instance.AddWordsToLanguageChecker(resDeflang,
-                                        InprojectTranslator.Instance.RemoveWords(sb.ToString(), nontranslated));
-                            }
-                            ++rescount;
-                            var rescount1 = rescount;
-                            this.InvokeIfRequired(
-                                c => { c.toolStripProgressBar1.Value = rescount1; });
-                        }
-                        this.InvokeIfRequired(
-                            c =>
-                            {
-                                c.toolStripStatusLabel1.Text = "Done";
-                                c.toolStripProgressBar1.Visible = false;
-                                c.toolStripStatusLabelCurrentItem.Text = "";
-                            });
-
-                        #endregion
-                    };
-
-            DictBuilderThread = new Thread(buildDictionary);
-            DictBuilderThread.Name = "DictBuilder";
-            RequestDictBuilderStop = false;
-
-            DictBuilderThread.Start();
-        }
-
-        private void StopDictBuilderThread()
-        {
-            if (DictBuilderThread != null && DictBuilderThread.IsAlive)
-            {
-                RequestDictBuilderStop = true;
-                while (false == DictBuilderThread.Join(50))
-                {
-                }
-            }
-            RequestDictBuilderStop = false;
-        }
 
 
         public void SetTranslationAvailable(bool isIt)
@@ -436,56 +276,9 @@ namespace ResxTranslator.Windows
             autoTranslateThisCellToolStripMenuItem.Enabled = isIt;
         }
 
-        private static void SaveResourceHolder(ResourceHolder resource)
-        {
-            try
-            {
-                if (!resource.IsDirty)
-                {
-                    return;
-                }
-
-                resource.Save();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Exception while saving: " + resource.Id);
-            }
-        }
-
-        /// <summary>
-        ///     Check and prompt for save
-        /// </summary>
-        /// <returns>True if we can safely close</returns>
-        private bool CanClose()
-        {
-            var isDirty = Resources.Values.Any(resource => resource.IsDirty);
-
-            if (isDirty)
-            {
-                var dialogResult = MessageBox.Show("Do you want save your changes before closing?", "Save Changes",
-                    MessageBoxButtons.YesNoCancel);
-
-                if (dialogResult == DialogResult.Yes)
-                {
-                    StopDictBuilderThread();
-                    SaveAll();
-                    return true;
-                }
-                if (dialogResult == DialogResult.No)
-                    return true;
-
-                StopDictBuilderThread();
-                return false;
-            }
-            StopDictBuilderThread();
-
-            return true;
-        }
-
         //================== Tree ==================================
 
-        private void BuildTreeView(ResourceHolder resource)
+        public void BuildTreeView(ResourceHolder resource)
         {
             TreeNode parentNode = null;
             var topFolders = resource.DisplayFolder.Split('\\');
@@ -539,86 +332,6 @@ namespace ResxTranslator.Windows
         {
             this.InvokeIfRequired(
                 c => { node.ForeColor = res.IsDirty ? Color.Blue : Color.Black; });
-        }
-
-        private void FindResx(string folder)
-        {
-            var displayFolder = "";
-            if (folder.StartsWith(RootPath, StringComparison.InvariantCultureIgnoreCase))
-            {
-                displayFolder = folder.Substring(RootPath.Length);
-            }
-            if (displayFolder.StartsWith("\\"))
-            {
-                displayFolder = displayFolder.Remove(0, 1);
-            }
-
-            var files = Directory.GetFiles(folder, "*.resx");
-
-            foreach (var file in files)
-            {
-                var filenameNoExt = "" + Path.GetFileNameWithoutExtension(file);
-                var fileParts = filenameNoExt.Split('.');
-                if (fileParts.Length == 0)
-                {
-                    continue;
-                }
-
-                var language = "";
-                if (fileParts[fileParts.Length - 1].Length == 5 && fileParts[fileParts.Length - 1][2] == '-')
-                {
-                    language = fileParts[fileParts.Length - 1];
-                }
-                else if (fileParts[fileParts.Length - 1].Length == 2)
-                {
-                    language = fileParts[fileParts.Length - 1];
-                }
-                if (!string.IsNullOrEmpty(language))
-                {
-                    filenameNoExt = Path.GetFileNameWithoutExtension(filenameNoExt);
-                }
-
-                ResourceHolder resourceHolder;
-                var key = (displayFolder + "\\" + filenameNoExt).ToLower();
-                if (!Resources.TryGetValue(key, out resourceHolder))
-                {
-                    resourceHolder = new ResourceHolder();
-                    resourceHolder.DisplayFolder = displayFolder;
-                    if (string.IsNullOrEmpty(language))
-                    {
-                        resourceHolder.Filename = file;
-                    }
-                    resourceHolder.Id = filenameNoExt;
-
-                    Resources.Add(key, resourceHolder);
-                }
-
-                if (!string.IsNullOrEmpty(language))
-                {
-                    if (!LanguagesInUse.ContainsKey(language))
-                    {
-                        LanguagesInUse[language] = 0;
-                    }
-                    LanguagesInUse[language] += 1;
-                    if (!resourceHolder.Languages.ContainsKey(language.ToLower()))
-                    {
-                        var languageHolder = new LanguageHolder();
-                        languageHolder.Filename = file;
-                        languageHolder.Id = language;
-                        resourceHolder.Languages.Add(language.ToLower(), languageHolder);
-                    }
-                }
-                else
-                {
-                    resourceHolder.Filename = file;
-                }
-            }
-
-            var subfolders = Directory.GetDirectories(folder);
-            foreach (var subfolder in subfolders)
-            {
-                FindResx(subfolder);
-            }
         }
 
         private void treeViewResx_DoubleClick(object sender, EventArgs e)
@@ -684,31 +397,9 @@ namespace ResxTranslator.Windows
             
             ShowResourceInGrid((ResourceHolder)selectedTreeNode.Tag);
         }
+        
 
-        #region --- properties ---
-
-        private SearchParams _currentSearch;
-
-        private volatile bool _requestDictBuilderStop;
-
-        public SearchParams CurrentSearch
-        {
-            get { return _currentSearch; }
-            set
-            {
-                _currentSearch = value;
-                ExecuteFind();
-            }
-        }
-
-        public bool RequestDictBuilderStop
-        {
-            get { return _requestDictBuilderStop; }
-            set { _requestDictBuilderStop = value; }
-        }
-
-        #endregion
-
+        
         //
 
         #region ================== Top checkboxes ==================================

@@ -1,7 +1,8 @@
-﻿using System.Configuration;
+using System.Configuration;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 
-namespace ResxTranslator
+namespace ResxTranslator.ResourceOperations
 {
     [SettingsProvider("System.Configuration.LocalFileSettingsProvider")]
     [SettingsGroupName("FindParameters")]

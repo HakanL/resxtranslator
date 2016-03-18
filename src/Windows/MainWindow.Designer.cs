@@ -2,7 +2,7 @@
 
 namespace ResxTranslator.Windows
 {
-	partial class MainForm
+	partial class MainWindow
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -488,7 +488,7 @@ namespace ResxTranslator.Windows
             this.Controls.Add(this.panelMain);
             this.Controls.Add(this.statusStrip1);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Name = "MainForm";
+            this.Name = "MainWindow";
             this.Text = "ResxTranslator";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
