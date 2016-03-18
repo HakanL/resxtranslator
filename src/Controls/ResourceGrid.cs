@@ -39,6 +39,11 @@ namespace ResxTranslator.Controls
             InitializeComponent();
         }
 
+        public void RefreshResourceDisplay()
+        {
+            ShowResourceInGrid(CurrentResource);
+        }
+
         private ResourceHolder _currentResource;
 
         private void ShowResourceInGrid(ResourceHolder resource)

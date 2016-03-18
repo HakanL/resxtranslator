@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using ResxTranslator.Properties;
@@ -10,7 +8,7 @@ namespace ResxTranslator.Windows
 {
     public partial class MainWindow : Form
     {
-        protected ResourceHolder CurrentResource;
+        protected ResourceHolder _currentResource;
         public ResourceLoader ResourceLoader { get; }
 
         private SearchParams _currentSearch;
@@ -21,7 +19,17 @@ namespace ResxTranslator.Windows
             set
             {
                 _currentSearch = value;
-                ExecuteFind();
+                resourceTreeView1.ExecuteFindInNodes(value);
+            }
+        }
+
+        protected ResourceHolder CurrentResource
+        {
+            get { return _currentResource; }
+            set
+            {
+                _currentResource = value;
+                resourceGrid1.CurrentResource = value;
             }
         }
 
@@ -48,66 +56,13 @@ namespace ResxTranslator.Windows
                     toolStripProgressBar1.Visible = false;
                 }
             });
-        }
 
-        private void ExecuteFind()
-        {
-            ExecuteFindInNodes(treeViewResx.Nodes);
-        }
-
-        private void ExecuteFindInNodes(TreeNodeCollection searchNodes)
-        {
-            var matchColor = Color.GreenYellow;
-            foreach (TreeNode treeNode in searchNodes)
-            {
-                treeNode.BackColor = Color.White;
-                ExecuteFindInNodes(treeNode.Nodes);
-                var resourceHolder = treeNode.Tag as ResourceHolder;
-                if (resourceHolder != null)
-                {
-                    var resource = resourceHolder;
-                    if (CurrentSearch.Match(SearchParams.TargetType.Lang, resource.NoLanguageLanguage))
-                    {
-                        treeNode.BackColor = matchColor;
-                    }
-                    var file = resource.Filename.Split('\\');
-
-                    if (CurrentSearch.Match(SearchParams.TargetType.File, file[file.Length - 1]))
-                    {
-                        treeNode.BackColor = matchColor;
-                    }
-                    foreach (var lng in resource.Languages.Values)
-                    {
-                        if (CurrentSearch.Match(SearchParams.TargetType.Lang, lng.Id))
-                        {
-                            treeNode.BackColor = matchColor;
-                        }
-                    }
-                    foreach (DataRow row in resource.StringsTable.Rows)
-                    {
-                        if (CurrentSearch.Match(SearchParams.TargetType.Key, row["Key"].ToString()))
-                        {
-                            treeNode.BackColor = matchColor;
-                        }
-                        if (CurrentSearch.Match(SearchParams.TargetType.Text, row["NoLanguageValue"].ToString()))
-                        {
-                            treeNode.BackColor = matchColor;
-                        }
-                        foreach (var lng in resource.Languages.Values)
-                        {
-                            if (CurrentSearch.Match(SearchParams.TargetType.Text, row[lng.Id].ToString()))
-                            {
-                                treeNode.BackColor = matchColor;
-                            }
-                        }
-                    }
-                }
-            }
+            resourceTreeView1.ResourceOpened += (sender, args) => CurrentResource = args.Resource;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            SetTranslationAvailable(!string.IsNullOrEmpty(Settings.Default.BingAppId));
+            SetBingTranslationAvailable(!string.IsNullOrEmpty(Settings.Default.BingAppId));
 
             var args = Environment.GetCommandLineArgs();
             if (args.Length > 2 && args[1].Trim() == "-f" && !string.IsNullOrEmpty(args[2]))
@@ -144,13 +99,8 @@ namespace ResxTranslator.Windows
         {
             ResourceLoader.OpenProject(path);
 
-            treeViewResx.Nodes.Clear();
-            foreach (var resource in ResourceLoader.Resources.Values)
-            {
-                BuildTreeView(resource);
-            }
+            resourceTreeView1.LoadResources(ResourceLoader);
 
-            treeViewResx.ExpandAll();
             addLanguageToolStripMenuItem.DropDownItems.Clear();
             foreach (var s in ResourceLoader.LanguagesInUse.Keys)
             {
@@ -199,7 +149,7 @@ namespace ResxTranslator.Windows
         private void revertCurrentToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CurrentResource.Revert();
-            resourceGrid1.CurrentResource = CurrentResource;
+            resourceGrid1.RefreshResourceDisplay();
         }
 
         private void saveCurrentToolStripMenuItem_Click(object sender, EventArgs e)
@@ -225,6 +175,7 @@ namespace ResxTranslator.Windows
             if (CurrentResource != null)
             {
                 AddResourceKeyWindow.ShowDialog(this, CurrentResource);
+                resourceGrid1.RefreshResourceDisplay();
             }
         }
 
@@ -243,11 +194,9 @@ namespace ResxTranslator.Windows
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!ResourceLoader.CanClose())
-            {
                 return;
-            }
 
-            treeViewResx.Nodes.Clear();
+            resourceTreeView1.Clear();
             checkedListBoxLanguages.Items.Clear();
             labelTitle.Visible = false;
 
@@ -260,113 +209,14 @@ namespace ResxTranslator.Windows
             var frm = new FindWindow();
             frm.ShowDialog(this);
         }
-
-
-        //================== General structures ==================================
-
-
-        public void SetTranslationAvailable(bool isIt)
+        
+        public void SetBingTranslationAvailable(bool isIt)
         {
             translateUsingBingToolStripMenuItem.Enabled = isIt;
             autoTranslateToolStripMenuItem1.Enabled = isIt;
             resourceGrid1.DisplayContextMenu = isIt;
         }
-
-        //================== Tree ==================================
-
-        public void BuildTreeView(ResourceHolder resource)
-        {
-            TreeNode parentNode = null;
-            var topFolders = resource.DisplayFolder.Split('\\');
-            foreach (var subFolder in topFolders)
-            {
-                var searchNodes = parentNode?.Nodes ?? treeViewResx.Nodes;
-                var found = false;
-                foreach (TreeNode treeNode in searchNodes)
-                {
-                    var holder = treeNode.Tag as PathHolder;
-                    if (holder != null && holder.Id.Equals(subFolder, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        found = true;
-                        parentNode = treeNode;
-                        break;
-                    }
-                }
-
-                if (found) continue;
-
-                var pathTreeNode = new TreeNode("[" + subFolder + "]");
-                var pathHolder = new PathHolder();
-                pathHolder.Id = subFolder;
-                pathTreeNode.Tag = pathHolder;
-                searchNodes.Add(pathTreeNode);
-
-                parentNode = pathTreeNode;
-            }
-
-            var leafNode = new TreeNode(resource.Id);
-            leafNode.Tag = resource;
-
-            resource.DirtyChanged
-                += delegate { SetTreeNodeDirty(leafNode, resource); };
-
-            SetTreeNodeTitle(leafNode, resource);
-
-            resource.LanguageChange
-                += delegate { SetTreeNodeTitle(leafNode, resource); };
-
-            parentNode?.Nodes.Add(leafNode);
-        }
-
-        public void SetTreeNodeTitle(TreeNode node, ResourceHolder res)
-        {
-            this.InvokeIfRequired(
-                c => { node.Text = res.Caption; });
-        }
-
-        public void SetTreeNodeDirty(TreeNode node, ResourceHolder res)
-        {
-            this.InvokeIfRequired(
-                c => { node.ForeColor = res.IsDirty ? Color.Blue : Color.Black; });
-        }
-
-        private void treeViewResx_DoubleClick(object sender, EventArgs e)
-        {
-            SelectResourceFromTree();
-        }
-
-        private void treeViewResx_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            SelectResourceFromTree();
-        }
         
-        private void SelectResourceFromTree()
-        {
-            var selectedTreeNode = treeViewResx.SelectedNode;
-            if (selectedTreeNode == null)
-            {
-                return;
-            }
-
-            if (selectedTreeNode.Tag is PathHolder)
-            {
-                return;
-            }
-
-            if (!(selectedTreeNode.Tag is ResourceHolder))
-            {
-                // Shouldn't happen
-                return;
-            }
-            
-            CurrentResource = (ResourceHolder)selectedTreeNode.Tag;
-
-            resourceGrid1.CurrentResource = CurrentResource;
-        }
-        
-
-        
-        //
 
         #region ================== Top checkboxes ==================================
 
@@ -391,7 +241,7 @@ namespace ResxTranslator.Windows
         private void addLanguageToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             CurrentResource.AddLanguage(e.ClickedItem.Text);
-            resourceGrid1.CurrentResource = CurrentResource;
+            resourceGrid1.RefreshResourceDisplay();
         }
 
         private void translateUsingBingToolStripMenuItem_Click(object sender, EventArgs e)
@@ -416,7 +266,7 @@ namespace ResxTranslator.Windows
             {
                 CurrentResource.DeleteLanguage(box.Items[LastClickedLanguageIndex].ToString());
 
-                resourceGrid1.CurrentResource = CurrentResource;
+                resourceGrid1.RefreshResourceDisplay();
             }
         }
 
@@ -440,11 +290,5 @@ namespace ResxTranslator.Windows
         }
 
         #endregion
-
-        private class PathHolder
-        {
-            public string Id { get; set; }
-        }
-
     }
 }

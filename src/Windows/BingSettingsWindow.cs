@@ -17,7 +17,7 @@ namespace ResxTranslator.Windows
             Settings.Default.BingAppId = textBoxAppId.Text;
             Settings.Default.NeutralLanguageCode = textBoxLanguage.Text;
             Settings.Default.Save();
-            ((MainWindow) Owner).SetTranslationAvailable(!string.IsNullOrEmpty(Settings.Default.BingAppId));
+            ((MainWindow) Owner).SetBingTranslationAvailable(!string.IsNullOrEmpty(Settings.Default.BingAppId));
             Close();
         }
 

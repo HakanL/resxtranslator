@@ -40,9 +40,10 @@ namespace ResxTranslator.Windows
             this.toolStripStatusLabelCurrentItem = new System.Windows.Forms.ToolStripStatusLabel();
             this.panelMain = new System.Windows.Forms.Panel();
             this.splitContainerMain = new System.Windows.Forms.SplitContainer();
-            this.treeViewResx = new System.Windows.Forms.TreeView();
+            this.resourceTreeView1 = new ResxTranslator.Controls.ResourceTreeView();
             this.splitContainerResource = new System.Windows.Forms.SplitContainer();
             this.checkedListBoxLanguages = new System.Windows.Forms.CheckedListBox();
+            this.resourceGrid1 = new ResxTranslator.Controls.ResourceGrid();
             this.panelTitle = new System.Windows.Forms.Panel();
             this.labelTitle = new System.Windows.Forms.Label();
             this.menuStripMain = new System.Windows.Forms.MenuStrip();
@@ -66,7 +67,6 @@ namespace ResxTranslator.Windows
             this.addLanguageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.autoTranslateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.translateUsingBingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.resourceGrid1 = new ResxTranslator.Controls.ResourceGrid();
             this.contextMenuStripLanguage.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panelMain.SuspendLayout();
@@ -152,7 +152,7 @@ namespace ResxTranslator.Windows
             // 
             // splitContainerMain.Panel1
             // 
-            this.splitContainerMain.Panel1.Controls.Add(this.treeViewResx);
+            this.splitContainerMain.Panel1.Controls.Add(this.resourceTreeView1);
             // 
             // splitContainerMain.Panel2
             // 
@@ -161,16 +161,13 @@ namespace ResxTranslator.Windows
             this.splitContainerMain.SplitterDistance = 246;
             this.splitContainerMain.TabIndex = 3;
             // 
-            // treeViewResx
+            // resourceTreeView1
             // 
-            this.treeViewResx.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeViewResx.HideSelection = false;
-            this.treeViewResx.Location = new System.Drawing.Point(0, 0);
-            this.treeViewResx.Name = "treeViewResx";
-            this.treeViewResx.Size = new System.Drawing.Size(246, 484);
-            this.treeViewResx.TabIndex = 0;
-            this.treeViewResx.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewResx_AfterSelect);
-            this.treeViewResx.DoubleClick += new System.EventHandler(this.treeViewResx_DoubleClick);
+            this.resourceTreeView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.resourceTreeView1.Location = new System.Drawing.Point(0, 0);
+            this.resourceTreeView1.Name = "resourceTreeView1";
+            this.resourceTreeView1.Size = new System.Drawing.Size(246, 484);
+            this.resourceTreeView1.TabIndex = 4;
             // 
             // splitContainerResource
             // 
@@ -204,6 +201,16 @@ namespace ResxTranslator.Windows
             this.checkedListBoxLanguages.TabIndex = 0;
             this.checkedListBoxLanguages.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkedListBoxLanguages_ItemCheck);
             this.checkedListBoxLanguages.MouseDown += new System.Windows.Forms.MouseEventHandler(this.checkedListBoxLanguages_MouseDown);
+            // 
+            // resourceGrid1
+            // 
+            this.resourceGrid1.CurrentResource = null;
+            this.resourceGrid1.DisplayContextMenu = true;
+            this.resourceGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.resourceGrid1.Location = new System.Drawing.Point(0, 35);
+            this.resourceGrid1.Name = "resourceGrid1";
+            this.resourceGrid1.Size = new System.Drawing.Size(696, 394);
+            this.resourceGrid1.TabIndex = 3;
             // 
             // panelTitle
             // 
@@ -395,15 +402,6 @@ namespace ResxTranslator.Windows
             this.translateUsingBingToolStripMenuItem.Text = "Translate using Bing";
             this.translateUsingBingToolStripMenuItem.Click += new System.EventHandler(this.translateUsingBingToolStripMenuItem_Click);
             // 
-            // resourceGrid1
-            // 
-            this.resourceGrid1.CurrentResource = null;
-            this.resourceGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.resourceGrid1.Location = new System.Drawing.Point(0, 35);
-            this.resourceGrid1.Name = "resourceGrid1";
-            this.resourceGrid1.Size = new System.Drawing.Size(696, 394);
-            this.resourceGrid1.TabIndex = 3;
-            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -447,7 +445,6 @@ namespace ResxTranslator.Windows
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
         private Panel panelMain;
         private SplitContainer splitContainerMain;
-        private TreeView treeViewResx;
         private SplitContainer splitContainerResource;
         private CheckedListBox checkedListBoxLanguages;
         private Panel panelTitle;
@@ -475,6 +472,7 @@ namespace ResxTranslator.Windows
         private ToolStripMenuItem translateUsingBingToolStripMenuItem;
         private ToolStripStatusLabel toolStripStatusLabelCurrentItem;
         private Controls.ResourceGrid resourceGrid1;
+        private Controls.ResourceTreeView resourceTreeView1;
     }
 }
 
