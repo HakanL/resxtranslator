@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using ResxTranslator.Properties;
@@ -11,15 +10,15 @@ namespace ResxTranslator
     {
         public static void AutoTranslate(ResourceHolder resourceHolder, string languageCode)
         {
-            string appID = Settings.Default.BingAppId;
+            var appID = Settings.Default.BingAppId;
 
             var toTranslate = new List<string>();
 
             foreach (DataRow row in resourceHolder.StringsTable.Rows)
             {
-                if (!String.IsNullOrEmpty(row["NoLanguageValue"].ToString())
+                if (!string.IsNullOrEmpty(row["NoLanguageValue"].ToString())
                     && (row[languageCode.ToLower()].ToString() == row["NoLanguageValue"].ToString()
-                        || String.IsNullOrEmpty(row[languageCode.ToLower()].ToString())))
+                        || string.IsNullOrEmpty(row[languageCode.ToLower()].ToString())))
                 {
                     toTranslate.Add(row["NoLanguageValue"].ToString());
                 }
@@ -33,21 +32,21 @@ namespace ResxTranslator
 
             var svc = new LanguageServiceClient();
 
-            TranslateArrayResponse[] translatedTexts
+            var translatedTexts
                 = svc.TranslateArray(appID
-                                     , toTranslate.ToArray()
-                                     , Settings.Default.NeutralLanguageCode
-                                     , languageCode.ToLower().Substring(0, 2)
-                                     , new TranslateOptions());
+                    , toTranslate.ToArray()
+                    , Settings.Default.NeutralLanguageCode
+                    , languageCode.ToLower().Substring(0, 2)
+                    , new TranslateOptions());
 
-            int i = 0;
+            var i = 0;
             foreach (DataRow row in resourceHolder.StringsTable.Rows)
             {
-                if (!String.IsNullOrEmpty(row["NoLanguageValue"].ToString())
+                if (!string.IsNullOrEmpty(row["NoLanguageValue"].ToString())
                     && (row[languageCode.ToLower()].ToString() == row["NoLanguageValue"].ToString()
-                        || String.IsNullOrEmpty(row[languageCode.ToLower()].ToString())))
+                        || string.IsNullOrEmpty(row[languageCode.ToLower()].ToString())))
                 {
-                    if (String.IsNullOrEmpty(translatedTexts[i].Error))
+                    if (string.IsNullOrEmpty(translatedTexts[i].Error))
                     {
                         row[languageCode.ToLower()] = translatedTexts[i].TranslatedText;
                     }
@@ -58,17 +57,17 @@ namespace ResxTranslator
 
         public static string GetDefaultLanguage(ResourceHolder resourceHolder)
         {
-            string appID = Settings.Default.BingAppId;
+            var appID = Settings.Default.BingAppId;
 
             if (string.IsNullOrEmpty(appID))
             {
                 return "";
             }
             var toTranslate = new List<string>();
-            int cnt = 0;
+            var cnt = 0;
             foreach (DataRow row in resourceHolder.StringsTable.Rows)
             {
-                if (!String.IsNullOrEmpty(row["NoLanguageValue"].ToString())
+                if (!string.IsNullOrEmpty(row["NoLanguageValue"].ToString())
                     && (row["NoLanguageValue"].ToString().Length > 10 || resourceHolder.StringsTable.Rows.Count < 10))
                 {
                     toTranslate.Add(row["NoLanguageValue"].ToString());
@@ -86,12 +85,13 @@ namespace ResxTranslator
             }
 
             var svc = new LanguageServiceClient();
-            TranslateArrayResponse[] translatedTexts = svc.TranslateArray(appID, toTranslate.ToArray(), Settings.Default.NeutralLanguageCode, "en", new TranslateOptions());
-            
+            var translatedTexts = svc.TranslateArray(appID, toTranslate.ToArray(), Settings.Default.NeutralLanguageCode,
+                "en", new TranslateOptions());
+
             // find most frequent language
             var maxArr = translatedTexts
                 .GroupBy(t => t.From)
-                .Select(grp => new { Language = grp.Key, Count = grp.Count() })
+                .Select(grp => new {Language = grp.Key, Count = grp.Count()})
                 .OrderByDescending(y => y.Count);
 
             return maxArr.First().Language;
@@ -99,14 +99,15 @@ namespace ResxTranslator
 
         public static string TranslateString(string src, string to)
         {
-            string appID = Settings.Default.BingAppId;
+            var appID = Settings.Default.BingAppId;
             var svc = new LanguageServiceClient();
-            string tolanguage = string.IsNullOrEmpty(to.Trim()) ? "" : (to.Trim() + "  ").Substring(0, 2);
+            var tolanguage = string.IsNullOrEmpty(to.Trim()) ? "" : (to.Trim() + "  ").Substring(0, 2);
             var translateOptions = new TranslateOptions();
             translateOptions.ContentType = "text/html";
             translateOptions.Category = "general";
 
-            TranslateArrayResponse[] translatedTexts = svc.TranslateArray(appID, new[] { src }, Settings.Default.NeutralLanguageCode, tolanguage, translateOptions);
+            var translatedTexts = svc.TranslateArray(appID, new[] {src}, Settings.Default.NeutralLanguageCode,
+                tolanguage, translateOptions);
 
             return translatedTexts[0].TranslatedText;
         }

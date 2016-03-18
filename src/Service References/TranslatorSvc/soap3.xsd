@@ -1,7 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://api.microsofttranslator.com/V2" elementFormDefault="qualified" targetNamespace="http://api.microsofttranslator.com/V2" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://api.microsofttranslator.com/V2/soap.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
-  <xs:import schemaLocation="http://api.microsofttranslator.com/V2/soap.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2" />
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<xs:schema xmlns:tns="http://api.microsofttranslator.com/V2" elementFormDefault="qualified"
+           targetNamespace="http://api.microsofttranslator.com/V2" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://api.microsofttranslator.com/V2/soap.svc?xsd=xsd2"
+             namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://api.microsofttranslator.com/V2/soap.svc?xsd=xsd3"
+             namespace="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2" />
   <xs:element name="AddTranslation">
     <xs:complexType>
       <xs:sequence>
@@ -35,7 +39,8 @@
   <xs:element name="BreakSentencesResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="BreakSentencesResult" nillable="true" type="q1:ArrayOfint" />
+        <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0"
+                    name="BreakSentencesResult" nillable="true" type="q1:ArrayOfint" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -58,14 +63,16 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="appId" nillable="true" type="xs:string" />
-        <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="texts" nillable="true" type="q2:ArrayOfstring" />
+        <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="texts"
+                    nillable="true" type="q2:ArrayOfstring" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="DetectArrayResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="DetectArrayResult" nillable="true" type="q3:ArrayOfstring" />
+        <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0"
+                    name="DetectArrayResult" nillable="true" type="q3:ArrayOfstring" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -91,14 +98,16 @@
       <xs:sequence>
         <xs:element minOccurs="0" name="appId" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="locale" nillable="true" type="xs:string" />
-        <xs:element xmlns:q4="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="languageCodes" nillable="true" type="q4:ArrayOfstring" />
+        <xs:element xmlns:q4="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0"
+                    name="languageCodes" nillable="true" type="q4:ArrayOfstring" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GetLanguageNamesResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q5="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetLanguageNamesResult" nillable="true" type="q5:ArrayOfstring" />
+        <xs:element xmlns:q5="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0"
+                    name="GetLanguageNamesResult" nillable="true" type="q5:ArrayOfstring" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -112,7 +121,8 @@
   <xs:element name="GetLanguagesForSpeakResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q6="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetLanguagesForSpeakResult" nillable="true" type="q6:ArrayOfstring" />
+        <xs:element xmlns:q6="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0"
+                    name="GetLanguagesForSpeakResult" nillable="true" type="q6:ArrayOfstring" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -126,7 +136,8 @@
   <xs:element name="GetLanguagesForTranslateResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q7="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetLanguagesForTranslateResult" nillable="true" type="q7:ArrayOfstring" />
+        <xs:element xmlns:q7="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0"
+                    name="GetLanguagesForTranslateResult" nillable="true" type="q7:ArrayOfstring" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -138,14 +149,16 @@
         <xs:element minOccurs="0" name="from" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="to" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="maxTranslations" type="xs:int" />
-        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2" minOccurs="0" name="options" nillable="true" type="q8:TranslateOptions" />
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2" minOccurs="0"
+                    name="options" nillable="true" type="q8:TranslateOptions" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GetTranslationsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2" minOccurs="0" name="GetTranslationsResult" nillable="true" type="q9:GetTranslationsResponse" />
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2" minOccurs="0"
+                    name="GetTranslationsResult" nillable="true" type="q9:GetTranslationsResponse" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -172,10 +185,12 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="appId" nillable="true" type="xs:string" />
-        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2" minOccurs="0" name="translations" nillable="true" type="q10:ArrayOfTranslation" />
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2" minOccurs="0"
+                    name="translations" nillable="true" type="q10:ArrayOfTranslation" />
         <xs:element minOccurs="0" name="from" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="to" nillable="true" type="xs:string" />
-        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2" minOccurs="0" name="options" nillable="true" type="q11:TranslateOptions" />
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2" minOccurs="0"
+                    name="options" nillable="true" type="q11:TranslateOptions" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -188,18 +203,21 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="appId" nillable="true" type="xs:string" />
-        <xs:element xmlns:q12="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="texts" nillable="true" type="q12:ArrayOfstring" />
+        <xs:element xmlns:q12="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="texts"
+                    nillable="true" type="q12:ArrayOfstring" />
         <xs:element minOccurs="0" name="from" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="to" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="maxTranslations" type="xs:int" />
-        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2" minOccurs="0" name="options" nillable="true" type="q13:TranslateOptions" />
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2" minOccurs="0"
+                    name="options" nillable="true" type="q13:TranslateOptions" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GetTranslationsArrayResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2" minOccurs="0" name="GetTranslationsArrayResult" nillable="true" type="q14:ArrayOfGetTranslationsResponse" />
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2" minOccurs="0"
+                    name="GetTranslationsArrayResult" nillable="true" type="q14:ArrayOfGetTranslationsResponse" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -224,17 +242,20 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="appId" nillable="true" type="xs:string" />
-        <xs:element xmlns:q15="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="texts" nillable="true" type="q15:ArrayOfstring" />
+        <xs:element xmlns:q15="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="texts"
+                    nillable="true" type="q15:ArrayOfstring" />
         <xs:element minOccurs="0" name="from" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="to" nillable="true" type="xs:string" />
-        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2" minOccurs="0" name="options" nillable="true" type="q16:TranslateOptions" />
+        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2" minOccurs="0"
+                    name="options" nillable="true" type="q16:TranslateOptions" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="TranslateArrayResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2" minOccurs="0" name="TranslateArrayResult" nillable="true" type="q17:ArrayOfTranslateArrayResponse" />
+        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2" minOccurs="0"
+                    name="TranslateArrayResult" nillable="true" type="q17:ArrayOfTranslateArrayResponse" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

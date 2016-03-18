@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using ResxTranslator.Properties;
-using ResxTranslator.TranslatorSvc;
-
 
 namespace ResxTranslator
 {
@@ -14,7 +8,7 @@ namespace ResxTranslator
     {
         public static string GetDefaultValue(string key)
         {
-            return String.Format(
+            return string.Format(
                 Settings.Default.NonTranslatedString,
                 key, key.ToUpper(), key.ToLower());
         }

@@ -7,43 +7,38 @@ namespace ResxTranslator
     {
         public FindDialog()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
-        private MainForm MyForm
-        {
-            get { return ((MainForm)this.Owner); }
-        }
-
-
+        private MainForm MyForm => (MainForm) Owner;
+        
         private void buttonFind_Click(object sender, EventArgs e)
         {
             var sp = new SearchParams(
-                this.textBoxSearch.Text
-                , this.checkBoxLang.Checked
-                , this.checkBoxKey.Checked
-                , this.checkBoxText.Checked
-                , this.checkBoxFile.Checked
-                , this.radioButtonRegexp.Checked
-                , this.checkBoxCS.Checked
-                , this.checkBoxWord.Checked);
+                textBoxSearch.Text
+                , checkBoxLang.Checked
+                , checkBoxKey.Checked
+                , checkBoxText.Checked
+                , checkBoxFile.Checked
+                , radioButtonRegexp.Checked
+                , checkBoxCS.Checked
+                , checkBoxWord.Checked);
             sp.Save();
-            this.MyForm.CurrentSearch = sp;
-            this.Close();
+            MyForm.CurrentSearch = sp;
+            Close();
         }
 
         private void FindDialog_Load(object sender, EventArgs e)
         {
-            SearchParams sp = new SearchParams();
-            this.textBoxSearch.Text = sp.Text;
-            this.checkBoxLang.Checked = sp.SearchLanguage;
-            this.checkBoxKey.Checked = sp.SearchKeys;
-            this.checkBoxText.Checked = sp.SearchText;
-            this.checkBoxFile.Checked = sp.SearchFileName;
-            this.radioButtonRegexp.Checked = sp.UseRegex;
-            this.checkBoxCS.Checked = sp.OptCase;
-            this.checkBoxWord.Checked = sp.OptWord;
-
+            var sp = new SearchParams();
+            textBoxSearch.Text = sp.Text;
+            checkBoxLang.Checked = sp.SearchLanguage;
+            checkBoxKey.Checked = sp.SearchKeys;
+            checkBoxText.Checked = sp.SearchText;
+            checkBoxFile.Checked = sp.SearchFileName;
+            radioButtonRegexp.Checked = sp.UseRegex;
+            checkBoxCS.Checked = sp.OptCase;
+            checkBoxWord.Checked = sp.OptWord;
         }
     }
 }

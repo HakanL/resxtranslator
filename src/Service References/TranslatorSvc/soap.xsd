@@ -1,6 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://api.microsofttranslator.com/V2/soap.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2"
+           elementFormDefault="qualified"
+           targetNamespace="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://api.microsofttranslator.com/V2/soap.svc?xsd=xsd2"
+             namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
   <xs:complexType name="TranslateOptions">
     <xs:sequence>
       <xs:element minOccurs="0" name="Category" nillable="true" type="xs:string">
@@ -76,7 +81,8 @@
   <xs:element name="GetTranslationsResponse" nillable="true" type="tns:GetTranslationsResponse" />
   <xs:complexType name="ArrayOfTranslationMatch">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="TranslationMatch" nillable="true" type="tns:TranslationMatch" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="TranslationMatch" nillable="true"
+                  type="tns:TranslationMatch" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ArrayOfTranslationMatch" nillable="true" type="tns:ArrayOfTranslationMatch" />
@@ -132,13 +138,15 @@
   <xs:element name="Translation" nillable="true" type="tns:Translation" />
   <xs:complexType name="ArrayOfGetTranslationsResponse">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="GetTranslationsResponse" nillable="true" type="tns:GetTranslationsResponse" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="GetTranslationsResponse" nillable="true"
+                  type="tns:GetTranslationsResponse" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ArrayOfGetTranslationsResponse" nillable="true" type="tns:ArrayOfGetTranslationsResponse" />
   <xs:complexType name="ArrayOfTranslateArrayResponse">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="TranslateArrayResponse" nillable="true" type="tns:TranslateArrayResponse" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="TranslateArrayResponse" nillable="true"
+                  type="tns:TranslateArrayResponse" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ArrayOfTranslateArrayResponse" nillable="true" type="tns:ArrayOfTranslateArrayResponse" />
@@ -158,7 +166,8 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
-      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="OriginalTextSentenceLengths" nillable="true" type="q1:ArrayOfint">
+      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0"
+                  name="OriginalTextSentenceLengths" nillable="true" type="q1:ArrayOfint">
         <xs:annotation>
           <xs:appinfo>
             <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
@@ -179,7 +188,8 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
-      <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="TranslatedTextSentenceLengths" nillable="true" type="q2:ArrayOfint">
+      <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0"
+                  name="TranslatedTextSentenceLengths" nillable="true" type="q2:ArrayOfint">
         <xs:annotation>
           <xs:appinfo>
             <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />

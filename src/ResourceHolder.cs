@@ -14,43 +14,44 @@ namespace ResxTranslator
     public class ResourceHolder
     {
         private readonly object _lockObject = new object();
+        private Dictionary<string, bool> _deletedKeys;
+        private bool _dirty;
+        private string _noLanguageLanguage = "";
+        private DataTable _stringsTable;
         public EventHandler DirtyChanged;
         public EventHandler LanguageChange;
-        private Dictionary<string, bool> _deletedKeys = new Dictionary<string, bool>();
-        private string _noLanguageLanguage = "";
-        private bool _dirty;
-        private DataTable _stringsTable;
 
         public ResourceHolder()
         {
-            this.Languages = new SortedDictionary<string, LanguageHolder>();
-            this.Dirty = false;
-            this._deletedKeys = new Dictionary<string, bool>();
+            Languages = new SortedDictionary<string, LanguageHolder>();
+            _deletedKeys = new Dictionary<string, bool>();
+            Dirty = false;
+            _deletedKeys = new Dictionary<string, bool>();
         }
 
         public string Filename { get; set; }
         public string DisplayFolder { get; set; }
         public string Id { get; set; }
-        public SortedDictionary<string, LanguageHolder> Languages { get; private set; }
+        public SortedDictionary<string, LanguageHolder> Languages { get; }
 
         public DataTable StringsTable
         {
             get
             {
-                lock (this._lockObject)
+                lock (_lockObject)
                 {
-                    if (this._stringsTable == null)
+                    if (_stringsTable == null)
                     {
-                        this.LoadResource();
+                        LoadResource();
                     }
-                    return this._stringsTable;
+                    return _stringsTable;
                 }
             }
             private set
             {
-                lock (this._lockObject)
+                lock (_lockObject)
                 {
-                    this._stringsTable = value;
+                    _stringsTable = value;
                 }
             }
         }
@@ -59,27 +60,24 @@ namespace ResxTranslator
         {
             get
             {
-                if (this._stringsTable == null)
+                if (_stringsTable == null)
                 {
                     return false;
                 }
 
-                return this.Dirty;
+                return Dirty;
             }
         }
 
         public bool Dirty
         {
-            get { return this._dirty; }
+            get { return _dirty; }
             set
             {
-                if (value != this._dirty)
+                if (value != _dirty)
                 {
-                    this._dirty = value;
-                    if (this.DirtyChanged != null)
-                    {
-                        this.DirtyChanged(this, EventArgs.Empty);
-                    }
+                    _dirty = value;
+                    DirtyChanged?.Invoke(this, EventArgs.Empty);
                 }
             }
         }
@@ -91,18 +89,18 @@ namespace ResxTranslator
         {
             get
             {
-                if (string.IsNullOrEmpty(this._noLanguageLanguage))
+                if (string.IsNullOrEmpty(_noLanguageLanguage))
                 {
-                    this.NoLanguageLanguage = this.FindDefaultLanguage();
+                    NoLanguageLanguage = FindDefaultLanguage();
                 }
-                return this._noLanguageLanguage;
+                return _noLanguageLanguage;
             }
             set
             {
-                if (value != this._noLanguageLanguage)
+                if (value != _noLanguageLanguage)
                 {
-                    this._noLanguageLanguage = value;
-                    this.OnLanguageChange();
+                    _noLanguageLanguage = value;
+                    OnLanguageChange();
                 }
             }
         }
@@ -114,12 +112,12 @@ namespace ResxTranslator
         {
             get
             {
-                string languages = this.Languages.Keys.Aggregate(
+                var languages = Languages.Keys.Aggregate(
                     ""
                     , (agg, curr) => agg + "," + curr
-                    , agg => (agg.Length > 2 ? agg.Substring(1) : ""));
+                    , agg => agg.Length > 2 ? agg.Substring(1) : "");
 
-                return string.Format("{0} [{1}] ({2})", this.Id, this._noLanguageLanguage, languages);
+                return $"{Id} [{_noLanguageLanguage}] ({languages})";
             }
         }
 
@@ -128,10 +126,7 @@ namespace ResxTranslator
         /// </summary>
         private void OnLanguageChange()
         {
-            if (this.LanguageChange != null)
-            {
-                this.LanguageChange(this, EventArgs.Empty);
-            }
+            LanguageChange?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -139,14 +134,14 @@ namespace ResxTranslator
         /// </summary>
         private string FindDefaultLanguage()
         {
-            if (this.StringsTable == null)
+            if (StringsTable == null)
             {
                 return "";
             }
             var sb = new StringBuilder();
 
             //collect a few entries to decide language of default version
-            foreach (DataRow row in this.StringsTable.Rows)
+            foreach (DataRow row in StringsTable.Rows)
             {
                 //Ignore too short entries
                 if (row["NoLanguageValue"].ToString().Trim().Length > 5)
@@ -157,7 +152,7 @@ namespace ResxTranslator
             }
 
             //first try the internal dictionary.
-            string lang = InprojectTranslator.Instance.CheckLanguage(sb.ToString());
+            var lang = InprojectTranslator.Instance.CheckLanguage(sb.ToString());
 
             // if nothing found, use Bing
             return lang == "" ? BingTranslator.GetDefaultLanguage(this) : lang;
@@ -172,15 +167,15 @@ namespace ResxTranslator
             var xmlDoc = new XmlDocument();
             xmlDoc.Load(filename);
 
-            XmlNode rootNode = xmlDoc.SelectSingleNode("/root");
+            var rootNode = xmlDoc.SelectSingleNode("/root");
 
             // first delete all nodes that have been deleted
             // if they since have been added the new ones will be saved later on
 
             foreach (XmlNode dataNode in xmlDoc.SelectNodes("/root/data"))
             {
-                string key = dataNode.Attributes["name"].Value;
-                if (this._deletedKeys.ContainsKey(key))
+                var key = dataNode.Attributes["name"].Value;
+                if (_deletedKeys.ContainsKey(key))
                 {
                     if (dataNode.Attributes["type"] != null)
                     {
@@ -208,12 +203,12 @@ namespace ResxTranslator
                     continue;
                 }
 
-                string key = dataNode.Attributes["name"].Value;
-                DataRow[] rows = this._stringsTable.Select("Key = '" + key + "'");
+                var key = dataNode.Attributes["name"].Value;
+                var rows = _stringsTable.Select("Key = '" + key + "'");
                 if (rows.Length > 0)
                 {
-                    bool anyData = false;
-                    if (rows[0][valueColumn] == DBNull.Value || string.IsNullOrEmpty((string)rows[0][valueColumn]))
+                    var anyData = false;
+                    if (rows[0][valueColumn] == DBNull.Value || string.IsNullOrEmpty((string) rows[0][valueColumn]))
                     {
                         // Delete value
                         foreach (XmlNode childNode in dataNode.ChildNodes)
@@ -229,12 +224,12 @@ namespace ResxTranslator
                     {
                         // Add/update
                         anyData = true;
-                        bool found = false;
+                        var found = false;
                         foreach (XmlNode childNode in dataNode.ChildNodes)
                         {
                             if (childNode.Name == "value")
                             {
-                                childNode.InnerText = (string)rows[0][valueColumn];
+                                childNode.InnerText = (string) rows[0][valueColumn];
                                 found = true;
                                 break;
                             }
@@ -243,13 +238,13 @@ namespace ResxTranslator
                         {
                             // Add
                             XmlNode newNode = xmlDoc.CreateElement("value");
-                            newNode.InnerText = (string)rows[0][valueColumn];
+                            newNode.InnerText = (string) rows[0][valueColumn];
                             dataNode.AppendChild(newNode);
                         }
                     }
 
 
-                    if (rows[0]["Comment"] == DBNull.Value || string.IsNullOrEmpty((string)rows[0]["Comment"]))
+                    if (rows[0]["Comment"] == DBNull.Value || string.IsNullOrEmpty((string) rows[0]["Comment"]))
                     {
                         // Delete comment
                         foreach (XmlNode childNode in dataNode.ChildNodes)
@@ -265,12 +260,12 @@ namespace ResxTranslator
                     {
                         // Add/update
                         anyData = true;
-                        bool found = false;
+                        var found = false;
                         foreach (XmlNode childNode in dataNode.ChildNodes)
                         {
                             if (childNode.Name == "comment")
                             {
-                                childNode.InnerText = (string)rows[0]["Comment"];
+                                childNode.InnerText = (string) rows[0]["Comment"];
                                 found = true;
                                 break;
                             }
@@ -279,7 +274,7 @@ namespace ResxTranslator
                         {
                             // Add
                             XmlNode newNode = xmlDoc.CreateElement("comment");
-                            newNode.InnerText = (string)rows[0]["Comment"];
+                            newNode.InnerText = (string) rows[0]["Comment"];
                             dataNode.AppendChild(newNode);
                         }
                     }
@@ -294,19 +289,19 @@ namespace ResxTranslator
                 }
             }
 
-            foreach (XmlNode deleteNode in nodesToBeDeleted)
+            foreach (var deleteNode in nodesToBeDeleted)
             {
                 rootNode.RemoveChild(deleteNode);
             }
 
-            foreach (DataRow row in this._stringsTable.Rows)
+            foreach (DataRow row in _stringsTable.Rows)
             {
-                var key = (string)row["Key"];
+                var key = (string) row["Key"];
                 if (!usedKeys.Contains(key))
                 {
                     // Add
                     XmlNode newNode = xmlDoc.CreateElement("data");
-                    XmlAttribute newAttribute = xmlDoc.CreateAttribute("name");
+                    var newAttribute = xmlDoc.CreateAttribute("name");
                     newAttribute.Value = key;
                     newNode.Attributes.Append(newAttribute);
 
@@ -314,19 +309,19 @@ namespace ResxTranslator
                     newAttribute.Value = "preserve";
                     newNode.Attributes.Append(newAttribute);
 
-                    bool anyData = false;
-                    if (row["Comment"] != DBNull.Value && !string.IsNullOrEmpty((string)row["Comment"]))
+                    var anyData = false;
+                    if (row["Comment"] != DBNull.Value && !string.IsNullOrEmpty((string) row["Comment"]))
                     {
                         XmlNode newComment = xmlDoc.CreateElement("comment");
-                        newComment.InnerText = (string)row["Comment"];
+                        newComment.InnerText = (string) row["Comment"];
                         newNode.AppendChild(newComment);
                         anyData = true;
                     }
 
-                    if (row[valueColumn] != DBNull.Value && !string.IsNullOrEmpty((string)row[valueColumn]))
+                    if (row[valueColumn] != DBNull.Value && !string.IsNullOrEmpty((string) row[valueColumn]))
                     {
                         XmlNode newValue = xmlDoc.CreateElement("value");
-                        newValue.InnerText = (string)row[valueColumn];
+                        newValue.InnerText = (string) row[valueColumn];
                         newNode.AppendChild(newValue);
                         anyData = true;
                     }
@@ -352,20 +347,20 @@ namespace ResxTranslator
         /// </summary>
         public void Save()
         {
-            this.UpdateFile(this.Filename, "NoLanguageValue");
+            UpdateFile(Filename, "NoLanguageValue");
 
-            foreach (LanguageHolder languageHolder in this.Languages.Values)
+            foreach (var languageHolder in Languages.Values)
             {
-                this.UpdateFile(languageHolder.Filename, languageHolder.Id);
+                UpdateFile(languageHolder.Filename, languageHolder.Id);
             }
-            this.Dirty = false;
+            Dirty = false;
         }
 
         /// <summary>
         ///     Read one resource fil
         /// </summary>
         private void ReadResourceFile(string filename, DataTable stringsTable,
-                                       string valueColumn, bool isTranslated)
+            string valueColumn, bool isTranslated)
         {
             // Regex reCleanup = new Regex(@"__designer:mapid="".+?""");
             using (var reader =
@@ -374,10 +369,10 @@ namespace ResxTranslator
                 reader.UseResXDataNodes = true;
                 foreach (DictionaryEntry de in reader)
                 {
-                    var key = (string)de.Key;
+                    var key = (string) de.Key;
                     if (key.StartsWith(">>") || key.StartsWith("$"))
                     {
-                        if(key != "$this.Text")
+                        if (key != "$this.Text")
                             continue;
                     }
 
@@ -391,14 +386,14 @@ namespace ResxTranslator
                         continue;
                     }
 
-                    string valueType = dataNode.GetValueTypeName((ITypeResolutionService)null);
+                    var valueType = dataNode.GetValueTypeName((ITypeResolutionService) null);
                     if (!valueType.StartsWith("System.String, "))
                     {
                         continue;
                     }
 
-                    object valueObject = dataNode.GetValue((ITypeResolutionService)null);
-                    string value = valueObject == null ? "" : "" + valueObject;
+                    var valueObject = dataNode.GetValue((ITypeResolutionService) null);
+                    var value = valueObject == null ? "" : "" + valueObject;
 
                     // Was used to cleanup leftovers from old VS designer
                     //if (reCleanup.IsMatch(value))
@@ -408,10 +403,10 @@ namespace ResxTranslator
                     //}
 
 
-                    DataRow r = FindByKey(key);
-                    if (r==null)
+                    var r = FindByKey(key);
+                    if (r == null)
                     {
-                        DataRow newRow = stringsTable.NewRow();
+                        var newRow = stringsTable.NewRow();
                         newRow["Key"] = key;
 
                         newRow[valueColumn] = value;
@@ -425,7 +420,7 @@ namespace ResxTranslator
                     {
                         r[valueColumn] = value;
 
-                        if (string.IsNullOrEmpty((string)r["Comment"]) &&
+                        if (string.IsNullOrEmpty((string) r["Comment"]) &&
                             !string.IsNullOrEmpty(dataNode.Comment))
                         {
                             r["Comment"] = dataNode.Comment;
@@ -444,14 +439,14 @@ namespace ResxTranslator
         /// </summary>
         public void EvaluateRow(DataRow row)
         {
-            bool foundOne = false;
-            bool oneMissing = false;
-            foreach (LanguageHolder languageHolder in this.Languages.Values)
+            var foundOne = false;
+            var oneMissing = false;
+            foreach (var languageHolder in Languages.Values)
             {
                 string value = null;
                 if (row[languageHolder.Id] != DBNull.Value)
                 {
-                    value = (string)row[languageHolder.Id];
+                    value = (string) row[languageHolder.Id];
                     if (!string.IsNullOrEmpty(value))
                     {
                         foundOne = true;
@@ -471,7 +466,7 @@ namespace ResxTranslator
             }
 
             if (foundOne && (row["NoLanguageValue"] == DBNull.Value ||
-                             string.IsNullOrEmpty((string)row["NoLanguageValue"])))
+                             string.IsNullOrEmpty((string) row["NoLanguageValue"])))
             {
                 row["Error"] = true;
                 return;
@@ -485,46 +480,46 @@ namespace ResxTranslator
         /// </summary>
         public void LoadResource()
         {
-            lock (this._lockObject)
+            lock (_lockObject)
             {
-                this._deletedKeys = new Dictionary<string, bool>();
+                _deletedKeys = new Dictionary<string, bool>();
 
-                this._stringsTable = new DataTable("Strings");
+                _stringsTable = new DataTable("Strings");
 
-                this._stringsTable.Columns.Add("Key");
-                this._stringsTable.PrimaryKey = new[] { this._stringsTable.Columns["Key"] };
-                this._stringsTable.Columns.Add("NoLanguageValue");
-                foreach (LanguageHolder languageHolder in this.Languages.Values)
+                _stringsTable.Columns.Add("Key");
+                _stringsTable.PrimaryKey = new[] {_stringsTable.Columns["Key"]};
+                _stringsTable.Columns.Add("NoLanguageValue");
+                foreach (var languageHolder in Languages.Values)
                 {
-                    this._stringsTable.Columns.Add(languageHolder.Id);
+                    _stringsTable.Columns.Add(languageHolder.Id);
                 }
-                this._stringsTable.Columns.Add("Comment");
-                this._stringsTable.Columns.Add("Translated", typeof(bool));
-                this._stringsTable.Columns.Add("Error", typeof(bool));
+                _stringsTable.Columns.Add("Comment");
+                _stringsTable.Columns.Add("Translated", typeof (bool));
+                _stringsTable.Columns.Add("Error", typeof (bool));
 
-                if (!string.IsNullOrEmpty(this.Filename))
+                if (!string.IsNullOrEmpty(Filename))
                 {
-                    this.ReadResourceFile(this.Filename, this._stringsTable, "NoLanguageValue", false);
+                    ReadResourceFile(Filename, _stringsTable, "NoLanguageValue", false);
                 }
-                foreach (LanguageHolder languageHolder in this.Languages.Values)
+                foreach (var languageHolder in Languages.Values)
                 {
-                    this.ReadResourceFile(languageHolder.Filename, this._stringsTable, languageHolder.Id, true);
+                    ReadResourceFile(languageHolder.Filename, _stringsTable, languageHolder.Id, true);
                 }
 
-                if (this.Languages.Count > 0)
+                if (Languages.Count > 0)
                 {
-                    foreach (DataRow row in this._stringsTable.Rows)
+                    foreach (DataRow row in _stringsTable.Rows)
                     {
-                        this.EvaluateRow(row);
+                        EvaluateRow(row);
                     }
                 }
 
-                this._stringsTable.ColumnChanging += this.stringsTable_ColumnChanging;
-                this._stringsTable.ColumnChanged += this.stringsTable_ColumnChanged;
-                this._stringsTable.RowDeleting += this.stringsTable_RowDeleting;
-                this._stringsTable.TableNewRow += this.stringsTable_RowInserted;
+                _stringsTable.ColumnChanging += stringsTable_ColumnChanging;
+                _stringsTable.ColumnChanged += stringsTable_ColumnChanged;
+                _stringsTable.RowDeleting += stringsTable_RowDeleting;
+                _stringsTable.TableNewRow += stringsTable_RowInserted;
             }
-            this.OnLanguageChange();
+            OnLanguageChange();
         }
 
         /// <summary>
@@ -532,8 +527,8 @@ namespace ResxTranslator
         /// </summary>
         private void stringsTable_RowDeleting(object sender, DataRowChangeEventArgs e)
         {
-            this._deletedKeys[e.Row["Key"].ToString()] = true;
-            this.Dirty = true;
+            _deletedKeys[e.Row["Key"].ToString()] = true;
+            Dirty = true;
         }
 
         /// <summary>
@@ -541,7 +536,7 @@ namespace ResxTranslator
         /// </summary>
         private void stringsTable_RowInserted(object sender, DataTableNewRowEventArgs e)
         {
-            this.Dirty = true;
+            Dirty = true;
         }
 
         /// <summary>
@@ -551,8 +546,8 @@ namespace ResxTranslator
         {
             if (e.Column != e.Column.Table.Columns["Error"])
             {
-                this.Dirty = true;
-                this.EvaluateRow(e.Row);
+                Dirty = true;
+                EvaluateRow(e.Row);
             }
         }
 
@@ -563,14 +558,14 @@ namespace ResxTranslator
         {
             if (e.Column == e.Column.Table.Columns["Key"])
             {
-                DataRow[] foundRows = e.Column.Table.Select("Key='" + e.ProposedValue + "'");
-                if (foundRows.Count() > 1
-                    || (foundRows.Count() == 1 && foundRows[0] != e.Row))
+                var foundRows = e.Column.Table.Select("Key='" + e.ProposedValue + "'");
+                if (foundRows.Length > 1
+                    || (foundRows.Length == 1 && foundRows[0] != e.Row))
                 {
                     e.Row["Error"] = true;
                     throw new DuplicateNameException(e.Row["Key"].ToString());
                 }
-                this.Dirty = true;
+                Dirty = true;
             }
         }
 
@@ -579,20 +574,20 @@ namespace ResxTranslator
         /// </summary>
         public void AddString(string key, string noXlateValue, string defaultValue)
         {
-            if (this.FindByKey(key) != null)
+            if (FindByKey(key) != null)
             {
                 throw new DuplicateNameException(key);
             }
 
-            DataRow row = this._stringsTable.NewRow();
+            var row = _stringsTable.NewRow();
             row["Key"] = key;
             row["NoLanguageValue"] = noXlateValue;
-            foreach (LanguageHolder languageHolder in this.Languages.Values)
+            foreach (var languageHolder in Languages.Values)
             {
                 row[languageHolder.Id] = defaultValue;
             }
             row["Comment"] = "";
-            this._stringsTable.Rows.Add(row);
+            _stringsTable.Rows.Add(row);
         }
 
         /// <summary>
@@ -600,7 +595,7 @@ namespace ResxTranslator
         /// </summary>
         public DataRow FindByKey(string key)
         {
-            return this._stringsTable.Rows.Find(key);
+            return _stringsTable.Rows.Find(key);
         }
 
         /// <summary>
@@ -608,30 +603,31 @@ namespace ResxTranslator
         /// </summary>
         public void AddLanguage(string languageCode)
         {
-            if (!this.Languages.ContainsKey(languageCode.ToLower()))
+            if (!Languages.ContainsKey(languageCode.ToLower()))
             {
-                this.Dirty = true;
-                var mainfile = new FileInfo(this.Filename);
-                string newFile = mainfile.Name.Substring(0, mainfile.Name.Length - mainfile.Extension.Length) + "." + languageCode + mainfile.Extension;
+                Dirty = true;
+                var mainfile = new FileInfo(Filename);
+                var newFile = mainfile.Name.Substring(0, mainfile.Name.Length - mainfile.Extension.Length) + "." +
+                              languageCode + mainfile.Extension;
                 newFile = mainfile.Directory.FullName + "\\" + newFile;
                 mainfile.CopyTo(newFile);
                 var languageHolder = new LanguageHolder();
                 languageHolder.Filename = newFile;
                 languageHolder.Id = languageCode;
-                this.Languages.Add(languageCode.ToLower(), languageHolder);
+                Languages.Add(languageCode.ToLower(), languageHolder);
 
-                this._stringsTable.Columns.Add(languageCode.ToLower());
+                _stringsTable.Columns.Add(languageCode.ToLower());
 
-                this.ReadResourceFile(languageHolder.Filename, this._stringsTable, languageHolder.Id, true);
+                ReadResourceFile(languageHolder.Filename, _stringsTable, languageHolder.Id, true);
 
-                if (this.Languages.Count > 0)
+                if (Languages.Count > 0)
                 {
-                    foreach (DataRow row in this._stringsTable.Rows)
+                    foreach (DataRow row in _stringsTable.Rows)
                     {
-                        this.EvaluateRow(row);
+                        EvaluateRow(row);
                     }
                 }
-                this.OnLanguageChange();
+                OnLanguageChange();
             }
         }
 
@@ -640,7 +636,7 @@ namespace ResxTranslator
         /// </summary>
         public void AutoTranslate()
         {
-            foreach (LanguageHolder languageHolder in this.Languages.Values)
+            foreach (var languageHolder in Languages.Values)
             {
                 BingTranslator.AutoTranslate(this, languageHolder.Id);
             }
@@ -651,16 +647,17 @@ namespace ResxTranslator
         /// </summary>
         public void DeleteLanguage(string languageCode)
         {
-            if (this.Languages.ContainsKey(languageCode.ToLower()))
+            if (Languages.ContainsKey(languageCode.ToLower()))
             {
-                var mainfile = new FileInfo(this.Filename);
-                string newFile = mainfile.Name.Substring(0, mainfile.Name.Length - mainfile.Extension.Length) + "." + languageCode + mainfile.Extension;
+                var mainfile = new FileInfo(Filename);
+                var newFile = mainfile.Name.Substring(0, mainfile.Name.Length - mainfile.Extension.Length) + "." +
+                              languageCode + mainfile.Extension;
                 newFile = mainfile.Directory.FullName + "\\" + newFile;
-                (new FileInfo(newFile)).Delete();
-                this.Languages.Remove(languageCode.ToLower());
-                this._stringsTable.Columns.RemoveAt(this._stringsTable.Columns[languageCode].Ordinal);
+                new FileInfo(newFile).Delete();
+                Languages.Remove(languageCode.ToLower());
+                _stringsTable.Columns.RemoveAt(_stringsTable.Columns[languageCode].Ordinal);
 
-                this.OnLanguageChange();
+                OnLanguageChange();
             }
         }
 
@@ -669,12 +666,12 @@ namespace ResxTranslator
         /// </summary>
         public void Revert()
         {
-            this.StringsTable = null;
-            this.LoadResource();
-            this.Dirty = false;
-            this._deletedKeys = new Dictionary<string, bool>();
+            StringsTable = null;
+            LoadResource();
+            Dirty = false;
+            _deletedKeys = new Dictionary<string, bool>();
 
-            this.OnLanguageChange();
+            OnLanguageChange();
         }
     }
 }

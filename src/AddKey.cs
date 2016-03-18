@@ -1,60 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace ResxTranslator
 {
     public partial class AddKey : Form
     {
-        private ResourceHolder resourceHolder;
+        private readonly ResourceHolder _resourceHolder;
 
 
         public AddKey(ResourceHolder resourceHolder)
         {
             InitializeComponent();
 
-            this.resourceHolder = resourceHolder;
+            _resourceHolder = resourceHolder;
         }
-
-
-        public string Key
-        {
-            get
-            {
-                return txtKey.Text;
-            }
-        }
-
-
-        public string NoXlateValue
-        {
-            get
-            {
-                return txtNoXlateValue.Text;
-            }
-        }
-
         
-        public string DefaultValue
-        {
-            get
-            {
-                return txtDefaultValue.Text;
-            }
-        }
+        public string Key => txtKey.Text;
+        
+        public string NoXlateValue => txtNoXlateValue.Text;
+        
+        public string DefaultValue => txtDefaultValue.Text;
 
         private void txtKey_TextChanged(object sender, EventArgs e)
         {
             txtDefaultValue.Text =
-            txtNoXlateValue.Text = Common.GetDefaultValue(txtKey.Text);
+                txtNoXlateValue.Text = Common.GetDefaultValue(txtKey.Text);
 
             string error = null;
-            if (resourceHolder.FindByKey(txtKey.Text)!=null)
+            if (_resourceHolder.FindByKey(txtKey.Text) != null)
                 error = "Key exists";
 
             errorProvider.SetError(txtKey, error);
@@ -62,6 +35,4 @@ namespace ResxTranslator
             btnAdd.Enabled = string.IsNullOrEmpty(error);
         }
     }
-
-
 }

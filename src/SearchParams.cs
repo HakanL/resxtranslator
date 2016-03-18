@@ -1,5 +1,4 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Text.RegularExpressions;
 
 namespace ResxTranslator
@@ -8,7 +7,6 @@ namespace ResxTranslator
     [SettingsGroupName("FindParameters")]
     public class SearchParams : ApplicationSettingsBase
     {
-        #region TargetType enum
         public enum TargetType
         {
             Lang,
@@ -16,7 +14,6 @@ namespace ResxTranslator
             Text,
             File
         }
-        #endregion
 
         private Regex _re;
 
@@ -33,44 +30,22 @@ namespace ResxTranslator
             , bool optCase
             , bool optWord)
         {
-            this.Text = text;
+            Text = text;
 
-            this.SearchLanguage = searchLanguage;
-            this.SearchKeys = searchKeys;
-            this.SearchText = searchText;
-            this.SearchFileName = searchFileName;
-            this.UseRegex = useRegex;
-            this.OptCase = optCase;
-            this.OptWord = optWord;
-        }
-
-        private void Initialize()
-        {
-            if (this.UseRegex  )
-            {
-                string pattern = this.Text;
-                if (this.OptWord)
-                {
-                    pattern = "\\W" + pattern + "\\W";
-                }
-                this._re = new Regex(pattern, RegexOptions.Compiled | (this.OptCase ? RegexOptions.None : RegexOptions.IgnoreCase));
-            }
-            else
-            {
-                string pattern = Regex.Escape(this.Text);
-                if (this.OptWord)
-                {
-                    pattern = "\\W" + pattern + "\\W";
-                }
-                this._re = new Regex(pattern, RegexOptions.Compiled | (this.OptCase ? RegexOptions.None : RegexOptions.IgnoreCase));
-            }
+            SearchLanguage = searchLanguage;
+            SearchKeys = searchKeys;
+            SearchText = searchText;
+            SearchFileName = searchFileName;
+            UseRegex = useRegex;
+            OptCase = optCase;
+            OptWord = optWord;
         }
 
         [UserScopedSetting]
         [DefaultSettingValue("false")]
         public bool OptCase
         {
-            get { return (bool)this["optCase"]; }
+            get { return (bool) this["optCase"]; }
             set { this["optCase"] = value; }
         }
 
@@ -110,7 +85,7 @@ namespace ResxTranslator
         [DefaultSettingValue("false")]
         public bool SearchFileName
         {
-            get { return (bool)this["searchFileName"]; }
+            get { return (bool) this["searchFileName"]; }
             set { this["searchFileName"] = value; }
         }
 
@@ -130,24 +105,46 @@ namespace ResxTranslator
             set { this["useRegex"] = value; }
         }
 
+        private void Initialize()
+        {
+            if (UseRegex)
+            {
+                var pattern = Text;
+                if (OptWord)
+                {
+                    pattern = "\\W" + pattern + "\\W";
+                }
+                _re = new Regex(pattern, RegexOptions.Compiled | (OptCase ? RegexOptions.None : RegexOptions.IgnoreCase));
+            }
+            else
+            {
+                var pattern = Regex.Escape(Text);
+                if (OptWord)
+                {
+                    pattern = "\\W" + pattern + "\\W";
+                }
+                _re = new Regex(pattern, RegexOptions.Compiled | (OptCase ? RegexOptions.None : RegexOptions.IgnoreCase));
+            }
+        }
+
         public bool Match(TargetType targType, string matchText)
         {
             if (_re == null)
-                this.Initialize();
+                Initialize();
 
-            if (targType == TargetType.Key && this.SearchKeys && this._re.IsMatch(matchText))
+            if (targType == TargetType.Key && SearchKeys && _re.IsMatch(matchText))
             {
                 return true;
             }
-            if (targType == TargetType.Lang && this.SearchLanguage && this._re.IsMatch(matchText))
+            if (targType == TargetType.Lang && SearchLanguage && _re.IsMatch(matchText))
             {
                 return true;
             }
-            if (targType == TargetType.Text && this.SearchText && this._re.IsMatch(matchText))
+            if (targType == TargetType.Text && SearchText && _re.IsMatch(matchText))
             {
                 return true;
             }
-            if (targType == TargetType.File && this.SearchFileName && this._re.IsMatch(matchText))
+            if (targType == TargetType.File && SearchFileName && _re.IsMatch(matchText))
             {
                 return true;
             }

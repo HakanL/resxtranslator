@@ -14,12 +14,15 @@ namespace ResxTranslator
 
         // keep track of in wich languages words are used
         private readonly Dictionary<string, Dictionary<string, int>> _languageChecker
-                   = new Dictionary<string, Dictionary<string, int>>();
+            = new Dictionary<string, Dictionary<string, int>>();
+
         private readonly object _lockObject = new object();
 
         // keep track of all translations
-        private readonly Dictionary<string, Dictionary<string, Dictionary<string, Dictionary<string, bool>>>> _lookuptables
-                   = new Dictionary<string, Dictionary<string, Dictionary<string, Dictionary<string, bool>>>>();
+        private readonly Dictionary<string, Dictionary<string, Dictionary<string, Dictionary<string, bool>>>>
+            _lookuptables
+                = new Dictionary<string, Dictionary<string, Dictionary<string, Dictionary<string, bool>>>>();
+
         // i.e. -> Dictionary<FromLanguage, Dictionary<FromText, Dictionary<ToLanguage, Dictonary<TranslatedText,dummy>>>> 
 
         // To be able to remove all non-characters
@@ -30,14 +33,11 @@ namespace ResxTranslator
         {
         }
 
-        public static InprojectTranslator Instance
-        {
-            get { return _instance ?? (_instance = new InprojectTranslator()); }
-        }
+        public static InprojectTranslator Instance => _instance ?? (_instance = new InprojectTranslator());
 
         // add a translation
         /// <summary>
-        /// Add a translation to the dictionary
+        ///     Add a translation to the dictionary
         /// </summary>
         public void AddTranslation(string from, string fromWord, string to, string toWord)
         {
@@ -45,9 +45,9 @@ namespace ResxTranslator
             {
                 return;
             }
-            lock (this._lockObject)
+            lock (_lockObject)
             {
-                Dictionary<string, bool> tWord = GetTranslatorItem(fromWord, "", to);
+                var tWord = GetTranslatorItem(fromWord, "", to);
 
                 // add translation if new
                 if (!tWord.ContainsKey(toWord))
@@ -57,77 +57,78 @@ namespace ResxTranslator
             }
         }
 
-        private Dictionary<string, bool> GetTranslatorItem (string fromWord, string from, string to)
+        private Dictionary<string, bool> GetTranslatorItem(string fromWord, string from, string to)
         {
+            //BUG weird unused duplicated code
             from = (from.Length > 2 ? from.Substring(0, 2) : from).Trim().ToLower();
             to = (to.Length > 2 ? to.Substring(0, 2) : to).Trim().ToLower();
             from = "";
 
-            var language = this._lookuptables.ContainsKey(from)
-                               ? this._lookuptables[from]
-                               : this._lookuptables[from] = new Dictionary<string, Dictionary<string, Dictionary<string, bool>>>();
+            var language = _lookuptables.ContainsKey(from)
+                ? _lookuptables[from]
+                : _lookuptables[from] = new Dictionary<string, Dictionary<string, Dictionary<string, bool>>>();
             var fWord = language.ContainsKey(fromWord)
-                            ? language[fromWord]
-                            : language[fromWord] = new Dictionary<string, Dictionary<string, bool>>();
+                ? language[fromWord]
+                : language[fromWord] = new Dictionary<string, Dictionary<string, bool>>();
             return fWord.ContainsKey(to)
-                       ? fWord[to]
-                       : fWord[to] = new Dictionary<string, bool>();
+                ? fWord[to]
+                : fWord[to] = new Dictionary<string, bool>();
         }
 
         /// <summary>
-        /// Add a string of words to the language checker
+        ///     Add a string of words to the language checker
         /// </summary>
         public void AddWordsToLanguageChecker(string from, string fromWord)
         {
-            string[] words = this.MakeCleanWordArray(ref fromWord);
+            var words = MakeCleanWordArray(ref fromWord);
             from = (from.Length > 2 ? from.Substring(0, 2) : from).Trim().ToLower();
 
-            foreach (string word in words)
+            foreach (var word in words)
             {
-                this.AddToLanguageChecker(from, word);
+                AddToLanguageChecker(from, word);
             }
         }
 
         /// <summary>
-        /// Add a string of words to the language checker
+        ///     Add a string of words to the language checker
         /// </summary>
         public void AddWordsToLanguageChecker(string from, string[] words)
         {
             from = (from.Length > 2 ? from.Substring(0, 2) : from).Trim().ToLower();
 
-            foreach (string word in words)
+            foreach (var word in words)
             {
-                this.AddToLanguageChecker(from, word);
+                AddToLanguageChecker(from, word);
             }
         }
 
         /// <summary>
-        /// Return an array of words with all non-word characters removed
+        ///     Return an array of words with all non-word characters removed
         /// </summary>
         private string[] MakeCleanWordArray(ref string fromWord)
         {
-            fromWord = this._reCleanWord.Replace(fromWord, " ").ToLower();
-            return fromWord.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            fromWord = _reCleanWord.Replace(fromWord, " ").ToLower();
+            return fromWord.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
         }
 
         /// <summary>
-        /// Add a single word to the language checker
+        ///     Add a single word to the language checker
         /// </summary>
         private void AddToLanguageChecker(string lang, string word)
         {
-            lock (this._lockObject)
+            lock (_lockObject)
             {
                 // remove all non-characters
-                word = this._reCleanWord.Replace(word, "");
+                word = _reCleanWord.Replace(word, "");
 
                 if (word == "")
                 {
                     return;
                 }
 
-                Dictionary<string, int> wordDict = this._languageChecker.ContainsKey(word)
-                                                       ? this._languageChecker[word]
-                                                       : this._languageChecker[word] = new Dictionary<string, int>();
+                var wordDict = _languageChecker.ContainsKey(word)
+                    ? _languageChecker[word]
+                    : _languageChecker[word] = new Dictionary<string, int>();
                 lang = lang.ToLower();
                 if (!wordDict.ContainsKey(lang))
                 {
@@ -138,37 +139,37 @@ namespace ResxTranslator
         }
 
         /// <summary>
-        /// Evaluate a number of words, try to guess what language it is
+        ///     Evaluate a number of words, try to guess what language it is
         /// </summary>
         public string CheckLanguage(string sentence)
         {
-            lock (this._lockObject)
+            lock (_lockObject)
             {
-                string[] words = this.MakeCleanWordArray(ref sentence);
+                var words = MakeCleanWordArray(ref sentence);
 
                 // try to check language of each word, count number of words of each language
                 // giving a list of languages and counts ordered by most frequent first
 
                 var result = words
-                    .Select(w => new { Language = this.CheckLanguageOfWord(w) })
+                    .Select(w => new {Language = CheckLanguageOfWord(w)})
                     .Where(x => x.Language.Key != "")
                     .OrderByDescending(x => x.Language.Value)
                     .GroupBy(y => y.Language.Value)
                     .Select(x =>
-                            new
-                                {
-                                    LangCnt = x.Key
-                                    ,
-                                    Languages = x.GroupBy(y => new
-                                                                   {
-                                                                       y.Language.Key,
-                                                                       y.Language.Value
-                                                                   }).OrderByDescending(z => z.Count()).ToList()
-                                })
+                        new
+                        {
+                            LangCnt = x.Key
+                            ,
+                            Languages = x.GroupBy(y => new
+                            {
+                                y.Language.Key,
+                                y.Language.Value
+                            }).OrderByDescending(z => z.Count()).ToList()
+                        })
                     .OrderBy(x => x.LangCnt)
                     .ToList();
 
-                if (result.Count() == 0)
+                if (result.Count == 0)
                 {
                     return ""; // no, didn't find any
                 }
@@ -184,37 +185,37 @@ namespace ResxTranslator
 
 
         /// <summary>
-        /// Evaluate language of a single word
+        ///     Evaluate language of a single word
         /// </summary>
         private KeyValuePair<string, int> CheckLanguageOfWord(string word)
         {
-            lock (this._lockObject)
+            lock (_lockObject)
             {
                 // remove all non-characters
-                word = this._reCleanWord.Replace(word, " ");
+                word = _reCleanWord.Replace(word, " ");
                 if (word == "")
                 {
                     // nothing left -> no language
                     return new KeyValuePair<string, int>("", 0);
                 }
 
-                if (!this._languageChecker.ContainsKey(word))
+                if (!_languageChecker.ContainsKey(word))
                 {
                     // never seen this word -> no language
                     return new KeyValuePair<string, int>("", 0);
                 }
 
                 // assume it is the language where it is most frequently used
-                var list = this._languageChecker[word];
-                if (list.Count==0)
+                var list = _languageChecker[word];
+                if (list.Count == 0)
                 {
                     return new KeyValuePair<string, int>("", 0);
                 }
 
-                KeyValuePair<string, int> ret=new KeyValuePair<string, int>("", 0);
-                foreach(var x in list)
+                var ret = new KeyValuePair<string, int>("", 0);
+                foreach (var x in list)
                 {
-                    if (ret.Value < x.Value )
+                    if (ret.Value < x.Value)
                         ret = x;
                 }
 
@@ -227,47 +228,48 @@ namespace ResxTranslator
 
         // Get a list of previous translations
         /// <summary>
-        /// Get previous translations of a text
+        ///     Get previous translations of a text
         /// </summary>
         public List<string> GetTranslations(string from, string fromSentence, string to)
         {
-            lock (this._lockObject)
+            lock (_lockObject)
             {
+                //BUG weird unused duplicated code
                 from = (from.Length > 2 ? from.Substring(0, 2) : from).Trim().ToLower();
                 to = (to.Length > 2 ? to.Substring(0, 2) : to).Trim().ToLower();
                 from = "";
 
-                var language = this._lookuptables.ContainsKey(from)
-                                ? this._lookuptables[from]
-                                : this._lookuptables[from] = new Dictionary<string, Dictionary<string, Dictionary<string, bool>>>();
-                
-                var fWord = language.ContainsKey(fromSentence)
-                                ? language[fromSentence]
-                                : language[fromSentence] = new Dictionary<string, Dictionary<string, bool>>();
+                var language = _lookuptables.ContainsKey(from)
+                    ? _lookuptables[from]
+                    : _lookuptables[from] = new Dictionary<string, Dictionary<string, Dictionary<string, bool>>>();
 
-                List<string> toSentence = (fWord.ContainsKey(to)
-                                              ? fWord[to]
-                                              : fWord[to] = new Dictionary<string, bool>()).Keys.ToList();
+                var fWord = language.ContainsKey(fromSentence)
+                    ? language[fromSentence]
+                    : language[fromSentence] = new Dictionary<string, Dictionary<string, bool>>();
+
+                var toSentence = (fWord.ContainsKey(to)
+                    ? fWord[to]
+                    : fWord[to] = new Dictionary<string, bool>()).Keys.ToList();
 
                 return toSentence;
             }
         }
 
         /// <summary>
-        /// remove all words found in the second string from the first
+        ///     remove all words found in the second string from the first
         /// </summary>
         public string[] RemoveWords(string nontranslated, string translated)
         {
-            string[] nonTr = this.MakeCleanWordArray(ref nontranslated);
-            var wordsNonTr = new Dictionary<string,bool>( StringComparer.InvariantCultureIgnoreCase);
+            var nonTr = MakeCleanWordArray(ref nontranslated);
+            var wordsNonTr = new Dictionary<string, bool>(StringComparer.InvariantCultureIgnoreCase);
             foreach (var s in nonTr)
                 wordsNonTr[s] = true;
-            string[] wordsTr = this.MakeCleanWordArray(ref translated);
+            var wordsTr = MakeCleanWordArray(ref translated);
 
-            string[] rest = (from tr in wordsTr
-                             where wordsNonTr.ContainsKey(tr) == false
-                             select tr).ToArray();
-            if (rest.Length * 20 < wordsTr.Length)
+            var rest = (from tr in wordsTr
+                where wordsNonTr.ContainsKey(tr) == false
+                select tr).ToArray();
+            if (rest.Length*20 < wordsTr.Length)
                 return wordsTr;
             return rest;
         }
