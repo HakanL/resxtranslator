@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace ResxTranslator
+namespace ResxTranslator.Windows
 {
     public partial class AddKey : Form
     {

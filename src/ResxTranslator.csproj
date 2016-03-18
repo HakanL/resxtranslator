@@ -75,48 +75,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddKey.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AddKey.Designer.cs">
-      <DependentUpon>AddKey.cs</DependentUpon>
-    </Compile>
-    <Compile Include="BingParams.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BingParams.Designer.cs">
-      <DependentUpon>BingParams.cs</DependentUpon>
-    </Compile>
     <Compile Include="BingTranslator.cs" />
     <Compile Include="Common.cs" />
-    <Compile Include="FindDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FindDialog.Designer.cs">
-      <DependentUpon>FindDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="InprojectTranslator.cs" />
-    <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="AddKey.resx">
+    <EmbeddedResource Include="Windows\AddKey.resx">
       <DependentUpon>AddKey.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="BingParams.resx">
+    <EmbeddedResource Include="Windows\BingParams.resx">
       <DependentUpon>BingParams.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FindDialog.resx">
+    <EmbeddedResource Include="Windows\FindDialog.resx">
       <DependentUpon>FindDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
+    <EmbeddedResource Include="Windows\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ZoomWindow.resx">
+    <EmbeddedResource Include="Windows\ZoomWindow.resx">
       <DependentUpon>ZoomWindow.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
@@ -136,10 +112,34 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="ZoomWindow.cs">
+    <Compile Include="Windows\AddKey.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ZoomWindow.Designer.cs">
+    <Compile Include="Windows\AddKey.Designer.cs">
+      <DependentUpon>AddKey.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\BingParams.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\BingParams.Designer.cs">
+      <DependentUpon>BingParams.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\FindDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\FindDialog.Designer.cs">
+      <DependentUpon>FindDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\ZoomWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\ZoomWindow.Designer.cs">
       <DependentUpon>ZoomWindow.cs</DependentUpon>
     </Compile>
     <None Include="Service References\TranslatorSvc\ResxTranslator.TranslatorSvc.GetTranslationsResponse.datasource">

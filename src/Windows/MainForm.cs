@@ -9,7 +9,7 @@ using System.Threading;
 using System.Windows.Forms;
 using ResxTranslator.Properties;
 
-namespace ResxTranslator
+namespace ResxTranslator.Windows
 {
     public partial class MainForm : Form
     {

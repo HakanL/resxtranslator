@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace ResxTranslator
+namespace ResxTranslator.Windows
 {
     public partial class ZoomWindow : Form
     {

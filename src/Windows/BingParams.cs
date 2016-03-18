@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using ResxTranslator.Properties;
 
-namespace ResxTranslator
+namespace ResxTranslator.Windows
 {
     public partial class BingParams : Form
     {

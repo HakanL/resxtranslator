@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace ResxTranslator
+namespace ResxTranslator.Windows
 {
 	partial class MainForm
 	{

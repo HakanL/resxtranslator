@@ -8,6 +8,7 @@ using System.Linq;
 using System.Resources;
 using System.Text;
 using System.Xml;
+using ResxTranslator.Windows;
 
 namespace ResxTranslator
 {
