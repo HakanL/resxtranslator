@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using ResxTranslator.ResourceOperations;
-using ResxTranslator.Windows;
 
 namespace ResxTranslator.Controls
 {
@@ -147,7 +146,7 @@ namespace ResxTranslator.Controls
                     }
                     foreach (var lng in resource.Languages.Values)
                     {
-                        if (searchParams.Match(SearchParams.TargetType.Lang, lng.Id))
+                        if (searchParams.Match(SearchParams.TargetType.Lang, lng.LanguageId))
                         {
                             treeNode.BackColor = matchColor;
                         }
@@ -164,7 +163,7 @@ namespace ResxTranslator.Controls
                         }
                         foreach (var lng in resource.Languages.Values)
                         {
-                            if (searchParams.Match(SearchParams.TargetType.Text, row[lng.Id].ToString()))
+                            if (searchParams.Match(SearchParams.TargetType.Text, row[lng.LanguageId].ToString()))
                             {
                                 treeNode.BackColor = matchColor;
                             }

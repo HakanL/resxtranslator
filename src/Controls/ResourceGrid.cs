@@ -58,7 +58,7 @@ namespace ResxTranslator.Controls
 
             foreach (var languageHolder in resource.Languages.Values)
             {
-                dataGridView1.Columns[languageHolder.Id].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                dataGridView1.Columns[languageHolder.LanguageId].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             }
 
             dataGridView1.Columns["NoLanguageValue"].DefaultCellStyle.WrapMode = DataGridViewTriState.True;

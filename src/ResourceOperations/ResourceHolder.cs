@@ -352,7 +352,7 @@ namespace ResxTranslator.ResourceOperations
 
             foreach (var languageHolder in Languages.Values)
             {
-                UpdateFile(languageHolder.Filename, languageHolder.Id);
+                UpdateFile(languageHolder.Filename, languageHolder.LanguageId);
             }
             Dirty = false;
         }
@@ -445,9 +445,9 @@ namespace ResxTranslator.ResourceOperations
             foreach (var languageHolder in Languages.Values)
             {
                 string value = null;
-                if (row[languageHolder.Id] != DBNull.Value)
+                if (row[languageHolder.LanguageId] != DBNull.Value)
                 {
-                    value = (string) row[languageHolder.Id];
+                    value = (string) row[languageHolder.LanguageId];
                     if (!string.IsNullOrEmpty(value))
                     {
                         foundOne = true;
@@ -492,7 +492,7 @@ namespace ResxTranslator.ResourceOperations
                 _stringsTable.Columns.Add("NoLanguageValue");
                 foreach (var languageHolder in Languages.Values)
                 {
-                    _stringsTable.Columns.Add(languageHolder.Id);
+                    _stringsTable.Columns.Add(languageHolder.LanguageId);
                 }
                 _stringsTable.Columns.Add("Comment");
                 _stringsTable.Columns.Add("Translated", typeof (bool));
@@ -504,7 +504,7 @@ namespace ResxTranslator.ResourceOperations
                 }
                 foreach (var languageHolder in Languages.Values)
                 {
-                    ReadResourceFile(languageHolder.Filename, _stringsTable, languageHolder.Id, true);
+                    ReadResourceFile(languageHolder.Filename, _stringsTable, languageHolder.LanguageId, true);
                 }
 
                 if (Languages.Count > 0)
@@ -585,7 +585,7 @@ namespace ResxTranslator.ResourceOperations
             row["NoLanguageValue"] = noXlateValue;
             foreach (var languageHolder in Languages.Values)
             {
-                row[languageHolder.Id] = defaultValue;
+                row[languageHolder.LanguageId] = defaultValue;
             }
             row["Comment"] = "";
             _stringsTable.Rows.Add(row);
@@ -612,14 +612,12 @@ namespace ResxTranslator.ResourceOperations
                               languageCode + mainfile.Extension;
                 newFile = mainfile.Directory.FullName + "\\" + newFile;
                 mainfile.CopyTo(newFile);
-                var languageHolder = new LanguageHolder();
-                languageHolder.Filename = newFile;
-                languageHolder.Id = languageCode;
+                var languageHolder = new LanguageHolder(languageCode, newFile);
                 Languages.Add(languageCode.ToLower(), languageHolder);
 
                 _stringsTable.Columns.Add(languageCode.ToLower());
 
-                ReadResourceFile(languageHolder.Filename, _stringsTable, languageHolder.Id, true);
+                ReadResourceFile(languageHolder.Filename, _stringsTable, languageHolder.LanguageId, true);
 
                 if (Languages.Count > 0)
                 {
@@ -639,7 +637,7 @@ namespace ResxTranslator.ResourceOperations
         {
             foreach (var languageHolder in Languages.Values)
             {
-                BingTranslator.AutoTranslate(this, languageHolder.Id);
+                BingTranslator.AutoTranslate(this, languageHolder.LanguageId);
             }
         }
 

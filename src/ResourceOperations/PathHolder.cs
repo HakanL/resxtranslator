@@ -1,4 +1,4 @@
-namespace ResxTranslator.Windows
+namespace ResxTranslator.ResourceOperations
 {
     public class PathHolder
     {

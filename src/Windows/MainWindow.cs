@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using ResxTranslator.Properties;
 using ResxTranslator.ResourceOperations;
@@ -8,7 +9,7 @@ namespace ResxTranslator.Windows
 {
     public partial class MainWindow : Form
     {
-        protected ResourceHolder _currentResource;
+        private ResourceHolder _currentResource;
         public ResourceLoader ResourceLoader { get; }
 
         private SearchParams _currentSearch;
@@ -102,7 +103,7 @@ namespace ResxTranslator.Windows
             resourceTreeView1.LoadResources(ResourceLoader);
 
             addLanguageToolStripMenuItem.DropDownItems.Clear();
-            foreach (var s in ResourceLoader.LanguagesInUse.Keys)
+            foreach (var s in ResourceLoader.UsedLanguages.Select(x=>x.Name).OrderBy(x=>x))
             {
                 addLanguageToolStripMenuItem.DropDownItems.Add(s);
             }
@@ -234,7 +235,7 @@ namespace ResxTranslator.Windows
                 return;
             }
 
-            resourceGrid1.SetLanguageColumnVisible(languageHolder.Id, e.NewValue == CheckState.Checked);
+            resourceGrid1.SetLanguageColumnVisible(languageHolder.LanguageId, e.NewValue == CheckState.Checked);
         }
 
 
