@@ -40,8 +40,6 @@ namespace ResxTranslator.Windows
             this.toolStripStatusLabelCurrentItem = new System.Windows.Forms.ToolStripStatusLabel();
             this.panelMain = new System.Windows.Forms.Panel();
             this.splitContainerMain = new System.Windows.Forms.SplitContainer();
-            this.resourceTreeView1 = new ResxTranslator.Controls.ResourceTreeView();
-            this.resourceGrid1 = new ResxTranslator.Controls.ResourceGrid();
             this.menuStripMain = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -63,7 +61,9 @@ namespace ResxTranslator.Windows
             this.addLanguageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.autoTranslateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.translateUsingBingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.resourceTreeView1 = new ResxTranslator.Controls.ResourceTreeView();
             this.languageSettings1 = new ResxTranslator.Controls.LanguageSettings();
+            this.resourceGrid1 = new ResxTranslator.Controls.ResourceGrid();
             this.contextMenuStripLanguage.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panelMain.SuspendLayout();
@@ -153,24 +153,6 @@ namespace ResxTranslator.Windows
             this.splitContainerMain.Size = new System.Drawing.Size(946, 484);
             this.splitContainerMain.SplitterDistance = 246;
             this.splitContainerMain.TabIndex = 3;
-            // 
-            // resourceTreeView1
-            // 
-            this.resourceTreeView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.resourceTreeView1.Location = new System.Drawing.Point(0, 0);
-            this.resourceTreeView1.Name = "resourceTreeView1";
-            this.resourceTreeView1.Size = new System.Drawing.Size(246, 329);
-            this.resourceTreeView1.TabIndex = 4;
-            // 
-            // resourceGrid1
-            // 
-            this.resourceGrid1.CurrentResource = null;
-            this.resourceGrid1.DisplayContextMenu = true;
-            this.resourceGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.resourceGrid1.Location = new System.Drawing.Point(0, 0);
-            this.resourceGrid1.Name = "resourceGrid1";
-            this.resourceGrid1.Size = new System.Drawing.Size(696, 484);
-            this.resourceGrid1.TabIndex = 3;
             // 
             // menuStripMain
             // 
@@ -341,14 +323,33 @@ namespace ResxTranslator.Windows
             this.translateUsingBingToolStripMenuItem.Text = "Translate using Bing";
             this.translateUsingBingToolStripMenuItem.Click += new System.EventHandler(this.translateUsingBingToolStripMenuItem_Click);
             // 
+            // resourceTreeView1
+            // 
+            this.resourceTreeView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.resourceTreeView1.Location = new System.Drawing.Point(0, 0);
+            this.resourceTreeView1.Name = "resourceTreeView1";
+            this.resourceTreeView1.Padding = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.resourceTreeView1.Size = new System.Drawing.Size(246, 329);
+            this.resourceTreeView1.TabIndex = 4;
+            // 
             // languageSettings1
             // 
             this.languageSettings1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.languageSettings1.Location = new System.Drawing.Point(0, 329);
             this.languageSettings1.Name = "languageSettings1";
-            this.languageSettings1.Padding = new System.Windows.Forms.Padding(4);
+            this.languageSettings1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 0);
             this.languageSettings1.Size = new System.Drawing.Size(246, 155);
             this.languageSettings1.TabIndex = 5;
+            // 
+            // resourceGrid1
+            // 
+            this.resourceGrid1.CurrentResource = null;
+            this.resourceGrid1.DisplayContextMenu = true;
+            this.resourceGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.resourceGrid1.Location = new System.Drawing.Point(0, 0);
+            this.resourceGrid1.Name = "resourceGrid1";
+            this.resourceGrid1.Size = new System.Drawing.Size(696, 484);
+            this.resourceGrid1.TabIndex = 3;
             // 
             // MainWindow
             // 
