@@ -75,6 +75,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\LanguageSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\LanguageSettings.Designer.cs">
+      <DependentUpon>LanguageSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ResourceGrid.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -90,6 +96,9 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Controls\LanguageSettings.resx">
+      <DependentUpon>LanguageSettings.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\ResourceGrid.resx">
       <DependentUpon>ResourceGrid.cs</DependentUpon>
     </EmbeddedResource>
@@ -123,6 +132,7 @@
     </Compile>
     <Compile Include="ResourceOperations\BingTranslator.cs" />
     <Compile Include="ResourceOperations\LanguageHolder.cs" />
+    <Compile Include="ResourceOperations\PathHolder.cs" />
     <Compile Include="ResourceOperations\ResourceHolder.cs" />
     <Compile Include="ResourceOperations\ResourceLoader.cs" />
     <Compile Include="ResourceOperations\ResourceLoadProgressEventArgs.cs" />
@@ -157,7 +167,6 @@
     <Compile Include="Windows\MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Windows\PathHolder.cs" />
     <Compile Include="Windows\ZoomWindow.cs">
       <SubType>Form</SubType>
     </Compile>
