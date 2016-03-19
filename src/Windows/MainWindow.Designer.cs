@@ -41,11 +41,7 @@ namespace ResxTranslator.Windows
             this.panelMain = new System.Windows.Forms.Panel();
             this.splitContainerMain = new System.Windows.Forms.SplitContainer();
             this.resourceTreeView1 = new ResxTranslator.Controls.ResourceTreeView();
-            this.splitContainerResource = new System.Windows.Forms.SplitContainer();
-            this.checkedListBoxLanguages = new System.Windows.Forms.CheckedListBox();
             this.resourceGrid1 = new ResxTranslator.Controls.ResourceGrid();
-            this.panelTitle = new System.Windows.Forms.Panel();
-            this.labelTitle = new System.Windows.Forms.Label();
             this.menuStripMain = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -67,6 +63,7 @@ namespace ResxTranslator.Windows
             this.addLanguageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.autoTranslateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.translateUsingBingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.languageSettings1 = new ResxTranslator.Controls.LanguageSettings();
             this.contextMenuStripLanguage.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panelMain.SuspendLayout();
@@ -74,11 +71,6 @@ namespace ResxTranslator.Windows
             this.splitContainerMain.Panel1.SuspendLayout();
             this.splitContainerMain.Panel2.SuspendLayout();
             this.splitContainerMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainerResource)).BeginInit();
-            this.splitContainerResource.Panel1.SuspendLayout();
-            this.splitContainerResource.Panel2.SuspendLayout();
-            this.splitContainerResource.SuspendLayout();
-            this.panelTitle.SuspendLayout();
             this.menuStripMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -153,10 +145,11 @@ namespace ResxTranslator.Windows
             // splitContainerMain.Panel1
             // 
             this.splitContainerMain.Panel1.Controls.Add(this.resourceTreeView1);
+            this.splitContainerMain.Panel1.Controls.Add(this.languageSettings1);
             // 
             // splitContainerMain.Panel2
             // 
-            this.splitContainerMain.Panel2.Controls.Add(this.splitContainerResource);
+            this.splitContainerMain.Panel2.Controls.Add(this.resourceGrid1);
             this.splitContainerMain.Size = new System.Drawing.Size(946, 484);
             this.splitContainerMain.SplitterDistance = 246;
             this.splitContainerMain.TabIndex = 3;
@@ -166,72 +159,18 @@ namespace ResxTranslator.Windows
             this.resourceTreeView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.resourceTreeView1.Location = new System.Drawing.Point(0, 0);
             this.resourceTreeView1.Name = "resourceTreeView1";
-            this.resourceTreeView1.Size = new System.Drawing.Size(246, 484);
+            this.resourceTreeView1.Size = new System.Drawing.Size(246, 329);
             this.resourceTreeView1.TabIndex = 4;
-            // 
-            // splitContainerResource
-            // 
-            this.splitContainerResource.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainerResource.Location = new System.Drawing.Point(0, 0);
-            this.splitContainerResource.Name = "splitContainerResource";
-            this.splitContainerResource.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainerResource.Panel1
-            // 
-            this.splitContainerResource.Panel1.Controls.Add(this.checkedListBoxLanguages);
-            // 
-            // splitContainerResource.Panel2
-            // 
-            this.splitContainerResource.Panel2.Controls.Add(this.resourceGrid1);
-            this.splitContainerResource.Panel2.Controls.Add(this.panelTitle);
-            this.splitContainerResource.Size = new System.Drawing.Size(696, 484);
-            this.splitContainerResource.SplitterDistance = 51;
-            this.splitContainerResource.TabIndex = 2;
-            // 
-            // checkedListBoxLanguages
-            // 
-            this.checkedListBoxLanguages.CheckOnClick = true;
-            this.checkedListBoxLanguages.ContextMenuStrip = this.contextMenuStripLanguage;
-            this.checkedListBoxLanguages.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.checkedListBoxLanguages.FormattingEnabled = true;
-            this.checkedListBoxLanguages.Location = new System.Drawing.Point(0, 0);
-            this.checkedListBoxLanguages.MultiColumn = true;
-            this.checkedListBoxLanguages.Name = "checkedListBoxLanguages";
-            this.checkedListBoxLanguages.Size = new System.Drawing.Size(696, 51);
-            this.checkedListBoxLanguages.TabIndex = 0;
-            this.checkedListBoxLanguages.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkedListBoxLanguages_ItemCheck);
-            this.checkedListBoxLanguages.MouseDown += new System.Windows.Forms.MouseEventHandler(this.checkedListBoxLanguages_MouseDown);
             // 
             // resourceGrid1
             // 
             this.resourceGrid1.CurrentResource = null;
             this.resourceGrid1.DisplayContextMenu = true;
             this.resourceGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.resourceGrid1.Location = new System.Drawing.Point(0, 35);
+            this.resourceGrid1.Location = new System.Drawing.Point(0, 0);
             this.resourceGrid1.Name = "resourceGrid1";
-            this.resourceGrid1.Size = new System.Drawing.Size(696, 394);
+            this.resourceGrid1.Size = new System.Drawing.Size(696, 484);
             this.resourceGrid1.TabIndex = 3;
-            // 
-            // panelTitle
-            // 
-            this.panelTitle.Controls.Add(this.labelTitle);
-            this.panelTitle.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelTitle.Location = new System.Drawing.Point(0, 0);
-            this.panelTitle.Name = "panelTitle";
-            this.panelTitle.Size = new System.Drawing.Size(696, 35);
-            this.panelTitle.TabIndex = 2;
-            // 
-            // labelTitle
-            // 
-            this.labelTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelTitle.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelTitle.Location = new System.Drawing.Point(4, 4);
-            this.labelTitle.Name = "labelTitle";
-            this.labelTitle.Size = new System.Drawing.Size(689, 28);
-            this.labelTitle.TabIndex = 0;
-            this.labelTitle.Text = "{Title}";
-            this.labelTitle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // menuStripMain
             // 
@@ -402,6 +341,15 @@ namespace ResxTranslator.Windows
             this.translateUsingBingToolStripMenuItem.Text = "Translate using Bing";
             this.translateUsingBingToolStripMenuItem.Click += new System.EventHandler(this.translateUsingBingToolStripMenuItem_Click);
             // 
+            // languageSettings1
+            // 
+            this.languageSettings1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.languageSettings1.Location = new System.Drawing.Point(0, 329);
+            this.languageSettings1.Name = "languageSettings1";
+            this.languageSettings1.Padding = new System.Windows.Forms.Padding(4);
+            this.languageSettings1.Size = new System.Drawing.Size(246, 155);
+            this.languageSettings1.TabIndex = 5;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -423,11 +371,6 @@ namespace ResxTranslator.Windows
             this.splitContainerMain.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).EndInit();
             this.splitContainerMain.ResumeLayout(false);
-            this.splitContainerResource.Panel1.ResumeLayout(false);
-            this.splitContainerResource.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainerResource)).EndInit();
-            this.splitContainerResource.ResumeLayout(false);
-            this.panelTitle.ResumeLayout(false);
             this.menuStripMain.ResumeLayout(false);
             this.menuStripMain.PerformLayout();
             this.ResumeLayout(false);
@@ -445,10 +388,6 @@ namespace ResxTranslator.Windows
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
         private Panel panelMain;
         private SplitContainer splitContainerMain;
-        private SplitContainer splitContainerResource;
-        private CheckedListBox checkedListBoxLanguages;
-        private Panel panelTitle;
-        private Label labelTitle;
         private MenuStrip menuStripMain;
         private ToolStripMenuItem fileToolStripMenuItem;
         private ToolStripMenuItem openToolStripMenuItem;
@@ -473,6 +412,7 @@ namespace ResxTranslator.Windows
         private ToolStripStatusLabel toolStripStatusLabelCurrentItem;
         private Controls.ResourceGrid resourceGrid1;
         private Controls.ResourceTreeView resourceTreeView1;
+        private Controls.LanguageSettings languageSettings1;
     }
 }
 

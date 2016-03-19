@@ -31,16 +31,14 @@ namespace ResxTranslator.Windows
             {
                 _currentResource = value;
                 resourceGrid1.CurrentResource = value;
+                resourceGrid1.SetVisibleLanguageColumns(languageSettings1.EnabledLanguages.Select(x => x.Name).ToArray());
             }
         }
-
-        protected int LastClickedLanguageIndex;
-
+        
         public MainWindow()
         {
             InitializeComponent();
-
-            labelTitle.Visible = false;
+            
             ResourceLoader = new ResourceLoader();
             ResourceLoader.ResourceLoadProgress += (sender, args) => this.InvokeIfRequired(x =>
             {
@@ -59,6 +57,12 @@ namespace ResxTranslator.Windows
             });
 
             resourceTreeView1.ResourceOpened += (sender, args) => CurrentResource = args.Resource;
+
+            languageSettings1.EnabledLanguagesChanged += (sender, args) =>
+            {
+                if (resourceGrid1.CurrentResource == null) return;
+                resourceGrid1.SetVisibleLanguageColumns(languageSettings1.EnabledLanguages.Select(x=>x.Name).ToArray());
+            };
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -102,8 +106,12 @@ namespace ResxTranslator.Windows
 
             resourceTreeView1.LoadResources(ResourceLoader);
 
+            var usedLanguages = ResourceLoader.UsedLanguages.ToList();
+
+            languageSettings1.RefreshLanguages(usedLanguages, false);
+
             addLanguageToolStripMenuItem.DropDownItems.Clear();
-            foreach (var s in ResourceLoader.UsedLanguages.Select(x=>x.Name).OrderBy(x=>x))
+            foreach (var s in usedLanguages.Select(x => x.Name).OrderBy(x => x))
             {
                 addLanguageToolStripMenuItem.DropDownItems.Add(s);
             }
@@ -198,8 +206,6 @@ namespace ResxTranslator.Windows
                 return;
 
             resourceTreeView1.Clear();
-            checkedListBoxLanguages.Items.Clear();
-            labelTitle.Visible = false;
 
             CurrentResource = null;
             Settings.Default.Save();
@@ -218,27 +224,6 @@ namespace ResxTranslator.Windows
             resourceGrid1.DisplayContextMenu = isIt;
         }
         
-
-        #region ================== Top checkboxes ==================================
-
-        private void checkedListBoxLanguages_ItemCheck(object sender, ItemCheckEventArgs e)
-        {
-            var languageHolder = checkedListBoxLanguages.Items[e.Index] as LanguageHolder;
-            if (languageHolder == null)
-            {
-                return;
-            }
-
-            if (resourceGrid1.CurrentResource == null)
-            {
-                // Not populated yet
-                return;
-            }
-
-            resourceGrid1.SetLanguageColumnVisible(languageHolder.LanguageId, e.NewValue == CheckState.Checked);
-        }
-
-
         private void addLanguageToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             CurrentResource.AddLanguage(e.ClickedItem.Text);
@@ -262,10 +247,11 @@ namespace ResxTranslator.Windows
             var theStrip = myItem?.Owner as ContextMenuStrip;
             //The SourceControl is the control that opened the contextmenustrip.
             var box = theStrip?.SourceControl as CheckedListBox;
-            if (box != null && MessageBox.Show("Do you really want to delete file for language " +
-                                               box.Items[LastClickedLanguageIndex]) == DialogResult.OK)
+            if (box != null && MessageBox.Show("Do you really want to delete file for language " 
+                                               //TODO + box.Items[LastClickedLanguageIndex]
+                                               ) == DialogResult.OK)
             {
-                CurrentResource.DeleteLanguage(box.Items[LastClickedLanguageIndex].ToString());
+                //CurrentResource.DeleteLanguage(box.Items[LastClickedLanguageIndex].ToString());
 
                 resourceGrid1.RefreshResourceDisplay();
             }
@@ -281,15 +267,8 @@ namespace ResxTranslator.Windows
             var box = theStrip?.SourceControl as CheckedListBox;
             if (box != null)
             {
-                BingTranslator.AutoTranslate(CurrentResource, box.Items[LastClickedLanguageIndex].ToString());
+                //TODO BingTranslator.AutoTranslate(CurrentResource, box.Items[LastClickedLanguageIndex].ToString());
             }
         }
-
-        private void checkedListBoxLanguages_MouseDown(object sender, MouseEventArgs e)
-        {
-            LastClickedLanguageIndex = checkedListBoxLanguages.IndexFromPoint(e.Location);
-        }
-
-        #endregion
     }
 }

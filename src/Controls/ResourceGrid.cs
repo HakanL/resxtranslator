@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Drawing;
 using System.Data;
+using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 using ResxTranslator.Properties;
 using ResxTranslator.ResourceOperations;
 using ResxTranslator.Windows;
+// ReSharper disable PossibleNullReferenceException
 
 namespace ResxTranslator.Controls
 {
@@ -44,6 +47,14 @@ namespace ResxTranslator.Controls
             ShowResourceInGrid(CurrentResource);
         }
 
+        private const string ColNameNoLang = "NoLanguageValue";
+        private const string ColNameComment = "Comment";
+        private const string ColNameTranslated = "Translated";
+        private const string ColNameError = "Error";
+        private const string ColNameKey = "Key";
+
+        private static readonly string[] SpecialColNames = {ColNameComment, ColNameError, ColNameKey, ColNameNoLang, ColNameTranslated};
+
         private ResourceHolder _currentResource;
 
         private void ShowResourceInGrid(ResourceHolder resource)
@@ -61,17 +72,25 @@ namespace ResxTranslator.Controls
                 dataGridView1.Columns[languageHolder.LanguageId].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             }
 
-            dataGridView1.Columns["NoLanguageValue"].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            dataGridView1.Columns["Comment"].DisplayIndex = dataGridView1.Columns.Count - 1;
+            dataGridView1.Columns[ColNameNoLang].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            dataGridView1.Columns[ColNameComment].DisplayIndex = dataGridView1.Columns.Count - 1;
 
-            dataGridView1.Columns["Translated"].Visible = false;
-            dataGridView1.Columns["Error"].Visible = false;
+            dataGridView1.Columns[ColNameTranslated].Visible = false;
+            dataGridView1.Columns[ColNameError].Visible = false;
 
             ApplyFilterCondition();
 
-            dataGridView1.Columns["Key"].ReadOnly = true;
+            dataGridView1.Columns[ColNameKey].ReadOnly = true;
 
             ApplyConditionalFormatting();
+        }
+
+        public void SetVisibleLanguageColumns(params string[] languageIds)
+        {
+            foreach (var column in dataGridView1.Columns.Cast<DataGridViewColumn>().Where(column => !SpecialColNames.Contains(column.Name)))
+            {
+                column.Visible = languageIds.Any(x => x.Equals(column.Name, StringComparison.OrdinalIgnoreCase));
+            }
         }
 
         public void SetLanguageColumnVisible(string languageId, bool visible)
@@ -125,7 +144,7 @@ namespace ResxTranslator.Controls
             var autoTranslate =
                 contextMenuStripCell.Items["autoTranslateThisCellToolStripMenuItem"] as ToolStripMenuItem;
 
-            var preferred = "NoLanguageValue";
+            var preferred = ColNameNoLang;
             if (!(autoTranslate.DropDownItems[1] as ToolStripMenuItem).Checked)
             {
                 var subChk = FindCheckedSubItemIndex(autoTranslate);
@@ -136,7 +155,7 @@ namespace ResxTranslator.Controls
             {
                 source = dataGridView1.Rows[dataGridView1.CurrentCell.RowIndex].Cells[preferred].Value.ToString();
             }
-            if (column == "NoLanguageValue")
+            if (column == ColNameNoLang)
             {
                 column = CurrentResource.NoLanguageLanguage;
             }
@@ -156,13 +175,13 @@ namespace ResxTranslator.Controls
             foreach (ToolStripMenuItem item in autoTranslate.DropDownItems)
                 item.Checked = false;
             checkedItem.Checked = true;
-            var preferred = "" + checkedItem.Tag == "NoLanguageValue" ? "NoLanguageValue" : checkedItem.Text;
+            var preferred = "" + checkedItem.Tag == ColNameNoLang ? ColNameNoLang : checkedItem.Text;
 
             Settings.Default.PreferredSourceLanguage = preferred;
 
             var colIndex = dataGridView1.CurrentCell.ColumnIndex;
             var column = dataGridView1.Columns[colIndex].Name;
-            if (column == "NoLanguageValue")
+            if (column == ColNameNoLang)
             {
                 column = CurrentResource.NoLanguageLanguage;
             }
@@ -175,7 +194,7 @@ namespace ResxTranslator.Controls
 
         private void ApplyConditionalFormatting(DataGridViewRow r)
         {
-            if (r.Cells["Error"].Value != null && (bool)r.Cells["Error"].Value)
+            if (r.Cells[ColNameError].Value != null && (bool)r.Cells[ColNameError].Value)
             {
                 r.DefaultCellStyle.ForeColor = Color.Red;
             }
@@ -262,7 +281,7 @@ namespace ResxTranslator.Controls
             }
 
 
-            var preferred = "NoLanguageValue";
+            var preferred = ColNameNoLang;
             if (!(autoTranslate.DropDownItems[1] as ToolStripMenuItem).Checked)
             {
                 var subChk = FindCheckedSubItemIndex(autoTranslate);
