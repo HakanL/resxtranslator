@@ -396,5 +396,12 @@ namespace ResxTranslator.Windows
         {
             Process.Start(@"https://resxtranslator.codeplex.com/");
         }
+
+        private void licenceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start(Path.Combine(
+                Path.GetDirectoryName(Assembly.GetAssembly(typeof(MainWindow)).Location) ?? string.Empty, 
+                "Licence.txt"));
+        }
     }
 }
