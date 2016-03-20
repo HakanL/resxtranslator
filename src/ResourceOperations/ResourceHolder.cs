@@ -464,7 +464,7 @@ namespace ResxTranslator.ResourceOperations
                 return false;
 
             var value = (string)row[languageId];
-            return !string.IsNullOrWhiteSpace(value) && !(value.StartsWith("[") && value.TrimEnd().EndsWith("]"));
+            return !string.IsNullOrEmpty(value) && (!value.StartsWith("[") || !value.Contains("]"));
         }
 
         /// <summary>
