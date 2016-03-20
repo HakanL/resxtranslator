@@ -112,8 +112,11 @@ namespace ResxTranslator.Windows
 
         private void OnCurrentResourceLanguageChange(object sender, EventArgs eventArgs)
         {
-            languageSettings1.RefreshLanguages(ResourceLoader.GetUsedLanguages(), true);
-            UpdateMenuStrip();
+            this.InvokeIfRequired(x =>
+            {
+                languageSettings1.RefreshLanguages(ResourceLoader.GetUsedLanguages(), true);
+                UpdateMenuStrip();
+            });
         }
 
         private void UpdateMenuStrip()
