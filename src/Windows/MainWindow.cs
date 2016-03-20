@@ -21,6 +21,7 @@ namespace ResxTranslator.Windows
 
         public MainWindow()
         {
+            Opacity = 0;
             InitializeComponent();
 
             _defaultWindowTitle = $"{Text} {Assembly.GetAssembly(typeof (MainWindow)).GetName().Version.ToString(2)}";
@@ -220,8 +221,10 @@ namespace ResxTranslator.Windows
             }
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
+        private void MainForm_Shown(object sender, EventArgs e)
         {
+            Opacity = 1;
+
             var args = Environment.GetCommandLineArgs();
             if (args.Length > 1 && !string.IsNullOrEmpty(args[1].Trim()))
             {
