@@ -55,6 +55,7 @@ namespace ResxTranslator.Windows
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.revertCurrentFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openResourceLocationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.findToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -73,7 +74,7 @@ namespace ResxTranslator.Windows
             this.copyDefaultValuesOnLanguageAddToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ignoreEmptyResourcesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openLastDirectoryOnProgramStartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openResourceLocationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reloadCurrentDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.panelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).BeginInit();
@@ -282,6 +283,7 @@ namespace ResxTranslator.Windows
             this.openToolStripMenuItem,
             this.saveAllModifiedToolStripMenuItem,
             this.closeToolStripMenuItem,
+            this.reloadCurrentDirectoryToolStripMenuItem,
             this.toolStripSeparator1,
             this.saveToolStripMenuItem,
             this.revertCurrentFileToolStripMenuItem,
@@ -337,6 +339,13 @@ namespace ResxTranslator.Windows
             this.revertCurrentFileToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.revertCurrentFileToolStripMenuItem.Text = "Revert current resource";
             this.revertCurrentFileToolStripMenuItem.Click += new System.EventHandler(this.revertCurrentToolStripMenuItem_Click);
+            // 
+            // openResourceLocationToolStripMenuItem
+            // 
+            this.openResourceLocationToolStripMenuItem.Name = "openResourceLocationToolStripMenuItem";
+            this.openResourceLocationToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.openResourceLocationToolStripMenuItem.Text = "Open resource location";
+            this.openResourceLocationToolStripMenuItem.Click += new System.EventHandler(this.openResourceLocationToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -480,12 +489,12 @@ namespace ResxTranslator.Windows
             this.openLastDirectoryOnProgramStartToolStripMenuItem.Size = new System.Drawing.Size(307, 22);
             this.openLastDirectoryOnProgramStartToolStripMenuItem.Text = "Open last directory on program start";
             // 
-            // openResourceLocationToolStripMenuItem
+            // reloadCurrentDirectoryToolStripMenuItem
             // 
-            this.openResourceLocationToolStripMenuItem.Name = "openResourceLocationToolStripMenuItem";
-            this.openResourceLocationToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
-            this.openResourceLocationToolStripMenuItem.Text = "Open resource location";
-            this.openResourceLocationToolStripMenuItem.Click += new System.EventHandler(this.openResourceLocationToolStripMenuItem_Click);
+            this.reloadCurrentDirectoryToolStripMenuItem.Name = "reloadCurrentDirectoryToolStripMenuItem";
+            this.reloadCurrentDirectoryToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.reloadCurrentDirectoryToolStripMenuItem.Text = "Reload current directory";
+            this.reloadCurrentDirectoryToolStripMenuItem.Click += new System.EventHandler(this.reloadCurrentDirectoryToolStripMenuItem_Click);
             // 
             // MainWindow
             // 
@@ -566,6 +575,7 @@ namespace ResxTranslator.Windows
         private ToolStripMenuItem openLastDirectoryOnProgramStartToolStripMenuItem;
         private ToolStripMenuItem clearSearchToolStripMenuItem;
         private ToolStripMenuItem openResourceLocationToolStripMenuItem;
+        private ToolStripMenuItem reloadCurrentDirectoryToolStripMenuItem;
     }
 }
 

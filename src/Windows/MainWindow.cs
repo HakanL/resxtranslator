@@ -257,7 +257,8 @@ namespace ResxTranslator.Windows
                 if (args.Progress < args.ProgressTop)
                 {
                     toolStripProgressBar1.Visible = true;
-                    toolStripProgressBar1.Maximum = args.ProgressTop;
+                    if(toolStripProgressBar1.Maximum != args.ProgressTop)
+                        toolStripProgressBar1.Maximum = args.ProgressTop;
                     toolStripProgressBar1.Value = args.Progress;
                 }
                 else
@@ -362,6 +363,12 @@ namespace ResxTranslator.Windows
         {
             if (CurrentResource == null) return;
             Process.Start("explorer.exe", $"\"{Path.GetDirectoryName(CurrentResource.Filename)}\"");
+        }
+
+        private void reloadCurrentDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(!string.IsNullOrEmpty(ResourceLoader.OpenedPath))
+                LoadResourcesFromFolder(ResourceLoader.OpenedPath);
         }
     }
 }
