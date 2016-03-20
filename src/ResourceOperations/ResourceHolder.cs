@@ -439,39 +439,25 @@ namespace ResxTranslator.ResourceOperations
         /// </summary>
         public void EvaluateRow(DataRow row)
         {
-            var foundOne = false;
-            var oneMissing = false;
             foreach (var languageHolder in Languages.Values)
             {
                 if (RowContainsTranslation(row, languageHolder.LanguageId))
                 {
-                    foundOne = true;
-                    if (oneMissing)
-                        break;
+                    if ((row["NoLanguageValue"] == DBNull.Value || string.IsNullOrEmpty((string)row["NoLanguageValue"])))
+                    {
+                        // There are translations but the main key is missing
+                        row["Error"] = true;
+                        return;
+                    }
                 }
                 else
                 {
-                    oneMissing = true;
-                    if (foundOne)
-                        break;
+                    // Some translations are missing
+                    row["Error"] = true;
+                    return;
                 }
             }
-
-            // Some translations are missing
-            if (foundOne && oneMissing)
-            {
-                row["Error"] = true;
-                return;
-            }
-
-            // There are translations but the key is missing
-            if (foundOne && (row["NoLanguageValue"] == DBNull.Value ||
-                             string.IsNullOrEmpty((string)row["NoLanguageValue"])))
-            {
-                row["Error"] = true;
-                return;
-            }
-
+            
             row["Error"] = false;
         }
 
