@@ -309,9 +309,6 @@
     <None Include="Resources\Add.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\delete.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Delete_black_32x32.png" />
   </ItemGroup>
   <ItemGroup>
@@ -319,6 +316,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.ico" />
+    <None Include="Resources\109_AllAnnotations_Help_16x16_72.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
