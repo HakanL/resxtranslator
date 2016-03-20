@@ -15,9 +15,9 @@ namespace ResxTranslator.Controls
         
         public void RefreshLanguages(IEnumerable<CultureInfo> languages, bool perserveState)
         {
-            List<CultureInfo> storedEnabled = null;
+            List<CultureInfo> storedDisabled = null;
             if(perserveState)
-                storedEnabled = EnabledLanguages.ToList();
+                storedDisabled = DisabledLanguages.ToList();
 
             listView1.SuspendLayout();
             listView1.BeginUpdate();
@@ -29,7 +29,7 @@ namespace ResxTranslator.Controls
                 listView1.Items.Add(new ListViewItem(new[] { cultureInfo.Name, cultureInfo.DisplayName })
                 {
                     Tag = cultureInfo,
-                    Checked = !perserveState || storedEnabled.Contains(cultureInfo)
+                    Checked = !perserveState || !storedDisabled.Contains(cultureInfo)
                 });
             }
             
@@ -43,6 +43,17 @@ namespace ResxTranslator.Controls
 
         public IEnumerable<CultureInfo> EnabledLanguages
             => listView1.CheckedItems.Cast<ListViewItem>().Select(x => x.Tag as CultureInfo);
+
+        public IEnumerable<CultureInfo> DisabledLanguages
+        {
+            get
+            {
+                var enabledItems = listView1.CheckedItems.Cast<ListViewItem>();
+                return listView1.Items.Cast<ListViewItem>()
+                    .Where(x => !enabledItems.Contains(x))
+                    .Select(x => x.Tag as CultureInfo);
+            }
+        }
 
         public event EventHandler EnabledLanguagesChanged;
 

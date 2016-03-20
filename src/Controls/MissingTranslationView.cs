@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using ResxTranslator.ResourceOperations;
+using ResxTranslator.Windows;
 
 namespace ResxTranslator.Controls
 {
@@ -103,6 +104,18 @@ namespace ResxTranslator.Controls
             public ResourceHolder Item { get; }
 
             public CultureInfo Language { get; }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var result = LanguageSelectDialog.ShowLanguageSelectDialog(ParentForm);
+            if (result == null || comboBox1.Items.OfType<ComboBoxWrapper<CultureInfo>>().Any(x=>x.WrappedObject.Equals(result)))
+                return;
+
+            var newItem = new ComboBoxWrapper<CultureInfo>(result, info => $"{info.Name} - {info.DisplayName}");
+
+            comboBox1.Items.Add(newItem);
+            comboBox1.SelectedItem = newItem;
         }
     }
 }

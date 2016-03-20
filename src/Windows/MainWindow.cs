@@ -81,14 +81,26 @@ namespace ResxTranslator.Windows
             {
                 this.InvokeIfRequired(_ =>
                 {
+                    if (_currentResource != null)
+                        _currentResource.LanguageChange -= OnCurrentResourceLanguageChange;
+
                     _currentResource = value;
                     resourceGrid1.CurrentResource = value;
                     resourceGrid1.SetVisibleLanguageColumns(languageSettings1.EnabledLanguages.Select(x => x.Name).ToArray());
                     tabPageEditedResource.Text = value?.Filename ?? "No resource loaded";
 
                     UpdateMenuStrip();
+
+                    if(value != null)
+                        _currentResource.LanguageChange += OnCurrentResourceLanguageChange;
                 });
             }
+        }
+
+        private void OnCurrentResourceLanguageChange(object sender, EventArgs eventArgs)
+        {
+            languageSettings1.RefreshLanguages(ResourceLoader.GetUsedLanguages(), true);
+            UpdateMenuStrip();
         }
 
         private void UpdateMenuStrip()

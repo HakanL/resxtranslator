@@ -18,8 +18,8 @@ namespace ResxTranslator.ResourceOperations
         private bool _dirty;
         private string _noLanguageLanguage = "";
         private DataTable _stringsTable;
-        public EventHandler DirtyChanged;
-        public EventHandler LanguageChange;
+        public event EventHandler DirtyChanged;
+        public event EventHandler LanguageChange;
 
         public ResourceHolder()
         {
