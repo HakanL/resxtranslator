@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using ResxTranslator.Properties;
+using ResxTranslator.Tools;
 
 namespace ResxTranslator.Windows
 {

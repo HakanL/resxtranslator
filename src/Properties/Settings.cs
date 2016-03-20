@@ -1,4 +1,6 @@
-﻿namespace ResxTranslator.Properties
+﻿using ResxTranslator.Tools;
+
+namespace ResxTranslator.Properties
 {
     internal sealed partial class Settings
     {

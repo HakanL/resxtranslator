@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using ResxTranslator.Properties;
 using ResxTranslator.ResourceOperations;
+using ResxTranslator.Tools;
 
 namespace ResxTranslator.Controls
 {

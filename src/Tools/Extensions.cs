@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using System.Windows.Forms;
 
-namespace ResxTranslator
+namespace ResxTranslator.Tools
 {
     public static class Extensions
     {

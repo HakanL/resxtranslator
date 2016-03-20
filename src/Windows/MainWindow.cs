@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using ResxTranslator.Properties;
 using ResxTranslator.ResourceOperations;
+using ResxTranslator.Tools;
 
 namespace ResxTranslator.Windows
 {

@@ -8,36 +8,35 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ResxTranslator.TranslatorSvc {
-    using System.Runtime.Serialization;
-    using System;
-    
-    
+using System;
+using System.Runtime.Serialization;
+
+namespace ResxTranslator.Service_References.TranslatorSvc {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="TranslateOptions", Namespace="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2")]
-    [System.SerializableAttribute()]
+    [DataContract(Name="TranslateOptions", Namespace="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2")]
+    [Serializable()]
     public partial class TranslateOptions : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
-        [System.NonSerializedAttribute()]
+        [NonSerialized()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string CategoryField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string ContentTypeField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string ReservedFlagsField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string StateField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string UriField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string UserField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -50,7 +49,7 @@ namespace ResxTranslator.TranslatorSvc {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        [DataMember(EmitDefaultValue=false)]
         public string Category {
             get {
                 return this.CategoryField;
@@ -63,7 +62,7 @@ namespace ResxTranslator.TranslatorSvc {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        [DataMember(EmitDefaultValue=false)]
         public string ContentType {
             get {
                 return this.ContentTypeField;
@@ -76,7 +75,7 @@ namespace ResxTranslator.TranslatorSvc {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        [DataMember(EmitDefaultValue=false)]
         public string ReservedFlags {
             get {
                 return this.ReservedFlagsField;
@@ -89,7 +88,7 @@ namespace ResxTranslator.TranslatorSvc {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        [DataMember(EmitDefaultValue=false)]
         public string State {
             get {
                 return this.StateField;
@@ -102,7 +101,7 @@ namespace ResxTranslator.TranslatorSvc {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        [DataMember(EmitDefaultValue=false)]
         public string Uri {
             get {
                 return this.UriField;
@@ -115,7 +114,7 @@ namespace ResxTranslator.TranslatorSvc {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        [DataMember(EmitDefaultValue=false)]
         public string User {
             get {
                 return this.UserField;
@@ -140,21 +139,21 @@ namespace ResxTranslator.TranslatorSvc {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="GetTranslationsResponse", Namespace="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2")]
-    [System.SerializableAttribute()]
+    [DataContract(Name="GetTranslationsResponse", Namespace="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2")]
+    [Serializable()]
     public partial class GetTranslationsResponse : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
-        [System.NonSerializedAttribute()]
+        [NonSerialized()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string FromField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string StateField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private ResxTranslator.TranslatorSvc.TranslationMatch[] TranslationsField;
+        [OptionalField()]
+        private TranslationMatch[] TranslationsField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -166,7 +165,7 @@ namespace ResxTranslator.TranslatorSvc {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        [DataMember(EmitDefaultValue=false)]
         public string From {
             get {
                 return this.FromField;
@@ -179,7 +178,7 @@ namespace ResxTranslator.TranslatorSvc {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        [DataMember(EmitDefaultValue=false)]
         public string State {
             get {
                 return this.StateField;
@@ -192,8 +191,8 @@ namespace ResxTranslator.TranslatorSvc {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public ResxTranslator.TranslatorSvc.TranslationMatch[] Translations {
+        [DataMember(EmitDefaultValue=false)]
+        public TranslationMatch[] Translations {
             get {
                 return this.TranslationsField;
             }
@@ -217,21 +216,21 @@ namespace ResxTranslator.TranslatorSvc {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="TranslationMatch", Namespace="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2")]
-    [System.SerializableAttribute()]
+    [DataContract(Name="TranslationMatch", Namespace="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2")]
+    [Serializable()]
     public partial class TranslationMatch : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
-        [System.NonSerializedAttribute()]
+        [NonSerialized()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private int CountField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string ErrorField;
         
         private int MatchDegreeField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string MatchedOriginalTextField;
         
         private int RatingField;
@@ -248,7 +247,7 @@ namespace ResxTranslator.TranslatorSvc {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        [DataMember(IsRequired=true)]
         public int Count {
             get {
                 return this.CountField;
@@ -261,7 +260,7 @@ namespace ResxTranslator.TranslatorSvc {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        [DataMember(EmitDefaultValue=false)]
         public string Error {
             get {
                 return this.ErrorField;
@@ -274,7 +273,7 @@ namespace ResxTranslator.TranslatorSvc {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        [DataMember(IsRequired=true)]
         public int MatchDegree {
             get {
                 return this.MatchDegreeField;
@@ -287,7 +286,7 @@ namespace ResxTranslator.TranslatorSvc {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        [DataMember(EmitDefaultValue=false)]
         public string MatchedOriginalText {
             get {
                 return this.MatchedOriginalTextField;
@@ -300,7 +299,7 @@ namespace ResxTranslator.TranslatorSvc {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        [DataMember(IsRequired=true)]
         public int Rating {
             get {
                 return this.RatingField;
@@ -313,7 +312,7 @@ namespace ResxTranslator.TranslatorSvc {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        [DataMember(IsRequired=true)]
         public string TranslatedText {
             get {
                 return this.TranslatedTextField;
@@ -338,19 +337,19 @@ namespace ResxTranslator.TranslatorSvc {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Translation", Namespace="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2")]
-    [System.SerializableAttribute()]
+    [DataContract(Name="Translation", Namespace="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2")]
+    [Serializable()]
     public partial class Translation : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
-        [System.NonSerializedAttribute()]
+        [NonSerialized()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private string OriginalTextField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private int RatingField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private int SequenceField;
         
         private string TranslatedTextField;
@@ -365,7 +364,7 @@ namespace ResxTranslator.TranslatorSvc {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        [DataMember(IsRequired=true)]
         public string OriginalText {
             get {
                 return this.OriginalTextField;
@@ -378,7 +377,7 @@ namespace ResxTranslator.TranslatorSvc {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        [DataMember(EmitDefaultValue=false)]
         public int Rating {
             get {
                 return this.RatingField;
@@ -391,7 +390,7 @@ namespace ResxTranslator.TranslatorSvc {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        [DataMember(EmitDefaultValue=false)]
         public int Sequence {
             get {
                 return this.SequenceField;
@@ -404,7 +403,7 @@ namespace ResxTranslator.TranslatorSvc {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        [DataMember(IsRequired=true)]
         public string TranslatedText {
             get {
                 return this.TranslatedTextField;
@@ -429,29 +428,29 @@ namespace ResxTranslator.TranslatorSvc {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="TranslateArrayResponse", Namespace="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2")]
-    [System.SerializableAttribute()]
+    [DataContract(Name="TranslateArrayResponse", Namespace="http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2")]
+    [Serializable()]
     public partial class TranslateArrayResponse : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
-        [System.NonSerializedAttribute()]
+        [NonSerialized()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string ErrorField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string FromField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private int[] OriginalTextSentenceLengthsField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string StateField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string TranslatedTextField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private int[] TranslatedTextSentenceLengthsField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -464,7 +463,7 @@ namespace ResxTranslator.TranslatorSvc {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        [DataMember(EmitDefaultValue=false)]
         public string Error {
             get {
                 return this.ErrorField;
@@ -477,7 +476,7 @@ namespace ResxTranslator.TranslatorSvc {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        [DataMember(EmitDefaultValue=false)]
         public string From {
             get {
                 return this.FromField;
@@ -490,7 +489,7 @@ namespace ResxTranslator.TranslatorSvc {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        [DataMember(EmitDefaultValue=false)]
         public int[] OriginalTextSentenceLengths {
             get {
                 return this.OriginalTextSentenceLengthsField;
@@ -503,7 +502,7 @@ namespace ResxTranslator.TranslatorSvc {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        [DataMember(EmitDefaultValue=false)]
         public string State {
             get {
                 return this.StateField;
@@ -516,7 +515,7 @@ namespace ResxTranslator.TranslatorSvc {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        [DataMember(EmitDefaultValue=false)]
         public string TranslatedText {
             get {
                 return this.TranslatedTextField;
@@ -529,7 +528,7 @@ namespace ResxTranslator.TranslatorSvc {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        [DataMember(EmitDefaultValue=false)]
         public int[] TranslatedTextSentenceLengths {
             get {
                 return this.TranslatedTextSentenceLengthsField;
@@ -583,33 +582,33 @@ namespace ResxTranslator.TranslatorSvc {
         string[] GetLanguagesForTranslate(string appId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://api.microsofttranslator.com/V2/LanguageService/GetTranslations", ReplyAction="http://api.microsofttranslator.com/V2/LanguageService/GetTranslationsResponse")]
-        ResxTranslator.TranslatorSvc.GetTranslationsResponse GetTranslations(string appId, string text, string from, string to, int maxTranslations, ResxTranslator.TranslatorSvc.TranslateOptions options);
+        GetTranslationsResponse GetTranslations(string appId, string text, string from, string to, int maxTranslations, TranslateOptions options);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://api.microsofttranslator.com/V2/LanguageService/Translate", ReplyAction="http://api.microsofttranslator.com/V2/LanguageService/TranslateResponse")]
         string Translate(string appId, string text, string from, string to, string contentType, string category);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://api.microsofttranslator.com/V2/LanguageService/AddTranslationArray", ReplyAction="http://api.microsofttranslator.com/V2/LanguageService/AddTranslationArrayResponse" +
             "")]
-        void AddTranslationArray(string appId, ResxTranslator.TranslatorSvc.Translation[] translations, string from, string to, ResxTranslator.TranslatorSvc.TranslateOptions options);
+        void AddTranslationArray(string appId, Translation[] translations, string from, string to, TranslateOptions options);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://api.microsofttranslator.com/V2/LanguageService/GetTranslationsArray", ReplyAction="http://api.microsofttranslator.com/V2/LanguageService/GetTranslationsArrayRespons" +
             "e")]
-        ResxTranslator.TranslatorSvc.GetTranslationsResponse[] GetTranslationsArray(string appId, string[] texts, string from, string to, int maxTranslations, ResxTranslator.TranslatorSvc.TranslateOptions options);
+        GetTranslationsResponse[] GetTranslationsArray(string appId, string[] texts, string from, string to, int maxTranslations, TranslateOptions options);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://api.microsofttranslator.com/V2/LanguageService/Speak", ReplyAction="http://api.microsofttranslator.com/V2/LanguageService/SpeakResponse")]
         string Speak(string appId, string text, string language, string format);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://api.microsofttranslator.com/V2/LanguageService/TranslateArray", ReplyAction="http://api.microsofttranslator.com/V2/LanguageService/TranslateArrayResponse")]
-        ResxTranslator.TranslatorSvc.TranslateArrayResponse[] TranslateArray(string appId, string[] texts, string from, string to, ResxTranslator.TranslatorSvc.TranslateOptions options);
+        TranslateArrayResponse[] TranslateArray(string appId, string[] texts, string from, string to, TranslateOptions options);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface LanguageServiceChannel : ResxTranslator.TranslatorSvc.LanguageService, System.ServiceModel.IClientChannel {
+    public interface LanguageServiceChannel : LanguageService, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class LanguageServiceClient : System.ServiceModel.ClientBase<ResxTranslator.TranslatorSvc.LanguageService>, ResxTranslator.TranslatorSvc.LanguageService {
+    public partial class LanguageServiceClient : System.ServiceModel.ClientBase<LanguageService>, LanguageService {
         
         public LanguageServiceClient() {
         }
@@ -662,7 +661,7 @@ namespace ResxTranslator.TranslatorSvc {
             return base.Channel.GetLanguagesForTranslate(appId);
         }
         
-        public ResxTranslator.TranslatorSvc.GetTranslationsResponse GetTranslations(string appId, string text, string from, string to, int maxTranslations, ResxTranslator.TranslatorSvc.TranslateOptions options) {
+        public GetTranslationsResponse GetTranslations(string appId, string text, string from, string to, int maxTranslations, TranslateOptions options) {
             return base.Channel.GetTranslations(appId, text, from, to, maxTranslations, options);
         }
         
@@ -670,11 +669,11 @@ namespace ResxTranslator.TranslatorSvc {
             return base.Channel.Translate(appId, text, from, to, contentType, category);
         }
         
-        public void AddTranslationArray(string appId, ResxTranslator.TranslatorSvc.Translation[] translations, string from, string to, ResxTranslator.TranslatorSvc.TranslateOptions options) {
+        public void AddTranslationArray(string appId, Translation[] translations, string from, string to, TranslateOptions options) {
             base.Channel.AddTranslationArray(appId, translations, from, to, options);
         }
         
-        public ResxTranslator.TranslatorSvc.GetTranslationsResponse[] GetTranslationsArray(string appId, string[] texts, string from, string to, int maxTranslations, ResxTranslator.TranslatorSvc.TranslateOptions options) {
+        public GetTranslationsResponse[] GetTranslationsArray(string appId, string[] texts, string from, string to, int maxTranslations, TranslateOptions options) {
             return base.Channel.GetTranslationsArray(appId, texts, from, to, maxTranslations, options);
         }
         
@@ -682,7 +681,7 @@ namespace ResxTranslator.TranslatorSvc {
             return base.Channel.Speak(appId, text, language, format);
         }
         
-        public ResxTranslator.TranslatorSvc.TranslateArrayResponse[] TranslateArray(string appId, string[] texts, string from, string to, ResxTranslator.TranslatorSvc.TranslateOptions options) {
+        public TranslateArrayResponse[] TranslateArray(string appId, string[] texts, string from, string to, TranslateOptions options) {
             return base.Channel.TranslateArray(appId, texts, from, to, options);
         }
     }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ResxTranslator
+namespace ResxTranslator.Tools
 {
     public sealed class SettingChangedEventArgs<T> : EventArgs
     {

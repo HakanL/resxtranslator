@@ -81,7 +81,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ComboBoxWrapper.cs" />
+    <Compile Include="Tools\ComboBoxWrapper.cs" />
     <Compile Include="Controls\LanguageSettings.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -106,7 +106,7 @@
     <Compile Include="Controls\ResourceTreeView.Designer.cs">
       <DependentUpon>ResourceTreeView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Extensions.cs" />
+    <Compile Include="Tools\Extensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Controls\LanguageSettings.resx">
@@ -174,8 +174,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="SettingBinder.cs" />
-    <Compile Include="SettingChangedEventArgs.cs" />
+    <Compile Include="Tools\SettingBinder.cs" />
+    <Compile Include="Tools\SettingChangedEventArgs.cs" />
     <Compile Include="Properties\Settings.cs" />
     <Compile Include="Windows\AboutBox.cs">
       <SubType>Form</SubType>

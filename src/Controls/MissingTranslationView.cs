@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using ResxTranslator.ResourceOperations;
+using ResxTranslator.Tools;
 using ResxTranslator.Windows;
 
 namespace ResxTranslator.Controls
