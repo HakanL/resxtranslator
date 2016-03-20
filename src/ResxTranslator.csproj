@@ -125,6 +125,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Windows\AboutBox.resx">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Windows\AddResourceKeyWindow.resx">
       <DependentUpon>AddResourceKeyWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -174,6 +177,12 @@
     <Compile Include="SettingBinder.cs" />
     <Compile Include="SettingChangedEventArgs.cs" />
     <Compile Include="Properties\Settings.cs" />
+    <Compile Include="Windows\AboutBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\AboutBox.Designer.cs">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\AddResourceKeyWindow.cs">
       <SubType>Form</SubType>
     </Compile>

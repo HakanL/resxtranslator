@@ -373,5 +373,15 @@ namespace ResxTranslator.Windows
             if(!string.IsNullOrEmpty(ResourceLoader.OpenedPath))
                 LoadResourcesFromFolder(ResourceLoader.OpenedPath);
         }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutBox.ShowAboutBox(this);
+        }
+
+        private void helpToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Process.Start(@"https://resxtranslator.codeplex.com/");
+        }
     }
 }
