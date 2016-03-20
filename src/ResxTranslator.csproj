@@ -124,6 +124,9 @@
     <EmbeddedResource Include="Windows\FindWindow.resx">
       <DependentUpon>FindWindow.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Windows\LanguageSelectDialog.resx">
+      <DependentUpon>LanguageSelectDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Windows\MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -172,6 +175,12 @@
     </Compile>
     <Compile Include="Windows\FindWindow.Designer.cs">
       <DependentUpon>FindWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\LanguageSelectDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\LanguageSelectDialog.Designer.cs">
+      <DependentUpon>LanguageSelectDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\MainWindow.cs">
       <SubType>Form</SubType>

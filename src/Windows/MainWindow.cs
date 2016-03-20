@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -9,12 +10,13 @@ namespace ResxTranslator.Windows
 {
     public sealed partial class MainWindow : Form
     {
+        private const string MoreLanguagesMenuitemName = "More languages...";
         private readonly string _defaultWindowTitle;
         private readonly SettingBinder<Settings> _settingBinder;
 
         private ResourceHolder _currentResource;
         private SearchParams _currentSearch;
-        
+
         public MainWindow()
         {
             InitializeComponent();
@@ -77,23 +79,66 @@ namespace ResxTranslator.Windows
             get { return _currentResource; }
             set
             {
-                _currentResource = value;
-                resourceGrid1.CurrentResource = value;
-                resourceGrid1.SetVisibleLanguageColumns(languageSettings1.EnabledLanguages.Select(x => x.Name).ToArray());
-                tabPageEditedResource.Text = value?.Filename ?? "No resource loaded";
+                this.InvokeIfRequired(_ =>
+                {
+                    _currentResource = value;
+                    resourceGrid1.CurrentResource = value;
+                    resourceGrid1.SetVisibleLanguageColumns(languageSettings1.EnabledLanguages.Select(x => x.Name).ToArray());
+                    tabPageEditedResource.Text = value?.Filename ?? "No resource loaded";
 
-                var notNull = value != null;
-                keysToolStripMenuItem.Enabled = notNull;
-                addNewKeyToolStripMenuItem.Enabled = notNull;
-                addLanguageToolStripMenuItem.Enabled = notNull;
-                autoTranslateToolStripMenuItem.Enabled = notNull;
+                    UpdateMenuStrip();
+                });
+            }
+        }
+
+        private void UpdateMenuStrip()
+        {
+            var notNull = _currentResource != null;
+            keysToolStripMenuItem.Enabled = notNull;
+            addNewKeyToolStripMenuItem.Enabled = notNull;
+            languagesToolStripMenuItem.Enabled = notNull;
+            autoTranslateToolStripMenuItem.Enabled = notNull;
+
+            removeLanguageToolStripMenuItem.DropDownItems.Clear();
+            addLanguageToolStripMenuItem.DropDownItems.Clear();
+
+            if (_currentResource == null) return;
+
+            foreach (var info in ResourceLoader.GetUsedLanguages().Where(x => !_currentResource.Languages.Values.Any(y => y.CultureInfo.Equals(x))).OrderBy(x => x.Name))
+            {
+                addLanguageToolStripMenuItem.DropDownItems.Add($"{info.Name} - {info.DisplayName}").Tag = info;
+            }
+            if (addLanguageToolStripMenuItem.DropDownItems.Count > 0)
+                addLanguageToolStripMenuItem.DropDownItems.Add(new ToolStripSeparator());
+            addLanguageToolStripMenuItem.DropDownItems.Add(MoreLanguagesMenuitemName);
+            
+            foreach (var info in _currentResource.Languages.Values.Select(x => x.CultureInfo).OrderBy(x => x.Name))
+            {
+                removeLanguageToolStripMenuItem.DropDownItems.Add($"{info.Name} - {info.DisplayName}").Tag = info;
             }
         }
 
         private void addLanguageToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            CurrentResource.AddLanguage(e.ClickedItem.Text, _settingBinder.Settings.AddDefaultValuesOnLanguageAdd);
-            resourceGrid1.RefreshResourceDisplay();
+            var tag = e.ClickedItem.Tag as CultureInfo;
+            if (tag != null)
+            {
+                CurrentResource.AddLanguage(tag.Name, _settingBinder.Settings.AddDefaultValuesOnLanguageAdd);
+
+                UpdateMenuStrip();
+                resourceGrid1.RefreshResourceDisplay();
+            }
+            else if (e.ClickedItem.Text.Equals(MoreLanguagesMenuitemName, StringComparison.InvariantCulture))
+            {
+                var language = LanguageSelectDialog.ShowLanguageSelectDialog(this);
+                if(language != null && !CurrentResource.Languages.ContainsKey(language.Name))
+                {
+                    CurrentResource.AddLanguage(language.Name, _settingBinder.Settings.AddDefaultValuesOnLanguageAdd);
+
+                    UpdateMenuStrip();
+                    resourceGrid1.RefreshResourceDisplay();
+                }
+            }
         }
 
         private void addNewKeyToolStripMenuItem_Click(object sender, EventArgs e)
@@ -196,7 +241,7 @@ namespace ResxTranslator.Windows
             {
                 var nothingLoaded = string.IsNullOrEmpty(ResourceLoader.OpenedPath);
                 findToolStripMenuItem.Enabled = !nothingLoaded;
-                
+
                 Text = string.IsNullOrEmpty(ResourceLoader.OpenedPath)
                     ? _defaultWindowTitle
                     : $"{ResourceLoader.OpenedPath} - {_defaultWindowTitle}";
@@ -208,12 +253,6 @@ namespace ResxTranslator.Windows
                 var usedLanguages = ResourceLoader.GetUsedLanguages().ToList();
 
                 languageSettings1.RefreshLanguages(usedLanguages, false);
-
-                addLanguageToolStripMenuItem.DropDownItems.Clear();
-                foreach (var s in usedLanguages.Select(x => x.Name).OrderBy(x => x))
-                {
-                    addLanguageToolStripMenuItem.DropDownItems.Add(s);
-                }
 
                 Settings.Default.LastOpenedDirectory = ResourceLoader.OpenedPath ?? string.Empty;
                 Settings.Default.Save();
@@ -261,12 +300,23 @@ namespace ResxTranslator.Windows
 
         private void translateUsingBingToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (DialogResult.OK ==
-                MessageBox.Show(
-                    "Do you want to autotranslate all non-translated texts for all languages in this resource?"))
+            if (MessageBox.Show("Do you want to autotranslate all non-translated texts for all languages in this resource?") == DialogResult.OK)
             {
                 CurrentResource.AutoTranslate();
             }
+        }
+
+        private void removeLanguageToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            CurrentResource.DeleteLanguage(((CultureInfo)e.ClickedItem.Tag).Name);
+
+            UpdateMenuStrip();
+            resourceGrid1.RefreshResourceDisplay();
+        }
+
+        private void languagesToolStripMenuItem_DropDownOpened(object sender, EventArgs e)
+        {
+            removeLanguageToolStripMenuItem.Enabled = removeLanguageToolStripMenuItem.DropDownItems.Count > 0;
         }
     }
 }
