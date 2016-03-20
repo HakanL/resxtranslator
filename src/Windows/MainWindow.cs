@@ -29,6 +29,20 @@ namespace ResxTranslator.Windows
 
             resourceTreeView1.ResourceOpened += (sender, args) => CurrentResource = args.Resource;
 
+            missingTranslationView1.ItemOpened += (sender, args) =>
+            {
+                if (!args.Item.Languages.ContainsKey(args.Language.Name))
+                {
+                    if (MessageBox.Show(this, "Resource file for this language is missing, do you want to create it?",
+                        "Missing resource file", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
+                        return;
+
+                    args.Item.AddLanguage(args.Language.Name, _settingBinder.Settings.AddDefaultValuesOnLanguageAdd);
+                    resourceGrid1.RefreshResourceDisplay();
+                }
+                CurrentResource = args.Item;
+            };
+
             languageSettings1.EnabledLanguagesChanged += (sender, args) =>
             {
                 if (resourceGrid1.CurrentResource == null) return;
