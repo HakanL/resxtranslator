@@ -200,6 +200,9 @@ namespace ResxTranslator.Windows
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            _settingBinder.Settings.LastOpenedDirectory = ResourceLoader.OpenedPath ?? string.Empty;
+            _settingBinder.Settings.Save();
+
             if (!ResourceLoader.CanClose())
             {
                 e.Cancel = true;
@@ -265,9 +268,6 @@ namespace ResxTranslator.Windows
                 var usedLanguages = ResourceLoader.GetUsedLanguages().ToList();
 
                 languageSettings1.RefreshLanguages(usedLanguages, false);
-
-                Settings.Default.LastOpenedDirectory = ResourceLoader.OpenedPath ?? string.Empty;
-                Settings.Default.Save();
             });
         }
 
