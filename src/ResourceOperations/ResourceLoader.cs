@@ -76,22 +76,19 @@ namespace ResxTranslator.ResourceOperations
             if (isDirty)
             {
                 var dialogResult = MessageBox.Show("Do you want save your changes before closing?", "Save Changes",
-                    MessageBoxButtons.YesNoCancel);
+                    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
 
-                if (dialogResult == DialogResult.Yes)
-                {
-                    StopDictBuilderThread();
-                    SaveAll();
-                    return true;
-                }
-                if (dialogResult == DialogResult.No)
-                    return true;
-                //Bug? Stops thread even though nothing happened
+                // Return false only if user presses cancel
+                if (dialogResult != DialogResult.Yes)
+                    return dialogResult == DialogResult.No;
+
                 StopDictBuilderThread();
-                return false;
+                SaveAll();
             }
-            StopDictBuilderThread();
-
+            else
+            {
+                StopDictBuilderThread();
+            }
             return true;
         }
 
