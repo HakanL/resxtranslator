@@ -2,6 +2,7 @@
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using ResxTranslator.ResourceOperations;
 
@@ -78,25 +79,18 @@ namespace ResxTranslator.Controls
 
                 if (found) continue;
 
-                var pathTreeNode = new TreeNode("[" + subFolder + "]");
-                var pathHolder = new PathHolder();
-                pathHolder.Id = subFolder;
-                pathTreeNode.Tag = pathHolder;
+                var pathTreeNode = new TreeNode("[" + subFolder + "]") {Tag = new PathHolder(subFolder)};
                 searchNodes.Add(pathTreeNode);
-
                 parentNode = pathTreeNode;
             }
 
-            var leafNode = new TreeNode(resource.Id);
-            leafNode.Tag = resource;
+            var leafNode = new TreeNode(resource.Id) {Tag = resource};
 
-            resource.DirtyChanged
-                += delegate { SetTreeNodeDirty(leafNode, resource); };
+            resource.DirtyChanged += (sender, args) => SetTreeNodeDirty(leafNode, resource);
 
             SetTreeNodeTitle(leafNode, resource);
 
-            resource.LanguageChange
-                += delegate { SetTreeNodeTitle(leafNode, resource); };
+            resource.LanguageChange += (sender, args) => SetTreeNodeTitle(leafNode, resource);
 
             parentNode?.Nodes.Add(leafNode);
         }
@@ -130,47 +124,39 @@ namespace ResxTranslator.Controls
             {
                 treeNode.BackColor = Color.White;
                 ExecuteFindInNodes(treeNode.Nodes, searchParams);
-                var resourceHolder = treeNode.Tag as ResourceHolder;
-                if (resourceHolder != null)
-                {
-                    var resource = resourceHolder;
-                    if (searchParams.Match(SearchParams.TargetType.Lang, resource.NoLanguageLanguage))
-                    {
-                        treeNode.BackColor = matchColor;
-                    }
-                    var file = resource.Filename.Split('\\');
 
-                    if (searchParams.Match(SearchParams.TargetType.File, file[file.Length - 1]))
-                    {
-                        treeNode.BackColor = matchColor;
-                    }
-                    foreach (var lng in resource.Languages.Values)
-                    {
-                        if (searchParams.Match(SearchParams.TargetType.Lang, lng.LanguageId))
-                        {
-                            treeNode.BackColor = matchColor;
-                        }
-                    }
-                    foreach (DataRow row in resource.StringsTable.Rows)
-                    {
-                        if (searchParams.Match(SearchParams.TargetType.Key, row["Key"].ToString()))
-                        {
-                            treeNode.BackColor = matchColor;
-                        }
-                        if (searchParams.Match(SearchParams.TargetType.Text, row["NoLanguageValue"].ToString()))
-                        {
-                            treeNode.BackColor = matchColor;
-                        }
-                        foreach (var lng in resource.Languages.Values)
-                        {
-                            if (searchParams.Match(SearchParams.TargetType.Text, row[lng.LanguageId].ToString()))
-                            {
-                                treeNode.BackColor = matchColor;
-                            }
-                        }
-                    }
-                }
+                if (MatchNodeToSearch(searchParams, treeNode))
+                    treeNode.BackColor = matchColor;
             }
+        }
+
+        private static bool MatchNodeToSearch(SearchParams searchParams, TreeNode treeNode)
+        {
+            var resource = treeNode.Tag as ResourceHolder;
+            if (resource == null) return false;
+
+            if (searchParams.Match(SearchParams.TargetType.Lang, resource.NoLanguageLanguage))
+                return true;
+
+            var file = resource.Filename.Split('\\');
+            if (searchParams.Match(SearchParams.TargetType.File, file[file.Length - 1]))
+                return true;
+
+            if (resource.Languages.Values.Any(lng => searchParams.Match(SearchParams.TargetType.Lang, lng.LanguageId)))
+                return true;
+
+            foreach (DataRow row in resource.StringsTable.Rows)
+            {
+                if (searchParams.Match(SearchParams.TargetType.Key, row["Key"].ToString()))
+                    return true;
+                if (searchParams.Match(SearchParams.TargetType.Text, row["NoLanguageValue"].ToString()))
+                    return true;
+                if (resource.Languages.Values.Any(
+                    lng => searchParams.Match(SearchParams.TargetType.Text, row[lng.LanguageId].ToString())))
+                    return true;
+            }
+
+            return false;
         }
 
         public sealed class ResourceOpenedEventArgs : EventArgs
