@@ -54,11 +54,19 @@ namespace ResxTranslator.Windows
                 resourceGrid1.SetVisibleLanguageColumns(languageSettings1.EnabledLanguages.Select(x => x.Name).ToArray());
             };
 
-            Settings.Binder.BindControl(ignoreEmptyResourcesToolStripMenuItem, settings => settings.HideEmptyResources, this);
-            Settings.Binder.BindControl(copyDefaultValuesOnLanguageAddToolStripMenuItem, settings => settings.AddDefaultValuesOnLanguageAdd, this);
-            Settings.Binder.BindControl(openLastDirectoryOnProgramStartToolStripMenuItem, settings => settings.OpenLastDirOnStart, this);
+            Settings.Binder.BindControl(ignoreEmptyResourcesToolStripMenuItem, 
+                settings => settings.HideEmptyResources, this);
+            Settings.Binder.BindControl(copyDefaultValuesOnLanguageAddToolStripMenuItem, 
+                settings => settings.AddDefaultValuesOnLanguageAdd, this);
+            Settings.Binder.BindControl(openLastDirectoryOnProgramStartToolStripMenuItem, 
+                settings => settings.OpenLastDirOnStart, this);
+            Settings.Binder.BindControl(doNotShowResourcesWithoutAnyTranslationsToolStripMenuItem, 
+                settings => settings.HideNontranslatedResources, this);
 
-            Settings.Binder.Subscribe((sender, args) => ResourceLoader.HideEmptyResources = args.NewValue, settings => settings.HideEmptyResources, this);
+            Settings.Binder.Subscribe((sender, args) => ResourceLoader.HideEmptyResources = args.NewValue, 
+                settings => settings.HideEmptyResources, this);
+            Settings.Binder.Subscribe((sender, args) => ResourceLoader.HideNontranslatedResources = args.NewValue, 
+                settings => settings.HideNontranslatedResources, this);
             Settings.Binder.Subscribe((sender, args) => translateUsingBingToolStripMenuItem.Enabled = !string.IsNullOrEmpty(args.NewValue),
                 settings => settings.BingAppId, this);
 

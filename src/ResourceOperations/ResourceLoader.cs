@@ -17,6 +17,7 @@ namespace ResxTranslator.ResourceOperations
         private volatile bool _requestDictBuilderStop;
         private bool _hideEmptyResources;
         private readonly Dictionary<string, ResourceHolder> _resourceStore;
+        private bool _hideNontranslatedResources;
 
         public ResourceLoader()
         {
@@ -33,15 +34,35 @@ namespace ResxTranslator.ResourceOperations
             }
         }
 
-        public IEnumerable<ResourceHolder> Resources => HideEmptyResources ? 
-            _resourceStore.Values.Where(x => x.StringsTable.Rows.Count > 0) : _resourceStore.Values;
+        public IEnumerable<ResourceHolder> Resources
+        {
+            get
+            {
+                var result = _resourceStore.Values.AsEnumerable();
+                if (HideEmptyResources)
+                    result = result.Where(x => x.StringsTable.Rows.Count > 0);
+                if (HideNontranslatedResources)
+                    result = result.Where(x => x.Languages.Count > 0);
+                return result;
+            }
+        }
 
         public bool HideEmptyResources
         {
             get { return _hideEmptyResources; }
             set
             {
-                _hideEmptyResources = value; 
+                _hideEmptyResources = value;
+                OnResourcesChanged();
+            }
+        }
+
+        public bool HideNontranslatedResources
+        {
+            get { return _hideNontranslatedResources; }
+            set
+            {
+                _hideNontranslatedResources = value;
                 OnResourcesChanged();
             }
         }
