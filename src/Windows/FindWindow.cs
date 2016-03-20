@@ -6,7 +6,17 @@ namespace ResxTranslator.Windows
 {
     public partial class FindWindow : Form
     {
-        public FindWindow()
+        public static void ShowDialog(Form owner)
+        {
+            using (var window = new FindWindow())
+            {
+                window.Icon = owner.Icon;
+                window.StartPosition = FormStartPosition.CenterParent;
+                window.ShowDialog();
+            }
+        }
+
+        private FindWindow()
         {
             InitializeComponent();
         }

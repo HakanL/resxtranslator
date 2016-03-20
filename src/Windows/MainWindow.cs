@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 using ResxTranslator.Properties;
 using ResxTranslator.ResourceOperations;
@@ -61,6 +63,8 @@ namespace ResxTranslator.Windows
                 settings => settings.BingAppId, this);
 
             _settingBinder.SendUpdates(this);
+
+            Icon = Icon.ExtractAssociatedIcon(Assembly.GetAssembly(typeof(MainWindow)).Location);
         }
 
         public SearchParams CurrentSearch
@@ -190,8 +194,7 @@ namespace ResxTranslator.Windows
 
         private void findToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            var frm = new FindWindow();
-            frm.ShowDialog(this);
+            FindWindow.ShowDialog(this);
         }
 
         private void LoadResourcesFromFolder(string path)
@@ -319,8 +322,7 @@ namespace ResxTranslator.Windows
 
         private void setBingAppIdToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var frm = new BingSettingsWindow();
-            frm.ShowDialog(this);
+            BingSettingsWindow.ShowDialog(this);
         }
 
         private void translateUsingBingToolStripMenuItem_Click(object sender, EventArgs e)

@@ -7,10 +7,12 @@ namespace ResxTranslator.Windows
 {
     public partial class LanguageSelectDialog : Form
     {
-        public static CultureInfo ShowLanguageSelectDialog(IWin32Window owner)
+        public static CultureInfo ShowLanguageSelectDialog(Form owner)
         {
             using (var window = new LanguageSelectDialog())
             {
+                window.Icon = owner.Icon;
+                window.StartPosition = FormStartPosition.CenterParent;
                 return window.ShowDialog(owner) == DialogResult.OK ? window._selectedLanguage : null;
             }
         }

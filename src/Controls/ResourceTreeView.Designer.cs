@@ -35,9 +35,11 @@
             // 
             this.treeViewResx.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.treeViewResx.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeViewResx.FullRowSelect = true;
             this.treeViewResx.HideSelection = false;
             this.treeViewResx.Location = new System.Drawing.Point(0, 0);
             this.treeViewResx.Name = "treeViewResx";
+            this.treeViewResx.ShowNodeToolTips = true;
             this.treeViewResx.Size = new System.Drawing.Size(199, 406);
             this.treeViewResx.TabIndex = 1;
             this.treeViewResx.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewResx_AfterSelect);

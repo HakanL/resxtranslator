@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using ResxTranslator.Properties;
 using ResxTranslator.ResourceOperations;
 
 namespace ResxTranslator.Controls
@@ -13,6 +14,13 @@ namespace ResxTranslator.Controls
         public ResourceTreeView()
         {
             InitializeComponent();
+
+            treeViewResx.ImageList = new ImageList();
+            treeViewResx.ImageList.Images.Add(Resources.folderHS);
+            treeViewResx.ImageList.Images.Add(Resources.DocumentHS);
+            treeViewResx.ImageList.Images.Add(Resources.Book_openHS);
+
+            treeViewResx.SelectedImageIndex = 2;
         }
 
         public event EventHandler<ResourceOpenedEventArgs> ResourceOpened;
@@ -55,7 +63,7 @@ namespace ResxTranslator.Controls
 
             Debug.Assert(selectedTreeNode.Tag is ResourceHolder);
 
-            OnResourceOpened(new ResourceOpenedEventArgs((ResourceHolder) selectedTreeNode.Tag));
+            OnResourceOpened(new ResourceOpenedEventArgs((ResourceHolder)selectedTreeNode.Tag));
         }
 
         private void BuildTreeView(ResourceHolder resource)
@@ -79,12 +87,12 @@ namespace ResxTranslator.Controls
 
                 if (found) continue;
 
-                var pathTreeNode = new TreeNode("[" + subFolder + "]") {Tag = new PathHolder(subFolder)};
+                var pathTreeNode = new TreeNode("[" + subFolder + "]") { Tag = new PathHolder(subFolder), ImageIndex = 0 };
                 searchNodes.Add(pathTreeNode);
                 parentNode = pathTreeNode;
             }
 
-            var leafNode = new TreeNode(resource.Id) {Tag = resource};
+            var leafNode = new TreeNode(resource.Id) { Tag = resource, ImageIndex = 1 };
 
             resource.DirtyChanged += (sender, args) => SetTreeNodeDirty(leafNode, resource);
 

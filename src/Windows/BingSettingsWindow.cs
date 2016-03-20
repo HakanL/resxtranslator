@@ -1,14 +1,23 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows.Forms;
-
 using ResxTranslator.Properties;
 
 namespace ResxTranslator.Windows
 {
     public partial class BingSettingsWindow : Form
     {
-        public BingSettingsWindow()
+        public static void ShowDialog(Form owner)
+        {
+            using (var window = new BingSettingsWindow())
+            {
+                window.Icon = owner.Icon;
+                window.StartPosition = FormStartPosition.CenterParent;
+                window.ShowDialog();
+            }
+        }
+
+        private BingSettingsWindow()
         {
             InitializeComponent();
         }

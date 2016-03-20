@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-
 using ResxTranslator.ResourceOperations;
 
 namespace ResxTranslator.Windows
@@ -19,16 +18,18 @@ namespace ResxTranslator.Windows
 
             _resourceHolder = resourceHolder;
         }
-
-        public static bool ShowDialog(IWin32Window owner, ResourceHolder resource)
+        
+        public static bool ShowDialog(Form owner, ResourceHolder resource)
         {
-            using (var form = new AddResourceKeyWindow(resource))
+            using (var window = new AddResourceKeyWindow(resource))
             {
-                var result = form.ShowDialog();
+                window.Icon = owner.Icon;
+                window.StartPosition = FormStartPosition.CenterParent;
+                var result = window.ShowDialog();
 
                 if (result != DialogResult.OK) return false;
 
-                resource.AddString(form.Key, form.NoXlateValue, form.DefaultValue);
+                resource.AddString(window.Key, window.NoXlateValue, window.DefaultValue);
                 return true;
             }
         }

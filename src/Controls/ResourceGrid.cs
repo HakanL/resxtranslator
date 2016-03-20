@@ -211,7 +211,10 @@ namespace ResxTranslator.Controls
                 frm.textBoxString.Text = (string)value;
             }
 
-            if (frm.ShowDialog() == DialogResult.OK)
+            frm.Icon = ParentForm.Icon;
+            frm.StartPosition = FormStartPosition.CenterParent;
+
+            if (frm.ShowDialog(ParentForm) == DialogResult.OK)
             {
                 dataGridView1.CurrentCell.Value = frm.textBoxString.Text;
                 dataGridView1.EndEdit();
