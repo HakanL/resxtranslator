@@ -27,6 +27,9 @@ namespace ResxTranslator.Controls
 
         public void LoadResources(ResourceLoader loader)
         {
+            treeViewResx.SuspendLayout();
+            treeViewResx.BeginUpdate();
+
             treeViewResx.Nodes.Clear();
 
             foreach (var resource in loader.Resources)
@@ -38,6 +41,9 @@ namespace ResxTranslator.Controls
 
             if(treeViewResx.Nodes.Count > 0)
                 treeViewResx.Nodes.Cast<TreeNode>().OrderBy(x=>x.Name).First().EnsureVisible();
+
+            treeViewResx.EndUpdate();
+            treeViewResx.ResumeLayout();
         }
 
         public void Clear()
