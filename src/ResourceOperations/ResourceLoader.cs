@@ -7,15 +7,19 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using ResxTranslator.Properties;
 
 namespace ResxTranslator.ResourceOperations
 {
     public class ResourceLoader
     {
         private Thread _dictBuilderThread;
-        private volatile bool _requestDictBuilderStop;
         private string _openedPath;
+        private volatile bool _requestDictBuilderStop;
+
+        public ResourceLoader()
+        {
+            Resources = new Dictionary<string, ResourceHolder>();
+        }
 
         public string OpenedPath
         {
@@ -27,143 +31,11 @@ namespace ResxTranslator.ResourceOperations
             }
         }
 
-        public ResourceLoader()
-        {
-            Resources = new Dictionary<string, ResourceHolder>();
-        }
-
         public Dictionary<string, ResourceHolder> Resources { get; }
 
-        public IEnumerable<CultureInfo> GetUsedLanguages()
-        {
-            return Resources.Aggregate(Enumerable.Empty<LanguageHolder>(), 
-                (holder, pair) => holder.Concat(pair.Value.Languages.Values))
-                .GroupBy(x => x.LanguageId)
-                .Select(holders => holders.First().CultureInfo);
-        }
-
         public event EventHandler<ResourceLoadProgressEventArgs> ResourceLoadProgress;
+
         public event EventHandler ResourcesChanged;
-
-        public void SaveAll()
-        {
-            foreach (var resource in Resources.Values)
-            {
-                SaveResourceHolder(resource);
-            }
-        }
-
-        private void StartDictBuilderThread()
-        {
-            if (_dictBuilderThread != null && _dictBuilderThread.IsAlive)
-                throw new InvalidOperationException("Dictionary builder is already running");
-
-            // Make the logic for building the dictionary an anonymous delegate to keep it only callable on the separate thread
-            var buildDictionary = (ThreadStart)delegate
-           {
-               var currentCount = 0;
-               var totalCount = Resources.Count;
-               var currentTask = "Building language lookup";
-
-               foreach (var res in Resources.Values.TakeWhile(_ => !_requestDictBuilderStop))
-               {
-                   OnResourceLoadProgress(new ResourceLoadProgressEventArgs(currentTask, res.Filename, currentCount,
-                       totalCount));
-
-                   var translator = InprojectTranslator.Instance;
-
-                   foreach (var lang in res.Languages.Keys)
-                   {
-                       var sbAllNontranslated = new StringBuilder();
-                       var sbAllTranslated = new StringBuilder();
-                       foreach (DataRow row in res.StringsTable.Rows)
-                       {
-                           sbAllNontranslated.Append(row["NoLanguageValue"]);
-                           sbAllNontranslated.Append(" ");
-
-                           if (row[lang.ToLower()] != DBNull.Value &&
-                               row[lang.ToLower()].ToString().Trim() != "")
-                           {
-                               sbAllTranslated.Append(row[lang.ToLower()].ToString().Trim());
-                               sbAllTranslated.Append(" ");
-                           }
-                       }
-                       var diffArray = translator.RemoveWords(sbAllNontranslated.ToString(),
-                           sbAllTranslated.ToString());
-                       translator.AddWordsToLanguageChecker(lang.ToLower()
-                           , diffArray);
-                   }
-
-                   ++currentCount;
-               }
-
-               currentTask = "Building local translations dictionary";
-               currentCount = 0;
-
-               foreach (var res in Resources.Values.TakeWhile(_ => !_requestDictBuilderStop))
-               {
-                   OnResourceLoadProgress(new ResourceLoadProgressEventArgs(currentTask, res.Filename, currentCount,
-                       totalCount));
-
-                   var resDeflang = res.NoLanguageLanguage;
-                   var sb = new StringBuilder();
-                   foreach (DataRow row in res.StringsTable.Rows)
-                   {
-                       var nontranslated = row["NoLanguageValue"].ToString();
-                       if (!string.IsNullOrEmpty(nontranslated) && nontranslated.Trim() != string.Empty)
-                       {
-                           foreach (var lang in res.Languages.Keys)
-                           {
-                               if (row[lang.ToLower()] != DBNull.Value &&
-                                   row[lang.ToLower()].ToString().Trim() != string.Empty)
-                               {
-                                   sb.Append(" ");
-                                   sb.Append(row[lang.ToLower()]);
-
-                                   InprojectTranslator.Instance.AddTranslation(resDeflang
-                                       , nontranslated
-                                       , lang.ToLower()
-                                       , row[lang.ToLower()].ToString().Trim());
-                                   InprojectTranslator.Instance.AddTranslation(lang.ToLower()
-                                       , row[lang.ToLower()].ToString().Trim()
-                                       , resDeflang
-                                       , nontranslated);
-                               }
-                           }
-                       }
-                       if (!string.IsNullOrEmpty(resDeflang))
-                           InprojectTranslator.Instance.AddWordsToLanguageChecker(resDeflang,
-                               InprojectTranslator.Instance.RemoveWords(sb.ToString(), nontranslated));
-                   }
-
-                   ++currentCount;
-               }
-
-               OnResourceLoadProgress(new ResourceLoadProgressEventArgs("Done", null, 0, 0));
-           };
-
-            _dictBuilderThread = new Thread(buildDictionary)
-            {
-                Name = "DictBuilder",
-                IsBackground = false,
-                Priority = ThreadPriority.BelowNormal
-            };
-            _requestDictBuilderStop = false;
-
-            _dictBuilderThread.Start();
-        }
-
-        public void StopDictBuilderThread()
-        {
-            if (_dictBuilderThread != null && _dictBuilderThread.IsAlive)
-            {
-                _requestDictBuilderStop = true;
-                while (false == _dictBuilderThread.Join(50))
-                {
-                }
-            }
-            _requestDictBuilderStop = false;
-        }
 
         public static void SaveResourceHolder(ResourceHolder resource)
         {
@@ -210,17 +82,74 @@ namespace ResxTranslator.ResourceOperations
             return true;
         }
 
+        public void Close()
+        {
+            if (!CanClose())
+                throw new InvalidOperationException("Can't close at this time");
+
+            StopDictBuilderThread();
+            Resources.Clear();
+            OpenedPath = string.Empty;
+        }
+
+        public IEnumerable<CultureInfo> GetUsedLanguages()
+        {
+            return Resources.Aggregate(Enumerable.Empty<LanguageHolder>(),
+                (holder, pair) => holder.Concat(pair.Value.Languages.Values))
+                .GroupBy(x => x.LanguageId)
+                .Select(holders => holders.First().CultureInfo);
+        }
+
+        public void OpenProject(string selectedPath)
+        {
+            Close();
+
+            OnResourceLoadProgress(new ResourceLoadProgressEventArgs("Loading resources..."));
+
+            FindResx(selectedPath);
+            OpenedPath = selectedPath;
+
+            OnResourceLoadProgress(new ResourceLoadProgressEventArgs("Building local dictionary..."));
+
+            StartDictBuilderThread();
+        }
+
+        public void SaveAll()
+        {
+            foreach (var resource in Resources.Values)
+            {
+                SaveResourceHolder(resource);
+            }
+        }
+
+        public void StopDictBuilderThread()
+        {
+            if (_dictBuilderThread != null && _dictBuilderThread.IsAlive)
+            {
+                _requestDictBuilderStop = true;
+                while (false == _dictBuilderThread.Join(50))
+                {
+                }
+            }
+            _requestDictBuilderStop = false;
+        }
+
         protected virtual void OnResourceLoadProgress(ResourceLoadProgressEventArgs e)
         {
             ResourceLoadProgress?.Invoke(this, e);
         }
 
-        void FindResx(string rootDirectory)
+        protected virtual void OnResourcesChanged()
+        {
+            ResourcesChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void FindResx(string rootDirectory)
         {
             FindResx(rootDirectory, rootDirectory);
         }
 
-        void FindResx(string rootDirectory, string currentDirectory)
+        private void FindResx(string rootDirectory, string currentDirectory)
         {
             var displayFolder = string.Empty;
             if (currentDirectory.StartsWith(rootDirectory, StringComparison.InvariantCultureIgnoreCase))
@@ -291,29 +220,104 @@ namespace ResxTranslator.ResourceOperations
             }
         }
 
-        public void OpenProject(string selectedPath)
+        private void StartDictBuilderThread()
         {
-            Close();
-            OnResourceLoadProgress(new ResourceLoadProgressEventArgs("Loading resources..."));
-            FindResx(selectedPath);
-            OpenedPath = selectedPath;
-            OnResourceLoadProgress(new ResourceLoadProgressEventArgs("Building local dictionary..."));
-            StartDictBuilderThread();
-        }
+            if (_dictBuilderThread != null && _dictBuilderThread.IsAlive)
+                throw new InvalidOperationException("Dictionary builder is already running");
 
-        protected virtual void OnResourcesChanged()
-        {
-            ResourcesChanged?.Invoke(this, EventArgs.Empty);
-        }
+            // Make the logic for building the dictionary an anonymous delegate to keep it only callable on the separate thread
+            var buildDictionary = (ThreadStart) delegate
+            {
+                var currentCount = 0;
+                var totalCount = Resources.Count;
+                var currentTask = "Building language lookup";
 
-        public void Close()
-        {
-            if(!CanClose())
-                throw new InvalidOperationException("Can't close at this time");
+                foreach (var res in Resources.Values.TakeWhile(_ => !_requestDictBuilderStop))
+                {
+                    OnResourceLoadProgress(new ResourceLoadProgressEventArgs(currentTask, res.Filename, currentCount,
+                        totalCount));
 
-            StopDictBuilderThread();
-            Resources.Clear();
-            OpenedPath = string.Empty;
+                    var translator = InprojectTranslator.Instance;
+
+                    foreach (var lang in res.Languages.Keys)
+                    {
+                        var sbAllNontranslated = new StringBuilder();
+                        var sbAllTranslated = new StringBuilder();
+                        foreach (DataRow row in res.StringsTable.Rows)
+                        {
+                            sbAllNontranslated.Append(row["NoLanguageValue"]);
+                            sbAllNontranslated.Append(" ");
+
+                            if (row[lang.ToLower()] != DBNull.Value &&
+                                row[lang.ToLower()].ToString().Trim() != "")
+                            {
+                                sbAllTranslated.Append(row[lang.ToLower()].ToString().Trim());
+                                sbAllTranslated.Append(" ");
+                            }
+                        }
+                        var diffArray = translator.RemoveWords(sbAllNontranslated.ToString(),
+                            sbAllTranslated.ToString());
+                        translator.AddWordsToLanguageChecker(lang.ToLower()
+                            , diffArray);
+                    }
+
+                    ++currentCount;
+                }
+
+                currentTask = "Building local translations dictionary";
+                currentCount = 0;
+
+                foreach (var res in Resources.Values.TakeWhile(_ => !_requestDictBuilderStop))
+                {
+                    OnResourceLoadProgress(new ResourceLoadProgressEventArgs(currentTask, res.Filename, currentCount,
+                        totalCount));
+
+                    var resDeflang = res.NoLanguageLanguage;
+                    var sb = new StringBuilder();
+                    foreach (DataRow row in res.StringsTable.Rows)
+                    {
+                        var nontranslated = row["NoLanguageValue"].ToString();
+                        if (!string.IsNullOrEmpty(nontranslated) && nontranslated.Trim() != string.Empty)
+                        {
+                            foreach (var lang in res.Languages.Keys)
+                            {
+                                if (row[lang.ToLower()] != DBNull.Value &&
+                                    row[lang.ToLower()].ToString().Trim() != string.Empty)
+                                {
+                                    sb.Append(" ");
+                                    sb.Append(row[lang.ToLower()]);
+
+                                    InprojectTranslator.Instance.AddTranslation(resDeflang
+                                        , nontranslated
+                                        , lang.ToLower()
+                                        , row[lang.ToLower()].ToString().Trim());
+                                    InprojectTranslator.Instance.AddTranslation(lang.ToLower()
+                                        , row[lang.ToLower()].ToString().Trim()
+                                        , resDeflang
+                                        , nontranslated);
+                                }
+                            }
+                        }
+                        if (!string.IsNullOrEmpty(resDeflang))
+                            InprojectTranslator.Instance.AddWordsToLanguageChecker(resDeflang,
+                                InprojectTranslator.Instance.RemoveWords(sb.ToString(), nontranslated));
+                    }
+
+                    ++currentCount;
+                }
+
+                OnResourceLoadProgress(new ResourceLoadProgressEventArgs("Done", null, 0, 0));
+            };
+
+            _dictBuilderThread = new Thread(buildDictionary)
+            {
+                Name = "DictBuilder",
+                IsBackground = false,
+                Priority = ThreadPriority.BelowNormal
+            };
+            _requestDictBuilderStop = false;
+
+            _dictBuilderThread.Start();
         }
     }
 }

@@ -4,13 +4,17 @@ namespace ResxTranslator.ResourceOperations
 {
     public class LanguageHolder
     {
+        private string _languageId;
+
         public LanguageHolder(string languageId, string filename)
         {
             LanguageId = languageId;
             Filename = filename;
         }
 
-        private string _languageId;
+        public CultureInfo CultureInfo { get; private set; }
+
+        public string Filename { get; set; }
 
         public string LanguageId
         {
@@ -21,10 +25,6 @@ namespace ResxTranslator.ResourceOperations
                 _languageId = value;
             }
         }
-
-        public string Filename { get; set; }
-
-        public CultureInfo CultureInfo { get; private set; }
 
         public override string ToString()
         {

@@ -8,13 +8,9 @@ namespace ResxTranslator
         public static void InvokeIfRequired<T>(this T c, Action<T> action) where T : Control
         {
             if (c.InvokeRequired)
-            {
                 c.BeginInvoke(new Action(() => action(c)));
-            }
             else
-            {
                 action(c);
-            }
         }
     }
 }

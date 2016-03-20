@@ -12,30 +12,7 @@ namespace ResxTranslator.Windows
         private readonly string _defaultWindowTitle;
 
         private ResourceHolder _currentResource;
-        public ResourceLoader ResourceLoader { get; }
-
         private SearchParams _currentSearch;
-
-        public SearchParams CurrentSearch
-        {
-            get { return _currentSearch; }
-            set
-            {
-                _currentSearch = value;
-                resourceTreeView1.ExecuteFindInNodes(value);
-            }
-        }
-
-        private ResourceHolder CurrentResource
-        {
-            get { return _currentResource; }
-            set
-            {
-                _currentResource = value;
-                resourceGrid1.CurrentResource = value;
-                resourceGrid1.SetVisibleLanguageColumns(languageSettings1.EnabledLanguages.Select(x => x.Name).ToArray());
-            }
-        }
 
         public MainWindow()
         {
@@ -56,48 +33,131 @@ namespace ResxTranslator.Windows
             };
         }
 
-        private void OnResourceLoaderOnResourceLoadProgress(object sender, ResourceLoadProgressEventArgs args)
+        public SearchParams CurrentSearch
         {
-            this.InvokeIfRequired(_ =>
+            get { return _currentSearch; }
+            set
             {
-                toolStripStatusLabelCurrentItem.Text = args.CurrentlyProcessedItem ?? string.Empty;
-                toolStripStatusLabel1.Text = args.CurrentProcess ?? string.Empty;
-                if (args.Progress < args.ProgressTop)
-                {
-                    toolStripProgressBar1.Visible = true;
-                    toolStripProgressBar1.Maximum = args.ProgressTop;
-                    toolStripProgressBar1.Value = args.Progress;
-                }
-                else
-                {
-                    toolStripProgressBar1.Visible = false;
-                }
-            });
+                _currentSearch = value;
+                resourceTreeView1.ExecuteFindInNodes(value);
+            }
         }
 
-        private void OnResourceLoaderOnResourcesChanged(object sender, EventArgs args)
+        public ResourceLoader ResourceLoader { get; }
+
+        private ResourceHolder CurrentResource
         {
-            this.InvokeIfRequired(_ =>
+            get { return _currentResource; }
+            set
             {
-                Text = string.IsNullOrEmpty(ResourceLoader.OpenedPath) ? _defaultWindowTitle : $"{ResourceLoader.OpenedPath} - {_defaultWindowTitle}";
+                _currentResource = value;
+                resourceGrid1.CurrentResource = value;
+                resourceGrid1.SetVisibleLanguageColumns(languageSettings1.EnabledLanguages.Select(x => x.Name).ToArray());
+            }
+        }
 
-                CurrentResource = null;
+        public void SetBingTranslationAvailable(bool isIt)
+        {
+            translateUsingBingToolStripMenuItem.Enabled = isIt;
+            autoTranslateToolStripMenuItem1.Enabled = isIt;
+            resourceGrid1.DisplayContextMenu = isIt;
+        }
 
-                resourceTreeView1.LoadResources(ResourceLoader);
+        private void addLanguageToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            CurrentResource.AddLanguage(e.ClickedItem.Text);
+            resourceGrid1.RefreshResourceDisplay();
+        }
 
-                var usedLanguages = ResourceLoader.GetUsedLanguages().ToList();
+        private void addNewKeyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (CurrentResource != null)
+            {
+                AddResourceKeyWindow.ShowDialog(this, CurrentResource);
+                resourceGrid1.RefreshResourceDisplay();
+            }
+        }
 
-                languageSettings1.RefreshLanguages(usedLanguages, false);
+        private void autoTranslateToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            var myItem = sender as ToolStripMenuItem;
+            //Get the ContextMenuString (owner of the ToolsStripMenuItem)
+            var theStrip = myItem?.Owner as ContextMenuStrip;
+            //The SourceControl is the control that opened the contextmenustrip.
+            //In my case it could be a linkLabel
+            var box = theStrip?.SourceControl as CheckedListBox;
+            if (box != null)
+            {
+                //TODO BingTranslator.AutoTranslate(CurrentResource, box.Items[LastClickedLanguageIndex].ToString());
+            }
+        }
 
-                addLanguageToolStripMenuItem.DropDownItems.Clear();
-                foreach (var s in usedLanguages.Select(x => x.Name).OrderBy(x => x))
-                {
-                    addLanguageToolStripMenuItem.DropDownItems.Add(s);
-                }
+        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!ResourceLoader.CanClose())
+                return;
 
-                Settings.Default.Mrud = ResourceLoader.OpenedPath ?? string.Empty;
-                Settings.Default.Save();
-            });
+            ResourceLoader.Close();
+        }
+
+        private void deleteKeyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (CurrentResource == null || resourceGrid1.RowCount == 0)
+                return;
+
+            if (MessageBox.Show("Are you sure you want to delete the currently selected row?", "Delete a key",
+                MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
+            {
+                resourceGrid1.DeleteSelectedRow();
+            }
+        }
+
+        private void deleteLanguageFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var myItem = sender as ToolStripMenuItem;
+            //Get the ContextMenuString (owner of the ToolsStripMenuItem)
+            var theStrip = myItem?.Owner as ContextMenuStrip;
+            //The SourceControl is the control that opened the contextmenustrip.
+            var box = theStrip?.SourceControl as CheckedListBox;
+            if (box != null && MessageBox.Show("Do you really want to delete file for language "
+                //TODO + box.Items[LastClickedLanguageIndex]
+                ) == DialogResult.OK)
+            {
+                //CurrentResource.DeleteLanguage(box.Items[LastClickedLanguageIndex].ToString());
+
+                resourceGrid1.RefreshResourceDisplay();
+            }
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void findToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            var frm = new FindWindow();
+            frm.ShowDialog(this);
+        }
+
+        private void hideNontranslatedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            hideNontranslatedToolStripMenuItem.Checked = !hideNontranslatedToolStripMenuItem.Checked;
+
+            resourceGrid1.ApplyFilterCondition();
+        }
+
+        private void LoadResourcesFromFolder(string path)
+        {
+            ResourceLoader.OpenProject(path);
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!ResourceLoader.CanClose())
+            {
+                e.Cancel = true;
+            }
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -125,32 +185,53 @@ namespace ResxTranslator.Windows
                     throw new ArgumentException(
                         "Invalid command line \r\n" + Environment.CommandLine + "\r\nPath: " + path, inner);
                 }
-            }/*
-            else
-            {
-                if (string.IsNullOrEmpty(Settings.Default.BingAppId))
-                {
-                    MessageBox.Show("Note! to use auto translate you need to get a Bing AppID.", "ResxTranslator");
-                }
-            }*/
-        }
-
-        private void LoadResourcesFromFolder(string path)
-        {
-            ResourceLoader.OpenProject(path);
-        }
-
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (!ResourceLoader.CanClose())
-            {
-                e.Cancel = true;
             }
         }
 
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OnResourceLoaderOnResourceLoadProgress(object sender, ResourceLoadProgressEventArgs args)
         {
-            Close();
+            this.InvokeIfRequired(_ =>
+            {
+                toolStripStatusLabelCurrentItem.Text = args.CurrentlyProcessedItem ?? string.Empty;
+                toolStripStatusLabel1.Text = args.CurrentProcess ?? string.Empty;
+                if (args.Progress < args.ProgressTop)
+                {
+                    toolStripProgressBar1.Visible = true;
+                    toolStripProgressBar1.Maximum = args.ProgressTop;
+                    toolStripProgressBar1.Value = args.Progress;
+                }
+                else
+                {
+                    toolStripProgressBar1.Visible = false;
+                }
+            });
+        }
+
+        private void OnResourceLoaderOnResourcesChanged(object sender, EventArgs args)
+        {
+            this.InvokeIfRequired(_ =>
+            {
+                Text = string.IsNullOrEmpty(ResourceLoader.OpenedPath)
+                    ? _defaultWindowTitle
+                    : $"{ResourceLoader.OpenedPath} - {_defaultWindowTitle}";
+
+                CurrentResource = null;
+
+                resourceTreeView1.LoadResources(ResourceLoader);
+
+                var usedLanguages = ResourceLoader.GetUsedLanguages().ToList();
+
+                languageSettings1.RefreshLanguages(usedLanguages, false);
+
+                addLanguageToolStripMenuItem.DropDownItems.Clear();
+                foreach (var s in usedLanguages.Select(x => x.Name).OrderBy(x => x))
+                {
+                    addLanguageToolStripMenuItem.DropDownItems.Add(s);
+                }
+
+                Settings.Default.LastOpenedDirectory = ResourceLoader.OpenedPath ?? string.Empty;
+                Settings.Default.Save();
+            });
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -160,7 +241,7 @@ namespace ResxTranslator.Windows
 
             var folderDialog = new FolderBrowserDialog
             {
-                SelectedPath = Settings.Default.Mrud,
+                SelectedPath = Settings.Default.LastOpenedDirectory,
                 Description = "Browse to the root of the project, typically where the sln file is."
             };
 
@@ -168,11 +249,6 @@ namespace ResxTranslator.Windows
             {
                 LoadResourcesFromFolder(folderDialog.SelectedPath);
             }
-        }
-
-        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ResourceLoader.SaveAll();
         }
 
         private void revertCurrentToolStripMenuItem_Click(object sender, EventArgs e)
@@ -186,65 +262,15 @@ namespace ResxTranslator.Windows
             ResourceLoader.SaveResourceHolder(CurrentResource);
         }
 
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ResourceLoader.SaveAll();
+        }
+
         private void setBingAppIdToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var frm = new BingSettingsWindow();
             frm.ShowDialog(this);
-        }
-
-        private void hideNontranslatedToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            hideNontranslatedToolStripMenuItem.Checked = !hideNontranslatedToolStripMenuItem.Checked;
-
-            resourceGrid1.ApplyFilterCondition();
-        }
-
-        private void addNewKeyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (CurrentResource != null)
-            {
-                AddResourceKeyWindow.ShowDialog(this, CurrentResource);
-                resourceGrid1.RefreshResourceDisplay();
-            }
-        }
-
-        private void deleteKeyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (CurrentResource == null || resourceGrid1.RowCount == 0)
-                return;
-
-            if (MessageBox.Show("Are you sure you want to delete the currently selected row?", "Delete a key",
-                MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
-            {
-                resourceGrid1.DeleteSelectedRow();
-            }
-        }
-
-        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (!ResourceLoader.CanClose())
-                return;
-
-            ResourceLoader.Close();
-        }
-
-        private void findToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            var frm = new FindWindow();
-            frm.ShowDialog(this);
-        }
-
-        public void SetBingTranslationAvailable(bool isIt)
-        {
-            translateUsingBingToolStripMenuItem.Enabled = isIt;
-            autoTranslateToolStripMenuItem1.Enabled = isIt;
-            resourceGrid1.DisplayContextMenu = isIt;
-        }
-
-        private void addLanguageToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-            CurrentResource.AddLanguage(e.ClickedItem.Text);
-            resourceGrid1.RefreshResourceDisplay();
         }
 
         private void translateUsingBingToolStripMenuItem_Click(object sender, EventArgs e)
@@ -254,37 +280,6 @@ namespace ResxTranslator.Windows
                     "Do you want to autotranslate all non-translated texts for all languages in this resource?"))
             {
                 CurrentResource.AutoTranslate();
-            }
-        }
-
-        private void deleteLanguageFileToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var myItem = sender as ToolStripMenuItem;
-            //Get the ContextMenuString (owner of the ToolsStripMenuItem)
-            var theStrip = myItem?.Owner as ContextMenuStrip;
-            //The SourceControl is the control that opened the contextmenustrip.
-            var box = theStrip?.SourceControl as CheckedListBox;
-            if (box != null && MessageBox.Show("Do you really want to delete file for language "
-                                               //TODO + box.Items[LastClickedLanguageIndex]
-                                               ) == DialogResult.OK)
-            {
-                //CurrentResource.DeleteLanguage(box.Items[LastClickedLanguageIndex].ToString());
-
-                resourceGrid1.RefreshResourceDisplay();
-            }
-        }
-
-        private void autoTranslateToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            var myItem = sender as ToolStripMenuItem;
-            //Get the ContextMenuString (owner of the ToolsStripMenuItem)
-            var theStrip = myItem?.Owner as ContextMenuStrip;
-            //The SourceControl is the control that opened the contextmenustrip.
-            //In my case it could be a linkLabel
-            var box = theStrip?.SourceControl as CheckedListBox;
-            if (box != null)
-            {
-                //TODO BingTranslator.AutoTranslate(CurrentResource, box.Items[LastClickedLanguageIndex].ToString());
             }
         }
     }

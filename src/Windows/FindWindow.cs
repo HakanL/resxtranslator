@@ -12,7 +12,7 @@ namespace ResxTranslator.Windows
         }
 
         private MainWindow MyWindow => (MainWindow) Owner;
-        
+
         private void buttonFind_Click(object sender, EventArgs e)
         {
             var sp = new SearchParams(
