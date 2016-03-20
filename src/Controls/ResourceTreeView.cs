@@ -104,7 +104,7 @@ namespace ResxTranslator.Controls
         private void SetTreeNodeDirty(TreeNode node, ResourceHolder res)
         {
             this.InvokeIfRequired(
-                c => { node.ForeColor = res.IsDirty ? Color.Blue : Color.Black; });
+                c => { node.ForeColor = res.IsDirty ? Color.Red : Color.Black; });
         }
 
         protected virtual void OnResourceOpened(ResourceOpenedEventArgs e)
@@ -119,14 +119,13 @@ namespace ResxTranslator.Controls
 
         private static void ExecuteFindInNodes(TreeNodeCollection searchNodes, SearchParams searchParams)
         {
-            var matchColor = Color.GreenYellow;
             foreach (TreeNode treeNode in searchNodes)
             {
                 treeNode.BackColor = Color.White;
                 ExecuteFindInNodes(treeNode.Nodes, searchParams);
 
                 if (MatchNodeToSearch(searchParams, treeNode))
-                    treeNode.BackColor = matchColor;
+                    treeNode.BackColor = Color.GreenYellow;
             }
         }
 
