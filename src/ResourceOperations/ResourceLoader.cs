@@ -60,7 +60,7 @@ namespace ResxTranslator.ResourceOperations
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Exception while saving: " + resource.Id);
+                    MessageBox.Show(ex.Message, "Exception while saving: " + resource.Id, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -137,8 +137,9 @@ namespace ResxTranslator.ResourceOperations
             if (_dictBuilderThread != null && _dictBuilderThread.IsAlive)
             {
                 _requestDictBuilderStop = true;
-                while (false == _dictBuilderThread.Join(50))
+                while (!_dictBuilderThread.Join(100))
                 {
+                    Application.DoEvents();
                 }
             }
             _requestDictBuilderStop = false;
