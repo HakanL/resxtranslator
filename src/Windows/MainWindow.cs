@@ -196,7 +196,13 @@ namespace ResxTranslator.Windows
 
         private void LoadResourcesFromFolder(string path)
         {
+            Enabled = false;
+            toolStripStatusLabel1.Text = $"Opening \"{path}\"...";
+            Application.DoEvents();
+
             ResourceLoader.OpenProject(path);
+
+            Enabled = true;
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
