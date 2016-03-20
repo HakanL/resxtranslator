@@ -138,13 +138,9 @@ namespace ResxTranslator.Windows
         private void MainForm_Load(object sender, EventArgs e)
         {
             var args = Environment.GetCommandLineArgs();
-            if (args.Length > 2 && args[1].Trim() == "-f" && !string.IsNullOrEmpty(args[2]))
+            if (args.Length > 1 && !string.IsNullOrEmpty(args[1].Trim()))
             {
-                var path = args[2].Trim();
-                if (path.Contains("\""))
-                {
-                    path = path.Replace("\"", "").Trim();
-                }
+                var path = args[1].Trim();
                 try
                 {
                     var fldr = new DirectoryInfo(path);
