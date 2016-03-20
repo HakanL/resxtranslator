@@ -2,7 +2,7 @@
 
 namespace ResxTranslator.Windows
 {
-	partial class MainWindow
+    sealed partial class MainWindow
 	{
 		/// <summary>
 		/// Required designer variable.

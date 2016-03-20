@@ -15,20 +15,35 @@ namespace ResxTranslator.ResourceOperations
     {
         private Thread _dictBuilderThread;
         private volatile bool _requestDictBuilderStop;
-        private string _rootPath;
+        private string _openedPath;
+
+        public string OpenedPath
+        {
+            get { return _openedPath; }
+            private set
+            {
+                _openedPath = value;
+                OnOpenedPathChanged();
+            }
+        }
 
         public ResourceLoader()
         {
             Resources = new Dictionary<string, ResourceHolder>();
         }
 
-        public Dictionary<string, ResourceHolder> Resources { set; get; }
+        public Dictionary<string, ResourceHolder> Resources { get; }
 
-        public IEnumerable<CultureInfo> UsedLanguages => Resources
-            .Aggregate(Enumerable.Empty<LanguageHolder>(), (holder, pair) => holder.Concat(pair.Value.Languages.Values))
-            .GroupBy(x => x.LanguageId).Select(holders => holders.First().CultureInfo);
+        public IEnumerable<CultureInfo> GetUsedLanguages()
+        {
+            return Resources.Aggregate(Enumerable.Empty<LanguageHolder>(), 
+                (holder, pair) => holder.Concat(pair.Value.Languages.Values))
+                .GroupBy(x => x.LanguageId)
+                .Select(holders => holders.First().CultureInfo);
+        }
 
         public event EventHandler<ResourceLoadProgressEventArgs> ResourceLoadProgress;
+        public event EventHandler OpenedPathChanged;
 
         public void SaveAll()
         {
@@ -40,7 +55,7 @@ namespace ResxTranslator.ResourceOperations
 
         private void StartDictBuilderThread()
         {
-            if(_dictBuilderThread.IsAlive)
+            if (_dictBuilderThread != null && _dictBuilderThread.IsAlive)
                 throw new InvalidOperationException("Dictionary builder is already running");
 
             // Make the logic for building the dictionary an anonymous delegate to keep it only callable on the separate thread
@@ -127,8 +142,12 @@ namespace ResxTranslator.ResourceOperations
                OnResourceLoadProgress(new ResourceLoadProgressEventArgs("Done", null, 0, 0));
            };
 
-            _dictBuilderThread = new Thread(buildDictionary);
-            _dictBuilderThread.Name = "DictBuilder";
+            _dictBuilderThread = new Thread(buildDictionary)
+            {
+                Name = "DictBuilder",
+                IsBackground = false,
+                Priority = ThreadPriority.BelowNormal
+            };
             _requestDictBuilderStop = false;
 
             _dictBuilderThread.Start();
@@ -199,9 +218,9 @@ namespace ResxTranslator.ResourceOperations
         public void FindResx(string folder)
         {
             var displayFolder = string.Empty;
-            if (folder.StartsWith(_rootPath, StringComparison.InvariantCultureIgnoreCase))
+            if (folder.StartsWith(OpenedPath, StringComparison.InvariantCultureIgnoreCase))
             {
-                displayFolder = folder.Substring(_rootPath.Length);
+                displayFolder = folder.Substring(OpenedPath.Length);
             }
             if (displayFolder.StartsWith("\\"))
             {
@@ -273,18 +292,21 @@ namespace ResxTranslator.ResourceOperations
 
             OnResourceLoadProgress(new ResourceLoadProgressEventArgs("Building resource tree"));
 
-            _rootPath = selectedPath;
+            OpenedPath = selectedPath;
 
-            Settings.Default.Mrud = _rootPath;
+            Settings.Default.Mrud = OpenedPath;
             Settings.Default.Save();
-
-
-            FindResx(_rootPath);
-
-
+            
+            FindResx(OpenedPath);
+            
             OnResourceLoadProgress(new ResourceLoadProgressEventArgs("Building local dictionary"));
 
             StartDictBuilderThread();
+        }
+
+        protected virtual void OnOpenedPathChanged()
+        {
+            OpenedPathChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

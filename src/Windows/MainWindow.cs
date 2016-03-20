@@ -7,8 +7,10 @@ using ResxTranslator.ResourceOperations;
 
 namespace ResxTranslator.Windows
 {
-    public partial class MainWindow : Form
+    public sealed partial class MainWindow : Form
     {
+        private readonly string _defaultWindowTitle;
+
         private ResourceHolder _currentResource;
         public ResourceLoader ResourceLoader { get; }
 
@@ -24,7 +26,7 @@ namespace ResxTranslator.Windows
             }
         }
 
-        protected ResourceHolder CurrentResource
+        private ResourceHolder CurrentResource
         {
             get { return _currentResource; }
             set
@@ -34,11 +36,13 @@ namespace ResxTranslator.Windows
                 resourceGrid1.SetVisibleLanguageColumns(languageSettings1.EnabledLanguages.Select(x => x.Name).ToArray());
             }
         }
-        
+
         public MainWindow()
         {
             InitializeComponent();
-            
+
+            _defaultWindowTitle = Text;
+
             ResourceLoader = new ResourceLoader();
             ResourceLoader.ResourceLoadProgress += (sender, args) => this.InvokeIfRequired(x =>
             {
@@ -55,13 +59,17 @@ namespace ResxTranslator.Windows
                     toolStripProgressBar1.Visible = false;
                 }
             });
+            ResourceLoader.OpenedPathChanged +=
+                (sender, args) => Text = string.IsNullOrEmpty(ResourceLoader.OpenedPath) 
+                ? _defaultWindowTitle 
+                : $"{ResourceLoader.OpenedPath} - {_defaultWindowTitle}";
 
             resourceTreeView1.ResourceOpened += (sender, args) => CurrentResource = args.Resource;
 
             languageSettings1.EnabledLanguagesChanged += (sender, args) =>
             {
                 if (resourceGrid1.CurrentResource == null) return;
-                resourceGrid1.SetVisibleLanguageColumns(languageSettings1.EnabledLanguages.Select(x=>x.Name).ToArray());
+                resourceGrid1.SetVisibleLanguageColumns(languageSettings1.EnabledLanguages.Select(x => x.Name).ToArray());
             };
         }
 
@@ -106,7 +114,7 @@ namespace ResxTranslator.Windows
 
             resourceTreeView1.LoadResources(ResourceLoader);
 
-            var usedLanguages = ResourceLoader.UsedLanguages.ToList();
+            var usedLanguages = ResourceLoader.GetUsedLanguages().ToList();
 
             languageSettings1.RefreshLanguages(usedLanguages, false);
 
@@ -216,14 +224,14 @@ namespace ResxTranslator.Windows
             var frm = new FindWindow();
             frm.ShowDialog(this);
         }
-        
+
         public void SetBingTranslationAvailable(bool isIt)
         {
             translateUsingBingToolStripMenuItem.Enabled = isIt;
             autoTranslateToolStripMenuItem1.Enabled = isIt;
             resourceGrid1.DisplayContextMenu = isIt;
         }
-        
+
         private void addLanguageToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             CurrentResource.AddLanguage(e.ClickedItem.Text);
@@ -247,7 +255,7 @@ namespace ResxTranslator.Windows
             var theStrip = myItem?.Owner as ContextMenuStrip;
             //The SourceControl is the control that opened the contextmenustrip.
             var box = theStrip?.SourceControl as CheckedListBox;
-            if (box != null && MessageBox.Show("Do you really want to delete file for language " 
+            if (box != null && MessageBox.Show("Do you really want to delete file for language "
                                                //TODO + box.Items[LastClickedLanguageIndex]
                                                ) == DialogResult.OK)
             {
