@@ -38,12 +38,13 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.checkBoxText = new System.Windows.Forms.CheckBox();
             this.checkBoxKey = new System.Windows.Forms.CheckBox();
+            this.checkBoxFile = new System.Windows.Forms.CheckBox();
             this.checkBoxLang = new System.Windows.Forms.CheckBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.checkBoxWord = new System.Windows.Forms.CheckBox();
             this.checkBoxCS = new System.Windows.Forms.CheckBox();
             this.buttonFind = new System.Windows.Forms.Button();
-            this.checkBoxFile = new System.Windows.Forms.CheckBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -55,7 +56,7 @@
             this.textBoxSearch.Location = new System.Drawing.Point(6, 17);
             this.textBoxSearch.Name = "textBoxSearch";
             this.textBoxSearch.Size = new System.Drawing.Size(384, 20);
-            this.textBoxSearch.TabIndex = 1;
+            this.textBoxSearch.TabIndex = 0;
             // 
             // radioButton1
             // 
@@ -73,7 +74,7 @@
             this.radioButtonRegexp.Location = new System.Drawing.Point(79, 19);
             this.radioButtonRegexp.Name = "radioButtonRegexp";
             this.radioButtonRegexp.Size = new System.Drawing.Size(63, 17);
-            this.radioButtonRegexp.TabIndex = 2;
+            this.radioButtonRegexp.TabIndex = 1;
             this.radioButtonRegexp.Text = "RegExp";
             this.radioButtonRegexp.UseVisualStyleBackColor = true;
             // 
@@ -86,7 +87,7 @@
             this.groupBox1.Location = new System.Drawing.Point(16, 117);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(396, 50);
-            this.groupBox1.TabIndex = 4;
+            this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Use:";
             // 
@@ -97,7 +98,7 @@
             this.radioButtonText.Location = new System.Drawing.Point(7, 19);
             this.radioButtonText.Name = "radioButtonText";
             this.radioButtonText.Size = new System.Drawing.Size(46, 17);
-            this.radioButtonText.TabIndex = 2;
+            this.radioButtonText.TabIndex = 0;
             this.radioButtonText.TabStop = true;
             this.radioButtonText.Text = "Text";
             this.radioButtonText.UseVisualStyleBackColor = true;
@@ -118,7 +119,7 @@
             this.groupBox2.Location = new System.Drawing.Point(16, 13);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(396, 49);
-            this.groupBox2.TabIndex = 5;
+            this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Find:";
             // 
@@ -131,7 +132,7 @@
             this.groupBox3.Location = new System.Drawing.Point(16, 68);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(396, 43);
-            this.groupBox3.TabIndex = 4;
+            this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "What:";
             // 
@@ -153,9 +154,19 @@
             this.checkBoxKey.Location = new System.Drawing.Point(102, 19);
             this.checkBoxKey.Name = "checkBoxKey";
             this.checkBoxKey.Size = new System.Drawing.Size(44, 17);
-            this.checkBoxKey.TabIndex = 0;
+            this.checkBoxKey.TabIndex = 1;
             this.checkBoxKey.Text = "Key";
             this.checkBoxKey.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxFile
+            // 
+            this.checkBoxFile.AutoSize = true;
+            this.checkBoxFile.Location = new System.Drawing.Point(316, 19);
+            this.checkBoxFile.Name = "checkBoxFile";
+            this.checkBoxFile.Size = new System.Drawing.Size(71, 17);
+            this.checkBoxFile.TabIndex = 3;
+            this.checkBoxFile.Text = "File name";
+            this.checkBoxFile.UseVisualStyleBackColor = true;
             // 
             // checkBoxLang
             // 
@@ -163,7 +174,7 @@
             this.checkBoxLang.Location = new System.Drawing.Point(194, 19);
             this.checkBoxLang.Name = "checkBoxLang";
             this.checkBoxLang.Size = new System.Drawing.Size(74, 17);
-            this.checkBoxLang.TabIndex = 0;
+            this.checkBoxLang.TabIndex = 2;
             this.checkBoxLang.Text = "Language";
             this.checkBoxLang.UseVisualStyleBackColor = true;
             // 
@@ -174,7 +185,7 @@
             this.groupBox4.Location = new System.Drawing.Point(16, 173);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(396, 50);
-            this.groupBox4.TabIndex = 4;
+            this.groupBox4.TabIndex = 3;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Options:";
             // 
@@ -184,7 +195,7 @@
             this.checkBoxWord.Location = new System.Drawing.Point(106, 19);
             this.checkBoxWord.Name = "checkBoxWord";
             this.checkBoxWord.Size = new System.Drawing.Size(83, 17);
-            this.checkBoxWord.TabIndex = 0;
+            this.checkBoxWord.TabIndex = 1;
             this.checkBoxWord.Text = "Whole word";
             this.checkBoxWord.UseVisualStyleBackColor = true;
             // 
@@ -200,36 +211,43 @@
             // 
             // buttonFind
             // 
-            this.buttonFind.Location = new System.Drawing.Point(331, 229);
+            this.buttonFind.Location = new System.Drawing.Point(259, 229);
             this.buttonFind.Name = "buttonFind";
             this.buttonFind.Size = new System.Drawing.Size(75, 23);
-            this.buttonFind.TabIndex = 6;
+            this.buttonFind.TabIndex = 4;
             this.buttonFind.Text = "Find all";
             this.buttonFind.UseVisualStyleBackColor = true;
             this.buttonFind.Click += new System.EventHandler(this.buttonFind_Click);
             // 
-            // checkBoxFile
+            // button1
             // 
-            this.checkBoxFile.AutoSize = true;
-            this.checkBoxFile.Location = new System.Drawing.Point(316, 19);
-            this.checkBoxFile.Name = "checkBoxFile";
-            this.checkBoxFile.Size = new System.Drawing.Size(71, 17);
-            this.checkBoxFile.TabIndex = 0;
-            this.checkBoxFile.Text = "File name";
-            this.checkBoxFile.UseVisualStyleBackColor = true;
+            this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.button1.Location = new System.Drawing.Point(340, 229);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 5;
+            this.button1.Text = "Cancel";
+            this.button1.UseVisualStyleBackColor = true;
             // 
-            // FindDialog
+            // FindWindow
             // 
+            this.AcceptButton = this.buttonFind;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.button1;
             this.ClientSize = new System.Drawing.Size(427, 263);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.buttonFind);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FindWindow";
-            this.Text = "Find";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.Text = "Find...";
             this.Load += new System.EventHandler(this.FindDialog_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -261,5 +279,6 @@
         private System.Windows.Forms.CheckBox checkBoxCS;
         private System.Windows.Forms.Button buttonFind;
         private System.Windows.Forms.CheckBox checkBoxFile;
+        private System.Windows.Forms.Button button1;
     }
 }

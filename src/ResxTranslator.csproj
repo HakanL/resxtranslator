@@ -140,8 +140,8 @@
     <EmbeddedResource Include="Windows\MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Windows\ZoomWindow.resx">
-      <DependentUpon>ZoomWindow.cs</DependentUpon>
+    <EmbeddedResource Include="Windows\CellEditorWindow.resx">
+      <DependentUpon>CellEditorWindow.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
@@ -173,6 +173,7 @@
     </Compile>
     <Compile Include="SettingBinder.cs" />
     <Compile Include="SettingChangedEventArgs.cs" />
+    <Compile Include="Properties\Settings.cs" />
     <Compile Include="Windows\AddResourceKeyWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -203,11 +204,11 @@
     <Compile Include="Windows\MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Windows\ZoomWindow.cs">
+    <Compile Include="Windows\CellEditorWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Windows\ZoomWindow.Designer.cs">
-      <DependentUpon>ZoomWindow.cs</DependentUpon>
+    <Compile Include="Windows\CellEditorWindow.Designer.cs">
+      <DependentUpon>CellEditorWindow.cs</DependentUpon>
     </Compile>
     <None Include="Service References\TranslatorSvc\ResxTranslator.TranslatorSvc.GetTranslationsResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>

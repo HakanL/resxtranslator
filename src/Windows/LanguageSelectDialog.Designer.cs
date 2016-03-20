@@ -106,6 +106,7 @@
             this.Name = "LanguageSelectDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Select language...";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.LanguageSelectDialog_FormClosed);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);

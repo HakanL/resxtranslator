@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -14,7 +15,6 @@ namespace ResxTranslator.Windows
     {
         private const string MoreLanguagesMenuitemName = "More languages...";
         private readonly string _defaultWindowTitle;
-        private readonly SettingBinder<Settings> _settingBinder;
 
         private ResourceHolder _currentResource;
         private SearchParams _currentSearch;
@@ -23,7 +23,7 @@ namespace ResxTranslator.Windows
         {
             InitializeComponent();
 
-            _defaultWindowTitle = Text;
+            _defaultWindowTitle = $"{Text} {Assembly.GetAssembly(typeof (MainWindow)).GetName().Version.ToString(2)}";
 
             ResourceLoader = new ResourceLoader();
             ResourceLoader.ResourceLoadProgress += OnResourceLoaderOnResourceLoadProgress;
@@ -38,10 +38,10 @@ namespace ResxTranslator.Windows
                 if (!args.Item.Languages.ContainsKey(args.Language.Name))
                 {
                     if (MessageBox.Show(this, "Resource file for this language is missing, do you want to create it?",
-                        "Missing resource file", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
+                        "Missing resource file", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                         return;
 
-                    args.Item.AddLanguage(args.Language.Name, _settingBinder.Settings.AddDefaultValuesOnLanguageAdd);
+                    args.Item.AddLanguage(args.Language.Name, Settings.Default.AddDefaultValuesOnLanguageAdd);
                     resourceGrid1.RefreshResourceDisplay();
                 }
                 CurrentResource = args.Item;
@@ -53,16 +53,15 @@ namespace ResxTranslator.Windows
                 resourceGrid1.SetVisibleLanguageColumns(languageSettings1.EnabledLanguages.Select(x => x.Name).ToArray());
             };
 
-            _settingBinder = new SettingBinder<Settings>(Settings.Default);
-            _settingBinder.BindControl(ignoreEmptyResourcesToolStripMenuItem, settings => settings.HideEmptyResources, this);
-            _settingBinder.BindControl(copyDefaultValuesOnLanguageAddToolStripMenuItem, settings => settings.AddDefaultValuesOnLanguageAdd, this);
-            _settingBinder.BindControl(openLastDirectoryOnProgramStartToolStripMenuItem, settings => settings.OpenLastDirOnStart, this);
+            Settings.Binder.BindControl(ignoreEmptyResourcesToolStripMenuItem, settings => settings.HideEmptyResources, this);
+            Settings.Binder.BindControl(copyDefaultValuesOnLanguageAddToolStripMenuItem, settings => settings.AddDefaultValuesOnLanguageAdd, this);
+            Settings.Binder.BindControl(openLastDirectoryOnProgramStartToolStripMenuItem, settings => settings.OpenLastDirOnStart, this);
 
-            _settingBinder.Subscribe((sender, args) => ResourceLoader.HideEmptyResources = args.NewValue, settings => settings.HideEmptyResources, this);
-            _settingBinder.Subscribe((sender, args) => translateUsingBingToolStripMenuItem.Enabled = !string.IsNullOrEmpty(args.NewValue),
+            Settings.Binder.Subscribe((sender, args) => ResourceLoader.HideEmptyResources = args.NewValue, settings => settings.HideEmptyResources, this);
+            Settings.Binder.Subscribe((sender, args) => translateUsingBingToolStripMenuItem.Enabled = !string.IsNullOrEmpty(args.NewValue),
                 settings => settings.BingAppId, this);
 
-            _settingBinder.SendUpdates(this);
+            Settings.Binder.SendUpdates(this);
 
             Icon = Icon.ExtractAssociatedIcon(Assembly.GetAssembly(typeof(MainWindow)).Location);
         }
@@ -140,7 +139,7 @@ namespace ResxTranslator.Windows
             var tag = e.ClickedItem.Tag as CultureInfo;
             if (tag != null)
             {
-                CurrentResource.AddLanguage(tag.Name, _settingBinder.Settings.AddDefaultValuesOnLanguageAdd);
+                CurrentResource.AddLanguage(tag.Name, Settings.Default.AddDefaultValuesOnLanguageAdd);
 
                 UpdateMenuStrip();
                 resourceGrid1.RefreshResourceDisplay();
@@ -150,7 +149,7 @@ namespace ResxTranslator.Windows
                 var language = LanguageSelectDialog.ShowLanguageSelectDialog(this);
                 if (language != null && !CurrentResource.Languages.ContainsKey(language.Name))
                 {
-                    CurrentResource.AddLanguage(language.Name, _settingBinder.Settings.AddDefaultValuesOnLanguageAdd);
+                    CurrentResource.AddLanguage(language.Name, Settings.Default.AddDefaultValuesOnLanguageAdd);
 
                     UpdateMenuStrip();
                     resourceGrid1.RefreshResourceDisplay();
@@ -181,7 +180,7 @@ namespace ResxTranslator.Windows
                 return;
 
             if (MessageBox.Show("Are you sure you want to delete the currently selected row?", "Delete a key",
-                MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
+                MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 resourceGrid1.DeleteSelectedRow();
             }
@@ -194,7 +193,9 @@ namespace ResxTranslator.Windows
 
         private void findToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            FindWindow.ShowDialog(this);
+            var result = FindWindow.ShowDialog(this);
+            if (result != null)
+                CurrentSearch = result;
         }
 
         private void LoadResourcesFromFolder(string path)
@@ -210,8 +211,8 @@ namespace ResxTranslator.Windows
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _settingBinder.Settings.LastOpenedDirectory = ResourceLoader.OpenedPath ?? string.Empty;
-            _settingBinder.Settings.Save();
+            Settings.Default.LastOpenedDirectory = ResourceLoader.OpenedPath ?? string.Empty;
+            Settings.Default.Save();
 
             if (!ResourceLoader.CanClose())
             {
@@ -239,11 +240,11 @@ namespace ResxTranslator.Windows
                         "Invalid command line \r\n" + Environment.CommandLine + "\r\nPath: " + path, inner);
                 }
             }
-            else if (_settingBinder.Settings.OpenLastDirOnStart &&
-                !string.IsNullOrEmpty(_settingBinder.Settings.LastOpenedDirectory) &&
-                Directory.Exists(_settingBinder.Settings.LastOpenedDirectory))
+            else if (Settings.Default.OpenLastDirOnStart &&
+                !string.IsNullOrEmpty(Settings.Default.LastOpenedDirectory) &&
+                Directory.Exists(Settings.Default.LastOpenedDirectory))
             {
-                LoadResourcesFromFolder(_settingBinder.Settings.LastOpenedDirectory);
+                LoadResourcesFromFolder(Settings.Default.LastOpenedDirectory);
             }
         }
 
@@ -327,7 +328,8 @@ namespace ResxTranslator.Windows
 
         private void translateUsingBingToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Do you want to autotranslate all non-translated texts for all languages in this resource?") == DialogResult.OK)
+            if (MessageBox.Show("Do you want to autotranslate all non-translated texts for all languages in this resource?", 
+                "Auto translate", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 CurrentResource.AutoTranslate();
             }
@@ -344,6 +346,22 @@ namespace ResxTranslator.Windows
         private void languagesToolStripMenuItem_DropDownOpened(object sender, EventArgs e)
         {
             removeLanguageToolStripMenuItem.Enabled = removeLanguageToolStripMenuItem.DropDownItems.Count > 0;
+        }
+
+        private void clearSearchToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CurrentSearch = null;
+        }
+
+        private void findToolStripMenuItem_DropDownOpened(object sender, EventArgs e)
+        {
+            clearSearchToolStripMenuItem.Enabled = CurrentSearch != null;
+        }
+
+        private void openResourceLocationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (CurrentResource == null) return;
+            Process.Start("explorer.exe", $"\"{Path.GetDirectoryName(CurrentResource.Filename)}\"");
         }
     }
 }

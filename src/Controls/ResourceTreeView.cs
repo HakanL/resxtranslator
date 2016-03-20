@@ -140,7 +140,7 @@ namespace ResxTranslator.Controls
         private static bool MatchNodeToSearch(SearchParams searchParams, TreeNode treeNode)
         {
             var resource = treeNode.Tag as ResourceHolder;
-            if (resource == null) return false;
+            if (resource == null || searchParams == null) return false;
 
             if (searchParams.Match(SearchParams.TargetType.Lang, resource.NoLanguageLanguage))
                 return true;

@@ -6,13 +6,15 @@ namespace ResxTranslator.Windows
 {
     public partial class FindWindow : Form
     {
-        public static void ShowDialog(Form owner)
+        public static SearchParams ShowDialog(Form owner)
         {
             using (var window = new FindWindow())
             {
                 window.Icon = owner.Icon;
                 window.StartPosition = FormStartPosition.CenterParent;
-                window.ShowDialog();
+                if (window.ShowDialog() == DialogResult.OK && !string.IsNullOrEmpty(window.CurrentSearch.Text))
+                    return window.CurrentSearch;
+                return null;
             }
         }
 
@@ -20,8 +22,6 @@ namespace ResxTranslator.Windows
         {
             InitializeComponent();
         }
-
-        private MainWindow MyWindow => (MainWindow) Owner;
 
         private void buttonFind_Click(object sender, EventArgs e)
         {
@@ -35,9 +35,12 @@ namespace ResxTranslator.Windows
                 , checkBoxCS.Checked
                 , checkBoxWord.Checked);
             sp.Save();
-            MyWindow.CurrentSearch = sp;
+            CurrentSearch = sp;
+            DialogResult = DialogResult.OK;
             Close();
         }
+
+        private SearchParams CurrentSearch { get; set; }
 
         private void FindDialog_Load(object sender, EventArgs e)
         {

@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
+using ResxTranslator.Properties;
 
 namespace ResxTranslator.Windows
 {
@@ -23,6 +24,9 @@ namespace ResxTranslator.Windows
 
             UpdateComboboxItems(this, EventArgs.Empty);
             button1.Enabled = false;
+
+            Settings.Binder.BindControl(checkBox1, s => s.LanguageSelectOnlyNeutral, this);
+            Settings.Binder.SendUpdates(this);
         }
 
         private CultureInfo _selectedLanguage;
@@ -38,8 +42,7 @@ namespace ResxTranslator.Windows
             }
             else
             {
-                MessageBox.Show(this,
-                    "Selected language is invalid, please select one of the entries on the dropdown list.",
+                MessageBox.Show(this, "Selected language is invalid, please select one of the entries on the dropdown list.",
                     "Invalid language", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
@@ -59,6 +62,11 @@ namespace ResxTranslator.Windows
         {
             var selection = comboBox1.SelectedItem as ComboBoxWrapper<CultureInfo>;
             button1.Enabled = selection != null;
+        }
+
+        private void LanguageSelectDialog_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Settings.Binder.RemoveHandlers(this);
         }
     }
 }

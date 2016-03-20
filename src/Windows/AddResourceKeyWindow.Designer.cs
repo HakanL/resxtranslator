@@ -34,25 +34,27 @@
             this.labelNoXlateValue = new System.Windows.Forms.Label();
             this.txtKey = new System.Windows.Forms.TextBox();
             this.txtNoXlateValue = new System.Windows.Forms.TextBox();
-            this.btnAdd = new System.Windows.Forms.Button();
-            this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.labelDefaultValue = new System.Windows.Forms.Label();
             this.txtDefaultValue = new System.Windows.Forms.TextBox();
+            this.btnAdd = new System.Windows.Forms.Button();
+            this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.button1 = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel
             // 
-            this.tableLayoutPanel.ColumnCount = 3;
+            this.tableLayoutPanel.ColumnCount = 2;
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 82F));
-            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 268F));
-            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel.Controls.Add(this.labelKey, 0, 0);
             this.tableLayoutPanel.Controls.Add(this.labelNoXlateValue, 0, 1);
             this.tableLayoutPanel.Controls.Add(this.txtKey, 1, 0);
             this.tableLayoutPanel.Controls.Add(this.txtNoXlateValue, 1, 1);
-            this.tableLayoutPanel.Controls.Add(this.btnAdd, 2, 0);
             this.tableLayoutPanel.Controls.Add(this.labelDefaultValue, 0, 2);
             this.tableLayoutPanel.Controls.Add(this.txtDefaultValue, 1, 2);
             this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -62,62 +64,83 @@
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel.Size = new System.Drawing.Size(442, 103);
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel.Size = new System.Drawing.Size(381, 80);
             this.tableLayoutPanel.TabIndex = 0;
             // 
             // labelKey
             // 
-            this.labelKey.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelKey.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.labelKey.Location = new System.Drawing.Point(3, 0);
             this.labelKey.Name = "labelKey";
             this.labelKey.Size = new System.Drawing.Size(76, 26);
-            this.labelKey.TabIndex = 1;
+            this.labelKey.TabIndex = 3;
             this.labelKey.Text = "Key";
             this.labelKey.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // labelNoXlateValue
             // 
-            this.labelNoXlateValue.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelNoXlateValue.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.labelNoXlateValue.Location = new System.Drawing.Point(3, 26);
             this.labelNoXlateValue.Name = "labelNoXlateValue";
             this.labelNoXlateValue.Size = new System.Drawing.Size(76, 26);
-            this.labelNoXlateValue.TabIndex = 2;
+            this.labelNoXlateValue.TabIndex = 4;
             this.labelNoXlateValue.Text = "NoXlate Value";
             this.labelNoXlateValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // txtKey
             // 
-            this.txtKey.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtKey.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtKey.Location = new System.Drawing.Point(85, 3);
             this.txtKey.Name = "txtKey";
-            this.txtKey.Size = new System.Drawing.Size(262, 20);
+            this.txtKey.Size = new System.Drawing.Size(293, 20);
             this.txtKey.TabIndex = 0;
             this.txtKey.TextChanged += new System.EventHandler(this.txtKey_TextChanged);
             // 
             // txtNoXlateValue
             // 
-            this.txtNoXlateValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtNoXlateValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtNoXlateValue.Location = new System.Drawing.Point(85, 29);
             this.txtNoXlateValue.Name = "txtNoXlateValue";
-            this.txtNoXlateValue.Size = new System.Drawing.Size(262, 20);
+            this.txtNoXlateValue.Size = new System.Drawing.Size(293, 20);
             this.txtNoXlateValue.TabIndex = 1;
+            // 
+            // labelDefaultValue
+            // 
+            this.labelDefaultValue.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelDefaultValue.Location = new System.Drawing.Point(3, 52);
+            this.labelDefaultValue.Name = "labelDefaultValue";
+            this.labelDefaultValue.Size = new System.Drawing.Size(76, 26);
+            this.labelDefaultValue.TabIndex = 5;
+            this.labelDefaultValue.Text = "Default Value";
+            this.labelDefaultValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // txtDefaultValue
+            // 
+            this.txtDefaultValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtDefaultValue.Location = new System.Drawing.Point(85, 55);
+            this.txtDefaultValue.Name = "txtDefaultValue";
+            this.txtDefaultValue.Size = new System.Drawing.Size(293, 20);
+            this.txtDefaultValue.TabIndex = 2;
             // 
             // btnAdd
             // 
             this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAdd.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnAdd.Location = new System.Drawing.Point(364, 3);
+            this.btnAdd.Location = new System.Drawing.Point(220, 5);
             this.btnAdd.Name = "btnAdd";
-            this.tableLayoutPanel.SetRowSpan(this.btnAdd, 2);
-            this.btnAdd.Size = new System.Drawing.Size(75, 46);
-            this.btnAdd.TabIndex = 3;
+            this.btnAdd.Size = new System.Drawing.Size(75, 26);
+            this.btnAdd.TabIndex = 0;
             this.btnAdd.Text = "Add";
             this.btnAdd.UseVisualStyleBackColor = true;
             // 
@@ -125,39 +148,48 @@
             // 
             this.errorProvider.ContainerControl = this;
             // 
-            // labelDefaultValue
+            // button1
             // 
-            this.labelDefaultValue.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelDefaultValue.Location = new System.Drawing.Point(3, 52);
-            this.labelDefaultValue.Name = "labelDefaultValue";
-            this.labelDefaultValue.Size = new System.Drawing.Size(76, 26);
-            this.labelDefaultValue.TabIndex = 2;
-            this.labelDefaultValue.Text = "Default Value";
-            this.labelDefaultValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.button1.Location = new System.Drawing.Point(301, 5);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 26);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "Cancel";
+            this.button1.UseVisualStyleBackColor = true;
             // 
-            // txtDefaultValue
+            // panel1
             // 
-            this.txtDefaultValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtDefaultValue.Location = new System.Drawing.Point(85, 55);
-            this.txtDefaultValue.Name = "txtDefaultValue";
-            this.txtDefaultValue.Size = new System.Drawing.Size(262, 20);
-            this.txtDefaultValue.TabIndex = 2;
+            this.panel1.Controls.Add(this.button1);
+            this.panel1.Controls.Add(this.btnAdd);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(0, 80);
+            this.panel1.Name = "panel1";
+            this.panel1.Padding = new System.Windows.Forms.Padding(2);
+            this.panel1.Size = new System.Drawing.Size(381, 37);
+            this.panel1.TabIndex = 1;
             // 
-            // AddKey
+            // AddResourceKeyWindow
             // 
             this.AcceptButton = this.btnAdd;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(442, 103);
+            this.CancelButton = this.button1;
+            this.ClientSize = new System.Drawing.Size(381, 117);
             this.Controls.Add(this.tableLayoutPanel);
+            this.Controls.Add(this.panel1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "AddResourceKeyWindow";
+            this.ShowInTaskbar = false;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Add new key";
             this.tableLayoutPanel.ResumeLayout(false);
             this.tableLayoutPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -173,5 +205,7 @@
         private System.Windows.Forms.ErrorProvider errorProvider;
         private System.Windows.Forms.Label labelDefaultValue;
         private System.Windows.Forms.TextBox txtDefaultValue;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button button1;
     }
 }

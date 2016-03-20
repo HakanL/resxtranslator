@@ -1,5 +1,4 @@
 using System.Configuration;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace ResxTranslator.ResourceOperations
@@ -106,7 +105,7 @@ namespace ResxTranslator.ResourceOperations
             set { this["useRegex"] = value; }
         }
 
-        private void Initialize()
+        private Regex GetComparator()
         {
             if (UseRegex)
             {
@@ -115,7 +114,7 @@ namespace ResxTranslator.ResourceOperations
                 {
                     pattern = "\\W" + pattern + "\\W";
                 }
-                _re = new Regex(pattern, RegexOptions.Compiled | (OptCase ? RegexOptions.None : RegexOptions.IgnoreCase));
+                return new Regex(pattern, RegexOptions.Compiled | (OptCase ? RegexOptions.None : RegexOptions.IgnoreCase));
             }
             else
             {
@@ -124,14 +123,14 @@ namespace ResxTranslator.ResourceOperations
                 {
                     pattern = "\\W" + pattern + "\\W";
                 }
-                _re = new Regex(pattern, RegexOptions.Compiled | (OptCase ? RegexOptions.None : RegexOptions.IgnoreCase));
+                return new Regex(pattern, RegexOptions.Compiled | (OptCase ? RegexOptions.None : RegexOptions.IgnoreCase));
             }
         }
 
         public bool Match(TargetType targType, string matchText)
         {
             if (_re == null)
-                Initialize();
+                _re = GetComparator();
 
             if (targType == TargetType.Key && SearchKeys && _re.IsMatch(matchText))
             {

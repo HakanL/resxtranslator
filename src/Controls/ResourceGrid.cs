@@ -200,7 +200,7 @@ namespace ResxTranslator.Controls
                 return;
             }
 
-            var frm = new ZoomWindow();
+            var frm = new CellEditorWindow();
             var value = dataGridView1.CurrentCell.Value;
             if (value == DBNull.Value)
             {

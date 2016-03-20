@@ -119,5 +119,29 @@ namespace ResxTranslator.Properties {
                 this["OpenLastDirOnStart"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CellEditorWrapContents {
+            get {
+                return ((bool)(this["CellEditorWrapContents"]));
+            }
+            set {
+                this["CellEditorWrapContents"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool LanguageSelectOnlyNeutral {
+            get {
+                return ((bool)(this["LanguageSelectOnlyNeutral"]));
+            }
+            set {
+                this["LanguageSelectOnlyNeutral"] = value;
+            }
+        }
     }
 }
