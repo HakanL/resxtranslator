@@ -76,13 +76,6 @@ namespace ResxTranslator.Windows
             }
         }
 
-        public void SetBingTranslationAvailable(bool isIt)
-        {
-            translateUsingBingToolStripMenuItem.Enabled = isIt;
-            autoTranslateToolStripMenuItem1.Enabled = isIt;
-            resourceGrid1.DisplayContextMenu = isIt;
-        }
-
         private void addLanguageToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             CurrentResource.AddLanguage(e.ClickedItem.Text, _settingBinder.Settings.AddDefaultValuesOnLanguageAdd);
@@ -95,20 +88,6 @@ namespace ResxTranslator.Windows
             {
                 AddResourceKeyWindow.ShowDialog(this, CurrentResource);
                 resourceGrid1.RefreshResourceDisplay();
-            }
-        }
-
-        private void autoTranslateToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            var myItem = sender as ToolStripMenuItem;
-            //Get the ContextMenuString (owner of the ToolsStripMenuItem)
-            var theStrip = myItem?.Owner as ContextMenuStrip;
-            //The SourceControl is the control that opened the contextmenustrip.
-            //In my case it could be a linkLabel
-            var box = theStrip?.SourceControl as CheckedListBox;
-            if (box != null)
-            {
-                //TODO BingTranslator.AutoTranslate(CurrentResource, box.Items[LastClickedLanguageIndex].ToString());
             }
         }
 
@@ -129,23 +108,6 @@ namespace ResxTranslator.Windows
                 MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
             {
                 resourceGrid1.DeleteSelectedRow();
-            }
-        }
-
-        private void deleteLanguageFileToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var myItem = sender as ToolStripMenuItem;
-            //Get the ContextMenuString (owner of the ToolsStripMenuItem)
-            var theStrip = myItem?.Owner as ContextMenuStrip;
-            //The SourceControl is the control that opened the contextmenustrip.
-            var box = theStrip?.SourceControl as CheckedListBox;
-            if (box != null && MessageBox.Show("Do you really want to delete file for language "
-                //TODO + box.Items[LastClickedLanguageIndex]
-                ) == DialogResult.OK)
-            {
-                //CurrentResource.DeleteLanguage(box.Items[LastClickedLanguageIndex].ToString());
-
-                resourceGrid1.RefreshResourceDisplay();
             }
         }
 
@@ -175,8 +137,6 @@ namespace ResxTranslator.Windows
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            SetBingTranslationAvailable(!string.IsNullOrEmpty(Settings.Default.BingAppId));
-
             var args = Environment.GetCommandLineArgs();
             if (args.Length > 2 && args[1].Trim() == "-f" && !string.IsNullOrEmpty(args[2]))
             {

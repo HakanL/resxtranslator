@@ -30,10 +30,6 @@ namespace ResxTranslator.Windows
 		/// </summary>
 		private void InitializeComponent()
 		{
-            this.components = new System.ComponentModel.Container();
-            this.contextMenuStripLanguage = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.deleteLanguageFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.autoTranslateToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
@@ -73,7 +69,6 @@ namespace ResxTranslator.Windows
             this.missingTranslationView1 = new ResxTranslator.Controls.MissingTranslationView();
             this.languageSettings1 = new ResxTranslator.Controls.LanguageSettings();
             this.resourceGrid1 = new ResxTranslator.Controls.ResourceGrid();
-            this.contextMenuStripLanguage.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).BeginInit();
@@ -89,28 +84,6 @@ namespace ResxTranslator.Windows
             this.tabPageEditedResource.SuspendLayout();
             this.menuStripMain.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // contextMenuStripLanguage
-            // 
-            this.contextMenuStripLanguage.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.deleteLanguageFileToolStripMenuItem,
-            this.autoTranslateToolStripMenuItem1});
-            this.contextMenuStripLanguage.Name = "contextMenuStripLanguage";
-            this.contextMenuStripLanguage.Size = new System.Drawing.Size(182, 48);
-            // 
-            // deleteLanguageFileToolStripMenuItem
-            // 
-            this.deleteLanguageFileToolStripMenuItem.Name = "deleteLanguageFileToolStripMenuItem";
-            this.deleteLanguageFileToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.deleteLanguageFileToolStripMenuItem.Text = "Delete Language file";
-            this.deleteLanguageFileToolStripMenuItem.Click += new System.EventHandler(this.deleteLanguageFileToolStripMenuItem_Click);
-            // 
-            // autoTranslateToolStripMenuItem1
-            // 
-            this.autoTranslateToolStripMenuItem1.Name = "autoTranslateToolStripMenuItem1";
-            this.autoTranslateToolStripMenuItem1.Size = new System.Drawing.Size(181, 22);
-            this.autoTranslateToolStripMenuItem1.Text = "Auto translate";
-            this.autoTranslateToolStripMenuItem1.Click += new System.EventHandler(this.autoTranslateToolStripMenuItem1_Click);
             // 
             // statusStrip1
             // 
@@ -342,7 +315,7 @@ namespace ResxTranslator.Windows
             this.findToolStripMenuItem1.Name = "findToolStripMenuItem1";
             this.findToolStripMenuItem1.ShortcutKeyDisplayString = "Ctrl+F";
             this.findToolStripMenuItem1.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.findToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.findToolStripMenuItem1.Size = new System.Drawing.Size(137, 22);
             this.findToolStripMenuItem1.Text = "&Find";
             this.findToolStripMenuItem1.Click += new System.EventHandler(this.findToolStripMenuItem1_Click);
             // 
@@ -358,14 +331,14 @@ namespace ResxTranslator.Windows
             // addNewKeyToolStripMenuItem
             // 
             this.addNewKeyToolStripMenuItem.Name = "addNewKeyToolStripMenuItem";
-            this.addNewKeyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.addNewKeyToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.addNewKeyToolStripMenuItem.Text = "Add New Key";
             this.addNewKeyToolStripMenuItem.Click += new System.EventHandler(this.addNewKeyToolStripMenuItem_Click);
             // 
             // deleteKeyToolStripMenuItem
             // 
             this.deleteKeyToolStripMenuItem.Name = "deleteKeyToolStripMenuItem";
-            this.deleteKeyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.deleteKeyToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.deleteKeyToolStripMenuItem.Text = "Delete Key";
             this.deleteKeyToolStripMenuItem.Click += new System.EventHandler(this.deleteKeyToolStripMenuItem_Click);
             // 
@@ -472,7 +445,6 @@ namespace ResxTranslator.Windows
             this.Text = "ResxTranslator";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
-            this.contextMenuStripLanguage.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.panelMain.ResumeLayout(false);
@@ -495,10 +467,6 @@ namespace ResxTranslator.Windows
 		}
 
 		#endregion
-
-        private System.Windows.Forms.ContextMenuStrip contextMenuStripLanguage;
-		private System.Windows.Forms.ToolStripMenuItem deleteLanguageFileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem autoTranslateToolStripMenuItem1;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
