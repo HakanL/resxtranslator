@@ -2,22 +2,22 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ResxTranslator.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="LastOpenedDirectory" Type="System.String" Scope="User">
+    <Setting Name="LastOpenedDirectory" Provider="PortableSettingsProvider.PortableSettingsProvider" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="BingAppId" Type="System.String" Scope="User">
+    <Setting Name="BingAppId" Provider="PortableSettingsProvider.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="NeutralLanguageCode" Type="System.String" Scope="User">
+    <Setting Name="NeutralLanguageCode" Provider="PortableSettingsProvider.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="PreferredSourceLanguage" Type="System.String" Scope="User">
+    <Setting Name="PreferredSourceLanguage" Provider="PortableSettingsProvider.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)">en</Value>
     </Setting>
-    <Setting Name="HideEmptyResources" Type="System.Boolean" Scope="User">
+    <Setting Name="HideEmptyResources" Provider="PortableSettingsProvider.PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="AddDefaultValuesOnLanguageAdd" Type="System.Boolean" Scope="User">
+    <Setting Name="AddDefaultValuesOnLanguageAdd" Provider="PortableSettingsProvider.PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>

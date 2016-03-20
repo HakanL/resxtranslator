@@ -259,6 +259,12 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="PortableSettingsProvider\PortableSettingsProvider.vbproj">
+      <Project>{495a9ea6-b13c-48f9-a2e2-6667cecebfde}</Project>
+      <Name>PortableSettingsProvider</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>COPY $(TargetDir)\ResxTranslator.exe $(SolutionDir)..\bin\
