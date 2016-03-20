@@ -8,7 +8,6 @@ using System.Linq;
 using System.Resources;
 using System.Text;
 using System.Xml;
-using ResxTranslator.Windows;
 
 namespace ResxTranslator.ResourceOperations
 {
@@ -209,7 +208,7 @@ namespace ResxTranslator.ResourceOperations
                 if (rows.Length > 0)
                 {
                     var anyData = false;
-                    if (rows[0][valueColumn] == DBNull.Value || string.IsNullOrEmpty((string) rows[0][valueColumn]))
+                    if (rows[0][valueColumn] == DBNull.Value || string.IsNullOrEmpty((string)rows[0][valueColumn]))
                     {
                         // Delete value
                         foreach (XmlNode childNode in dataNode.ChildNodes)
@@ -230,7 +229,7 @@ namespace ResxTranslator.ResourceOperations
                         {
                             if (childNode.Name == "value")
                             {
-                                childNode.InnerText = (string) rows[0][valueColumn];
+                                childNode.InnerText = (string)rows[0][valueColumn];
                                 found = true;
                                 break;
                             }
@@ -239,13 +238,13 @@ namespace ResxTranslator.ResourceOperations
                         {
                             // Add
                             XmlNode newNode = xmlDoc.CreateElement("value");
-                            newNode.InnerText = (string) rows[0][valueColumn];
+                            newNode.InnerText = (string)rows[0][valueColumn];
                             dataNode.AppendChild(newNode);
                         }
                     }
 
 
-                    if (rows[0]["Comment"] == DBNull.Value || string.IsNullOrEmpty((string) rows[0]["Comment"]))
+                    if (rows[0]["Comment"] == DBNull.Value || string.IsNullOrEmpty((string)rows[0]["Comment"]))
                     {
                         // Delete comment
                         foreach (XmlNode childNode in dataNode.ChildNodes)
@@ -266,7 +265,7 @@ namespace ResxTranslator.ResourceOperations
                         {
                             if (childNode.Name == "comment")
                             {
-                                childNode.InnerText = (string) rows[0]["Comment"];
+                                childNode.InnerText = (string)rows[0]["Comment"];
                                 found = true;
                                 break;
                             }
@@ -275,7 +274,7 @@ namespace ResxTranslator.ResourceOperations
                         {
                             // Add
                             XmlNode newNode = xmlDoc.CreateElement("comment");
-                            newNode.InnerText = (string) rows[0]["Comment"];
+                            newNode.InnerText = (string)rows[0]["Comment"];
                             dataNode.AppendChild(newNode);
                         }
                     }
@@ -297,7 +296,7 @@ namespace ResxTranslator.ResourceOperations
 
             foreach (DataRow row in _stringsTable.Rows)
             {
-                var key = (string) row["Key"];
+                var key = (string)row["Key"];
                 if (!usedKeys.Contains(key))
                 {
                     // Add
@@ -311,18 +310,18 @@ namespace ResxTranslator.ResourceOperations
                     newNode.Attributes.Append(newAttribute);
 
                     var anyData = false;
-                    if (row["Comment"] != DBNull.Value && !string.IsNullOrEmpty((string) row["Comment"]))
+                    if (row["Comment"] != DBNull.Value && !string.IsNullOrEmpty((string)row["Comment"]))
                     {
                         XmlNode newComment = xmlDoc.CreateElement("comment");
-                        newComment.InnerText = (string) row["Comment"];
+                        newComment.InnerText = (string)row["Comment"];
                         newNode.AppendChild(newComment);
                         anyData = true;
                     }
 
-                    if (row[valueColumn] != DBNull.Value && !string.IsNullOrEmpty((string) row[valueColumn]))
+                    if (row[valueColumn] != DBNull.Value && !string.IsNullOrEmpty((string)row[valueColumn]))
                     {
                         XmlNode newValue = xmlDoc.CreateElement("value");
-                        newValue.InnerText = (string) row[valueColumn];
+                        newValue.InnerText = (string)row[valueColumn];
                         newNode.AppendChild(newValue);
                         anyData = true;
                     }
@@ -370,7 +369,7 @@ namespace ResxTranslator.ResourceOperations
                 reader.UseResXDataNodes = true;
                 foreach (DictionaryEntry de in reader)
                 {
-                    var key = (string) de.Key;
+                    var key = (string)de.Key;
                     if (key.StartsWith(">>") || key.StartsWith("$"))
                     {
                         if (key != "$this.Text")
@@ -387,13 +386,13 @@ namespace ResxTranslator.ResourceOperations
                         continue;
                     }
 
-                    var valueType = dataNode.GetValueTypeName((ITypeResolutionService) null);
+                    var valueType = dataNode.GetValueTypeName((ITypeResolutionService)null);
                     if (!valueType.StartsWith("System.String, "))
                     {
                         continue;
                     }
 
-                    var valueObject = dataNode.GetValue((ITypeResolutionService) null);
+                    var valueObject = dataNode.GetValue((ITypeResolutionService)null);
                     var value = valueObject == null ? "" : "" + valueObject;
 
                     // Was used to cleanup leftovers from old VS designer
@@ -421,7 +420,7 @@ namespace ResxTranslator.ResourceOperations
                     {
                         r[valueColumn] = value;
 
-                        if (string.IsNullOrEmpty((string) r["Comment"]) &&
+                        if (string.IsNullOrEmpty((string)r["Comment"]) &&
                             !string.IsNullOrEmpty(dataNode.Comment))
                         {
                             r["Comment"] = dataNode.Comment;
@@ -467,7 +466,7 @@ namespace ResxTranslator.ResourceOperations
 
             // There are translations but the key is missing
             if (foundOne && (row["NoLanguageValue"] == DBNull.Value ||
-                             string.IsNullOrEmpty((string) row["NoLanguageValue"])))
+                             string.IsNullOrEmpty((string)row["NoLanguageValue"])))
             {
                 row["Error"] = true;
                 return;
@@ -497,15 +496,15 @@ namespace ResxTranslator.ResourceOperations
                 _stringsTable = new DataTable("Strings");
 
                 _stringsTable.Columns.Add("Key");
-                _stringsTable.PrimaryKey = new[] {_stringsTable.Columns["Key"]};
+                _stringsTable.PrimaryKey = new[] { _stringsTable.Columns["Key"] };
                 _stringsTable.Columns.Add("NoLanguageValue");
                 foreach (var languageHolder in Languages.Values)
                 {
                     _stringsTable.Columns.Add(languageHolder.LanguageId);
                 }
                 _stringsTable.Columns.Add("Comment");
-                _stringsTable.Columns.Add("Translated", typeof (bool));
-                _stringsTable.Columns.Add("Error", typeof (bool));
+                _stringsTable.Columns.Add("Translated", typeof(bool));
+                _stringsTable.Columns.Add("Error", typeof(bool));
 
                 if (!string.IsNullOrEmpty(Filename))
                 {
@@ -611,17 +610,25 @@ namespace ResxTranslator.ResourceOperations
         /// <summary>
         ///     Add the specified language to this object
         /// </summary>
-        public void AddLanguage(string languageCode)
+        public void AddLanguage(string languageCode, bool copyValues)
         {
             if (!Languages.ContainsKey(languageCode.ToLower()))
             {
                 Dirty = true;
-                var mainfile = new FileInfo(Filename);
-                var newFile = mainfile.Name.Substring(0, mainfile.Name.Length - mainfile.Extension.Length) + "." +
-                              languageCode + mainfile.Extension;
-                newFile = mainfile.Directory.FullName + "\\" + newFile;
-                mainfile.CopyTo(newFile);
-                var languageHolder = new LanguageHolder(languageCode, newFile);
+
+                var cleanFilename = Filename.Substring(0, Filename.LastIndexOf('.'));
+                var newFilename = $"{cleanFilename}.{languageCode}.resx";
+
+                if (copyValues)
+                {
+                    File.Copy(Filename, newFilename);
+                }
+                else using (var writer = new ResXResourceWriter(newFilename))
+                {
+                    writer.Generate();
+                }
+                
+                var languageHolder = new LanguageHolder(languageCode, newFilename);
                 Languages.Add(languageCode.ToLower(), languageHolder);
 
                 _stringsTable.Columns.Add(languageCode.ToLower());
@@ -657,11 +664,8 @@ namespace ResxTranslator.ResourceOperations
         {
             if (Languages.ContainsKey(languageCode.ToLower()))
             {
-                var mainfile = new FileInfo(Filename);
-                var newFile = mainfile.Name.Substring(0, mainfile.Name.Length - mainfile.Extension.Length) + "." +
-                              languageCode + mainfile.Extension;
-                newFile = mainfile.Directory.FullName + "\\" + newFile;
-                new FileInfo(newFile).Delete();
+                File.Delete(Languages[languageCode.ToLower()].Filename);
+
                 Languages.Remove(languageCode.ToLower());
                 _stringsTable.Columns.RemoveAt(_stringsTable.Columns[languageCode].Ordinal);
 
@@ -684,7 +688,7 @@ namespace ResxTranslator.ResourceOperations
 
         public bool HasMissingTranslations(string cultureName)
         {
-            return !Languages.ContainsKey(cultureName) || 
+            return !Languages.ContainsKey(cultureName) ||
                 _stringsTable.Rows.Cast<DataRow>().Any(row => !RowContainsTranslation(row, cultureName));
         }
     }

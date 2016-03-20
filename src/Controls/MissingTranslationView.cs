@@ -70,7 +70,7 @@ namespace ResxTranslator.Controls
 
                 var selectedCulture = ((ComboBoxWrapper<CultureInfo>) comboBox1.SelectedItem).WrappedObject.Name;
 
-                var missingItems = ResourceLoader.Resources.Values.Where(res => res.HasMissingTranslations(selectedCulture));
+                var missingItems = ResourceLoader.Resources.Where(res => res.HasMissingTranslations(selectedCulture));
                 
                 listView1.Items.AddRange(missingItems.OrderBy(x=>x.Id).Select(x=>new ListViewItem(x.Id) {Tag = x}).ToArray());
             }

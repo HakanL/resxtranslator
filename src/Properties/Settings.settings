@@ -2,9 +2,6 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ResxTranslator.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="NonTranslatedString" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">[{0}]</Value>
-    </Setting>
     <Setting Name="LastOpenedDirectory" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
@@ -16,6 +13,12 @@
     </Setting>
     <Setting Name="PreferredSourceLanguage" Type="System.String" Scope="User">
       <Value Profile="(Default)">en</Value>
+    </Setting>
+    <Setting Name="HideEmptyResources" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="AddDefaultValuesOnLanguageAdd" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

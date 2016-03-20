@@ -23,15 +23,6 @@ namespace ResxTranslator.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("[{0}]")]
-        public string NonTranslatedString {
-            get {
-                return ((string)(this["NonTranslatedString"]));
-            }
-        }
-        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
@@ -77,6 +68,30 @@ namespace ResxTranslator.Properties {
             }
             set {
                 this["PreferredSourceLanguage"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool HideEmptyResources {
+            get {
+                return ((bool)(this["HideEmptyResources"]));
+            }
+            set {
+                this["HideEmptyResources"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AddDefaultValuesOnLanguageAdd {
+            get {
+                return ((bool)(this["AddDefaultValuesOnLanguageAdd"]));
+            }
+            set {
+                this["AddDefaultValuesOnLanguageAdd"] = value;
             }
         }
     }

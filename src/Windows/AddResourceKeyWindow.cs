@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
 
-using ResxTranslator.Properties;
 using ResxTranslator.ResourceOperations;
 
 namespace ResxTranslator.Windows
@@ -37,12 +36,9 @@ namespace ResxTranslator.Windows
         private void txtKey_TextChanged(object sender, EventArgs e)
         {
             var key = txtKey.Text;
-
-            var result = string.Format(Settings.Default.NonTranslatedString,
-                key, key.ToUpper(), key.ToLower());
-
-            txtDefaultValue.Text = result;
-            txtNoXlateValue.Text = result;
+            
+            txtDefaultValue.Text = key;
+            txtNoXlateValue.Text = key;
 
             string error = null;
             if (_resourceHolder.FindByKey(txtKey.Text) != null)

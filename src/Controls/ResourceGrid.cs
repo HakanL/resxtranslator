@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Data;
 using System.Linq;
-using System.Reflection;
 using System.Windows.Forms;
 using ResxTranslator.Properties;
 using ResxTranslator.ResourceOperations;
@@ -77,9 +76,7 @@ namespace ResxTranslator.Controls
 
             dataGridView1.Columns[ColNameTranslated].Visible = false;
             dataGridView1.Columns[ColNameError].Visible = false;
-
-            ApplyFilterCondition();
-
+            
             dataGridView1.Columns[ColNameKey].ReadOnly = true;
 
             ApplyConditionalFormatting();
@@ -99,18 +96,6 @@ namespace ResxTranslator.Controls
             {
                 dataGridView1.Columns[languageId].Visible = visible;
             }
-        }
-
-        public void ApplyFilterCondition()
-        {
-            if (dataGridView1.DataSource == null)
-            {
-                return;
-            }
-            //TODO
-            ((DataTable)dataGridView1.DataSource).DefaultView.RowFilter = //_mainWindow.hideNontranslatedToolStripMenuItem.Checked ? 
-                                                                          //" Translated = 1" :
-                "";
         }
 
         public void ApplyConditionalFormatting()
@@ -256,7 +241,7 @@ namespace ResxTranslator.Controls
                 var chkedLang = "";
                 if (subChk > -1)
                 {
-                    chkedLang = autoTranslate.DropDownItems[(int)subChk].Text;
+                    chkedLang = autoTranslate.DropDownItems[subChk].Text;
                 }
                 else
                 {
@@ -287,7 +272,7 @@ namespace ResxTranslator.Controls
                 var subChk = FindCheckedSubItemIndex(autoTranslate);
                 if (subChk > -1)
                 {
-                    preferred = autoTranslate.DropDownItems[(int)subChk].Text;
+                    preferred = autoTranslate.DropDownItems[subChk].Text;
                 }
             }
 

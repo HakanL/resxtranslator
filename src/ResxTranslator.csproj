@@ -153,6 +153,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="SettingBinder.cs" />
+    <Compile Include="SettingChangedEventArgs.cs" />
     <Compile Include="Windows\AddResourceKeyWindow.cs">
       <SubType>Form</SubType>
     </Compile>

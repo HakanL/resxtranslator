@@ -10,10 +10,11 @@ namespace ResxTranslator.Windows
     public sealed partial class MainWindow : Form
     {
         private readonly string _defaultWindowTitle;
+        private readonly SettingBinder<Settings> _settingBinder;
 
         private ResourceHolder _currentResource;
         private SearchParams _currentSearch;
-
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -33,6 +34,16 @@ namespace ResxTranslator.Windows
                 if (resourceGrid1.CurrentResource == null) return;
                 resourceGrid1.SetVisibleLanguageColumns(languageSettings1.EnabledLanguages.Select(x => x.Name).ToArray());
             };
+
+            _settingBinder = new SettingBinder<Settings>(Settings.Default);
+            _settingBinder.BindControl(ignoreEmptyResourcesToolStripMenuItem, settings => settings.HideEmptyResources, this);
+            _settingBinder.BindControl(copyDefaultValuesOnLanguageAddToolStripMenuItem, settings => settings.AddDefaultValuesOnLanguageAdd, this);
+
+            _settingBinder.Subscribe((sender, args) => ResourceLoader.HideEmptyResources = args.NewValue, settings => settings.HideEmptyResources, this);
+            _settingBinder.Subscribe((sender, args) => translateUsingBingToolStripMenuItem.Enabled = !string.IsNullOrEmpty(args.NewValue),
+                settings => settings.BingAppId, this);
+
+            _settingBinder.SendUpdates(this);
         }
 
         public SearchParams CurrentSearch
@@ -55,6 +66,13 @@ namespace ResxTranslator.Windows
                 _currentResource = value;
                 resourceGrid1.CurrentResource = value;
                 resourceGrid1.SetVisibleLanguageColumns(languageSettings1.EnabledLanguages.Select(x => x.Name).ToArray());
+                tabPageEditedResource.Text = value?.Filename ?? "No resource loaded";
+
+                var notNull = value != null;
+                keysToolStripMenuItem.Enabled = notNull;
+                addNewKeyToolStripMenuItem.Enabled = notNull;
+                addLanguageToolStripMenuItem.Enabled = notNull;
+                autoTranslateToolStripMenuItem.Enabled = notNull;
             }
         }
 
@@ -67,7 +85,7 @@ namespace ResxTranslator.Windows
 
         private void addLanguageToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            CurrentResource.AddLanguage(e.ClickedItem.Text);
+            CurrentResource.AddLanguage(e.ClickedItem.Text, _settingBinder.Settings.AddDefaultValuesOnLanguageAdd);
             resourceGrid1.RefreshResourceDisplay();
         }
 
@@ -142,13 +160,6 @@ namespace ResxTranslator.Windows
             frm.ShowDialog(this);
         }
 
-        private void hideNontranslatedToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            hideNontranslatedToolStripMenuItem.Checked = !hideNontranslatedToolStripMenuItem.Checked;
-
-            resourceGrid1.ApplyFilterCondition();
-        }
-
         private void LoadResourcesFromFolder(string path)
         {
             ResourceLoader.OpenProject(path);
@@ -213,6 +224,9 @@ namespace ResxTranslator.Windows
         {
             this.InvokeIfRequired(_ =>
             {
+                var nothingLoaded = string.IsNullOrEmpty(ResourceLoader.OpenedPath);
+                findToolStripMenuItem.Enabled = !nothingLoaded;
+                
                 Text = string.IsNullOrEmpty(ResourceLoader.OpenedPath)
                     ? _defaultWindowTitle
                     : $"{ResourceLoader.OpenedPath} - {_defaultWindowTitle}";

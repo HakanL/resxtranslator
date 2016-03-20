@@ -21,7 +21,7 @@ namespace ResxTranslator.Controls
         {
             treeViewResx.Nodes.Clear();
 
-            foreach (var resource in loader.Resources.Values)
+            foreach (var resource in loader.Resources)
             {
                 BuildTreeView(resource);
             }
