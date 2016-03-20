@@ -75,11 +75,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ComboBoxWrapper.cs" />
     <Compile Include="Controls\LanguageSettings.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\LanguageSettings.Designer.cs">
       <DependentUpon>LanguageSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MissingTranslationView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\MissingTranslationView.Designer.cs">
+      <DependentUpon>MissingTranslationView.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\ResourceGrid.cs">
       <SubType>UserControl</SubType>
@@ -98,6 +105,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Controls\LanguageSettings.resx">
       <DependentUpon>LanguageSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\MissingTranslationView.resx">
+      <DependentUpon>MissingTranslationView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ResourceGrid.resx">
       <DependentUpon>ResourceGrid.cs</DependentUpon>

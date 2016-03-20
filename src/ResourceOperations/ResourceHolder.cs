@@ -444,28 +444,28 @@ namespace ResxTranslator.ResourceOperations
             var oneMissing = false;
             foreach (var languageHolder in Languages.Values)
             {
-                string value = null;
-                if (row[languageHolder.LanguageId] != DBNull.Value)
+                if (RowContainsTranslation(row, languageHolder.LanguageId))
                 {
-                    value = (string) row[languageHolder.LanguageId];
-                    if (!string.IsNullOrEmpty(value))
-                    {
-                        foundOne = true;
-                    }
+                    foundOne = true;
+                    if (oneMissing)
+                        break;
                 }
-
-                if (string.IsNullOrEmpty(value) || value.StartsWith("[") && value.Contains("]"))
+                else
                 {
                     oneMissing = true;
+                    if (foundOne)
+                        break;
                 }
             }
 
+            // Some translations are missing
             if (foundOne && oneMissing)
             {
                 row["Error"] = true;
                 return;
             }
 
+            // There are translations but the key is missing
             if (foundOne && (row["NoLanguageValue"] == DBNull.Value ||
                              string.IsNullOrEmpty((string) row["NoLanguageValue"])))
             {
@@ -474,6 +474,15 @@ namespace ResxTranslator.ResourceOperations
             }
 
             row["Error"] = false;
+        }
+
+        private static bool RowContainsTranslation(DataRow row, string languageId)
+        {
+            if (row[languageId] == DBNull.Value)
+                return false;
+
+            var value = (string)row[languageId];
+            return !string.IsNullOrEmpty(value) && (!value.StartsWith("[") || !value.Contains("]"));
         }
 
         /// <summary>
@@ -671,6 +680,12 @@ namespace ResxTranslator.ResourceOperations
             _deletedKeys = new Dictionary<string, bool>();
 
             OnLanguageChange();
+        }
+
+        public bool HasMissingTranslations(string cultureName)
+        {
+            return !Languages.ContainsKey(cultureName) || 
+                _stringsTable.Rows.Cast<DataRow>().Any(row => !RowContainsTranslation(row, cultureName));
         }
     }
 }

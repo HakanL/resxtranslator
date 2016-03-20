@@ -24,6 +24,8 @@ namespace ResxTranslator.Windows
             ResourceLoader.ResourceLoadProgress += OnResourceLoaderOnResourceLoadProgress;
             ResourceLoader.ResourcesChanged += OnResourceLoaderOnResourcesChanged;
 
+            missingTranslationView1.ResourceLoader = ResourceLoader;
+
             resourceTreeView1.ResourceOpened += (sender, args) => CurrentResource = args.Resource;
 
             languageSettings1.EnabledLanguagesChanged += (sender, args) =>
