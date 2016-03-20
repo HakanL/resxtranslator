@@ -35,6 +35,9 @@ namespace ResxTranslator.Controls
             }
 
             treeViewResx.ExpandAll();
+
+            if(treeViewResx.Nodes.Count > 0)
+                treeViewResx.Nodes.Cast<TreeNode>().OrderBy(x=>x.Name).First().EnsureVisible();
         }
 
         public void Clear()
