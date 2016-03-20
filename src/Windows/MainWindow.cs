@@ -313,6 +313,8 @@ namespace ResxTranslator.Windows
 
             if (folderDialog.ShowDialog(this) == DialogResult.OK)
             {
+                CurrentResource = null;
+                Application.DoEvents();
                 LoadResourcesFromFolder(folderDialog.SelectedPath);
             }
         }
