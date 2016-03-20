@@ -44,7 +44,21 @@ namespace ResxTranslator.Windows
             _defaultWindowTitle = Text;
 
             ResourceLoader = new ResourceLoader();
-            ResourceLoader.ResourceLoadProgress += (sender, args) => this.InvokeIfRequired(x =>
+            ResourceLoader.ResourceLoadProgress += OnResourceLoaderOnResourceLoadProgress;
+            ResourceLoader.ResourcesChanged += OnResourceLoaderOnResourcesChanged;
+
+            resourceTreeView1.ResourceOpened += (sender, args) => CurrentResource = args.Resource;
+
+            languageSettings1.EnabledLanguagesChanged += (sender, args) =>
+            {
+                if (resourceGrid1.CurrentResource == null) return;
+                resourceGrid1.SetVisibleLanguageColumns(languageSettings1.EnabledLanguages.Select(x => x.Name).ToArray());
+            };
+        }
+
+        private void OnResourceLoaderOnResourceLoadProgress(object sender, ResourceLoadProgressEventArgs args)
+        {
+            this.InvokeIfRequired(_ =>
             {
                 toolStripStatusLabelCurrentItem.Text = args.CurrentlyProcessedItem ?? string.Empty;
                 toolStripStatusLabel1.Text = args.CurrentProcess ?? string.Empty;
@@ -59,18 +73,31 @@ namespace ResxTranslator.Windows
                     toolStripProgressBar1.Visible = false;
                 }
             });
-            ResourceLoader.OpenedPathChanged +=
-                (sender, args) => Text = string.IsNullOrEmpty(ResourceLoader.OpenedPath) 
-                ? _defaultWindowTitle 
-                : $"{ResourceLoader.OpenedPath} - {_defaultWindowTitle}";
+        }
 
-            resourceTreeView1.ResourceOpened += (sender, args) => CurrentResource = args.Resource;
-
-            languageSettings1.EnabledLanguagesChanged += (sender, args) =>
+        private void OnResourceLoaderOnResourcesChanged(object sender, EventArgs args)
+        {
+            this.InvokeIfRequired(_ =>
             {
-                if (resourceGrid1.CurrentResource == null) return;
-                resourceGrid1.SetVisibleLanguageColumns(languageSettings1.EnabledLanguages.Select(x => x.Name).ToArray());
-            };
+                Text = string.IsNullOrEmpty(ResourceLoader.OpenedPath) ? _defaultWindowTitle : $"{ResourceLoader.OpenedPath} - {_defaultWindowTitle}";
+
+                CurrentResource = null;
+
+                resourceTreeView1.LoadResources(ResourceLoader);
+
+                var usedLanguages = ResourceLoader.GetUsedLanguages().ToList();
+
+                languageSettings1.RefreshLanguages(usedLanguages, false);
+
+                addLanguageToolStripMenuItem.DropDownItems.Clear();
+                foreach (var s in usedLanguages.Select(x => x.Name).OrderBy(x => x))
+                {
+                    addLanguageToolStripMenuItem.DropDownItems.Add(s);
+                }
+
+                Settings.Default.Mrud = ResourceLoader.OpenedPath ?? string.Empty;
+                Settings.Default.Save();
+            });
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -111,18 +138,6 @@ namespace ResxTranslator.Windows
         private void LoadResourcesFromFolder(string path)
         {
             ResourceLoader.OpenProject(path);
-
-            resourceTreeView1.LoadResources(ResourceLoader);
-
-            var usedLanguages = ResourceLoader.GetUsedLanguages().ToList();
-
-            languageSettings1.RefreshLanguages(usedLanguages, false);
-
-            addLanguageToolStripMenuItem.DropDownItems.Clear();
-            foreach (var s in usedLanguages.Select(x => x.Name).OrderBy(x => x))
-            {
-                addLanguageToolStripMenuItem.DropDownItems.Add(s);
-            }
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -141,14 +156,12 @@ namespace ResxTranslator.Windows
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!ResourceLoader.CanClose())
-            {
                 return;
-            }
 
             var folderDialog = new FolderBrowserDialog
             {
                 SelectedPath = Settings.Default.Mrud,
-                Description = "Browse to the root of the project, typically where the sln file is"
+                Description = "Browse to the root of the project, typically where the sln file is."
             };
 
             if (folderDialog.ShowDialog(this) == DialogResult.OK)
@@ -159,7 +172,6 @@ namespace ResxTranslator.Windows
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Save
             ResourceLoader.SaveAll();
         }
 
@@ -201,7 +213,7 @@ namespace ResxTranslator.Windows
             if (CurrentResource == null || resourceGrid1.RowCount == 0)
                 return;
 
-            if (MessageBox.Show("Are you sure you want to delete the current key?", "Delete",
+            if (MessageBox.Show("Are you sure you want to delete the currently selected row?", "Delete a key",
                 MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
             {
                 resourceGrid1.DeleteSelectedRow();
@@ -213,10 +225,7 @@ namespace ResxTranslator.Windows
             if (!ResourceLoader.CanClose())
                 return;
 
-            resourceTreeView1.Clear();
-
-            CurrentResource = null;
-            Settings.Default.Save();
+            ResourceLoader.Close();
         }
 
         private void findToolStripMenuItem1_Click(object sender, EventArgs e)

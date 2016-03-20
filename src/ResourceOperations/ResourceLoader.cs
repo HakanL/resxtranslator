@@ -23,7 +23,7 @@ namespace ResxTranslator.ResourceOperations
             private set
             {
                 _openedPath = value;
-                OnOpenedPathChanged();
+                OnResourcesChanged();
             }
         }
 
@@ -43,7 +43,7 @@ namespace ResxTranslator.ResourceOperations
         }
 
         public event EventHandler<ResourceLoadProgressEventArgs> ResourceLoadProgress;
-        public event EventHandler OpenedPathChanged;
+        public event EventHandler ResourcesChanged;
 
         public void SaveAll()
         {
@@ -215,19 +215,24 @@ namespace ResxTranslator.ResourceOperations
             ResourceLoadProgress?.Invoke(this, e);
         }
 
-        public void FindResx(string folder)
+        void FindResx(string rootDirectory)
+        {
+            FindResx(rootDirectory, rootDirectory);
+        }
+
+        void FindResx(string rootDirectory, string currentDirectory)
         {
             var displayFolder = string.Empty;
-            if (folder.StartsWith(OpenedPath, StringComparison.InvariantCultureIgnoreCase))
+            if (currentDirectory.StartsWith(rootDirectory, StringComparison.InvariantCultureIgnoreCase))
             {
-                displayFolder = folder.Substring(OpenedPath.Length);
+                displayFolder = currentDirectory.Substring(rootDirectory.Length);
             }
             if (displayFolder.StartsWith("\\"))
             {
                 displayFolder = displayFolder.Remove(0, 1);
             }
 
-            var files = Directory.GetFiles(folder, "*.resx");
+            var files = Directory.GetFiles(currentDirectory, "*.resx");
 
             foreach (var filename in files)
             {
@@ -279,34 +284,36 @@ namespace ResxTranslator.ResourceOperations
                 }
             }
 
-            var subfolders = Directory.GetDirectories(folder);
+            var subfolders = Directory.GetDirectories(currentDirectory);
             foreach (var subfolder in subfolders)
             {
-                FindResx(subfolder);
+                FindResx(rootDirectory, subfolder);
             }
         }
 
         public void OpenProject(string selectedPath)
         {
-            StopDictBuilderThread();
-
-            OnResourceLoadProgress(new ResourceLoadProgressEventArgs("Building resource tree"));
-
+            Close();
+            OnResourceLoadProgress(new ResourceLoadProgressEventArgs("Loading resources..."));
+            FindResx(selectedPath);
             OpenedPath = selectedPath;
-
-            Settings.Default.Mrud = OpenedPath;
-            Settings.Default.Save();
-            
-            FindResx(OpenedPath);
-            
-            OnResourceLoadProgress(new ResourceLoadProgressEventArgs("Building local dictionary"));
-
+            OnResourceLoadProgress(new ResourceLoadProgressEventArgs("Building local dictionary..."));
             StartDictBuilderThread();
         }
 
-        protected virtual void OnOpenedPathChanged()
+        protected virtual void OnResourcesChanged()
         {
-            OpenedPathChanged?.Invoke(this, EventArgs.Empty);
+            ResourcesChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void Close()
+        {
+            if(!CanClose())
+                throw new InvalidOperationException("Can't close at this time");
+
+            StopDictBuilderThread();
+            Resources.Clear();
+            OpenedPath = string.Empty;
         }
     }
 }
