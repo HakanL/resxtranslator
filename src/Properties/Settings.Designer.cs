@@ -105,5 +105,19 @@ namespace ResxTranslator.Properties {
                 this["AddDefaultValuesOnLanguageAdd"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public bool OpenLastDirOnStart {
+            get {
+                return ((bool)(this["OpenLastDirOnStart"]));
+            }
+            set {
+                this["OpenLastDirOnStart"] = value;
+            }
+        }
     }
 }

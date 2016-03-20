@@ -54,6 +54,7 @@ namespace ResxTranslator.Windows
             _settingBinder = new SettingBinder<Settings>(Settings.Default);
             _settingBinder.BindControl(ignoreEmptyResourcesToolStripMenuItem, settings => settings.HideEmptyResources, this);
             _settingBinder.BindControl(copyDefaultValuesOnLanguageAddToolStripMenuItem, settings => settings.AddDefaultValuesOnLanguageAdd, this);
+            _settingBinder.BindControl(openLastDirectoryOnProgramStartToolStripMenuItem, settings => settings.OpenLastDirOnStart, this);
 
             _settingBinder.Subscribe((sender, args) => ResourceLoader.HideEmptyResources = args.NewValue, settings => settings.HideEmptyResources, this);
             _settingBinder.Subscribe((sender, args) => translateUsingBingToolStripMenuItem.Enabled = !string.IsNullOrEmpty(args.NewValue),
@@ -91,7 +92,7 @@ namespace ResxTranslator.Windows
 
                     UpdateMenuStrip();
 
-                    if(value != null)
+                    if (value != null)
                         _currentResource.LanguageChange += OnCurrentResourceLanguageChange;
                 });
             }
@@ -123,7 +124,7 @@ namespace ResxTranslator.Windows
             if (addLanguageToolStripMenuItem.DropDownItems.Count > 0)
                 addLanguageToolStripMenuItem.DropDownItems.Add(new ToolStripSeparator());
             addLanguageToolStripMenuItem.DropDownItems.Add(MoreLanguagesMenuitemName);
-            
+
             foreach (var info in _currentResource.Languages.Values.Select(x => x.CultureInfo).OrderBy(x => x.Name))
             {
                 removeLanguageToolStripMenuItem.DropDownItems.Add($"{info.Name} - {info.DisplayName}").Tag = info;
@@ -143,7 +144,7 @@ namespace ResxTranslator.Windows
             else if (e.ClickedItem.Text.Equals(MoreLanguagesMenuitemName, StringComparison.InvariantCulture))
             {
                 var language = LanguageSelectDialog.ShowLanguageSelectDialog(this);
-                if(language != null && !CurrentResource.Languages.ContainsKey(language.Name))
+                if (language != null && !CurrentResource.Languages.ContainsKey(language.Name))
                 {
                     CurrentResource.AddLanguage(language.Name, _settingBinder.Settings.AddDefaultValuesOnLanguageAdd);
 
@@ -228,6 +229,12 @@ namespace ResxTranslator.Windows
                     throw new ArgumentException(
                         "Invalid command line \r\n" + Environment.CommandLine + "\r\nPath: " + path, inner);
                 }
+            }
+            else if (_settingBinder.Settings.OpenLastDirOnStart &&
+                !string.IsNullOrEmpty(_settingBinder.Settings.LastOpenedDirectory) &&
+                Directory.Exists(_settingBinder.Settings.LastOpenedDirectory))
+            {
+                LoadResourcesFromFolder(_settingBinder.Settings.LastOpenedDirectory);
             }
         }
 

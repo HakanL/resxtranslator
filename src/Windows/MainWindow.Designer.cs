@@ -38,11 +38,15 @@ namespace ResxTranslator.Windows
             this.splitContainerMain = new System.Windows.Forms.SplitContainer();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.resourceTreeView1 = new ResxTranslator.Controls.ResourceTreeView();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.missingTranslationView1 = new ResxTranslator.Controls.MissingTranslationView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.languageSettings1 = new ResxTranslator.Controls.LanguageSettings();
             this.tabControl3 = new System.Windows.Forms.TabControl();
             this.tabPageEditedResource = new System.Windows.Forms.TabPage();
+            this.resourceGrid1 = new ResxTranslator.Controls.ResourceGrid();
             this.menuStripMain = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -58,19 +62,16 @@ namespace ResxTranslator.Windows
             this.keysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addNewKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.copyDefaultValuesOnLanguageAddToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ignoreEmptyResourcesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.autoTranslateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.translateUsingBingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.setBingAppIdToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.languagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addLanguageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeLanguageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.resourceTreeView1 = new ResxTranslator.Controls.ResourceTreeView();
-            this.missingTranslationView1 = new ResxTranslator.Controls.MissingTranslationView();
-            this.languageSettings1 = new ResxTranslator.Controls.LanguageSettings();
-            this.resourceGrid1 = new ResxTranslator.Controls.ResourceGrid();
+            this.autoTranslateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.translateUsingBingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setBingAppIdToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyDefaultValuesOnLanguageAddToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ignoreEmptyResourcesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openLastDirectoryOnProgramStartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.panelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).BeginInit();
@@ -166,6 +167,15 @@ namespace ResxTranslator.Windows
             this.tabPage3.Text = "All resources";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // resourceTreeView1
+            // 
+            this.resourceTreeView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.resourceTreeView1.Location = new System.Drawing.Point(0, 0);
+            this.resourceTreeView1.Margin = new System.Windows.Forms.Padding(0);
+            this.resourceTreeView1.Name = "resourceTreeView1";
+            this.resourceTreeView1.Size = new System.Drawing.Size(238, 324);
+            this.resourceTreeView1.TabIndex = 4;
+            // 
             // tabPage5
             // 
             this.tabPage5.Controls.Add(this.missingTranslationView1);
@@ -176,6 +186,16 @@ namespace ResxTranslator.Windows
             this.tabPage5.TabIndex = 1;
             this.tabPage5.Text = "Missing translations";
             this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // missingTranslationView1
+            // 
+            this.missingTranslationView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.missingTranslationView1.Location = new System.Drawing.Point(0, 0);
+            this.missingTranslationView1.Margin = new System.Windows.Forms.Padding(0);
+            this.missingTranslationView1.Name = "missingTranslationView1";
+            this.missingTranslationView1.ResourceLoader = null;
+            this.missingTranslationView1.Size = new System.Drawing.Size(238, 324);
+            this.missingTranslationView1.TabIndex = 0;
             // 
             // tabControl1
             // 
@@ -198,6 +218,15 @@ namespace ResxTranslator.Windows
             this.tabPage1.Text = "Languages";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // languageSettings1
+            // 
+            this.languageSettings1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.languageSettings1.Location = new System.Drawing.Point(0, 0);
+            this.languageSettings1.Margin = new System.Windows.Forms.Padding(0);
+            this.languageSettings1.Name = "languageSettings1";
+            this.languageSettings1.Size = new System.Drawing.Size(238, 111);
+            this.languageSettings1.TabIndex = 5;
+            // 
             // tabControl3
             // 
             this.tabControl3.Controls.Add(this.tabPageEditedResource);
@@ -218,6 +247,17 @@ namespace ResxTranslator.Windows
             this.tabPageEditedResource.TabIndex = 0;
             this.tabPageEditedResource.Text = "Resource editor";
             this.tabPageEditedResource.UseVisualStyleBackColor = true;
+            // 
+            // resourceGrid1
+            // 
+            this.resourceGrid1.CurrentResource = null;
+            this.resourceGrid1.DisplayContextMenu = true;
+            this.resourceGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.resourceGrid1.Location = new System.Drawing.Point(0, 0);
+            this.resourceGrid1.Margin = new System.Windows.Forms.Padding(0);
+            this.resourceGrid1.Name = "resourceGrid1";
+            this.resourceGrid1.Size = new System.Drawing.Size(688, 461);
+            this.resourceGrid1.TabIndex = 3;
             // 
             // menuStripMain
             // 
@@ -344,50 +384,6 @@ namespace ResxTranslator.Windows
             this.deleteKeyToolStripMenuItem.Text = "Delete Key";
             this.deleteKeyToolStripMenuItem.Click += new System.EventHandler(this.deleteKeyToolStripMenuItem_Click);
             // 
-            // settingsToolStripMenuItem
-            // 
-            this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.copyDefaultValuesOnLanguageAddToolStripMenuItem,
-            this.ignoreEmptyResourcesToolStripMenuItem});
-            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
-            this.settingsToolStripMenuItem.Text = "Settings";
-            // 
-            // copyDefaultValuesOnLanguageAddToolStripMenuItem
-            // 
-            this.copyDefaultValuesOnLanguageAddToolStripMenuItem.Name = "copyDefaultValuesOnLanguageAddToolStripMenuItem";
-            this.copyDefaultValuesOnLanguageAddToolStripMenuItem.Size = new System.Drawing.Size(307, 22);
-            this.copyDefaultValuesOnLanguageAddToolStripMenuItem.Text = "Copy default values when adding languages";
-            // 
-            // ignoreEmptyResourcesToolStripMenuItem
-            // 
-            this.ignoreEmptyResourcesToolStripMenuItem.Name = "ignoreEmptyResourcesToolStripMenuItem";
-            this.ignoreEmptyResourcesToolStripMenuItem.Size = new System.Drawing.Size(307, 22);
-            this.ignoreEmptyResourcesToolStripMenuItem.Text = "Do not show empty resources";
-            // 
-            // autoTranslateToolStripMenuItem
-            // 
-            this.autoTranslateToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.translateUsingBingToolStripMenuItem,
-            this.setBingAppIdToolStripMenuItem});
-            this.autoTranslateToolStripMenuItem.Name = "autoTranslateToolStripMenuItem";
-            this.autoTranslateToolStripMenuItem.Size = new System.Drawing.Size(95, 20);
-            this.autoTranslateToolStripMenuItem.Text = "Auto Translate";
-            // 
-            // translateUsingBingToolStripMenuItem
-            // 
-            this.translateUsingBingToolStripMenuItem.Name = "translateUsingBingToolStripMenuItem";
-            this.translateUsingBingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.translateUsingBingToolStripMenuItem.Text = "Translate using Bing";
-            this.translateUsingBingToolStripMenuItem.Click += new System.EventHandler(this.translateUsingBingToolStripMenuItem_Click);
-            // 
-            // setBingAppIdToolStripMenuItem
-            // 
-            this.setBingAppIdToolStripMenuItem.Name = "setBingAppIdToolStripMenuItem";
-            this.setBingAppIdToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.setBingAppIdToolStripMenuItem.Text = "Set Bing Parameters";
-            this.setBingAppIdToolStripMenuItem.Click += new System.EventHandler(this.setBingAppIdToolStripMenuItem_Click);
-            // 
             // languagesToolStripMenuItem
             // 
             this.languagesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -412,44 +408,56 @@ namespace ResxTranslator.Windows
             this.removeLanguageToolStripMenuItem.Text = "Remove Language";
             this.removeLanguageToolStripMenuItem.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.removeLanguageToolStripMenuItem_DropDownItemClicked);
             // 
-            // resourceTreeView1
+            // autoTranslateToolStripMenuItem
             // 
-            this.resourceTreeView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.resourceTreeView1.Location = new System.Drawing.Point(0, 0);
-            this.resourceTreeView1.Margin = new System.Windows.Forms.Padding(0);
-            this.resourceTreeView1.Name = "resourceTreeView1";
-            this.resourceTreeView1.Size = new System.Drawing.Size(238, 324);
-            this.resourceTreeView1.TabIndex = 4;
+            this.autoTranslateToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.translateUsingBingToolStripMenuItem,
+            this.setBingAppIdToolStripMenuItem});
+            this.autoTranslateToolStripMenuItem.Name = "autoTranslateToolStripMenuItem";
+            this.autoTranslateToolStripMenuItem.Size = new System.Drawing.Size(95, 20);
+            this.autoTranslateToolStripMenuItem.Text = "Auto Translate";
             // 
-            // missingTranslationView1
+            // translateUsingBingToolStripMenuItem
             // 
-            this.missingTranslationView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.missingTranslationView1.Location = new System.Drawing.Point(0, 0);
-            this.missingTranslationView1.Margin = new System.Windows.Forms.Padding(0);
-            this.missingTranslationView1.Name = "missingTranslationView1";
-            this.missingTranslationView1.ResourceLoader = null;
-            this.missingTranslationView1.Size = new System.Drawing.Size(238, 324);
-            this.missingTranslationView1.TabIndex = 0;
+            this.translateUsingBingToolStripMenuItem.Name = "translateUsingBingToolStripMenuItem";
+            this.translateUsingBingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.translateUsingBingToolStripMenuItem.Text = "Translate using Bing";
+            this.translateUsingBingToolStripMenuItem.Click += new System.EventHandler(this.translateUsingBingToolStripMenuItem_Click);
             // 
-            // languageSettings1
+            // setBingAppIdToolStripMenuItem
             // 
-            this.languageSettings1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.languageSettings1.Location = new System.Drawing.Point(0, 0);
-            this.languageSettings1.Margin = new System.Windows.Forms.Padding(0);
-            this.languageSettings1.Name = "languageSettings1";
-            this.languageSettings1.Size = new System.Drawing.Size(238, 111);
-            this.languageSettings1.TabIndex = 5;
+            this.setBingAppIdToolStripMenuItem.Name = "setBingAppIdToolStripMenuItem";
+            this.setBingAppIdToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.setBingAppIdToolStripMenuItem.Text = "Set Bing Parameters";
+            this.setBingAppIdToolStripMenuItem.Click += new System.EventHandler(this.setBingAppIdToolStripMenuItem_Click);
             // 
-            // resourceGrid1
+            // settingsToolStripMenuItem
             // 
-            this.resourceGrid1.CurrentResource = null;
-            this.resourceGrid1.DisplayContextMenu = true;
-            this.resourceGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.resourceGrid1.Location = new System.Drawing.Point(0, 0);
-            this.resourceGrid1.Margin = new System.Windows.Forms.Padding(0);
-            this.resourceGrid1.Name = "resourceGrid1";
-            this.resourceGrid1.Size = new System.Drawing.Size(688, 461);
-            this.resourceGrid1.TabIndex = 3;
+            this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copyDefaultValuesOnLanguageAddToolStripMenuItem,
+            this.ignoreEmptyResourcesToolStripMenuItem,
+            this.openLastDirectoryOnProgramStartToolStripMenuItem});
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            // 
+            // copyDefaultValuesOnLanguageAddToolStripMenuItem
+            // 
+            this.copyDefaultValuesOnLanguageAddToolStripMenuItem.Name = "copyDefaultValuesOnLanguageAddToolStripMenuItem";
+            this.copyDefaultValuesOnLanguageAddToolStripMenuItem.Size = new System.Drawing.Size(307, 22);
+            this.copyDefaultValuesOnLanguageAddToolStripMenuItem.Text = "Copy default values when adding languages";
+            // 
+            // ignoreEmptyResourcesToolStripMenuItem
+            // 
+            this.ignoreEmptyResourcesToolStripMenuItem.Name = "ignoreEmptyResourcesToolStripMenuItem";
+            this.ignoreEmptyResourcesToolStripMenuItem.Size = new System.Drawing.Size(307, 22);
+            this.ignoreEmptyResourcesToolStripMenuItem.Text = "Do not show empty resources";
+            // 
+            // openLastDirectoryOnProgramStartToolStripMenuItem
+            // 
+            this.openLastDirectoryOnProgramStartToolStripMenuItem.Name = "openLastDirectoryOnProgramStartToolStripMenuItem";
+            this.openLastDirectoryOnProgramStartToolStripMenuItem.Size = new System.Drawing.Size(307, 22);
+            this.openLastDirectoryOnProgramStartToolStripMenuItem.Text = "Open last directory on program start";
             // 
             // MainWindow
             // 
@@ -527,6 +535,7 @@ namespace ResxTranslator.Windows
         private ToolStripMenuItem ignoreEmptyResourcesToolStripMenuItem;
         private ToolStripMenuItem languagesToolStripMenuItem;
         private ToolStripMenuItem removeLanguageToolStripMenuItem;
+        private ToolStripMenuItem openLastDirectoryOnProgramStartToolStripMenuItem;
     }
 }
 
