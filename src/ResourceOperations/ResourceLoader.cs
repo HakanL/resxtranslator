@@ -40,6 +40,9 @@ namespace ResxTranslator.ResourceOperations
 
         private void StartDictBuilderThread()
         {
+            if(_dictBuilderThread.IsAlive)
+                throw new InvalidOperationException("Dictionary builder is already running");
+
             // Make the logic for building the dictionary an anonymous delegate to keep it only callable on the separate thread
             var buildDictionary = (ThreadStart)delegate
            {
