@@ -112,12 +112,9 @@ namespace ResxTranslator.ResourceOperations
         {
             get
             {
-                var languages = Languages.Keys.Aggregate(
-                    ""
-                    , (agg, curr) => agg + "," + curr
-                    , agg => agg.Length > 2 ? agg.Substring(1) : "");
+                var languages = string.Join(",", Languages.Keys.OrderBy(x => x));
 
-                return $"{Id} [{_noLanguageLanguage}] ({languages})";
+                return $"{Id} ({languages})"; //[{_noLanguageLanguage}]
             }
         }
 
