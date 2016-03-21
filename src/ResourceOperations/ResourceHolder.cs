@@ -214,11 +214,11 @@ namespace ResxTranslator.ResourceOperations
                 }
             }
 
-            // Create a backup
+            /*// Create a backup
             var backupFilename = filename + ".bak";
             File.Delete(backupFilename);
             File.Copy(filename, backupFilename);
-            File.Delete(filename);
+            File.Delete(filename);*/
 
             // Write the cached resources to the drive
             using (var writer = new ResXResourceWriter(filename))
