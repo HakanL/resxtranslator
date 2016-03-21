@@ -70,7 +70,7 @@ namespace ResxTranslator.Controls
             listView1.EndUpdate();
         }
 
-        private void listView1_DoubleClick(object sender, EventArgs e)
+        private void listView1_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count < 1 ||
                 !listView1.RectangleToScreen(listView1.SelectedItems[0].Bounds).Contains(MousePosition))
