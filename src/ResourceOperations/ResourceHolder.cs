@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Resources;
 using System.Text;
-using System.Xml;
 using ResxTranslator.Tools;
 
 namespace ResxTranslator.ResourceOperations
@@ -15,7 +14,7 @@ namespace ResxTranslator.ResourceOperations
     public class ResourceHolder
     {
         private readonly object _lockObject = new object();
-        private Dictionary<string, bool> _deletedKeys;
+        private readonly Dictionary<string, bool> _deletedKeys;
         private bool _dirty;
         private string _noLanguageLanguage = string.Empty;
         private DataTable _stringsTable;
@@ -145,171 +144,77 @@ namespace ResxTranslator.ResourceOperations
 
         /// <summary>
         ///     Save one resource file
+        /// TODO metadata handling
         /// </summary>
-        private void UpdateFile(string filename, string valueColumn)
+        private void UpdateFile(string filename, string valueColumnId)
         {
-            var xmlDoc = new XmlDocument();
-            xmlDoc.Load(filename);
-
-            var rootNode = xmlDoc.SelectSingleNode("/root");
-
-            // first delete all nodes that have been deleted
-            // if they since have been added the new ones will be saved later on
-
-            foreach (XmlNode dataNode in xmlDoc.SelectNodes("/root/data"))
+            // Read the entire resource file to a buffer
+            var originalResources = new Dictionary<string, ResXDataNode>();
+            using (var reader = new ResXResourceReader(filename))
             {
-                var key = dataNode.Attributes?["name"].Value;
-                if (key == null || !_deletedKeys.ContainsKey(key)) continue;
-
-                // Only support strings - don't want to delete other random resources
-                if (dataNode.Attributes["type"] == null)
+                reader.UseResXDataNodes = true;
+                foreach (DictionaryEntry de in reader)
                 {
-                    rootNode.RemoveChild(dataNode);
+                    originalResources.Add((string)de.Key, (ResXDataNode)de.Value);
                 }
             }
 
-            var usedKeys = new HashSet<string>();
-            var nodesToBeDeleted = new List<XmlNode>();
-            foreach (XmlNode dataNode in xmlDoc.SelectNodes("/root/data"))
+            // Get rid of keys marked as deleted. If they have been restored they will be re-added later
+            // Only support localizable strings to avoid removing other resources by mistake
+            // BUG Clear the _deletedKeys?
+            foreach (var originalResource in originalResources
+                .Where(originalResource => _deletedKeys.ContainsKey(originalResource.Key))
+                .Where(originalResource => IsLocalizableString(originalResource.Key, originalResource.Value))
+                .ToList())
             {
-                // Only support strings with names
-                if (dataNode.Attributes["type"] != null || dataNode.Attributes["name"] == null)
-                    continue;
+                originalResources.Remove(originalResource.Key);
+            }
+            
+            // Precache the valid keys
+            var localizableResourceKeys = originalResources
+                .Where(originalResource => IsLocalizableString(originalResource.Key, originalResource.Value))
+                .Select(x=>x.Key).ToList();
 
-                var key = dataNode.Attributes["name"].Value;
-                var rows = _stringsTable.Select("Key = '" + key + "'");
-                if (rows.Length > 0)
+            // Update originalResources with information stored in _stringsTable.
+            // Adds keys if they are missing in originalResources
+            foreach (DataRow dataRow in _stringsTable.Rows)
+            {
+                var key = (string)dataRow["Key"];
+
+                var valueData = dataRow[valueColumnId] == DBNull.Value ? null : dataRow[valueColumnId];
+                var stringValueData = valueData?.ToString() ?? string.Empty;
+
+                var commentData = dataRow["Comment"] == DBNull.Value ? null : dataRow["Comment"];
+                var stringCommentData = commentData?.ToString() ?? string.Empty;
+                
+                if (localizableResourceKeys.Contains(key))
                 {
-                    var anyData = false;
-                    if (rows[0][valueColumn] == DBNull.Value || string.IsNullOrEmpty((string)rows[0][valueColumn]))
-                    {
-                        // Delete value
-                        foreach (XmlNode childNode in dataNode.ChildNodes)
-                        {
-                            if (childNode.Name == "value")
-                            {
-                                childNode.InnerText = string.Empty;
-                                break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        // Add/update
-                        anyData = true;
-                        var found = false;
-                        foreach (var childNode in dataNode.ChildNodes.Cast<XmlNode>().Where(childNode => childNode.Name == "value"))
-                        {
-                            childNode.InnerText = (string)rows[0][valueColumn];
-                            found = true;
-                            break;
-                        }
-                        if (!found)
-                        {
-                            // Add
-                            XmlNode newNode = xmlDoc.CreateElement("value");
-                            newNode.InnerText = (string)rows[0][valueColumn];
-                            dataNode.AppendChild(newNode);
-                        }
-                    }
-
-
-                    if (rows[0]["Comment"] == DBNull.Value || string.IsNullOrEmpty((string)rows[0]["Comment"]))
-                    {
-                        // Delete comment
-                        foreach (XmlNode childNode in dataNode.ChildNodes)
-                        {
-                            if (childNode.Name == "comment")
-                            {
-                                dataNode.RemoveChild(childNode);
-                                break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        // Add/update
-                        anyData = true;
-                        var found = false;
-                        foreach (XmlNode childNode in dataNode.ChildNodes)
-                        {
-                            if (childNode.Name == "comment")
-                            {
-                                childNode.InnerText = (string)rows[0]["Comment"];
-                                found = true;
-                                break;
-                            }
-                        }
-                        if (!found)
-                        {
-                            // Add
-                            XmlNode newNode = xmlDoc.CreateElement("comment");
-                            newNode.InnerText = (string)rows[0]["Comment"];
-                            dataNode.AppendChild(newNode);
-                        }
-                    }
-
-                    if (!anyData)
-                    {
-                        // Remove
-                        nodesToBeDeleted.Add(dataNode);
-                    }
-
-                    usedKeys.Add(key);
+                    // Set new value for the datanode
+                    // BUG: Maybe actually delete the resource if stringData is empty?
+                    // BUG: Is comment disabled by null or empty str?
+                    originalResources[key] = new ResXDataNode(originalResources[key].Name, stringValueData) { Comment = stringCommentData };
+                }
+                else
+                {
+                    originalResources.Add(key, new ResXDataNode(key, stringValueData));
                 }
             }
 
-            foreach (var deleteNode in nodesToBeDeleted)
-            {
-                rootNode.RemoveChild(deleteNode);
-            }
+            // Create a backup
+            var backupFilename = filename + ".bak";
+            File.Delete(backupFilename);
+            File.Copy(filename, backupFilename);
+            File.Delete(filename);
 
-            foreach (DataRow row in _stringsTable.Rows)
+            // Write the cached resources to the drive
+            using (var writer = new ResXResourceWriter(filename))
             {
-                var key = (string)row["Key"];
-                if (!usedKeys.Contains(key))
+                foreach (var originalResource in originalResources)
                 {
-                    // Add
-                    XmlNode newNode = xmlDoc.CreateElement("data");
-                    var newAttribute = xmlDoc.CreateAttribute("name");
-                    newAttribute.Value = key;
-                    newNode.Attributes.Append(newAttribute);
-
-                    newAttribute = xmlDoc.CreateAttribute("xml:space");
-                    newAttribute.Value = "preserve";
-                    newNode.Attributes.Append(newAttribute);
-
-                    var anyData = false;
-                    if (row["Comment"] != DBNull.Value && !string.IsNullOrEmpty((string)row["Comment"]))
-                    {
-                        XmlNode newComment = xmlDoc.CreateElement("comment");
-                        newComment.InnerText = (string)row["Comment"];
-                        newNode.AppendChild(newComment);
-                        anyData = true;
-                    }
-
-                    if (row[valueColumn] != DBNull.Value && !string.IsNullOrEmpty((string)row[valueColumn]))
-                    {
-                        XmlNode newValue = xmlDoc.CreateElement("value");
-                        newValue.InnerText = (string)row[valueColumn];
-                        newNode.AppendChild(newValue);
-                        anyData = true;
-                    }
-                    else if (anyData)
-                    {
-                        XmlNode newValue = xmlDoc.CreateElement("value");
-                        newValue.InnerText = string.Empty;
-                        newNode.AppendChild(newValue);
-                    }
-
-                    if (anyData)
-                    {
-                        xmlDoc.SelectSingleNode("/root").AppendChild(newNode);
-                    }
+                    writer.AddResource(originalResource.Value);
                 }
+                writer.Generate();
             }
-
-            xmlDoc.Save(filename);
         }
 
         /// <summary>
@@ -328,6 +233,7 @@ namespace ResxTranslator.ResourceOperations
 
         /// <summary>
         ///     Read one resource file
+        /// TODO metadata handling
         /// </summary>
         private void ReadResourceFile(string filename, DataTable stringsTable,
             string valueColumn, bool isTranslated)
@@ -343,7 +249,7 @@ namespace ResxTranslator.ResourceOperations
                     var key = (string)de.Key;
                     var dataNode = (ResXDataNode)de.Value;
                     var value = dataNode.GetValueAsString();
-                    
+
                     var r = FindByKey(key);
                     if (r == null)
                     {
@@ -381,12 +287,17 @@ namespace ResxTranslator.ResourceOperations
         /// <param name="data">Data entry to be checked. Requires ResXResourceReader.UseResXDataNodes = true</param>
         private static bool IsLocalizableString(DictionaryEntry data)
         {
-            var key = (string)data.Key;
+            return IsLocalizableString((string)data.Key, data.Value as ResXDataNode);
+        }
 
+        /// <summary>
+        /// Check if the entry contains a localizable string
+        /// </summary>
+        private static bool IsLocalizableString(string key, ResXDataNode dataNode)
+        {
             if ((key.StartsWith(">>") || key.StartsWith("$")) && key != "$this.Text")
                 return false;
 
-            var dataNode = data.Value as ResXDataNode;
             if (dataNode == null)
                 return false;
             if (dataNode.FileRef != null)
@@ -431,12 +342,13 @@ namespace ResxTranslator.ResourceOperations
 
         /// <summary>
         ///     Read the resource files correspondning with this resource holder
+        /// TODO metadata handling
         /// </summary>
         public void LoadResource()
         {
             lock (_lockObject)
             {
-                _deletedKeys = new Dictionary<string, bool>();
+                _deletedKeys.Clear();
 
                 _stringsTable = new DataTable("Strings");
 
@@ -554,6 +466,7 @@ namespace ResxTranslator.ResourceOperations
 
         /// <summary>
         ///     Add the specified language to this object
+        /// TODO metadata handling
         /// </summary>
         public void AddLanguage(string languageCode, bool copyValues)
         {
@@ -574,10 +487,10 @@ namespace ResxTranslator.ResourceOperations
                         reader.UseResXDataNodes = true;
                         foreach (DictionaryEntry de in reader)
                         {
-                            if(!IsLocalizableString(de))
+                            if (!IsLocalizableString(de))
                                 continue;
 
-                            var node = (ResXDataNode) de.Value;
+                            var node = (ResXDataNode)de.Value;
                             var value = node.GetValueAsString();
                             // Skip saving unnecessary items
                             if (!string.IsNullOrWhiteSpace(value))
@@ -624,15 +537,14 @@ namespace ResxTranslator.ResourceOperations
         /// </summary>
         public void DeleteLanguage(string languageCode)
         {
-            if (Languages.ContainsKey(languageCode.ToLower()))
-            {
-                File.Delete(Languages[languageCode.ToLower()].Filename);
+            if (!Languages.ContainsKey(languageCode.ToLower())) return;
 
-                Languages.Remove(languageCode.ToLower());
-                _stringsTable.Columns.RemoveAt(_stringsTable.Columns[languageCode].Ordinal);
+            File.Delete(Languages[languageCode.ToLower()].Filename);
 
-                OnLanguageChange();
-            }
+            Languages.Remove(languageCode.ToLower());
+            _stringsTable.Columns.RemoveAt(_stringsTable.Columns[languageCode].Ordinal);
+
+            OnLanguageChange();
         }
 
         /// <summary>
@@ -643,7 +555,7 @@ namespace ResxTranslator.ResourceOperations
             StringsTable = null;
             LoadResource();
             Dirty = false;
-            _deletedKeys = new Dictionary<string, bool>();
+            _deletedKeys.Clear();
 
             OnLanguageChange();
         }
