@@ -25,7 +25,7 @@ namespace ResxTranslator.Windows
             Opacity = 0;
             InitializeComponent();
 
-            _defaultWindowTitle = $"{Text} {Assembly.GetAssembly(typeof (MainWindow)).GetName().Version.ToString(2)}";
+            _defaultWindowTitle = $"{Text} {Assembly.GetAssembly(typeof(MainWindow)).GetName().Version.ToString(2)}";
 
             ResourceLoader = new ResourceLoader();
             ResourceLoader.ResourceLoadProgress += OnResourceLoaderOnResourceLoadProgress;
@@ -55,18 +55,18 @@ namespace ResxTranslator.Windows
                 resourceGrid1.SetVisibleLanguageColumns(languageSettings1.EnabledLanguages.Select(x => x.Name).ToArray());
             };
 
-            Settings.Binder.BindControl(ignoreEmptyResourcesToolStripMenuItem, 
+            Settings.Binder.BindControl(ignoreEmptyResourcesToolStripMenuItem,
                 settings => settings.HideEmptyResources, this);
-            Settings.Binder.BindControl(copyDefaultValuesOnLanguageAddToolStripMenuItem, 
+            Settings.Binder.BindControl(copyDefaultValuesOnLanguageAddToolStripMenuItem,
                 settings => settings.AddDefaultValuesOnLanguageAdd, this);
-            Settings.Binder.BindControl(openLastDirectoryOnProgramStartToolStripMenuItem, 
+            Settings.Binder.BindControl(openLastDirectoryOnProgramStartToolStripMenuItem,
                 settings => settings.OpenLastDirOnStart, this);
-            Settings.Binder.BindControl(doNotShowResourcesWithoutAnyTranslationsToolStripMenuItem, 
+            Settings.Binder.BindControl(doNotShowResourcesWithoutAnyTranslationsToolStripMenuItem,
                 settings => settings.HideNontranslatedResources, this);
 
-            Settings.Binder.Subscribe((sender, args) => ResourceLoader.HideEmptyResources = args.NewValue, 
+            Settings.Binder.Subscribe((sender, args) => ResourceLoader.HideEmptyResources = args.NewValue,
                 settings => settings.HideEmptyResources, this);
-            Settings.Binder.Subscribe((sender, args) => ResourceLoader.HideNontranslatedResources = args.NewValue, 
+            Settings.Binder.Subscribe((sender, args) => ResourceLoader.HideNontranslatedResources = args.NewValue,
                 settings => settings.HideNontranslatedResources, this);
             Settings.Binder.Subscribe((sender, args) => translateUsingBingToolStripMenuItem.Enabled = !string.IsNullOrEmpty(args.NewValue),
                 settings => settings.BingAppId, this);
@@ -225,16 +225,34 @@ namespace ResxTranslator.Windows
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Settings.Default.LastOpenedDirectory = ResourceLoader.OpenedPath ?? string.Empty;
+
+            switch (WindowState)
+            {
+                case FormWindowState.Normal:
+                    Settings.Default.WindowLocation = Location;
+                    Settings.Default.WindowSize = Size;
+                    Settings.Default.WindowState = WindowState;
+                    break;
+                case FormWindowState.Maximized:
+                    Settings.Default.WindowState = WindowState;
+                    break;
+            }
+
             Settings.Default.Save();
 
             if (!ResourceLoader.CanClose())
-            {
                 e.Cancel = true;
-            }
         }
 
         private void MainForm_Shown(object sender, EventArgs e)
         {
+            if (!Settings.Default.WindowSize.IsEmpty)
+            {
+                Location = Settings.Default.WindowLocation;
+                Size = Settings.Default.WindowSize;
+                WindowState = Settings.Default.WindowState;
+            }
+
             Opacity = 1;
 
             var args = Environment.GetCommandLineArgs();
@@ -272,7 +290,7 @@ namespace ResxTranslator.Windows
                 if (args.Progress < args.ProgressTop)
                 {
                     toolStripProgressBar1.Visible = true;
-                    if(toolStripProgressBar1.Maximum != args.ProgressTop)
+                    if (toolStripProgressBar1.Maximum != args.ProgressTop)
                         toolStripProgressBar1.Maximum = args.ProgressTop;
                     toolStripProgressBar1.Value = args.Progress;
                 }
@@ -346,7 +364,7 @@ namespace ResxTranslator.Windows
 
         private void translateUsingBingToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Do you want to autotranslate all non-translated texts for all languages in this resource?", 
+            if (MessageBox.Show("Do you want to autotranslate all non-translated texts for all languages in this resource?",
                 "Auto translate", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 CurrentResource.AutoTranslate();
@@ -384,7 +402,7 @@ namespace ResxTranslator.Windows
 
         private void reloadCurrentDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(!string.IsNullOrEmpty(ResourceLoader.OpenedPath))
+            if (!string.IsNullOrEmpty(ResourceLoader.OpenedPath))
                 LoadResourcesFromFolder(ResourceLoader.OpenedPath);
         }
 
@@ -401,7 +419,7 @@ namespace ResxTranslator.Windows
         private void licenceToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start(Path.Combine(
-                Path.GetDirectoryName(Assembly.GetAssembly(typeof(MainWindow)).Location) ?? string.Empty, 
+                Path.GetDirectoryName(Assembly.GetAssembly(typeof(MainWindow)).Location) ?? string.Empty,
                 "Licence.txt"));
         }
     }
