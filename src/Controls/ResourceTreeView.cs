@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
@@ -26,6 +27,16 @@ namespace ResxTranslator.Controls
 
         public event EventHandler<ResourceOpenedEventArgs> ResourceOpened;
 
+        public void Clear()
+        {
+            treeViewResx.Nodes.Clear();
+        }
+
+        public void ExecuteFindInNodes(SearchParams searchParams)
+        {
+            ExecuteFindInNodes(treeViewResx.Nodes.Cast<TreeNode>(), searchParams);
+        }
+
         public void LoadResources(ResourceLoader loader)
         {
             treeViewResx.SuspendLayout();
@@ -40,89 +51,11 @@ namespace ResxTranslator.Controls
 
             treeViewResx.ExpandAll();
 
-            if(treeViewResx.Nodes.Count > 0)
-                treeViewResx.Nodes.Cast<TreeNode>().OrderBy(x=>x.Name).First().EnsureVisible();
+            if (treeViewResx.Nodes.Count > 0)
+                treeViewResx.Nodes.Cast<TreeNode>().OrderBy(x => x.Name).First().EnsureVisible();
 
             treeViewResx.EndUpdate();
             treeViewResx.ResumeLayout();
-        }
-
-        public void Clear()
-        {
-            treeViewResx.Nodes.Clear();
-        }
-
-        private void treeViewResx_DoubleClick(object sender, EventArgs e)
-        {
-            SelectResourceFromTree();
-        }
-
-        private void treeViewResx_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            SelectResourceFromTree();
-        }
-
-        private void SelectResourceFromTree()
-        {
-            var selectedTreeNode = treeViewResx.SelectedNode;
-            if (selectedTreeNode == null)
-                return;
-
-            if (selectedTreeNode.Tag is PathHolder)
-                return;
-
-            Debug.Assert(selectedTreeNode.Tag is ResourceHolder);
-
-            OnResourceOpened(new ResourceOpenedEventArgs((ResourceHolder)selectedTreeNode.Tag));
-        }
-
-        private void BuildTreeView(ResourceHolder resource)
-        {
-            TreeNode parentNode = null;
-            var topFolders = resource.DisplayFolder.Split('\\');
-            foreach (var subFolder in topFolders)
-            {
-                var searchNodes = parentNode?.Nodes ?? treeViewResx.Nodes;
-                var found = false;
-                foreach (TreeNode treeNode in searchNodes)
-                {
-                    var holder = treeNode.Tag as PathHolder;
-                    if (holder != null && holder.Id.Equals(subFolder, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        found = true;
-                        parentNode = treeNode;
-                        break;
-                    }
-                }
-
-                if (found) continue;
-
-                var pathTreeNode = new TreeNode("[" + subFolder + "]") { Tag = new PathHolder(subFolder), ImageIndex = 0 };
-                searchNodes.Add(pathTreeNode);
-                parentNode = pathTreeNode;
-            }
-
-            var leafNode = new TreeNode(resource.Id) { Tag = resource, ImageIndex = 1 };
-
-            resource.DirtyChanged += (sender, args) => SetTreeNodeDirty(leafNode, resource);
-
-            SetTreeNodeTitle(leafNode, resource);
-
-            resource.LanguageChange += (sender, args) => SetTreeNodeTitle(leafNode, resource);
-
-            parentNode?.Nodes.Add(leafNode);
-        }
-
-        private void SetTreeNodeTitle(TreeNode node, ResourceHolder res)
-        {
-            this.InvokeIfRequired(
-                c => { node.Text = res.Caption; });
-        }
-
-        private void SetTreeNodeDirty(TreeNode node, ResourceHolder res)
-        {
-            this.InvokeIfRequired(
-                c => { node.ForeColor = res.IsDirty ? Color.Red : Color.Black; });
         }
 
         protected virtual void OnResourceOpened(ResourceOpenedEventArgs e)
@@ -130,17 +63,12 @@ namespace ResxTranslator.Controls
             ResourceOpened?.Invoke(this, e);
         }
 
-        public void ExecuteFindInNodes(SearchParams searchParams)
+        private static void ExecuteFindInNodes(IEnumerable<TreeNode> searchNodes, SearchParams searchParams)
         {
-            ExecuteFindInNodes(treeViewResx.Nodes, searchParams);
-        }
-
-        private static void ExecuteFindInNodes(TreeNodeCollection searchNodes, SearchParams searchParams)
-        {
-            foreach (TreeNode treeNode in searchNodes)
+            foreach (var treeNode in searchNodes)
             {
                 treeNode.BackColor = Color.White;
-                ExecuteFindInNodes(treeNode.Nodes, searchParams);
+                ExecuteFindInNodes(treeNode.Nodes.Cast<TreeNode>(), searchParams);
 
                 if (MatchNodeToSearch(searchParams, treeNode))
                     treeNode.BackColor = Color.GreenYellow;
@@ -174,6 +102,79 @@ namespace ResxTranslator.Controls
             }
 
             return false;
+        }
+
+        private void BuildTreeView(ResourceHolder resource)
+        {
+            TreeNode parentNode = null;
+            var topFolders = resource.DisplayFolder.Split('\\');
+            foreach (var subFolder in topFolders)
+            {
+                var searchNodes = parentNode?.Nodes ?? treeViewResx.Nodes;
+                var found = false;
+                foreach (TreeNode treeNode in searchNodes)
+                {
+                    var holder = treeNode.Tag as PathHolder;
+                    if (holder != null && holder.Id.Equals(subFolder, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        found = true;
+                        parentNode = treeNode;
+                        break;
+                    }
+                }
+
+                if (found) continue;
+
+                var pathTreeNode = new TreeNode("[" + subFolder + "]") {Tag = new PathHolder(subFolder), ImageIndex = 0};
+                searchNodes.Add(pathTreeNode);
+                parentNode = pathTreeNode;
+            }
+
+            var leafNode = new TreeNode(resource.Id) {Tag = resource, ImageIndex = 1};
+
+            resource.DirtyChanged += (sender, args) => SetTreeNodeDirty(leafNode, resource);
+
+            SetTreeNodeTitle(leafNode, resource);
+
+            resource.LanguageChange += (sender, args) => SetTreeNodeTitle(leafNode, resource);
+
+            parentNode?.Nodes.Add(leafNode);
+        }
+
+        private void SelectResourceFromTree()
+        {
+            var selectedTreeNode = treeViewResx.SelectedNode;
+            if (selectedTreeNode == null)
+                return;
+
+            if (selectedTreeNode.Tag is PathHolder)
+                return;
+
+            Debug.Assert(selectedTreeNode.Tag is ResourceHolder);
+
+            OnResourceOpened(new ResourceOpenedEventArgs((ResourceHolder) selectedTreeNode.Tag));
+        }
+
+        private void SetTreeNodeDirty(TreeNode node, ResourceHolder res)
+        {
+            this.InvokeIfRequired(
+                c => { node.ForeColor = res.IsDirty ? Color.Red : Color.Black; });
+        }
+
+        private void SetTreeNodeTitle(TreeNode node, ResourceHolder res)
+        {
+            this.InvokeIfRequired(
+                c => { node.Text = res.Caption; });
+        }
+
+        private void treeViewResx_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            SelectResourceFromTree();
+        }
+
+        private void treeViewResx_DoubleClick(object sender, EventArgs e)
+        {
+            SelectResourceFromTree();
         }
 
         public sealed class ResourceOpenedEventArgs : EventArgs

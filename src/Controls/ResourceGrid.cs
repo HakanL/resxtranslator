@@ -1,17 +1,37 @@
 ﻿using System;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using ResxTranslator.Properties;
 using ResxTranslator.ResourceOperations;
 using ResxTranslator.Windows;
-// ReSharper disable PossibleNullReferenceException
 
 namespace ResxTranslator.Controls
 {
     public partial class ResourceGrid : UserControl
     {
+        private const string ColNameComment = "Comment";
+        private const string ColNameError = "Error";
+        private const string ColNameKey = "Key";
+        private const string ColNameNoLang = "NoLanguageValue";
+        private const string ColNameTranslated = "Translated";
+
+        private static readonly string[] SpecialColNames =
+        {
+            ColNameComment, ColNameError, ColNameKey, ColNameNoLang,
+            ColNameTranslated
+        };
+
+        private ResourceHolder _currentResource;
+
+        public ResourceGrid()
+        {
+            InitializeComponent();
+        }
+
+        public int RowCount => dataGridView1.RowCount;
+
         public ResourceHolder CurrentResource
         {
             get { return _currentResource; }
@@ -28,76 +48,6 @@ namespace ResxTranslator.Controls
             set { contextMenuStripCell.Enabled = value; }
         }
 
-        public int RowCount => dataGridView1.RowCount;
-
-        public void DeleteSelectedRow()
-        {
-            var dataRow = dataGridView1.SelectedRows[0].DataBoundItem as DataRowView;
-            dataRow?.Row.Delete();
-        }
-
-        public ResourceGrid()
-        {
-            InitializeComponent();
-        }
-
-        public void RefreshResourceDisplay()
-        {
-            ShowResourceInGrid(CurrentResource);
-        }
-
-        private const string ColNameNoLang = "NoLanguageValue";
-        private const string ColNameComment = "Comment";
-        private const string ColNameTranslated = "Translated";
-        private const string ColNameError = "Error";
-        private const string ColNameKey = "Key";
-
-        private static readonly string[] SpecialColNames = {ColNameComment, ColNameError, ColNameKey, ColNameNoLang, ColNameTranslated};
-
-        private ResourceHolder _currentResource;
-
-        private void ShowResourceInGrid(ResourceHolder resource)
-        {
-            if (resource == null)
-            {
-                dataGridView1.DataSource = null;
-                return;
-            }
-
-            dataGridView1.DataSource = resource.StringsTable;
-
-            foreach (var languageHolder in resource.Languages.Values)
-            {
-                dataGridView1.Columns[languageHolder.LanguageId].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            }
-
-            dataGridView1.Columns[ColNameNoLang].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            dataGridView1.Columns[ColNameComment].DisplayIndex = dataGridView1.Columns.Count - 1;
-
-            dataGridView1.Columns[ColNameTranslated].Visible = false;
-            dataGridView1.Columns[ColNameError].Visible = false;
-            
-            dataGridView1.Columns[ColNameKey].ReadOnly = true;
-
-            ApplyConditionalFormatting();
-        }
-
-        public void SetVisibleLanguageColumns(params string[] languageIds)
-        {
-            foreach (var column in dataGridView1.Columns.Cast<DataGridViewColumn>().Where(column => !SpecialColNames.Contains(column.Name)))
-            {
-                column.Visible = languageIds.Any(x => x.Equals(column.Name, StringComparison.OrdinalIgnoreCase));
-            }
-        }
-
-        public void SetLanguageColumnVisible(string languageId, bool visible)
-        {
-            if (dataGridView1.Columns.Contains(languageId))
-            {
-                dataGridView1.Columns[languageId].Visible = visible;
-            }
-        }
-
         public void ApplyConditionalFormatting()
         {
             foreach (DataGridViewRow r in dataGridView1.Rows)
@@ -106,18 +56,55 @@ namespace ResxTranslator.Controls
             }
         }
 
+        public void DeleteSelectedRow()
+        {
+            var dataRow = dataGridView1.SelectedRows[0].DataBoundItem as DataRowView;
+            dataRow?.Row.Delete();
+        }
 
-        static int FindCheckedSubItemIndex(ToolStripDropDownItem autoTranslate)
+        public void RefreshResourceDisplay()
+        {
+            ShowResourceInGrid(CurrentResource);
+        }
+
+        public void SetLanguageColumnVisible(string languageId, bool visible)
+        {
+            if (dataGridView1.Columns.Contains(languageId) && dataGridView1.Columns[languageId] != null)
+                dataGridView1.Columns[languageId].Visible = visible;
+        }
+
+        public void SetVisibleLanguageColumns(params string[] languageIds)
+        {
+            foreach (
+                var column in
+                    dataGridView1.Columns.Cast<DataGridViewColumn>()
+                        .Where(column => !SpecialColNames.Contains(column.Name)))
+            {
+                column.Visible = languageIds.Any(x => x.Equals(column.Name, StringComparison.OrdinalIgnoreCase));
+            }
+        }
+
+        private static int FindCheckedSubItemIndex(ToolStripDropDownItem autoTranslate)
         {
             for (var index = 0; index < autoTranslate.DropDownItems.Count; index++)
             {
                 var item = autoTranslate.DropDownItems[index] as ToolStripMenuItem;
-                if (item.Checked)
-                {
+                if (item != null && item.Checked)
                     return index;
-                }
             }
             return -1;
+        }
+
+        private void ApplyConditionalFormatting(DataGridViewRow r)
+        {
+            if (r.Cells[ColNameError].Value != null && (bool) r.Cells[ColNameError].Value)
+            {
+                r.DefaultCellStyle.ForeColor = Color.Red;
+            }
+            else
+            {
+                r.DefaultCellStyle.ForeColor = dataGridView1.DefaultCellStyle.ForeColor;
+            }
         }
 
         private void autoTranslateThisCellToolStripMenuItem_Click(object sender, EventArgs e)
@@ -127,13 +114,15 @@ namespace ResxTranslator.Controls
             var source = dataGridView1.CurrentCell.Value.ToString();
 
             var autoTranslate =
-                contextMenuStripCell.Items["autoTranslateThisCellToolStripMenuItem"] as ToolStripMenuItem;
+                (ToolStripMenuItem) contextMenuStripCell.Items["autoTranslateThisCellToolStripMenuItem"];
 
             var preferred = ColNameNoLang;
-            if (!(autoTranslate.DropDownItems[1] as ToolStripMenuItem).Checked)
+            if (!((ToolStripMenuItem) autoTranslate.DropDownItems[1]).Checked)
             {
                 var subChk = FindCheckedSubItemIndex(autoTranslate);
-                preferred = subChk > -1 ? autoTranslate.DropDownItems[subChk].Text : Settings.Default.PreferredSourceLanguage;
+                preferred = subChk > -1
+                    ? autoTranslate.DropDownItems[subChk].Text
+                    : Settings.Default.PreferredSourceLanguage;
             }
 
             if (string.IsNullOrEmpty(source.Trim()))
@@ -153,9 +142,9 @@ namespace ResxTranslator.Controls
         private void autoTranslateThisCellToolStripMenuItem_DropDownItemClicked(object sender,
             ToolStripItemClickedEventArgs e)
         {
-            var checkedItem = e.ClickedItem as ToolStripMenuItem;
+            var checkedItem = (ToolStripMenuItem) e.ClickedItem;
             var autoTranslate =
-                contextMenuStripCell.Items["autoTranslateThisCellToolStripMenuItem"] as ToolStripMenuItem;
+                (ToolStripMenuItem) contextMenuStripCell.Items["autoTranslateThisCellToolStripMenuItem"];
 
             foreach (ToolStripMenuItem item in autoTranslate.DropDownItems)
                 item.Checked = false;
@@ -177,56 +166,6 @@ namespace ResxTranslator.Controls
             dataGridView1.EndEdit();
         }
 
-        private void ApplyConditionalFormatting(DataGridViewRow r)
-        {
-            if (r.Cells[ColNameError].Value != null && (bool)r.Cells[ColNameError].Value)
-            {
-                r.DefaultCellStyle.ForeColor = Color.Red;
-            }
-            else
-            {
-                r.DefaultCellStyle.ForeColor = dataGridView1.DefaultCellStyle.ForeColor;
-            }
-        }
-
-        private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (dataGridView1.RowCount == 0)
-            {
-                return;
-            }
-            if (dataGridView1.CurrentCell.IsInEditMode)
-            {
-                return;
-            }
-
-            var frm = new CellEditorWindow();
-            var value = dataGridView1.CurrentCell.Value;
-            if (value == DBNull.Value)
-            {
-                frm.textBoxString.Text = "";
-            }
-            else
-            {
-                frm.textBoxString.Text = (string)value;
-            }
-
-            frm.Icon = ParentForm.Icon;
-            frm.StartPosition = FormStartPosition.CenterParent;
-
-            if (frm.ShowDialog(ParentForm) == DialogResult.OK)
-            {
-                dataGridView1.CurrentCell.Value = frm.textBoxString.Text;
-                dataGridView1.EndEdit();
-            }
-        }
-
-        private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
-        {
-            ((DataGridViewTextBoxEditingControl)e.Control).AcceptsReturn = true;
-            ((DataGridViewTextBoxEditingControl)e.Control).Multiline = true;
-        }
-
         private void dataGridView1_CellContextMenuStripNeeded(object sender,
             DataGridViewCellContextMenuStripNeededEventArgs e)
         {
@@ -235,21 +174,17 @@ namespace ResxTranslator.Controls
 
             e.ContextMenuStrip = contextMenuStripCell;
 
-            var autoTranslate = contextMenuStripCell.Items["autoTranslateThisCellToolStripMenuItem"] as ToolStripMenuItem;
+            var autoTranslate = (ToolStripMenuItem) contextMenuStripCell.Items["autoTranslateThisCellToolStripMenuItem"];
 
             if (autoTranslate.DropDownItems.Count < 3)
             {
                 //rebuild the language select drop down
                 var subChk = FindCheckedSubItemIndex(autoTranslate);
-                var chkedLang = "";
+                var chkedLang = string.Empty;
                 if (subChk > -1)
-                {
                     chkedLang = autoTranslate.DropDownItems[subChk].Text;
-                }
                 else
-                {
-                    (autoTranslate.DropDownItems[0] as ToolStripMenuItem).Checked = true;
-                }
+                    ((ToolStripMenuItem) autoTranslate.DropDownItems[0]).Checked = true;
 
                 for (var i = autoTranslate.DropDownItems.Count - 1; i > 1; --i)
                 {
@@ -259,18 +194,14 @@ namespace ResxTranslator.Controls
                 foreach (var lang in CurrentResource.Languages.Keys)
                 {
                     autoTranslate.DropDownItems.Add(lang);
-                    var newItem =
-                        autoTranslate.DropDownItems[autoTranslate.DropDownItems.Count - 1] as ToolStripMenuItem;
                     if (chkedLang == lang)
-                    {
-                        newItem.Checked = true;
-                    }
+                        ((ToolStripMenuItem) autoTranslate.DropDownItems[autoTranslate.DropDownItems.Count - 1]).Checked
+                            = true;
                 }
             }
 
-
             var preferred = ColNameNoLang;
-            if (!(autoTranslate.DropDownItems[1] as ToolStripMenuItem).Checked)
+            if (!((ToolStripMenuItem) autoTranslate.DropDownItems[1]).Checked)
             {
                 var subChk = FindCheckedSubItemIndex(autoTranslate);
                 if (subChk > -1)
@@ -300,7 +231,7 @@ namespace ResxTranslator.Controls
                 var newItem = e.ContextMenuStrip.Items[e.ContextMenuStrip.Items.Count - 1];
                 var translation = alt;
                 var cell = dataGridView1.CurrentCell;
-                newItem.Click += (EventHandler)delegate
+                newItem.Click += (EventHandler) delegate
                 {
                     cell.Value = translation;
                     dataGridView1.EndEdit();
@@ -309,20 +240,37 @@ namespace ResxTranslator.Controls
             }
         }
 
-        private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            ApplyConditionalFormatting(dataGridView1.Rows[e.RowIndex]);
+            if (dataGridView1.RowCount == 0)
+            {
+                return;
+            }
+            if (dataGridView1.CurrentCell.IsInEditMode)
+            {
+                return;
+            }
+
+            var frm = new CellEditorWindow();
+            var value = dataGridView1.CurrentCell.Value;
+            if (value == DBNull.Value)
+                frm.textBoxString.Text = string.Empty;
+            else
+                frm.textBoxString.Text = (string) value;
+
+            frm.Icon = ParentForm.Icon;
+            frm.StartPosition = FormStartPosition.CenterParent;
+
+            if (frm.ShowDialog(ParentForm) == DialogResult.OK)
+            {
+                dataGridView1.CurrentCell.Value = frm.textBoxString.Text;
+                dataGridView1.EndEdit();
+            }
         }
 
         private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
             //_mouseDownStart = DateTime.Now;
-        }
-
-        private void dataGridView1_CellMouseUp(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            //_mouseDownStart = DateTime.MaxValue;
-            //dataGridView1.AllowDrop = false;
         }
 
         private void dataGridView1_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
@@ -341,6 +289,17 @@ namespace ResxTranslator.Controls
                     }
                 }
             }*/
+        }
+
+        private void dataGridView1_CellMouseUp(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            //_mouseDownStart = DateTime.MaxValue;
+            //dataGridView1.AllowDrop = false;
+        }
+
+        private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            ApplyConditionalFormatting(dataGridView1.Rows[e.RowIndex]);
         }
 
         private void dataGridView1_DragDrop(object sender, DragEventArgs e)
@@ -370,6 +329,38 @@ namespace ResxTranslator.Controls
             {
                 e.Effect = (Control.ModifierKeys & Keys.Control) != 0 ? DragDropEffects.Copy : DragDropEffects.None;
             }*/
+        }
+
+        private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            ((DataGridViewTextBoxEditingControl) e.Control).AcceptsReturn = true;
+            ((DataGridViewTextBoxEditingControl) e.Control).Multiline = true;
+        }
+
+        private void ShowResourceInGrid(ResourceHolder resource)
+        {
+            if (resource == null)
+            {
+                dataGridView1.DataSource = null;
+                return;
+            }
+
+            dataGridView1.DataSource = resource.StringsTable;
+
+            foreach (var languageHolder in resource.Languages.Values)
+            {
+                dataGridView1.Columns[languageHolder.LanguageId].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            }
+
+            dataGridView1.Columns[ColNameNoLang].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            dataGridView1.Columns[ColNameComment].DisplayIndex = dataGridView1.Columns.Count - 1;
+
+            dataGridView1.Columns[ColNameTranslated].Visible = false;
+            dataGridView1.Columns[ColNameError].Visible = false;
+
+            dataGridView1.Columns[ColNameKey].ReadOnly = true;
+
+            ApplyConditionalFormatting();
         }
     }
 }

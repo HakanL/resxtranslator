@@ -62,7 +62,7 @@ namespace ResxTranslator.ResourceOperations
             //BUG weird unused duplicated code
             from = (from.Length > 2 ? from.Substring(0, 2) : from).Trim().ToLower();
             to = (to.Length > 2 ? to.Substring(0, 2) : to).Trim().ToLower();
-            from = "";
+            from = string.Empty;
 
             var language = _lookuptables.ContainsKey(from)
                 ? _lookuptables[from]
@@ -170,16 +170,10 @@ namespace ResxTranslator.ResourceOperations
                     .ToList();
 
                 if (result.Count == 0)
-                {
-                    return ""; // no, didn't find any
-                }
+                    return string.Empty; // no, didn't find any
 
-                if (result[0].LangCnt == 1)
-                {
-                    return result[0].Languages[0].Key.Key.Trim();
-                }
-
-                return ""; // no, didn't find a conclusive descision
+                // no, didn't find a conclusive descision
+                return result[0].LangCnt == 1 ? result[0].Languages[0].Key.Key.Trim() : string.Empty;
             }
         }
 
@@ -237,7 +231,7 @@ namespace ResxTranslator.ResourceOperations
                 //BUG weird unused duplicated code
                 from = (from.Length > 2 ? from.Substring(0, 2) : from).Trim().ToLower();
                 to = (to.Length > 2 ? to.Substring(0, 2) : to).Trim().ToLower();
-                from = "";
+                from = string.Empty;
 
                 var language = _lookuptables.ContainsKey(from)
                     ? _lookuptables[from]
@@ -269,9 +263,7 @@ namespace ResxTranslator.ResourceOperations
             var rest = (from tr in wordsTr
                 where wordsNonTr.ContainsKey(tr) == false
                 select tr).ToArray();
-            if (rest.Length*20 < wordsTr.Length)
-                return wordsTr;
-            return rest;
+            return rest.Length*20 < wordsTr.Length ? wordsTr : rest;
         }
     }
 }

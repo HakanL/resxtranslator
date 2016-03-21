@@ -12,6 +12,9 @@ namespace ResxTranslator.ResourceOperations
         {
             var appId = Settings.Default.BingAppId;
 
+            if (string.IsNullOrEmpty(appId))
+                return;
+
             var toTranslate = new List<string>();
 
             foreach (DataRow row in resourceHolder.StringsTable.Rows)
@@ -24,20 +27,13 @@ namespace ResxTranslator.ResourceOperations
                 }
             }
 
-
-            if (string.IsNullOrEmpty(appId))
-            {
-                return;
-            }
-
             var svc = new LanguageServiceClient();
 
-            var translatedTexts
-                = svc.TranslateArray(appId
-                    , toTranslate.ToArray()
-                    , Settings.Default.NeutralLanguageCode
-                    , languageCode.ToLower().Substring(0, 2)
-                    , new TranslateOptions());
+            var translatedTexts = svc.TranslateArray(appId
+                , toTranslate.ToArray()
+                , Settings.Default.NeutralLanguageCode
+                , languageCode.ToLower().Substring(0, 2)
+                , new TranslateOptions());
 
             var i = 0;
             foreach (DataRow row in resourceHolder.StringsTable.Rows)
@@ -60,9 +56,8 @@ namespace ResxTranslator.ResourceOperations
             var appId = Settings.Default.BingAppId;
 
             if (string.IsNullOrEmpty(appId))
-            {
-                return "";
-            }
+                return string.Empty;
+
             var toTranslate = new List<string>();
             var cnt = 0;
             foreach (DataRow row in resourceHolder.StringsTable.Rows)
@@ -74,15 +69,11 @@ namespace ResxTranslator.ResourceOperations
                     cnt++;
                 }
                 if (cnt > 10)
-                {
                     break;
-                }
             }
 
             if (cnt == 0)
-            {
-                return "";
-            }
+                return string.Empty;
 
             var svc = new LanguageServiceClient();
             var translatedTexts = svc.TranslateArray(appId, toTranslate.ToArray(), Settings.Default.NeutralLanguageCode,
@@ -101,10 +92,12 @@ namespace ResxTranslator.ResourceOperations
         {
             var appId = Settings.Default.BingAppId;
             var svc = new LanguageServiceClient();
-            var tolanguage = string.IsNullOrEmpty(to.Trim()) ? "" : (to.Trim() + "  ").Substring(0, 2);
-            var translateOptions = new TranslateOptions();
-            translateOptions.ContentType = "text/html";
-            translateOptions.Category = "general";
+            var tolanguage = string.IsNullOrEmpty(to.Trim()) ? string.Empty : (to.Trim() + "  ").Substring(0, 2);
+            var translateOptions = new TranslateOptions
+            {
+                ContentType = "text/html",
+                Category = "general"
+            };
 
             var translatedTexts = svc.TranslateArray(appId, new[] {src}, Settings.Default.NeutralLanguageCode,
                 tolanguage, translateOptions);

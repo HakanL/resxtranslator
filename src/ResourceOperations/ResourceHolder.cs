@@ -16,7 +16,7 @@ namespace ResxTranslator.ResourceOperations
         private readonly object _lockObject = new object();
         private Dictionary<string, bool> _deletedKeys;
         private bool _dirty;
-        private string _noLanguageLanguage = "";
+        private string _noLanguageLanguage = string.Empty;
         private DataTable _stringsTable;
         public event EventHandler DirtyChanged;
         public event EventHandler LanguageChange;
@@ -56,18 +56,7 @@ namespace ResxTranslator.ResourceOperations
             }
         }
 
-        public bool IsDirty
-        {
-            get
-            {
-                if (_stringsTable == null)
-                {
-                    return false;
-                }
-
-                return Dirty;
-            }
-        }
+        public bool IsDirty => _stringsTable != null && Dirty;
 
         public bool Dirty
         {
@@ -132,9 +121,8 @@ namespace ResxTranslator.ResourceOperations
         private string FindDefaultLanguage()
         {
             if (StringsTable == null)
-            {
-                return "";
-            }
+                return string.Empty;
+
             var sb = new StringBuilder();
 
             //collect a few entries to decide language of default version
@@ -171,34 +159,23 @@ namespace ResxTranslator.ResourceOperations
 
             foreach (XmlNode dataNode in xmlDoc.SelectNodes("/root/data"))
             {
-                var key = dataNode.Attributes["name"].Value;
-                if (_deletedKeys.ContainsKey(key))
+                var key = dataNode.Attributes?["name"].Value;
+                if (key == null || !_deletedKeys.ContainsKey(key)) continue;
+
+                // Only support strings - don't want to delete other random resources
+                if (dataNode.Attributes["type"] == null)
                 {
-                    if (dataNode.Attributes["type"] != null)
-                    {
-                        // Only support strings don't want to delete random other resource
-                        continue;
-                    }
                     rootNode.RemoveChild(dataNode);
                 }
             }
-
-
+            
             var usedKeys = new HashSet<string>();
             var nodesToBeDeleted = new List<XmlNode>();
             foreach (XmlNode dataNode in xmlDoc.SelectNodes("/root/data"))
             {
-                if (dataNode.Attributes["type"] != null)
-                {
-                    // Only support strings
+                // Only support strings with names
+                if (dataNode.Attributes["type"] != null || dataNode.Attributes["name"] == null)
                     continue;
-                }
-
-                if (dataNode.Attributes["name"] == null)
-                {
-                    // Missing name
-                    continue;
-                }
 
                 var key = dataNode.Attributes["name"].Value;
                 var rows = _stringsTable.Select("Key = '" + key + "'");
@@ -212,7 +189,7 @@ namespace ResxTranslator.ResourceOperations
                         {
                             if (childNode.Name == "value")
                             {
-                                childNode.InnerText = "";
+                                childNode.InnerText = string.Empty;
                                 break;
                             }
                         }
@@ -222,14 +199,11 @@ namespace ResxTranslator.ResourceOperations
                         // Add/update
                         anyData = true;
                         var found = false;
-                        foreach (XmlNode childNode in dataNode.ChildNodes)
+                        foreach (var childNode in dataNode.ChildNodes.Cast<XmlNode>().Where(childNode => childNode.Name == "value"))
                         {
-                            if (childNode.Name == "value")
-                            {
-                                childNode.InnerText = (string)rows[0][valueColumn];
-                                found = true;
-                                break;
-                            }
+                            childNode.InnerText = (string)rows[0][valueColumn];
+                            found = true;
+                            break;
                         }
                         if (!found)
                         {
@@ -325,7 +299,7 @@ namespace ResxTranslator.ResourceOperations
                     else if (anyData)
                     {
                         XmlNode newValue = xmlDoc.CreateElement("value");
-                        newValue.InnerText = "";
+                        newValue.InnerText = string.Empty;
                         newNode.AppendChild(newValue);
                     }
 
@@ -438,23 +412,20 @@ namespace ResxTranslator.ResourceOperations
         {
             foreach (var languageHolder in Languages.Values)
             {
-                if (RowContainsTranslation(row, languageHolder.LanguageId))
-                {
-                    if ((row["NoLanguageValue"] == DBNull.Value || string.IsNullOrEmpty((string)row["NoLanguageValue"])))
-                    {
-                        // There are translations but the main key is missing
-                        row["Error"] = true;
-                        return;
-                    }
-                }
-                else
+                if (!RowContainsTranslation(row, languageHolder.LanguageId))
                 {
                     // Some translations are missing
                     row["Error"] = true;
                     return;
                 }
+                if (row["NoLanguageValue"] == DBNull.Value || string.IsNullOrEmpty((string) row["NoLanguageValue"]))
+                {
+                    // There are translations but the main key is missing
+                    row["Error"] = true;
+                    return;
+                }
             }
-            
+
             row["Error"] = false;
         }
 
@@ -578,7 +549,7 @@ namespace ResxTranslator.ResourceOperations
             {
                 row[languageHolder.LanguageId] = defaultValue;
             }
-            row["Comment"] = "";
+            row["Comment"] = string.Empty;
             _stringsTable.Rows.Add(row);
         }
 

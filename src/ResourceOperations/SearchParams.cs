@@ -133,22 +133,12 @@ namespace ResxTranslator.ResourceOperations
                 _re = GetComparator();
 
             if (targType == TargetType.Key && SearchKeys && _re.IsMatch(matchText))
-            {
                 return true;
-            }
             if (targType == TargetType.Lang && SearchLanguage && _re.IsMatch(matchText))
-            {
                 return true;
-            }
             if (targType == TargetType.Text && SearchText && _re.IsMatch(matchText))
-            {
                 return true;
-            }
-            if (targType == TargetType.File && SearchFileName && _re.IsMatch(matchText))
-            {
-                return true;
-            }
-            return false;
+            return targType == TargetType.File && SearchFileName && _re.IsMatch(matchText);
         }
     }
 }
