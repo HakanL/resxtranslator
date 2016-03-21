@@ -306,7 +306,7 @@ namespace ResxTranslator.ResourceOperations
         /// </summary>
         private static bool IsLocalizableString(string key, ResXDataNode dataNode)
         {
-            if ((key.StartsWith(">>") || key.StartsWith("$")) && key != "$this.Text")
+            if (key.StartsWith(">>") || (key.StartsWith("$") && key != "$this.Text"))
                 return false;
 
             if (dataNode == null)
@@ -318,12 +318,25 @@ namespace ResxTranslator.ResourceOperations
             return valueType.StartsWith("System.String, ");
         }
 
+        private string[] _lastLanguagesToCheck;
+
         /// <summary>
         ///     Sets error field on the row depending on missing translations etc
         /// </summary>
         public void EvaluateRow(DataRow row)
         {
-            foreach (var languageHolder in Languages.Values)
+            EvaluateRow(row, _lastLanguagesToCheck);
+        }
+
+        /// <summary>
+        ///     Sets error field on the row depending on missing translations etc
+        /// </summary>
+        public void EvaluateRow(DataRow row, string[] languagesToCheck)
+        {
+            _lastLanguagesToCheck = languagesToCheck;
+            foreach (var languageHolder in (languagesToCheck == null || languagesToCheck.Length < 1) ? 
+                Languages.Values :
+                Languages.Values.Where(x=>languagesToCheck.Any(y=> x.LanguageId.Equals(y, StringComparison.OrdinalIgnoreCase))))
             {
                 if (!RowContainsTranslation(row, languageHolder.LanguageId))
                 {
@@ -333,7 +346,7 @@ namespace ResxTranslator.ResourceOperations
                 }
                 if (row[ResourceGrid.ColNameNoLang] == DBNull.Value || string.IsNullOrEmpty((string)row[ResourceGrid.ColNameNoLang]))
                 {
-                    // There are translations but the main key is missing
+                    // There are translations, but the main key is missing
                     row[ResourceGrid.ColNameError] = true;
                     return;
                 }
@@ -382,13 +395,7 @@ namespace ResxTranslator.ResourceOperations
                     ReadResourceFile(languageHolder.Filename, _stringsTable, languageHolder.LanguageId, true);
                 }
 
-                if (Languages.Count > 0)
-                {
-                    foreach (DataRow row in _stringsTable.Rows)
-                    {
-                        EvaluateRow(row);
-                    }
-                }
+                EvaluateAllRows();
 
                 _stringsTable.ColumnChanging += stringsTable_ColumnChanging;
                 _stringsTable.ColumnChanged += stringsTable_ColumnChanged;
@@ -519,17 +526,19 @@ namespace ResxTranslator.ResourceOperations
             _stringsTable.Columns.Add(languageCode.ToLower());
 
             ReadResourceFile(languageHolder.Filename, _stringsTable, languageHolder.LanguageId, true);
-
-            if (Languages.Count > 0)
-            {
-                foreach (DataRow row in _stringsTable.Rows)
-                {
-                    EvaluateRow(row);
-                }
-            }
+            
+            EvaluateAllRows();
 
             Dirty = true;
             OnLanguageChange();
+        }
+
+        public void EvaluateAllRows(string[] languagesToCheck = null)
+        {
+            foreach (DataRow row in _stringsTable.Rows)
+            {
+                EvaluateRow(row, languagesToCheck);
+            }
         }
 
         /// <summary>

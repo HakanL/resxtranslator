@@ -52,7 +52,11 @@ namespace ResxTranslator.Windows
             languageSettings1.EnabledLanguagesChanged += (sender, args) =>
             {
                 if (resourceGrid1.CurrentResource == null) return;
-                resourceGrid1.SetVisibleLanguageColumns(languageSettings1.EnabledLanguages.Select(x => x.Name).ToArray());
+
+                var languageIds = languageSettings1.EnabledLanguages.Select(x => x.Name).ToArray();
+                resourceGrid1.CurrentResource.EvaluateAllRows(languageIds);
+                resourceGrid1.SetVisibleLanguageColumns(languageIds);
+                resourceGrid1.ApplyConditionalFormatting();
             };
 
             Settings.Binder.BindControl(ignoreEmptyResourcesToolStripMenuItem,
@@ -99,14 +103,18 @@ namespace ResxTranslator.Windows
                         _currentResource.LanguageChange -= OnCurrentResourceLanguageChange;
 
                     _currentResource = value;
+
+                    if (_currentResource != null)
+                    {
+                        _currentResource.LanguageChange += OnCurrentResourceLanguageChange;
+                        _currentResource.EvaluateAllRows(languageSettings1.EnabledLanguages.Select(x => x.Name).ToArray());
+                    }
+
                     resourceGrid1.CurrentResource = value;
                     resourceGrid1.SetVisibleLanguageColumns(languageSettings1.EnabledLanguages.Select(x => x.Name).ToArray());
+
                     tabPageEditedResource.Text = value?.Filename ?? "No resource loaded";
-
                     UpdateMenuStrip();
-
-                    if (value != null)
-                        _currentResource.LanguageChange += OnCurrentResourceLanguageChange;
                 });
             }
         }
