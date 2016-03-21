@@ -140,7 +140,7 @@ namespace ResxTranslator.ResourceOperations
             // if nothing found, use Bing
             return string.IsNullOrEmpty(lang) ? BingTranslator.GetDefaultLanguage(this) : lang;
         }
-        
+
         /// <summary>
         ///     Save one resource file
         /// </summary>
@@ -173,6 +173,8 @@ namespace ResxTranslator.ResourceOperations
                 }
             }
 
+            bool wasModified = false;
+
             // Get rid of keys marked as deleted. If they have been restored they will be re-added later
             // Only support localizable strings to avoid removing other resources by mistake
             // BUG Clear the _deletedKeys?
@@ -182,6 +184,7 @@ namespace ResxTranslator.ResourceOperations
                 .ToList())
             {
                 originalResources.Remove(originalResource.Key);
+                wasModified = true;
             }
 
             // Precache the valid keys
@@ -203,14 +206,20 @@ namespace ResxTranslator.ResourceOperations
 
                 if (localizableResourceKeys.Contains(key))
                 {
-                    // Set new value for the datanode
+                    // Skip if the original value is the same as the new one
+                    if (originalResources[key].GetValueAsString()
+                        .Equals(stringValueData, StringComparison.InvariantCulture))
+                        continue;
+
                     // BUG: Maybe actually delete the resource if stringData is empty?
                     // BUG: Is comment disabled by null or empty str?
                     originalResources[key] = new ResXDataNode(originalResources[key].Name, stringValueData) { Comment = stringCommentData };
+                    wasModified = true;
                 }
                 else
                 {
                     originalResources.Add(key, new ResXDataNode(key, stringValueData));
+                    wasModified = true;
                 }
             }
 
@@ -219,6 +228,10 @@ namespace ResxTranslator.ResourceOperations
             File.Delete(backupFilename);
             File.Copy(filename, backupFilename);
             File.Delete(filename);*/
+
+            // Skip writing unmodified files
+            if (!wasModified)
+                return;
 
             // Write the cached resources to the drive
             using (var writer = new ResXResourceWriter(filename))
@@ -334,9 +347,9 @@ namespace ResxTranslator.ResourceOperations
         public void EvaluateRow(DataRow row, string[] languagesToCheck)
         {
             _lastLanguagesToCheck = languagesToCheck;
-            foreach (var languageHolder in (languagesToCheck == null || languagesToCheck.Length < 1) ? 
+            foreach (var languageHolder in (languagesToCheck == null || languagesToCheck.Length < 1) ?
                 Languages.Values :
-                Languages.Values.Where(x=>languagesToCheck.Any(y=> x.LanguageId.Equals(y, StringComparison.OrdinalIgnoreCase))))
+                Languages.Values.Where(x => languagesToCheck.Any(y => x.LanguageId.Equals(y, StringComparison.OrdinalIgnoreCase))))
             {
                 if (!RowContainsTranslation(row, languageHolder.LanguageId))
                 {
@@ -526,7 +539,7 @@ namespace ResxTranslator.ResourceOperations
             _stringsTable.Columns.Add(languageCode.ToLower());
 
             ReadResourceFile(languageHolder.Filename, _stringsTable, languageHolder.LanguageId, true);
-            
+
             EvaluateAllRows();
 
             Dirty = true;
