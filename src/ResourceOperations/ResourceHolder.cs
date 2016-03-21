@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Data;
@@ -7,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Resources;
 using System.Text;
+using ResxTranslator.Controls;
 using ResxTranslator.Tools;
 
 namespace ResxTranslator.ResourceOperations
@@ -127,10 +127,10 @@ namespace ResxTranslator.ResourceOperations
             foreach (DataRow row in StringsTable.Rows)
             {
                 //Ignore too short entries
-                if (row["NoLanguageValue"].ToString().Trim().Length > 5)
+                if (row[ResourceGrid.ColNameNoLang].ToString().Trim().Length > 5)
                 {
                     sb.Append(". ");
-                    sb.Append(row["NoLanguageValue"].ToString().Trim());
+                    sb.Append(row[ResourceGrid.ColNameNoLang].ToString().Trim());
                 }
             }
 
@@ -140,22 +140,36 @@ namespace ResxTranslator.ResourceOperations
             // if nothing found, use Bing
             return string.IsNullOrEmpty(lang) ? BingTranslator.GetDefaultLanguage(this) : lang;
         }
-
-
+        
         /// <summary>
         ///     Save one resource file
-        /// TODO metadata handling
         /// </summary>
         private void UpdateFile(string filename, string valueColumnId)
         {
             // Read the entire resource file to a buffer
+            var originalMetadatas = new Dictionary<string, object>();
+            using (var reader = new ResXResourceReader(filename))
+            {
+                // If UseResXDataNodes == true before you call GetMetadataEnumerator, no resource nodes are retrieved
+                var metadataEnumerator = reader.GetMetadataEnumerator();
+                while (metadataEnumerator.MoveNext())
+                {
+                    originalMetadatas.Add((string)metadataEnumerator.Key, metadataEnumerator.Value);
+                }
+            }
             var originalResources = new Dictionary<string, ResXDataNode>();
             using (var reader = new ResXResourceReader(filename))
             {
+                // If GetMetadataEnumerator was already called setting the UseResXDataNodes to true will have no effect
+                // Because of this creating a new reader is necessary
                 reader.UseResXDataNodes = true;
-                foreach (DictionaryEntry de in reader)
+                var dataEnumerator = reader.GetEnumerator();
+                while (dataEnumerator.MoveNext())
                 {
-                    originalResources.Add((string)de.Key, (ResXDataNode)de.Value);
+                    var key = (string)dataEnumerator.Key;
+                    // GetEnumerator will also get metadata items, filter them out
+                    if (!originalMetadatas.ContainsKey(key))
+                        originalResources.Add(key, (ResXDataNode)dataEnumerator.Value);
                 }
             }
 
@@ -169,24 +183,24 @@ namespace ResxTranslator.ResourceOperations
             {
                 originalResources.Remove(originalResource.Key);
             }
-            
+
             // Precache the valid keys
             var localizableResourceKeys = originalResources
                 .Where(originalResource => IsLocalizableString(originalResource.Key, originalResource.Value))
-                .Select(x=>x.Key).ToList();
+                .Select(x => x.Key).ToList();
 
             // Update originalResources with information stored in _stringsTable.
             // Adds keys if they are missing in originalResources
             foreach (DataRow dataRow in _stringsTable.Rows)
             {
-                var key = (string)dataRow["Key"];
+                var key = (string)dataRow[ResourceGrid.ColNameKey];
 
                 var valueData = dataRow[valueColumnId] == DBNull.Value ? null : dataRow[valueColumnId];
                 var stringValueData = valueData?.ToString() ?? string.Empty;
 
-                var commentData = dataRow["Comment"] == DBNull.Value ? null : dataRow["Comment"];
+                var commentData = dataRow[ResourceGrid.ColNameComment] == DBNull.Value ? null : dataRow[ResourceGrid.ColNameComment];
                 var stringCommentData = commentData?.ToString() ?? string.Empty;
-                
+
                 if (localizableResourceKeys.Contains(key))
                 {
                     // Set new value for the datanode
@@ -213,6 +227,11 @@ namespace ResxTranslator.ResourceOperations
                 {
                     writer.AddResource(originalResource.Value);
                 }
+                foreach (var originalMetadata in originalMetadatas)
+                {
+                    writer.AddMetadata(originalMetadata.Key, originalMetadata.Value);
+                }
+
                 writer.Generate();
             }
         }
@@ -222,7 +241,7 @@ namespace ResxTranslator.ResourceOperations
         /// </summary>
         public void Save()
         {
-            UpdateFile(Filename, "NoLanguageValue");
+            UpdateFile(Filename, ResourceGrid.ColNameNoLang);
 
             foreach (var languageHolder in Languages.Values)
             {
@@ -233,7 +252,6 @@ namespace ResxTranslator.ResourceOperations
 
         /// <summary>
         ///     Read one resource file
-        /// TODO metadata handling
         /// </summary>
         private void ReadResourceFile(string filename, DataTable stringsTable,
             string valueColumn, bool isTranslated)
@@ -241,53 +259,46 @@ namespace ResxTranslator.ResourceOperations
             using (var reader = new ResXResourceReader(filename))
             {
                 reader.UseResXDataNodes = true;
-                foreach (DictionaryEntry de in reader)
+                var dataEnumerator = reader.GetEnumerator();
+                while (dataEnumerator.MoveNext())
                 {
-                    if (!IsLocalizableString(de))
+                    var key = (string)dataEnumerator.Key;
+                    var dataNode = (ResXDataNode)dataEnumerator.Value;
+
+                    if (!IsLocalizableString(key, dataNode))
                         continue;
 
-                    var key = (string)de.Key;
-                    var dataNode = (ResXDataNode)de.Value;
                     var value = dataNode.GetValueAsString();
 
                     var r = FindByKey(key);
                     if (r == null)
                     {
                         var newRow = stringsTable.NewRow();
-                        newRow["Key"] = key;
+                        newRow[ResourceGrid.ColNameKey] = key;
 
                         newRow[valueColumn] = value;
 
-                        newRow["Comment"] = dataNode.Comment;
-                        newRow["Error"] = false;
-                        newRow["Translated"] = isTranslated && !string.IsNullOrEmpty(value);
+                        newRow[ResourceGrid.ColNameComment] = dataNode.Comment;
+                        newRow[ResourceGrid.ColNameError] = false;
+                        newRow[ResourceGrid.ColNameTranslated] = isTranslated && !string.IsNullOrEmpty(value);
                         stringsTable.Rows.Add(newRow);
                     }
                     else
                     {
                         r[valueColumn] = value;
 
-                        if (string.IsNullOrEmpty((string)r["Comment"]) &&
+                        if (string.IsNullOrEmpty((string)r[ResourceGrid.ColNameComment]) &&
                             !string.IsNullOrEmpty(dataNode.Comment))
                         {
-                            r["Comment"] = dataNode.Comment;
+                            r[ResourceGrid.ColNameComment] = dataNode.Comment;
                         }
                         if (isTranslated && !string.IsNullOrEmpty(value))
                         {
-                            r["Translated"] = true;
+                            r[ResourceGrid.ColNameTranslated] = true;
                         }
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Check if the entry contains a localizable string
-        /// </summary>
-        /// <param name="data">Data entry to be checked. Requires ResXResourceReader.UseResXDataNodes = true</param>
-        private static bool IsLocalizableString(DictionaryEntry data)
-        {
-            return IsLocalizableString((string)data.Key, data.Value as ResXDataNode);
         }
 
         /// <summary>
@@ -317,18 +328,18 @@ namespace ResxTranslator.ResourceOperations
                 if (!RowContainsTranslation(row, languageHolder.LanguageId))
                 {
                     // Some translations are missing
-                    row["Error"] = true;
+                    row[ResourceGrid.ColNameError] = true;
                     return;
                 }
-                if (row["NoLanguageValue"] == DBNull.Value || string.IsNullOrEmpty((string)row["NoLanguageValue"]))
+                if (row[ResourceGrid.ColNameNoLang] == DBNull.Value || string.IsNullOrEmpty((string)row[ResourceGrid.ColNameNoLang]))
                 {
                     // There are translations but the main key is missing
-                    row["Error"] = true;
+                    row[ResourceGrid.ColNameError] = true;
                     return;
                 }
             }
 
-            row["Error"] = false;
+            row[ResourceGrid.ColNameError] = false;
         }
 
         private static bool RowContainsTranslation(DataRow row, string languageId)
@@ -342,7 +353,6 @@ namespace ResxTranslator.ResourceOperations
 
         /// <summary>
         ///     Read the resource files correspondning with this resource holder
-        /// TODO metadata handling
         /// </summary>
         public void LoadResource()
         {
@@ -352,20 +362,20 @@ namespace ResxTranslator.ResourceOperations
 
                 _stringsTable = new DataTable("Strings");
 
-                _stringsTable.Columns.Add("Key");
-                _stringsTable.PrimaryKey = new[] { _stringsTable.Columns["Key"] };
-                _stringsTable.Columns.Add("NoLanguageValue");
+                _stringsTable.Columns.Add(ResourceGrid.ColNameKey);
+                _stringsTable.PrimaryKey = new[] { _stringsTable.Columns[ResourceGrid.ColNameKey] };
+                _stringsTable.Columns.Add(ResourceGrid.ColNameNoLang);
                 foreach (var languageHolder in Languages.Values)
                 {
                     _stringsTable.Columns.Add(languageHolder.LanguageId);
                 }
-                _stringsTable.Columns.Add("Comment");
-                _stringsTable.Columns.Add("Translated", typeof(bool));
-                _stringsTable.Columns.Add("Error", typeof(bool));
+                _stringsTable.Columns.Add(ResourceGrid.ColNameComment);
+                _stringsTable.Columns.Add(ResourceGrid.ColNameTranslated, typeof(bool));
+                _stringsTable.Columns.Add(ResourceGrid.ColNameError, typeof(bool));
 
                 if (!string.IsNullOrEmpty(Filename))
                 {
-                    ReadResourceFile(Filename, _stringsTable, "NoLanguageValue", false);
+                    ReadResourceFile(Filename, _stringsTable, ResourceGrid.ColNameNoLang, false);
                 }
                 foreach (var languageHolder in Languages.Values)
                 {
@@ -393,7 +403,7 @@ namespace ResxTranslator.ResourceOperations
         /// </summary>
         private void stringsTable_RowDeleting(object sender, DataRowChangeEventArgs e)
         {
-            _deletedKeys[e.Row["Key"].ToString()] = true;
+            _deletedKeys[e.Row[ResourceGrid.ColNameKey].ToString()] = true;
             Dirty = true;
         }
 
@@ -410,7 +420,7 @@ namespace ResxTranslator.ResourceOperations
         /// </summary>
         private void stringsTable_ColumnChanged(object sender, DataColumnChangeEventArgs e)
         {
-            if (e.Column != e.Column.Table.Columns["Error"])
+            if (e.Column != e.Column.Table.Columns[ResourceGrid.ColNameError])
             {
                 Dirty = true;
                 EvaluateRow(e.Row);
@@ -422,14 +432,14 @@ namespace ResxTranslator.ResourceOperations
         /// </summary>
         private void stringsTable_ColumnChanging(object sender, DataColumnChangeEventArgs e)
         {
-            if (e.Column == e.Column.Table.Columns["Key"])
+            if (e.Column == e.Column.Table.Columns[ResourceGrid.ColNameKey])
             {
                 var foundRows = e.Column.Table.Select("Key='" + e.ProposedValue + "'");
                 if (foundRows.Length > 1
                     || (foundRows.Length == 1 && foundRows[0] != e.Row))
                 {
-                    e.Row["Error"] = true;
-                    throw new DuplicateNameException(e.Row["Key"].ToString());
+                    e.Row[ResourceGrid.ColNameError] = true;
+                    throw new DuplicateNameException(e.Row[ResourceGrid.ColNameKey].ToString());
                 }
                 Dirty = true;
             }
@@ -446,13 +456,13 @@ namespace ResxTranslator.ResourceOperations
             }
 
             var row = _stringsTable.NewRow();
-            row["Key"] = key;
-            row["NoLanguageValue"] = noXlateValue;
+            row[ResourceGrid.ColNameKey] = key;
+            row[ResourceGrid.ColNameNoLang] = noXlateValue;
             foreach (var languageHolder in Languages.Values)
             {
                 row[languageHolder.LanguageId] = defaultValue;
             }
-            row["Comment"] = string.Empty;
+            row[ResourceGrid.ColNameComment] = string.Empty;
             _stringsTable.Rows.Add(row);
         }
 
@@ -466,7 +476,6 @@ namespace ResxTranslator.ResourceOperations
 
         /// <summary>
         ///     Add the specified language to this object
-        /// TODO metadata handling
         /// </summary>
         public void AddLanguage(string languageCode, bool copyValues)
         {
@@ -485,16 +494,18 @@ namespace ResxTranslator.ResourceOperations
                     using (var reader = new ResXResourceReader(Filename))
                     {
                         reader.UseResXDataNodes = true;
-                        foreach (DictionaryEntry de in reader)
+                        var dataEnumerator = reader.GetEnumerator();
+                        while (dataEnumerator.MoveNext())
                         {
-                            if (!IsLocalizableString(de))
+                            var key = (string)dataEnumerator.Key;
+                            var node = (ResXDataNode)dataEnumerator.Value;
+                            if (!IsLocalizableString(key, node))
                                 continue;
 
-                            var node = (ResXDataNode)de.Value;
                             var value = node.GetValueAsString();
                             // Skip saving unnecessary items
                             if (!string.IsNullOrWhiteSpace(value))
-                                writer.AddResource((string)de.Key, value);
+                                writer.AddResource(key, value);
                         }
                     }
                 }

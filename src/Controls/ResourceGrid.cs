@@ -11,11 +11,11 @@ namespace ResxTranslator.Controls
 {
     public partial class ResourceGrid : UserControl
     {
-        private const string ColNameComment = "Comment";
-        private const string ColNameError = "Error";
-        private const string ColNameKey = "Key";
-        private const string ColNameNoLang = "NoLanguageValue";
-        private const string ColNameTranslated = "Translated";
+        public const string ColNameComment = "Comment";
+        public const string ColNameError = "Error";
+        public const string ColNameKey = "Key";
+        public const string ColNameNoLang = "NoLanguageValue";
+        public const string ColNameTranslated = "Translated";
 
         private static readonly string[] SpecialColNames =
         {
