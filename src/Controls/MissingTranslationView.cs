@@ -46,7 +46,7 @@ namespace ResxTranslator.Controls
             ItemOpened?.Invoke(this, e);
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void RefreshListView(object sender, EventArgs e)
         {
             listView1.BeginUpdate();
 
@@ -59,14 +59,17 @@ namespace ResxTranslator.Controls
             {
                 listView1.Enabled = true;
 
-                var selectedCulture = ((ComboBoxWrapper<CultureInfo>) comboBox1.SelectedItem).WrappedObject.Name;
+                var selectedCulture = ((ComboBoxWrapper<CultureInfo>)comboBox1.SelectedItem).WrappedObject.Name;
 
                 var missingItems = ResourceLoader.Resources.Where(res => res.HasMissingTranslations(selectedCulture));
 
-                listView1.Items.AddRange(
-                    missingItems.OrderBy(x => x.Id).Select(x => new ListViewItem(x.Id) {Tag = x}).ToArray());
-            }
+                listView1.Items.AddRange(missingItems.OrderBy(x => x.Filename)
+                    .Select(x => new ListViewItem(new[] { x.DisplayFolder, x.Id }) { Tag = x, ToolTipText = x.Filename }).ToArray());
 
+                listView1.Columns[1].AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
+                listView1.Columns[1].Width = Math.Max(95, listView1.Columns[1].Width);
+            }
+            
             listView1.EndUpdate();
         }
 
@@ -77,7 +80,7 @@ namespace ResxTranslator.Controls
                 return;
 
             OnItemOpened(new OpenedItemEventArgs(listView1.SelectedItems[0].Tag as ResourceHolder,
-                ((ComboBoxWrapper<CultureInfo>) comboBox1.SelectedItem).WrappedObject));
+                ((ComboBoxWrapper<CultureInfo>)comboBox1.SelectedItem).WrappedObject));
         }
 
         private void ResourceLoaderOnResourcesChanged(object sender, EventArgs eventArgs)
@@ -110,13 +113,18 @@ namespace ResxTranslator.Controls
         private void button1_Click(object sender, EventArgs e)
         {
             var result = LanguageSelectDialog.ShowLanguageSelectDialog(ParentForm);
-            if (result == null || comboBox1.Items.OfType<ComboBoxWrapper<CultureInfo>>().Any(x=>x.WrappedObject.Equals(result)))
+            if (result == null || comboBox1.Items.OfType<ComboBoxWrapper<CultureInfo>>().Any(x => x.WrappedObject.Equals(result)))
                 return;
 
             var newItem = new ComboBoxWrapper<CultureInfo>(result, info => $"{info.Name} - {info.DisplayName}");
 
             comboBox1.Items.Add(newItem);
             comboBox1.SelectedItem = newItem;
+        }
+
+        private void buttonRefresh_Click(object sender, EventArgs e)
+        {
+            RefreshListView(sender, e);
         }
     }
 }

@@ -319,6 +319,7 @@
     <Content Include="Licence.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\112_RefreshArrow_Blue_16x16_72.png" />
     <None Include="Resources\109_AllAnnotations_Help_16x16_72.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
