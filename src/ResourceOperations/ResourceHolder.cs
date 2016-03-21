@@ -8,6 +8,7 @@ using System.Linq;
 using System.Resources;
 using System.Text;
 using System.Xml;
+using ResxTranslator.Tools;
 
 namespace ResxTranslator.ResourceOperations
 {
@@ -24,8 +25,6 @@ namespace ResxTranslator.ResourceOperations
         public ResourceHolder()
         {
             Languages = new SortedDictionary<string, LanguageHolder>();
-            _deletedKeys = new Dictionary<string, bool>();
-            Dirty = false;
             _deletedKeys = new Dictionary<string, bool>();
         }
 
@@ -140,7 +139,7 @@ namespace ResxTranslator.ResourceOperations
             var lang = InprojectTranslator.Instance.CheckLanguage(sb.ToString());
 
             // if nothing found, use Bing
-            return lang == "" ? BingTranslator.GetDefaultLanguage(this) : lang;
+            return string.IsNullOrEmpty(lang) ? BingTranslator.GetDefaultLanguage(this) : lang;
         }
 
 
@@ -168,7 +167,7 @@ namespace ResxTranslator.ResourceOperations
                     rootNode.RemoveChild(dataNode);
                 }
             }
-            
+
             var usedKeys = new HashSet<string>();
             var nodesToBeDeleted = new List<XmlNode>();
             foreach (XmlNode dataNode in xmlDoc.SelectNodes("/root/data"))
@@ -328,52 +327,23 @@ namespace ResxTranslator.ResourceOperations
         }
 
         /// <summary>
-        ///     Read one resource fil
+        ///     Read one resource file
         /// </summary>
         private void ReadResourceFile(string filename, DataTable stringsTable,
             string valueColumn, bool isTranslated)
         {
-            // Regex reCleanup = new Regex(@"__designer:mapid="".+?""");
-            using (var reader =
-                new ResXResourceReader(filename))
+            using (var reader = new ResXResourceReader(filename))
             {
                 reader.UseResXDataNodes = true;
                 foreach (DictionaryEntry de in reader)
                 {
+                    if (!IsLocalizableString(de))
+                        continue;
+
                     var key = (string)de.Key;
-                    if (key.StartsWith(">>") || key.StartsWith("$"))
-                    {
-                        if (key != "$this.Text")
-                            continue;
-                    }
-
-                    var dataNode = de.Value as ResXDataNode;
-                    if (dataNode == null)
-                    {
-                        continue;
-                    }
-                    if (dataNode.FileRef != null)
-                    {
-                        continue;
-                    }
-
-                    var valueType = dataNode.GetValueTypeName((ITypeResolutionService)null);
-                    if (!valueType.StartsWith("System.String, "))
-                    {
-                        continue;
-                    }
-
-                    var valueObject = dataNode.GetValue((ITypeResolutionService)null);
-                    var value = valueObject == null ? "" : "" + valueObject;
-
-                    // Was used to cleanup leftovers from old VS designer
-                    //if (reCleanup.IsMatch(value))
-                    //{
-                    //    value = reCleanup.Replace(value, "");
-                    //    this.Dirty = true;
-                    //}
-
-
+                    var dataNode = (ResXDataNode)de.Value;
+                    var value = dataNode.GetValueAsString();
+                    
                     var r = FindByKey(key);
                     if (r == null)
                     {
@@ -406,6 +376,27 @@ namespace ResxTranslator.ResourceOperations
         }
 
         /// <summary>
+        /// Check if the entry contains a localizable string
+        /// </summary>
+        /// <param name="data">Data entry to be checked. Requires ResXResourceReader.UseResXDataNodes = true</param>
+        private static bool IsLocalizableString(DictionaryEntry data)
+        {
+            var key = (string)data.Key;
+
+            if ((key.StartsWith(">>") || key.StartsWith("$")) && key != "$this.Text")
+                return false;
+
+            var dataNode = data.Value as ResXDataNode;
+            if (dataNode == null)
+                return false;
+            if (dataNode.FileRef != null)
+                return false;
+
+            var valueType = dataNode.GetValueTypeName((ITypeResolutionService)null);
+            return valueType.StartsWith("System.String, ");
+        }
+
+        /// <summary>
         ///     Sets error field on the row depending on missing translations etc
         /// </summary>
         public void EvaluateRow(DataRow row)
@@ -418,7 +409,7 @@ namespace ResxTranslator.ResourceOperations
                     row["Error"] = true;
                     return;
                 }
-                if (row["NoLanguageValue"] == DBNull.Value || string.IsNullOrEmpty((string) row["NoLanguageValue"]))
+                if (row["NoLanguageValue"] == DBNull.Value || string.IsNullOrEmpty((string)row["NoLanguageValue"]))
                 {
                     // There are translations but the main key is missing
                     row["Error"] = true;
@@ -566,38 +557,55 @@ namespace ResxTranslator.ResourceOperations
         /// </summary>
         public void AddLanguage(string languageCode, bool copyValues)
         {
-            if (!Languages.ContainsKey(languageCode.ToLower()))
+            if (Languages.ContainsKey(languageCode.ToLower()))
+                return;
+
+            // Create the file
+            var cleanFilename = Filename.Substring(0, Filename.LastIndexOf('.'));
+            var newFilename = $"{cleanFilename}.{languageCode}.resx";
+            File.Delete(newFilename);
+
+            using (var writer = new ResXResourceWriter(newFilename))
             {
-                Dirty = true;
-
-                var cleanFilename = Filename.Substring(0, Filename.LastIndexOf('.'));
-                var newFilename = $"{cleanFilename}.{languageCode}.resx";
-
                 if (copyValues)
                 {
-                    File.Copy(Filename, newFilename);
-                }
-                else using (var writer = new ResXResourceWriter(newFilename))
-                {
-                    writer.Generate();
-                }
-                
-                var languageHolder = new LanguageHolder(languageCode, newFilename);
-                Languages.Add(languageCode.ToLower(), languageHolder);
-
-                _stringsTable.Columns.Add(languageCode.ToLower());
-
-                ReadResourceFile(languageHolder.Filename, _stringsTable, languageHolder.LanguageId, true);
-
-                if (Languages.Count > 0)
-                {
-                    foreach (DataRow row in _stringsTable.Rows)
+                    using (var reader = new ResXResourceReader(Filename))
                     {
-                        EvaluateRow(row);
+                        reader.UseResXDataNodes = true;
+                        foreach (DictionaryEntry de in reader)
+                        {
+                            if(!IsLocalizableString(de))
+                                continue;
+
+                            var node = (ResXDataNode) de.Value;
+                            var value = node.GetValueAsString();
+                            // Skip saving unnecessary items
+                            if (!string.IsNullOrWhiteSpace(value))
+                                writer.AddResource((string)de.Key, value);
+                        }
                     }
                 }
-                OnLanguageChange();
+                writer.Generate();
             }
+
+            // Add the created file to this ResourceHolder
+            var languageHolder = new LanguageHolder(languageCode, newFilename);
+            Languages.Add(languageCode.ToLower(), languageHolder);
+
+            _stringsTable.Columns.Add(languageCode.ToLower());
+
+            ReadResourceFile(languageHolder.Filename, _stringsTable, languageHolder.LanguageId, true);
+
+            if (Languages.Count > 0)
+            {
+                foreach (DataRow row in _stringsTable.Rows)
+                {
+                    EvaluateRow(row);
+                }
+            }
+
+            Dirty = true;
+            OnLanguageChange();
         }
 
         /// <summary>

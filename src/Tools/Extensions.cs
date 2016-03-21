@@ -1,5 +1,7 @@
 ﻿using System;
+using System.ComponentModel.Design;
 using System.Linq.Expressions;
+using System.Resources;
 using System.Windows.Forms;
 
 namespace ResxTranslator.Tools
@@ -12,6 +14,12 @@ namespace ResxTranslator.Tools
                 c.BeginInvoke(new Action(() => action(c)));
             else
                 action(c);
+        }
+
+        public static string GetValueAsString(this ResXDataNode dataNode)
+        {
+            var valueObject = dataNode.GetValue((ITypeResolutionService)null);
+            return valueObject?.ToString() ?? string.Empty;
         }
 
         /// <summary>
