@@ -55,6 +55,16 @@ namespace ResxTranslator.Controls
             }
         }
 
+        public void SetLanguageState(string languageId, bool newState)
+        {
+            var item = listView1.Items.Cast<ListViewItem>()
+                .FirstOrDefault(x=>((CultureInfo) x.Tag).Name.Equals(languageId, StringComparison.OrdinalIgnoreCase));
+
+            if (item == null || item.Checked == newState) return;
+            
+            item.Checked = newState;
+        }
+
         public event EventHandler EnabledLanguagesChanged;
 
         protected virtual void OnEnabledLanguagesChanged()

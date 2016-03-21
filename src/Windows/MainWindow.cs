@@ -46,6 +46,8 @@ namespace ResxTranslator.Windows
                     args.Item.AddLanguage(args.Language.Name, Settings.Default.AddDefaultValuesOnLanguageAdd);
                     resourceGrid1.RefreshResourceDisplay();
                 }
+
+                languageSettings1.SetLanguageState(args.Language.Name, true);
                 CurrentResource = args.Item;
             };
 
