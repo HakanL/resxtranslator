@@ -74,8 +74,6 @@ namespace ResxTranslator.Windows
                 settings => settings.HideEmptyResources, this);
             Settings.Binder.Subscribe((sender, args) => ResourceLoader.HideNontranslatedResources = args.NewValue,
                 settings => settings.HideNontranslatedResources, this);
-            Settings.Binder.Subscribe((sender, args) => translateUsingBingToolStripMenuItem.Enabled = !string.IsNullOrEmpty(args.NewValue),
-                settings => settings.BingAppId, this);
 
             Settings.Binder.SendUpdates(this);
 
@@ -136,7 +134,6 @@ namespace ResxTranslator.Windows
             keysToolStripMenuItem.Enabled = notNull;
             addNewKeyToolStripMenuItem.Enabled = notNull;
             languagesToolStripMenuItem.Enabled = notNull;
-            autoTranslateToolStripMenuItem.Enabled = notNull;
 
             removeLanguageToolStripMenuItem.DropDownItems.Clear();
             addLanguageToolStripMenuItem.DropDownItems.Clear();
@@ -365,20 +362,6 @@ namespace ResxTranslator.Windows
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ResourceLoader.SaveAll();
-        }
-
-        private void setBingAppIdToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            BingSettingsWindow.ShowDialog(this);
-        }
-
-        private void translateUsingBingToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (MessageBox.Show("Do you want to autotranslate all non-translated texts for all languages in this resource?",
-                "Auto translate", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                CurrentResource.AutoTranslate();
-            }
         }
 
         private void removeLanguageToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)

@@ -69,9 +69,6 @@ namespace ResxTranslator.Windows
             this.languagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addLanguageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeLanguageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.autoTranslateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.translateUsingBingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.setBingAppIdToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyDefaultValuesOnLanguageAddToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ignoreEmptyResourcesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -285,7 +282,6 @@ namespace ResxTranslator.Windows
             // resourceGrid1
             // 
             this.resourceGrid1.CurrentResource = null;
-            this.resourceGrid1.DisplayContextMenu = true;
             this.resourceGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.resourceGrid1.Location = new System.Drawing.Point(0, 0);
             this.resourceGrid1.Margin = new System.Windows.Forms.Padding(0);
@@ -300,7 +296,6 @@ namespace ResxTranslator.Windows
             this.findToolStripMenuItem,
             this.keysToolStripMenuItem,
             this.languagesToolStripMenuItem,
-            this.autoTranslateToolStripMenuItem,
             this.settingsToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menuStripMain.Location = new System.Drawing.Point(0, 0);
@@ -340,14 +335,14 @@ namespace ResxTranslator.Windows
             this.saveAllModifiedToolStripMenuItem.Image = global::ResxTranslator.Properties.Resources.SaveAllHS;
             this.saveAllModifiedToolStripMenuItem.Name = "saveAllModifiedToolStripMenuItem";
             this.saveAllModifiedToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveAllModifiedToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.saveAllModifiedToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
             this.saveAllModifiedToolStripMenuItem.Text = "&Save all modified";
             this.saveAllModifiedToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
             this.closeToolStripMenuItem.Text = "&Close directory";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
@@ -355,20 +350,20 @@ namespace ResxTranslator.Windows
             // 
             this.reloadCurrentDirectoryToolStripMenuItem.Image = global::ResxTranslator.Properties.Resources.RefreshArrow;
             this.reloadCurrentDirectoryToolStripMenuItem.Name = "reloadCurrentDirectoryToolStripMenuItem";
-            this.reloadCurrentDirectoryToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.reloadCurrentDirectoryToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
             this.reloadCurrentDirectoryToolStripMenuItem.Text = "Reload current directory";
             this.reloadCurrentDirectoryToolStripMenuItem.Click += new System.EventHandler(this.reloadCurrentDirectoryToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(201, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(202, 6);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Image = global::ResxTranslator.Properties.Resources.saveHS;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
             this.saveToolStripMenuItem.Text = "Save current resource";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveCurrentToolStripMenuItem_Click);
             // 
@@ -376,27 +371,27 @@ namespace ResxTranslator.Windows
             // 
             this.revertCurrentFileToolStripMenuItem.Image = global::ResxTranslator.Properties.Resources.Edit_UndoHS;
             this.revertCurrentFileToolStripMenuItem.Name = "revertCurrentFileToolStripMenuItem";
-            this.revertCurrentFileToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.revertCurrentFileToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
             this.revertCurrentFileToolStripMenuItem.Text = "Revert current resource";
             this.revertCurrentFileToolStripMenuItem.Click += new System.EventHandler(this.revertCurrentToolStripMenuItem_Click);
             // 
             // openResourceLocationToolStripMenuItem
             // 
             this.openResourceLocationToolStripMenuItem.Name = "openResourceLocationToolStripMenuItem";
-            this.openResourceLocationToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.openResourceLocationToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
             this.openResourceLocationToolStripMenuItem.Text = "Open resource location";
             this.openResourceLocationToolStripMenuItem.Click += new System.EventHandler(this.openResourceLocationToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(201, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(202, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -416,14 +411,14 @@ namespace ResxTranslator.Windows
             this.findToolStripMenuItem1.Name = "findToolStripMenuItem1";
             this.findToolStripMenuItem1.ShortcutKeyDisplayString = "Ctrl+F";
             this.findToolStripMenuItem1.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.findToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.findToolStripMenuItem1.Size = new System.Drawing.Size(146, 22);
             this.findToolStripMenuItem1.Text = "&Find...";
             this.findToolStripMenuItem1.Click += new System.EventHandler(this.findToolStripMenuItem1_Click);
             // 
             // clearSearchToolStripMenuItem
             // 
             this.clearSearchToolStripMenuItem.Name = "clearSearchToolStripMenuItem";
-            this.clearSearchToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.clearSearchToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.clearSearchToolStripMenuItem.Text = "&Clear search";
             this.clearSearchToolStripMenuItem.Click += new System.EventHandler(this.clearSearchToolStripMenuItem_Click);
             // 
@@ -448,7 +443,7 @@ namespace ResxTranslator.Windows
             // 
             this.deleteKeyToolStripMenuItem.Image = global::ResxTranslator.Properties.Resources.Delete_black_32x32;
             this.deleteKeyToolStripMenuItem.Name = "deleteKeyToolStripMenuItem";
-            this.deleteKeyToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.deleteKeyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.deleteKeyToolStripMenuItem.Text = "&Remove Key";
             this.deleteKeyToolStripMenuItem.Click += new System.EventHandler(this.deleteKeyToolStripMenuItem_Click);
             // 
@@ -477,29 +472,6 @@ namespace ResxTranslator.Windows
             this.removeLanguageToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.removeLanguageToolStripMenuItem.Text = "&Remove Language";
             this.removeLanguageToolStripMenuItem.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.removeLanguageToolStripMenuItem_DropDownItemClicked);
-            // 
-            // autoTranslateToolStripMenuItem
-            // 
-            this.autoTranslateToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.translateUsingBingToolStripMenuItem,
-            this.setBingAppIdToolStripMenuItem});
-            this.autoTranslateToolStripMenuItem.Name = "autoTranslateToolStripMenuItem";
-            this.autoTranslateToolStripMenuItem.Size = new System.Drawing.Size(95, 20);
-            this.autoTranslateToolStripMenuItem.Text = "Auto &Translate";
-            // 
-            // translateUsingBingToolStripMenuItem
-            // 
-            this.translateUsingBingToolStripMenuItem.Name = "translateUsingBingToolStripMenuItem";
-            this.translateUsingBingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.translateUsingBingToolStripMenuItem.Text = "&Translate using Bing";
-            this.translateUsingBingToolStripMenuItem.Click += new System.EventHandler(this.translateUsingBingToolStripMenuItem_Click);
-            // 
-            // setBingAppIdToolStripMenuItem
-            // 
-            this.setBingAppIdToolStripMenuItem.Name = "setBingAppIdToolStripMenuItem";
-            this.setBingAppIdToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.setBingAppIdToolStripMenuItem.Text = "Bing &settings";
-            this.setBingAppIdToolStripMenuItem.Click += new System.EventHandler(this.setBingAppIdToolStripMenuItem_Click);
             // 
             // settingsToolStripMenuItem
             // 
@@ -629,8 +601,6 @@ namespace ResxTranslator.Windows
         private ToolStripMenuItem addNewKeyToolStripMenuItem;
         private ToolStripMenuItem deleteKeyToolStripMenuItem;
         private ToolStripMenuItem addLanguageToolStripMenuItem;
-        private ToolStripMenuItem autoTranslateToolStripMenuItem;
-        private ToolStripMenuItem translateUsingBingToolStripMenuItem;
         private ToolStripStatusLabel toolStripStatusLabelCurrentItem;
         private Controls.ResourceGrid resourceGrid1;
         private Controls.ResourceTreeView resourceTreeView1;
@@ -643,7 +613,6 @@ namespace ResxTranslator.Windows
         private TabPage tabPageEditedResource;
         private TabPage tabPage5;
         private Controls.MissingTranslationView missingTranslationView1;
-        private ToolStripMenuItem setBingAppIdToolStripMenuItem;
         private ToolStripMenuItem settingsToolStripMenuItem;
         private ToolStripMenuItem copyDefaultValuesOnLanguageAddToolStripMenuItem;
         private ToolStripMenuItem ignoreEmptyResourcesToolStripMenuItem;

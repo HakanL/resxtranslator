@@ -33,16 +33,10 @@ namespace ResxTranslator.Controls
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.contextMenuStripCell = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.autoTranslateThisCellToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.selectSourceColumnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.noLanguageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.contextMenuStripCell.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -74,54 +68,9 @@ namespace ResxTranslator.Controls
             this.dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridView1.Size = new System.Drawing.Size(150, 150);
             this.dataGridView1.TabIndex = 3;
-            this.dataGridView1.CellContextMenuStripNeeded += new System.Windows.Forms.DataGridViewCellContextMenuStripNeededEventHandler(this.dataGridView1_CellContextMenuStripNeeded);
             this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
-            this.dataGridView1.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDown);
-            this.dataGridView1.CellMouseLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellMouseLeave);
-            this.dataGridView1.CellMouseUp += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseUp);
             this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
             this.dataGridView1.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dataGridView1_EditingControlShowing);
-            this.dataGridView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.dataGridView1_DragDrop);
-            this.dataGridView1.DragEnter += new System.Windows.Forms.DragEventHandler(this.dataGridView1_DragEnter);
-            this.dataGridView1.DragOver += new System.Windows.Forms.DragEventHandler(this.dataGridView1_DragOver);
-            // 
-            // contextMenuStripCell
-            // 
-            this.contextMenuStripCell.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.autoTranslateThisCellToolStripMenuItem});
-            this.contextMenuStripCell.Name = "contextMenuStripLanguage";
-            this.contextMenuStripCell.Size = new System.Drawing.Size(192, 26);
-            // 
-            // autoTranslateThisCellToolStripMenuItem
-            // 
-            this.autoTranslateThisCellToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.selectSourceColumnToolStripMenuItem,
-            this.noLanguageToolStripMenuItem});
-            this.autoTranslateThisCellToolStripMenuItem.Name = "autoTranslateThisCellToolStripMenuItem";
-            this.autoTranslateThisCellToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
-            this.autoTranslateThisCellToolStripMenuItem.Text = "Auto translate this cell";
-            this.autoTranslateThisCellToolStripMenuItem.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.autoTranslateThisCellToolStripMenuItem_DropDownItemClicked);
-            this.autoTranslateThisCellToolStripMenuItem.Click += new System.EventHandler(this.autoTranslateThisCellToolStripMenuItem_Click);
-            // 
-            // selectSourceColumnToolStripMenuItem
-            // 
-            this.selectSourceColumnToolStripMenuItem.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.selectSourceColumnToolStripMenuItem.Enabled = false;
-            this.selectSourceColumnToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.selectSourceColumnToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.selectSourceColumnToolStripMenuItem.Name = "selectSourceColumnToolStripMenuItem";
-            this.selectSourceColumnToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
-            this.selectSourceColumnToolStripMenuItem.Text = "Select Source Column";
-            // 
-            // noLanguageToolStripMenuItem
-            // 
-            this.noLanguageToolStripMenuItem.Checked = true;
-            this.noLanguageToolStripMenuItem.CheckOnClick = true;
-            this.noLanguageToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.noLanguageToolStripMenuItem.Name = "noLanguageToolStripMenuItem";
-            this.noLanguageToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
-            this.noLanguageToolStripMenuItem.Tag = "NoLanguageValue";
-            this.noLanguageToolStripMenuItem.Text = "Non-translated column";
             // 
             // ResourceGrid
             // 
@@ -129,7 +78,6 @@ namespace ResxTranslator.Controls
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "ResourceGrid";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.contextMenuStripCell.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -137,9 +85,5 @@ namespace ResxTranslator.Controls
         #endregion
 
         private DataGridView dataGridView1;
-        private ContextMenuStrip contextMenuStripCell;
-        private ToolStripMenuItem autoTranslateThisCellToolStripMenuItem;
-        private ToolStripMenuItem selectSourceColumnToolStripMenuItem;
-        private ToolStripMenuItem noLanguageToolStripMenuItem;
     }
 }

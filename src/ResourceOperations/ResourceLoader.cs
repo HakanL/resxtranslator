@@ -252,6 +252,7 @@ namespace ResxTranslator.ResourceOperations
             }
         }
 
+        // TODO Is this even working? Cleanup
         private void StartDictBuilderThread()
         {
             if (_dictBuilderThread != null && _dictBuilderThread.IsAlive)

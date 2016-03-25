@@ -5,7 +5,6 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Resources;
-using System.Text;
 using ResxTranslator.Controls;
 using ResxTranslator.Tools;
 
@@ -71,16 +70,20 @@ namespace ResxTranslator.ResourceOperations
 
         /// <summary>
         ///     The educated guess of the language code for the non translated column
+        /// 
         /// </summary>
         public string NoLanguageLanguage
         {
             get
             {
-                if (string.IsNullOrEmpty(_noLanguageLanguage))
+                //TODO eliminate this variable, or make it actually work. Would probably be best to have a solution/project-wide setting for this.
+                /*if (string.IsNullOrEmpty(_noLanguageLanguage))
                 {
                     NoLanguageLanguage = FindDefaultLanguage();
                 }
-                return _noLanguageLanguage;
+                return _noLanguageLanguage;*/
+
+                return "en";
             }
             set
             {
@@ -111,34 +114,6 @@ namespace ResxTranslator.ResourceOperations
         private void OnLanguageChange()
         {
             LanguageChange?.Invoke(this, EventArgs.Empty);
-        }
-
-        /// <summary>
-        ///     Evaluate the non translated langauage using the InprojectTranslator or Bing
-        /// </summary>
-        private string FindDefaultLanguage()
-        {
-            if (StringsTable == null)
-                return string.Empty;
-
-            var sb = new StringBuilder();
-
-            //collect a few entries to decide language of default version
-            foreach (DataRow row in StringsTable.Rows)
-            {
-                //Ignore too short entries
-                if (row[ResourceGrid.ColNameNoLang].ToString().Trim().Length > 5)
-                {
-                    sb.Append(". ");
-                    sb.Append(row[ResourceGrid.ColNameNoLang].ToString().Trim());
-                }
-            }
-
-            //first try the internal dictionary.
-            var lang = InprojectTranslator.Instance.CheckLanguage(sb.ToString());
-
-            // if nothing found, use Bing
-            return string.IsNullOrEmpty(lang) ? BingTranslator.GetDefaultLanguage(this) : lang;
         }
 
         /// <summary>
@@ -551,17 +526,6 @@ namespace ResxTranslator.ResourceOperations
             foreach (DataRow row in _stringsTable.Rows)
             {
                 EvaluateRow(row, languagesToCheck);
-            }
-        }
-
-        /// <summary>
-        ///     Auto translate all non-translated text in this object
-        /// </summary>
-        public void AutoTranslate()
-        {
-            foreach (var languageHolder in Languages.Values)
-            {
-                BingTranslator.AutoTranslate(this, languageHolder.LanguageId);
             }
         }
 

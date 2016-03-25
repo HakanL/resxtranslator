@@ -131,9 +131,6 @@
     <EmbeddedResource Include="Windows\AddResourceKeyWindow.resx">
       <DependentUpon>AddResourceKeyWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Windows\BingSettingsWindow.resx">
-      <DependentUpon>BingSettingsWindow.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Windows\FindWindow.resx">
       <DependentUpon>FindWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -156,7 +153,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="ResourceOperations\BingTranslator.cs" />
     <Compile Include="ResourceOperations\LanguageHolder.cs" />
     <Compile Include="ResourceOperations\PathHolder.cs" />
     <Compile Include="ResourceOperations\ResourceHolder.cs" />
@@ -188,12 +184,6 @@
     </Compile>
     <Compile Include="Windows\AddResourceKeyWindow.Designer.cs">
       <DependentUpon>AddResourceKeyWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\BingSettingsWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\BingSettingsWindow.Designer.cs">
-      <DependentUpon>BingSettingsWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\FindWindow.cs">
       <SubType>Form</SubType>
