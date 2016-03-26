@@ -266,12 +266,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="PortableSettingsProvider\PortableSettingsProvider.vbproj">
-      <Project>{495a9ea6-b13c-48f9-a2e2-6667cecebfde}</Project>
-      <Name>PortableSettingsProvider</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Edit_UndoHS.png" />
   </ItemGroup>
   <ItemGroup>
@@ -311,6 +305,12 @@
     </Content>
     <None Include="Resources\112_RefreshArrow_Blue_16x16_72.png" />
     <None Include="Resources\109_AllAnnotations_Help_16x16_72.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="PortableSettingsProvider\PortableSettingsProvider.csproj">
+      <Project>{68c10a7e-883f-443a-b7a0-41e06ad56602}</Project>
+      <Name>PortableSettingsProvider</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
