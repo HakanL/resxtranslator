@@ -69,6 +69,8 @@ namespace ResxTranslator.Windows
                 settings => settings.OpenLastDirOnStart, this);
             Settings.Binder.BindControl(doNotShowResourcesWithoutAnyTranslationsToolStripMenuItem,
                 settings => settings.HideNontranslatedResources, this);
+            Settings.Binder.BindControl(markToTranslateOnlyIfDefaultValueIsInBracketsToolStripMenuItem,
+                settings => settings.TranslatableInBrackets, this);
 
             Settings.Binder.Subscribe((sender, args) => ResourceLoader.HideEmptyResources = args.NewValue,
                 settings => settings.HideEmptyResources, this);

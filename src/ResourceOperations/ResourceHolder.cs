@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Resources;
 using ResxTranslator.Controls;
+using ResxTranslator.Properties;
 using ResxTranslator.Tools;
 
 namespace ResxTranslator.ResourceOperations
@@ -345,6 +346,14 @@ namespace ResxTranslator.ResourceOperations
 
         private static bool RowContainsTranslation(DataRow row, string languageId)
         {
+            if (Settings.Default.TranslatableInBrackets)
+            {
+                var defaultValue = ((string)row[ResourceGrid.ColNameNoLang]).Trim();
+                if (!defaultValue.StartsWith("[", StringComparison.InvariantCultureIgnoreCase) ||
+                    !defaultValue.EndsWith("]", StringComparison.InvariantCultureIgnoreCase))
+                    return true;
+            }
+
             if (row[languageId] == DBNull.Value)
                 return false;
 
@@ -450,6 +459,8 @@ namespace ResxTranslator.ResourceOperations
                 throw new DuplicateNameException(key);
             }
 
+            _stringsTable.ColumnChanged -= stringsTable_ColumnChanged;
+
             var row = _stringsTable.NewRow();
             row[ResourceGrid.ColNameKey] = key;
             row[ResourceGrid.ColNameNoLang] = noXlateValue;
@@ -458,6 +469,10 @@ namespace ResxTranslator.ResourceOperations
                 row[languageHolder.LanguageId] = defaultValue;
             }
             row[ResourceGrid.ColNameComment] = string.Empty;
+            row[ResourceGrid.ColNameError] = false;
+
+            _stringsTable.ColumnChanged += stringsTable_ColumnChanged;
+
             _stringsTable.Rows.Add(row);
         }
 
@@ -559,8 +574,22 @@ namespace ResxTranslator.ResourceOperations
 
         public bool HasMissingTranslations(string cultureName)
         {
-            return !Languages.ContainsKey(cultureName) ||
-                _stringsTable.Rows.Cast<DataRow>().Any(row => !RowContainsTranslation(row, cultureName));
+            var rows = _stringsTable.Rows.Cast<DataRow>().ToList();
+
+            if (Settings.Default.TranslatableInBrackets)
+            {
+                rows.RemoveAll(dataRow =>
+                {
+                    var defaultValue = ((string)dataRow[ResourceGrid.ColNameNoLang]).Trim();
+                    return !defaultValue.StartsWith("[", StringComparison.InvariantCultureIgnoreCase)
+                    || !defaultValue.EndsWith("]", StringComparison.InvariantCultureIgnoreCase);
+                });
+            }
+
+            if (!rows.Any())
+                return false;
+
+            return !Languages.ContainsKey(cultureName) || rows.Any(row => !RowContainsTranslation(row, cultureName));
         }
     }
 }

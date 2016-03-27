@@ -158,5 +158,17 @@ namespace ResxTranslator.Properties {
                 this["WindowState"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TranslatableInBrackets {
+            get {
+                return ((bool)(this["TranslatableInBrackets"]));
+            }
+            set {
+                this["TranslatableInBrackets"] = value;
+            }
+        }
     }
 }
