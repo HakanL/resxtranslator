@@ -28,7 +28,3 @@ The rows that are red means one or more languages are missing values. I have a s
 A big thanks to my friend _Peter Wallin_ who encouraged this development and helped with testing.
 Another huge thanks for JorgenLindell for further development of this project!
 Enormous thanks to Marcin Szeniak to updating this to version 2.0 with a lot of new functionality!
-
-##Issues and information
-* Error handling is more or less non-existent.
-* I checked in the binaries so non-developers with TortoiseSVN can easily get the latest version. It helped me while I was developing. I know it's not best practice.
