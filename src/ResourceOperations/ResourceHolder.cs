@@ -214,7 +214,13 @@ namespace ResxTranslator.ResourceOperations
             {
                 foreach (var originalResource in originalResources)
                 {
-                    writer.AddResource(originalResource.Value);
+                    // Write localizable resource only if it is not empty, unless we are saving the default file
+                    if (valueColumnId.Equals(ResourceGrid.ColNameNoLang) 
+                        || !localizableResourceKeys.Contains(originalResource.Key) 
+                        || !string.IsNullOrWhiteSpace(originalResource.Value.GetValueAsString()))
+                    {
+                        writer.AddResource(originalResource.Value);
+                    }
                 }
                 foreach (var originalMetadata in originalMetadatas)
                 {
