@@ -23,6 +23,7 @@ namespace ResxTranslator.Controls
         };
 
         private ResourceHolder _currentResource;
+        private SearchParams _currentSearch;
 
         public ResourceGrid()
         {
@@ -38,6 +39,16 @@ namespace ResxTranslator.Controls
             {
                 _currentResource = value;
                 ShowResourceInGrid(value);
+            }
+        }
+
+        public SearchParams CurrentSearch
+        {
+            get { return _currentSearch; }
+            set
+            {
+                _currentSearch = value;
+                ApplyConditionalFormatting();
             }
         }
 
@@ -86,6 +97,32 @@ namespace ResxTranslator.Controls
             else
             {
                 r.DefaultCellStyle.ForeColor = dataGridView1.DefaultCellStyle.ForeColor;
+            }
+
+            if (CurrentSearch != null)
+            {
+                ApplyConditionalFormattingFromCurrentSearch(r.Cells[ColNameKey], SearchParams.TargetType.Key);
+
+                ApplyConditionalFormattingFromCurrentSearch(r.Cells[ColNameNoLang], SearchParams.TargetType.Text);
+
+                foreach (var lng in CurrentResource.Languages.Values)
+                {
+                    ApplyConditionalFormattingFromCurrentSearch(r.Cells[lng.LanguageId], SearchParams.TargetType.Text);
+                }
+            }
+        }
+
+        private void ApplyConditionalFormattingFromCurrentSearch(DataGridViewCell cell, SearchParams.TargetType targType)
+        {
+            string matchText = cell.Value as string;
+
+            if (matchText != null && CurrentSearch.Match(targType, matchText))
+            {
+                cell.Style.BackColor = Color.GreenYellow;
+            }
+            else
+            {
+                cell.Style.BackColor = dataGridView1.DefaultCellStyle.BackColor;
             }
         }
 

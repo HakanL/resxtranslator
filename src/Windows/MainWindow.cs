@@ -89,6 +89,7 @@ namespace ResxTranslator.Windows
             {
                 _currentSearch = value;
                 resourceTreeView1.ExecuteFindInNodes(value);
+                resourceGrid1.CurrentSearch = _currentSearch;
             }
         }
 
