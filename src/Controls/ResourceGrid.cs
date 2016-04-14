@@ -237,12 +237,25 @@ namespace ResxTranslator.Controls
             }
         }
 
+        private void DeleteSelection()
+        {
+            foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
+            {
+                if (!cell.ReadOnly)
+                    cell.Value = string.Empty;
+            }
+        }
+
         private void dataGridView1_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Control && e.KeyCode == Keys.V)
             {
                 PasteFromClipboard();
                 e.Handled = true;
+            }
+            else if (e.KeyCode == Keys.Delete)
+            {                
+                DeleteSelection();
             }
         }
     }
