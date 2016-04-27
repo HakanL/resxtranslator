@@ -30,11 +30,11 @@
         {
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.buttonAdd = new System.Windows.Forms.Button();
             this.buttonBrowse = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.buttonRemove = new System.Windows.Forms.Button();
+            this.buttonAdd = new System.Windows.Forms.Button();
             this.buttonClose = new System.Windows.Forms.Button();
+            this.buttonRemove = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -70,16 +70,6 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(552, 62);
             this.tableLayoutPanel1.TabIndex = 4;
             // 
-            // buttonAdd
-            // 
-            this.buttonAdd.Location = new System.Drawing.Point(3, 3);
-            this.buttonAdd.Name = "buttonAdd";
-            this.buttonAdd.Size = new System.Drawing.Size(76, 25);
-            this.buttonAdd.TabIndex = 0;
-            this.buttonAdd.Text = "Add Folder";
-            this.buttonAdd.UseVisualStyleBackColor = true;
-            this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
-            // 
             // buttonBrowse
             // 
             this.buttonBrowse.Location = new System.Drawing.Point(428, 3);
@@ -100,16 +90,15 @@
             this.textBox1.TabIndex = 2;
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
-            // buttonRemove
+            // buttonAdd
             // 
-            this.buttonRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonRemove.Location = new System.Drawing.Point(473, 3);
-            this.buttonRemove.Name = "buttonRemove";
-            this.buttonRemove.Size = new System.Drawing.Size(76, 25);
-            this.buttonRemove.TabIndex = 1;
-            this.buttonRemove.Text = "Remove";
-            this.buttonRemove.UseVisualStyleBackColor = true;
-            this.buttonRemove.Click += new System.EventHandler(this.buttonRemove_Click);
+            this.buttonAdd.Location = new System.Drawing.Point(3, 3);
+            this.buttonAdd.Name = "buttonAdd";
+            this.buttonAdd.Size = new System.Drawing.Size(76, 25);
+            this.buttonAdd.TabIndex = 0;
+            this.buttonAdd.Text = "Add Folder";
+            this.buttonAdd.UseVisualStyleBackColor = true;
+            this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
             // 
             // buttonClose
             // 
@@ -121,6 +110,17 @@
             this.buttonClose.TabIndex = 4;
             this.buttonClose.Text = "Close";
             this.buttonClose.UseVisualStyleBackColor = true;
+            // 
+            // buttonRemove
+            // 
+            this.buttonRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonRemove.Location = new System.Drawing.Point(473, 3);
+            this.buttonRemove.Name = "buttonRemove";
+            this.buttonRemove.Size = new System.Drawing.Size(76, 25);
+            this.buttonRemove.TabIndex = 1;
+            this.buttonRemove.Text = "Remove";
+            this.buttonRemove.UseVisualStyleBackColor = true;
+            this.buttonRemove.Click += new System.EventHandler(this.buttonRemove_Click);
             // 
             // listBox1
             // 

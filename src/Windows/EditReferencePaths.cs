@@ -12,6 +12,17 @@ namespace ResxTranslator.Windows
 {
     public partial class EditReferencePaths : Form
     {
+        public static string[] ShowDialog(Form owner, string[] referencePaths)
+        {
+            using (var window = new EditReferencePaths(referencePaths))
+            {
+                window.Icon = owner.Icon;
+                window.StartPosition = FormStartPosition.CenterParent;
+                window.ShowDialog();
+                return window.ReferencePaths;
+            }
+        }
+
         public string[] ReferencePaths
         {
             get { return listBox1.Items.Cast<string>().ToArray(); }

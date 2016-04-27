@@ -451,14 +451,11 @@ namespace ResxTranslator.Windows
 
         private void setReferencePathsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var form = new EditReferencePaths(Settings.Default.ReferencePaths))
-            {
-                form.ShowDialog();
+            var referencePaths = EditReferencePaths.ShowDialog(this, Settings.Default.ReferencePaths);
 
-                Settings.Default.ReferencePaths = form.ReferencePaths;
+            Settings.Default.ReferencePaths = referencePaths;
 
-                LoadAssemblies(form.ReferencePaths);
-            }
+            LoadAssemblies(referencePaths);
         }
     }
 }
