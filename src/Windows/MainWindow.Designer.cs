@@ -73,12 +73,14 @@ namespace ResxTranslator.Windows
             this.copyDefaultValuesOnLanguageAddToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ignoreEmptyResourcesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.doNotShowResourcesWithoutAnyTranslationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.markToTranslateOnlyIfDefaultValueIsInBracketsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openLastDirectoryOnProgramStartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.displayNullValuesAsGrayedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setReferencePathsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.licenceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.markToTranslateOnlyIfDefaultValueIsInBracketsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.panelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).BeginInit();
@@ -283,10 +285,12 @@ namespace ResxTranslator.Windows
             // resourceGrid1
             // 
             this.resourceGrid1.CurrentResource = null;
+            this.resourceGrid1.CurrentSearch = null;
             this.resourceGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.resourceGrid1.Location = new System.Drawing.Point(0, 0);
             this.resourceGrid1.Margin = new System.Windows.Forms.Padding(0);
             this.resourceGrid1.Name = "resourceGrid1";
+            this.resourceGrid1.ShowNullValuesAsGrayed = false;
             this.resourceGrid1.Size = new System.Drawing.Size(626, 439);
             this.resourceGrid1.TabIndex = 0;
             // 
@@ -481,7 +485,9 @@ namespace ResxTranslator.Windows
             this.ignoreEmptyResourcesToolStripMenuItem,
             this.doNotShowResourcesWithoutAnyTranslationsToolStripMenuItem,
             this.markToTranslateOnlyIfDefaultValueIsInBracketsToolStripMenuItem,
-            this.openLastDirectoryOnProgramStartToolStripMenuItem});
+            this.openLastDirectoryOnProgramStartToolStripMenuItem,
+            this.displayNullValuesAsGrayedToolStripMenuItem,
+            this.setReferencePathsToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.settingsToolStripMenuItem.Text = "&Settings";
@@ -504,11 +510,30 @@ namespace ResxTranslator.Windows
             this.doNotShowResourcesWithoutAnyTranslationsToolStripMenuItem.Size = new System.Drawing.Size(391, 22);
             this.doNotShowResourcesWithoutAnyTranslationsToolStripMenuItem.Text = "Do not show resources with no translations";
             // 
+            // markToTranslateOnlyIfDefaultValueIsInBracketsToolStripMenuItem
+            // 
+            this.markToTranslateOnlyIfDefaultValueIsInBracketsToolStripMenuItem.Name = "markToTranslateOnlyIfDefaultValueIsInBracketsToolStripMenuItem";
+            this.markToTranslateOnlyIfDefaultValueIsInBracketsToolStripMenuItem.Size = new System.Drawing.Size(391, 22);
+            this.markToTranslateOnlyIfDefaultValueIsInBracketsToolStripMenuItem.Text = "Mark as translatable only if the default value is in [ ] brackets";
+            // 
             // openLastDirectoryOnProgramStartToolStripMenuItem
             // 
             this.openLastDirectoryOnProgramStartToolStripMenuItem.Name = "openLastDirectoryOnProgramStartToolStripMenuItem";
             this.openLastDirectoryOnProgramStartToolStripMenuItem.Size = new System.Drawing.Size(391, 22);
             this.openLastDirectoryOnProgramStartToolStripMenuItem.Text = "Open last directory on program start";
+            // 
+            // displayNullValuesAsGrayedToolStripMenuItem
+            // 
+            this.displayNullValuesAsGrayedToolStripMenuItem.Name = "displayNullValuesAsGrayedToolStripMenuItem";
+            this.displayNullValuesAsGrayedToolStripMenuItem.Size = new System.Drawing.Size(391, 22);
+            this.displayNullValuesAsGrayedToolStripMenuItem.Text = "Display values that will not be saved (null) as grayed";
+            // 
+            // setReferencePathsToolStripMenuItem
+            // 
+            this.setReferencePathsToolStripMenuItem.Name = "setReferencePathsToolStripMenuItem";
+            this.setReferencePathsToolStripMenuItem.Size = new System.Drawing.Size(391, 22);
+            this.setReferencePathsToolStripMenuItem.Text = "Set paths to referenced assemblies";
+            this.setReferencePathsToolStripMenuItem.Click += new System.EventHandler(this.setReferencePathsToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -524,29 +549,23 @@ namespace ResxTranslator.Windows
             // 
             this.helpToolStripMenuItem1.Image = global::ResxTranslator.Properties.Resources.Help;
             this.helpToolStripMenuItem1.Name = "helpToolStripMenuItem1";
-            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.helpToolStripMenuItem1.Size = new System.Drawing.Size(139, 22);
             this.helpToolStripMenuItem1.Text = "&Help";
             this.helpToolStripMenuItem1.Click += new System.EventHandler(this.helpToolStripMenuItem1_Click);
             // 
             // licenceToolStripMenuItem
             // 
             this.licenceToolStripMenuItem.Name = "licenceToolStripMenuItem";
-            this.licenceToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.licenceToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.licenceToolStripMenuItem.Text = "View licence";
             this.licenceToolStripMenuItem.Click += new System.EventHandler(this.licenceToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.aboutToolStripMenuItem.Text = "&About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
-            // 
-            // markToTranslateOnlyIfDefaultValueIsInBracketsToolStripMenuItem
-            // 
-            this.markToTranslateOnlyIfDefaultValueIsInBracketsToolStripMenuItem.Name = "markToTranslateOnlyIfDefaultValueIsInBracketsToolStripMenuItem";
-            this.markToTranslateOnlyIfDefaultValueIsInBracketsToolStripMenuItem.Size = new System.Drawing.Size(391, 22);
-            this.markToTranslateOnlyIfDefaultValueIsInBracketsToolStripMenuItem.Text = "Mark as translatable only if the default value is in [ ] brackets";
             // 
             // MainWindow
             // 
@@ -637,6 +656,8 @@ namespace ResxTranslator.Windows
         private ToolStripMenuItem licenceToolStripMenuItem;
         private SplitContainer splitContainer1;
         private ToolStripMenuItem markToTranslateOnlyIfDefaultValueIsInBracketsToolStripMenuItem;
+        private ToolStripMenuItem displayNullValuesAsGrayedToolStripMenuItem;
+        private ToolStripMenuItem setReferencePathsToolStripMenuItem;
     }
 }
 

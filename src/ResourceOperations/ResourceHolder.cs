@@ -8,6 +8,7 @@ using System.Resources;
 using ResxTranslator.Controls;
 using ResxTranslator.Properties;
 using ResxTranslator.Tools;
+using System.Reflection;
 
 namespace ResxTranslator.ResourceOperations
 {
@@ -124,8 +125,13 @@ namespace ResxTranslator.ResourceOperations
         {
             // Read the entire resource file to a buffer
             var originalMetadatas = new Dictionary<string, object>();
-            using (var reader = new ResXResourceReader(filename))
+
+            using (var reader = new ResXResourceReader(filename, 
+                AppDomain.CurrentDomain.GetAssemblies().Select(x => x.GetName()).ToArray()))
             {
+                // Set base path so that relative paths work
+                reader.BasePath = Path.GetDirectoryName(filename);
+
                 // If UseResXDataNodes == true before you call GetMetadataEnumerator, no resource nodes are retrieved
                 var metadataEnumerator = reader.GetMetadataEnumerator();
                 while (metadataEnumerator.MoveNext())
@@ -187,9 +193,15 @@ namespace ResxTranslator.ResourceOperations
                         .Equals(stringValueData, StringComparison.InvariantCulture))
                         continue;
 
-                    // BUG: Maybe actually delete the resource if stringData is empty?
-                    // BUG: Is comment disabled by null or empty str?
-                    originalResources[key] = new ResXDataNode(originalResources[key].Name, stringValueData) { Comment = stringCommentData };
+                    ResXDataNode originalDataNode;
+                    if (originalResources.TryGetValue(key, out originalDataNode) && valueData == null)
+                    {
+                        originalResources.Remove(key);
+                    }
+                    else
+                    {
+                        originalResources[key] = new ResXDataNode(originalDataNode.Name, stringValueData) { Comment = stringCommentData };
+                    }
                     wasModified = true;
                 }
                 else
