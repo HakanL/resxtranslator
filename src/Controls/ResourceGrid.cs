@@ -25,6 +25,7 @@ namespace ResxTranslator.Controls
 
         private ResourceHolder _currentResource;
         private SearchParams _currentSearch;
+        private bool _showNullValuesAsGrayed;
 
         public ResourceGrid()
         {
@@ -49,6 +50,16 @@ namespace ResxTranslator.Controls
             set
             {
                 _currentSearch = value;
+                ApplyConditionalFormatting();
+            }
+        }
+
+        public bool ShowNullValuesAsGrayed
+        {
+            get { return _showNullValuesAsGrayed; }
+            set
+            {
+                _showNullValuesAsGrayed = value;
                 ApplyConditionalFormatting();
             }
         }
@@ -100,31 +111,42 @@ namespace ResxTranslator.Controls
                 r.DefaultCellStyle.ForeColor = dataGridView1.DefaultCellStyle.ForeColor;
             }
 
-            if (CurrentSearch != null)
+            if (r == dataGridView1.Rows[RowCount - 1])
+                return;            
+
+            ApplyConditionalCellFormatting(r.Cells[ColNameKey], SearchParams.TargetType.Key);
+
+            ApplyConditionalCellFormatting(r.Cells[ColNameNoLang], SearchParams.TargetType.Text);
+
+            foreach (var lng in CurrentResource.Languages.Values)
             {
-                ApplyConditionalFormattingFromCurrentSearch(r.Cells[ColNameKey], SearchParams.TargetType.Key);
-
-                ApplyConditionalFormattingFromCurrentSearch(r.Cells[ColNameNoLang], SearchParams.TargetType.Text);
-
-                foreach (var lng in CurrentResource.Languages.Values)
-                {
-                    ApplyConditionalFormattingFromCurrentSearch(r.Cells[lng.LanguageId], SearchParams.TargetType.Text);
-                }
+                ApplyConditionalCellFormatting(r.Cells[lng.LanguageId], SearchParams.TargetType.Text);
             }
         }
 
-        private void ApplyConditionalFormattingFromCurrentSearch(DataGridViewCell cell, SearchParams.TargetType targType)
+        private void ApplyConditionalCellFormatting(DataGridViewCell cell, SearchParams.TargetType targType)
         {
-            string matchText = cell.Value as string;
+            bool modified = false;
 
-            if (matchText != null && CurrentSearch.Match(targType, matchText))
+            if (CurrentSearch != null)
             {
-                cell.Style.BackColor = Color.GreenYellow;
+                string matchText = cell.Value as string;
+
+                if (matchText != null && CurrentSearch.Match(targType, matchText))
+                {
+                    cell.Style.BackColor = Color.GreenYellow;
+                    modified = true;
+                }
             }
-            else
+
+            if (ShowNullValuesAsGrayed && (cell.Value as string) == null)
             {
+                cell.Style.BackColor = Color.Gainsboro;
+                modified = true;
+            }
+
+            if (!modified)
                 cell.Style.BackColor = dataGridView1.DefaultCellStyle.BackColor;
-            }
         }
 
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -192,6 +214,16 @@ namespace ResxTranslator.Controls
             ApplyConditionalFormatting();
         }
 
+        private void CopyToClipboard()
+        {
+            if (dataGridView1.SelectedCells.Count == 0)
+                return;
+
+            // Add the selection to the clipboard.
+            Clipboard.SetDataObject(
+                this.dataGridView1.GetClipboardContent());
+        }
+
         private void PasteFromClipboard()
         {
             DataGridViewCell currentCell = dataGridView1.CurrentCell;
@@ -242,13 +274,17 @@ namespace ResxTranslator.Controls
             foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
             {
                 if (!cell.ReadOnly)
-                    cell.Value = string.Empty;
+                    cell.Value = null;
             }
         }
 
         private void dataGridView1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Control && e.KeyCode == Keys.V)
+            if (e.Control && e.KeyCode == Keys.C)
+            {
+                CopyToClipboard();
+            }
+            else if (e.Control && e.KeyCode == Keys.V)
             {
                 PasteFromClipboard();
                 e.Handled = true;
@@ -257,6 +293,40 @@ namespace ResxTranslator.Controls
             {                
                 DeleteSelection();
             }
+        }
+
+        private void dataGridView1_CellMouseUp(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && e.RowIndex != -1 && e.ColumnIndex != -1)
+            {
+                DataGridViewCell c = (sender as DataGridView)[e.ColumnIndex, e.RowIndex];
+                if (!c.Selected)
+                {
+                    c.DataGridView.ClearSelection();
+                    c.DataGridView.CurrentCell = c;
+                    c.Selected = true;
+                }
+            }
+        }
+
+        private void dataGridView1_CellContextMenuStripNeeded(object sender, DataGridViewCellContextMenuStripNeededEventArgs e)
+        {
+            e.ContextMenuStrip = contextMenuStrip1;     
+        }
+
+        private void copyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CopyToClipboard();
+        }
+
+        private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PasteFromClipboard();
+        }
+
+        private void setToEmptyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DeleteSelection();
         }
     }
 }

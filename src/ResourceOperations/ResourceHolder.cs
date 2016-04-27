@@ -175,7 +175,11 @@ namespace ResxTranslator.ResourceOperations
                 var key = (string)dataRow[ResourceGrid.ColNameKey];
 
                 var valueData = dataRow[valueColumnId] == DBNull.Value ? null : dataRow[valueColumnId];
-                var stringValueData = valueData?.ToString() ?? string.Empty;
+
+                if (valueData == null)
+                    continue;
+
+                var stringValueData = valueData.ToString() ?? string.Empty;
 
                 var commentData = dataRow[ResourceGrid.ColNameComment] == DBNull.Value ? null : dataRow[ResourceGrid.ColNameComment];
                 var stringCommentData = commentData?.ToString() ?? string.Empty;
