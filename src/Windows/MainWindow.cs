@@ -71,11 +71,15 @@ namespace ResxTranslator.Windows
                 settings => settings.HideNontranslatedResources, this);
             Settings.Binder.BindControl(markToTranslateOnlyIfDefaultValueIsInBracketsToolStripMenuItem,
                 settings => settings.TranslatableInBrackets, this);
+            Settings.Binder.BindControl(displayNullValuesAsGrayedToolStripMenuItem,
+                settings => settings.ShowNullValuesAsGrayed, this);
 
             Settings.Binder.Subscribe((sender, args) => ResourceLoader.HideEmptyResources = args.NewValue,
                 settings => settings.HideEmptyResources, this);
             Settings.Binder.Subscribe((sender, args) => ResourceLoader.HideNontranslatedResources = args.NewValue,
                 settings => settings.HideNontranslatedResources, this);
+            Settings.Binder.Subscribe((sender, args) => resourceGrid1.ShowNullValuesAsGrayed = args.NewValue,
+                settings => settings.ShowNullValuesAsGrayed, this);
 
             Settings.Binder.SendUpdates(this);
 
@@ -89,6 +93,7 @@ namespace ResxTranslator.Windows
             {
                 _currentSearch = value;
                 resourceTreeView1.ExecuteFindInNodes(value);
+                resourceGrid1.CurrentSearch = _currentSearch;
             }
         }
 

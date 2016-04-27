@@ -170,5 +170,17 @@ namespace ResxTranslator.Properties {
                 this["TranslatableInBrackets"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowNullValuesAsGrayed {
+            get {
+                return ((bool)(this["ShowNullValuesAsGrayed"]));
+            }
+            set {
+                this["ShowNullValuesAsGrayed"] = value;
+            }
+        }
     }
 }
