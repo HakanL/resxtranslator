@@ -27,6 +27,8 @@ namespace ResxTranslator.Windows
 
             _defaultWindowTitle = $"{Text} {Assembly.GetAssembly(typeof(MainWindow)).GetName().Version.ToString(2)}";
 
+            LoadAssemblies(Settings.Default.ReferencePaths);
+
             ResourceLoader = new ResourceLoader();
             ResourceLoader.ResourceLoadProgress += OnResourceLoaderOnResourceLoadProgress;
             ResourceLoader.ResourcesChanged += OnResourceLoaderOnResourcesChanged;
@@ -133,6 +135,30 @@ namespace ResxTranslator.Windows
                 languageSettings1.RefreshLanguages(ResourceLoader.GetUsedLanguages(), true);
                 UpdateMenuStrip();
             });
+        }
+
+        private void LoadAssemblies(string[] paths)
+        {
+            if (paths == null)
+                return;
+
+            foreach (var path in paths)
+            {
+                var asms = AppDomain.CurrentDomain.GetAssemblies();
+
+                foreach (var filename in Directory.EnumerateFiles(path, "*.dll"))
+                {
+                    try
+                    {
+                        if (!asms.Any(x => x.Location == filename))
+                            Assembly.LoadFile(filename);
+                    }
+                    catch (NotSupportedException)
+                    {
+                        // Ignore
+                    }
+                }
+            }
         }
 
         private void UpdateMenuStrip()
@@ -421,6 +447,18 @@ namespace ResxTranslator.Windows
             Process.Start(Path.Combine(
                 Path.GetDirectoryName(Assembly.GetAssembly(typeof(MainWindow)).Location) ?? string.Empty,
                 "Licence.txt"));
+        }
+
+        private void setReferencePathsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var form = new EditReferencePaths(Settings.Default.ReferencePaths))
+            {
+                form.ShowDialog();
+
+                Settings.Default.ReferencePaths = form.ReferencePaths;
+
+                LoadAssemblies(form.ReferencePaths);
+            }
         }
     }
 }

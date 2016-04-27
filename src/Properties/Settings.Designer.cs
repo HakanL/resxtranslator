@@ -182,5 +182,17 @@ namespace ResxTranslator.Properties {
                 this["ShowNullValuesAsGrayed"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string[] ReferencePaths {
+            get {
+                return ((string[])(this["ReferencePaths"]));
+            }
+            set {
+                this["ReferencePaths"] = value;
+            }
+        }
     }
 }

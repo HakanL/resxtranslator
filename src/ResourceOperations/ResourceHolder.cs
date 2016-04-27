@@ -8,6 +8,7 @@ using System.Resources;
 using ResxTranslator.Controls;
 using ResxTranslator.Properties;
 using ResxTranslator.Tools;
+using System.Reflection;
 
 namespace ResxTranslator.ResourceOperations
 {
@@ -125,7 +126,7 @@ namespace ResxTranslator.ResourceOperations
             // Read the entire resource file to a buffer
             var originalMetadatas = new Dictionary<string, object>();
 
-            using (var reader = new ResXResourceReader(filename))
+            using (var reader = new ResXResourceReader(filename, AppDomain.CurrentDomain.GetAssemblies().Select(x => x.GetName()).ToArray()))
             {
                 // Set base path so that relative paths work
                 reader.BasePath = Path.GetDirectoryName(filename);
