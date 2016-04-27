@@ -124,8 +124,12 @@ namespace ResxTranslator.ResourceOperations
         {
             // Read the entire resource file to a buffer
             var originalMetadatas = new Dictionary<string, object>();
+
             using (var reader = new ResXResourceReader(filename))
             {
+                // Set base path so that relative paths work
+                reader.BasePath = Path.GetDirectoryName(filename);
+
                 // If UseResXDataNodes == true before you call GetMetadataEnumerator, no resource nodes are retrieved
                 var metadataEnumerator = reader.GetMetadataEnumerator();
                 while (metadataEnumerator.MoveNext())
