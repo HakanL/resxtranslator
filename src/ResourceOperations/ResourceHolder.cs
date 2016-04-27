@@ -175,11 +175,7 @@ namespace ResxTranslator.ResourceOperations
                 var key = (string)dataRow[ResourceGrid.ColNameKey];
 
                 var valueData = dataRow[valueColumnId] == DBNull.Value ? null : dataRow[valueColumnId];
-
-                if (valueData == null)
-                    continue;
-
-                var stringValueData = valueData.ToString() ?? string.Empty;
+                var stringValueData = valueData?.ToString() ?? string.Empty;
 
                 var commentData = dataRow[ResourceGrid.ColNameComment] == DBNull.Value ? null : dataRow[ResourceGrid.ColNameComment];
                 var stringCommentData = commentData?.ToString() ?? string.Empty;
@@ -191,9 +187,15 @@ namespace ResxTranslator.ResourceOperations
                         .Equals(stringValueData, StringComparison.InvariantCulture))
                         continue;
 
-                    // BUG: Maybe actually delete the resource if stringData is empty?
-                    // BUG: Is comment disabled by null or empty str?
-                    originalResources[key] = new ResXDataNode(originalResources[key].Name, stringValueData) { Comment = stringCommentData };
+                    ResXDataNode originalDataNode;
+                    if (originalResources.TryGetValue(key, out originalDataNode) && valueData == null)
+                    {
+                        originalResources.Remove(key);
+                    }
+                    else
+                    {
+                        originalResources[key] = new ResXDataNode(originalDataNode.Name, stringValueData) { Comment = stringCommentData };
+                    }
                     wasModified = true;
                 }
                 else
