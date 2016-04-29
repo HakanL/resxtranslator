@@ -148,7 +148,8 @@ namespace ResxTranslator.Windows
 
             foreach (var path in paths)
             {
-                var assemblyLocations = AppDomain.CurrentDomain.GetAssemblies().Select(x => x.Location).ToList();
+                var assemblyLocations = AppDomain.CurrentDomain.GetAssemblies().Where(x=>!x.IsDynamic)
+                    .Select(x => x.Location.ToLowerInvariant()).Distinct().ToList();
 
                 foreach (var filename in Directory.EnumerateFiles(path, "*.dll"))
                 {
