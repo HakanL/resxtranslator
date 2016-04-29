@@ -8,7 +8,6 @@ using System.Resources;
 using ResxTranslator.Controls;
 using ResxTranslator.Properties;
 using ResxTranslator.Tools;
-using System.Reflection;
 
 namespace ResxTranslator.ResourceOperations
 {
@@ -155,7 +154,7 @@ namespace ResxTranslator.ResourceOperations
                 }
             }
 
-            bool wasModified = false;
+            var wasModified = false;
 
             // Get rid of keys marked as deleted. If they have been restored they will be re-added later
             // Only support localizable strings to avoid removing other resources by mistake
@@ -192,16 +191,8 @@ namespace ResxTranslator.ResourceOperations
                     if (originalResources[key].GetValueAsString()
                         .Equals(stringValueData, StringComparison.InvariantCulture))
                         continue;
-
-                    ResXDataNode originalDataNode;
-                    if (originalResources.TryGetValue(key, out originalDataNode) && valueData == null)
-                    {
-                        originalResources.Remove(key);
-                    }
-                    else
-                    {
-                        originalResources[key] = new ResXDataNode(originalDataNode.Name, stringValueData) { Comment = stringCommentData };
-                    }
+                    
+                    originalResources[key] = new ResXDataNode(originalResources[key].Name, stringValueData) { Comment = stringCommentData };
                     wasModified = true;
                 }
                 else
@@ -210,13 +201,7 @@ namespace ResxTranslator.ResourceOperations
                     wasModified = true;
                 }
             }
-
-            /*// Create a backup
-            var backupFilename = filename + ".bak";
-            File.Delete(backupFilename);
-            File.Copy(filename, backupFilename);
-            File.Delete(filename);*/
-
+            
             // Skip writing unmodified files
             if (!wasModified)
                 return;

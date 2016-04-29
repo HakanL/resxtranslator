@@ -139,7 +139,7 @@ namespace ResxTranslator.Controls
                 }
             }
 
-            if (ShowNullValuesAsGrayed && (cell.Value as string) == null)
+            if (ShowNullValuesAsGrayed && string.IsNullOrWhiteSpace(cell.Value as string))
             {
                 cell.Style.BackColor = Color.Gainsboro;
                 modified = true;
