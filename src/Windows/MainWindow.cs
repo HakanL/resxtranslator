@@ -26,7 +26,7 @@ namespace ResxTranslator.Windows
             Opacity = 0;
             InitializeComponent();
 
-            _defaultWindowTitle = $"{Text} {Assembly.GetAssembly(typeof(MainWindow)).GetName().Version.ToString(2)}";
+            _defaultWindowTitle = $"{Text} {Assembly.GetAssembly(typeof (MainWindow)).GetName().Version.ToString(2)}";
 
             if (Settings.Default.ReferencePaths != null)
                 LoadAssemblies(Settings.Default.ReferencePaths.Cast<string>().ToArray());
@@ -87,7 +87,7 @@ namespace ResxTranslator.Windows
 
             Settings.Binder.SendUpdates(this);
 
-            Icon = Icon.ExtractAssociatedIcon(Assembly.GetAssembly(typeof(MainWindow)).Location);
+            Icon = Icon.ExtractAssociatedIcon(Assembly.GetAssembly(typeof (MainWindow)).Location);
         }
 
         public SearchParams CurrentSearch
@@ -118,11 +118,13 @@ namespace ResxTranslator.Windows
                     if (_currentResource != null)
                     {
                         _currentResource.LanguageChange += OnCurrentResourceLanguageChange;
-                        _currentResource.EvaluateAllRows(languageSettings1.EnabledLanguages.Select(x => x.Name).ToArray());
+                        _currentResource.EvaluateAllRows(
+                            languageSettings1.EnabledLanguages.Select(x => x.Name).ToArray());
                     }
 
                     resourceGrid1.CurrentResource = value;
-                    resourceGrid1.SetVisibleLanguageColumns(languageSettings1.EnabledLanguages.Select(x => x.Name).ToArray());
+                    resourceGrid1.SetVisibleLanguageColumns(
+                        languageSettings1.EnabledLanguages.Select(x => x.Name).ToArray());
 
                     tabPageEditedResource.Text = value?.Filename ?? "No resource loaded";
                     UpdateMenuStrip();
@@ -139,20 +141,20 @@ namespace ResxTranslator.Windows
             });
         }
 
-        private void LoadAssemblies(string[] paths)
+        private static void LoadAssemblies(string[] paths)
         {
             if (paths == null)
                 return;
 
             foreach (var path in paths)
             {
-                var asms = AppDomain.CurrentDomain.GetAssemblies();
+                var assemblyLocations = AppDomain.CurrentDomain.GetAssemblies().Select(x => x.Location).ToList();
 
                 foreach (var filename in Directory.EnumerateFiles(path, "*.dll"))
                 {
                     try
                     {
-                        if (!asms.Any(x => x.Location == filename))
+                        if (assemblyLocations.All(x => !string.Equals(x, filename, StringComparison.OrdinalIgnoreCase)))
                             Assembly.LoadFile(filename);
                     }
                     catch (NotSupportedException)
@@ -175,7 +177,11 @@ namespace ResxTranslator.Windows
 
             if (_currentResource == null) return;
 
-            foreach (var info in ResourceLoader.GetUsedLanguages().Where(x => !_currentResource.Languages.Values.Any(y => y.CultureInfo.Equals(x))).OrderBy(x => x.Name))
+            foreach (
+                var info in
+                    ResourceLoader.GetUsedLanguages()
+                        .Where(x => !_currentResource.Languages.Values.Any(y => y.CultureInfo.Equals(x)))
+                        .OrderBy(x => x.Name))
             {
                 addLanguageToolStripMenuItem.DropDownItems.Add($"{info.Name} - {info.DisplayName}").Tag = info;
             }
@@ -316,8 +322,8 @@ namespace ResxTranslator.Windows
                 }
             }
             else if (Settings.Default.OpenLastDirOnStart &&
-                !string.IsNullOrEmpty(Settings.Default.LastOpenedDirectory) &&
-                Directory.Exists(Settings.Default.LastOpenedDirectory))
+                     !string.IsNullOrEmpty(Settings.Default.LastOpenedDirectory) &&
+                     Directory.Exists(Settings.Default.LastOpenedDirectory))
             {
                 LoadResourcesFromFolder(Settings.Default.LastOpenedDirectory);
             }
@@ -401,7 +407,7 @@ namespace ResxTranslator.Windows
 
         private void removeLanguageToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            CurrentResource.DeleteLanguage(((CultureInfo)e.ClickedItem.Tag).Name);
+            CurrentResource.DeleteLanguage(((CultureInfo) e.ClickedItem.Tag).Name);
 
             UpdateMenuStrip();
             resourceGrid1.RefreshResourceDisplay();
@@ -447,17 +453,18 @@ namespace ResxTranslator.Windows
         private void licenceToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start(Path.Combine(
-                Path.GetDirectoryName(Assembly.GetAssembly(typeof(MainWindow)).Location) ?? string.Empty,
+                Path.GetDirectoryName(Assembly.GetAssembly(typeof (MainWindow)).Location) ?? string.Empty,
                 "Licence.txt"));
         }
 
         private void setReferencePathsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var referencePaths = EditReferencePaths.ShowDialog(this, Settings.Default.ReferencePaths?.Cast<string>().ToArray() ?? new string[] { });
+            var referencePaths = EditReferencePaths.ShowDialog(this,
+                Settings.Default.ReferencePaths?.Cast<string>().ToArray() ?? new string[] {});
 
             if (referencePaths != null)
             {
-                if(Settings.Default.ReferencePaths == null)
+                if (Settings.Default.ReferencePaths == null)
                     Settings.Default.ReferencePaths = new StringCollection();
 
                 Settings.Default.ReferencePaths.Clear();

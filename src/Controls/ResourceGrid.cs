@@ -126,11 +126,11 @@ namespace ResxTranslator.Controls
 
         private void ApplyConditionalCellFormatting(DataGridViewCell cell, SearchParams.TargetType targType)
         {
-            bool modified = false;
+            var modified = false;
 
             if (CurrentSearch != null)
             {
-                string matchText = cell.Value as string;
+                var matchText = cell.Value as string;
 
                 if (matchText != null && CurrentSearch.Match(targType, matchText))
                 {
@@ -220,52 +220,49 @@ namespace ResxTranslator.Controls
                 return;
 
             // Add the selection to the clipboard.
-            Clipboard.SetDataObject(
-                this.dataGridView1.GetClipboardContent());
+            var data = dataGridView1.GetClipboardContent();
+            if (data != null) Clipboard.SetDataObject(data);
         }
 
         private void PasteFromClipboard()
         {
-            DataGridViewCell currentCell = dataGridView1.CurrentCell;
-            DataObject dataObject = (DataObject)Clipboard.GetDataObject();
+            var currentCell = dataGridView1.CurrentCell;
+            var dataObject = Clipboard.GetDataObject() as DataObject;
 
-            if (dataObject.GetDataPresent(DataFormats.Text) && currentCell != null)
+            if (dataObject == null || !dataObject.GetDataPresent(DataFormats.Text) || currentCell == null) return;
+
+            var columns = dataGridView1.Columns.Cast<DataGridViewColumn>().OrderBy(c => c.DisplayIndex)
+                .Where(c => c.Visible && c.ValueType == typeof(string) &&
+                            c.DisplayIndex >= dataGridView1.Columns[currentCell.ColumnIndex].DisplayIndex);
+
+            var rowData = Regex.Split(
+                dataObject.GetData(DataFormats.Text).ToString().TrimEnd(Environment.NewLine.ToCharArray()), Environment.NewLine);
+
+            var data = rowData.Select(r => r.Split('\t')).ToArray();
+
+            var pasteRows = data.Length;
+            if (currentCell.RowIndex + pasteRows > dataGridView1.RowCount - 1)
+                pasteRows = dataGridView1.RowCount - currentCell.RowIndex - 1;
+
+            if (data.Min(x => x.Length) != data.Max(x => x.Length))
+                return;
+
+            var pasteColumns = data[0].Length;
+
+            var j = 0;
+            foreach (var column in columns)
             {
-                var columns = dataGridView1.Columns.Cast<DataGridViewColumn>().OrderBy(c => c.DisplayIndex)
-                    .Where(c => c.Visible && c.ValueType == typeof(string) &&
-                        c.DisplayIndex >= dataGridView1.Columns[currentCell.ColumnIndex].DisplayIndex);
-
-                string[] rowData = Regex.Split(
-                    dataObject.GetData(DataFormats.Text).ToString().TrimEnd(Environment.NewLine.ToCharArray()), Environment.NewLine);
-
-                var data = rowData.Select(r => r.Split('\t')).ToArray();
-
-                int pasteRows = data.Length;
-                if (currentCell.RowIndex + pasteRows > dataGridView1.RowCount - 1)
-                    pasteRows = dataGridView1.RowCount - currentCell.RowIndex - 1;
-
-                if (data.Min(x => x.Length) != data.Max(x => x.Length))
-                    return;
-
-                int pasteColumns = data[0].Length;
-
-                DataGridViewCell cell;
-
-                int j = 0;
-                foreach (var column in columns)
+                for (var i = 0; i < pasteRows; i++)
                 {
-                    for (int i = 0; i < pasteRows; i++)
-                    {
-                        cell = dataGridView1.Rows[i + currentCell.RowIndex].Cells[column.Name];
-                        if (!cell.ReadOnly)
-                            cell.Value = data[i][j];
-                    }
-
-                    j++;
-
-                    if (j >= pasteColumns)
-                        break;
+                    var cell = dataGridView1.Rows[i + currentCell.RowIndex].Cells[column.Name];
+                    if (!cell.ReadOnly)
+                        cell.Value = data[i][j];
                 }
+
+                j++;
+
+                if (j >= pasteColumns)
+                    break;
             }
         }
 
@@ -299,13 +296,11 @@ namespace ResxTranslator.Controls
         {
             if (e.Button == MouseButtons.Right && e.RowIndex != -1 && e.ColumnIndex != -1)
             {
-                DataGridViewCell c = (sender as DataGridView)[e.ColumnIndex, e.RowIndex];
-                if (!c.Selected)
-                {
-                    c.DataGridView.ClearSelection();
-                    c.DataGridView.CurrentCell = c;
-                    c.Selected = true;
-                }
+                var c = dataGridView1[e.ColumnIndex, e.RowIndex];
+                if (c.Selected) return;
+                c.DataGridView.ClearSelection();
+                c.DataGridView.CurrentCell = c;
+                c.Selected = true;
             }
         }
 
