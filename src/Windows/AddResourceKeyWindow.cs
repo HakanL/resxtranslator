@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 using ResxTranslator.ResourceOperations;
 
@@ -6,9 +7,9 @@ namespace ResxTranslator.Windows
 {
     public partial class AddResourceKeyWindow : Form
     {
-        public string DefaultValue => txtDefaultValue.Text;
-        public string Key => txtKey.Text;
-        public string NoXlateValue => txtNoXlateValue.Text;
+        public string DefaultTranslatedText => textboxTranslated.Text;
+        public string KeyName => textboxKeyName.Text;
+        public string DefaultText => textboxDefault.Text;
 
         private readonly ResourceHolder _resourceHolder;
 
@@ -29,25 +30,26 @@ namespace ResxTranslator.Windows
 
                 if (result != DialogResult.OK) return false;
 
-                resource.AddString(window.Key, window.NoXlateValue, window.DefaultValue);
+                resource.AddString(window.KeyName, window.DefaultText, window.DefaultTranslatedText);
                 return true;
             }
         }
 
         private void txtKey_TextChanged(object sender, EventArgs e)
         {
-            var key = txtKey.Text;
-            
-            txtDefaultValue.Text = key;
-            txtNoXlateValue.Text = key;
+            var keyName = textboxKeyName.Text;
+            string errorString = null;
 
-            string error = null;
-            if (_resourceHolder.FindByKey(txtKey.Text) != null)
-                error = "Key already exists";
+            if (_resourceHolder.FindByKey(keyName) != null)
+                errorString = "Key with this name already exists";
+            else if (string.IsNullOrWhiteSpace(keyName))
+                errorString = "Key name can't be empty";
+            else if (keyName.Any(x => !char.IsLetterOrDigit(x)))
+                errorString = "Key name can only contain letters and numbers";
 
-            errorProvider.SetError(txtKey, error);
+            errorProvider.SetError(textboxKeyName, errorString);
 
-            btnAdd.Enabled = string.IsNullOrEmpty(error);
+            btnAdd.Enabled = errorString == null;
         }
     }
 }
