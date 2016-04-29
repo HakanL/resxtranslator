@@ -74,14 +74,14 @@ namespace ResxTranslator.Windows
             this.ignoreEmptyResourcesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.doNotShowResourcesWithoutAnyTranslationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.markToTranslateOnlyIfDefaultValueIsInBracketsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openLastDirectoryOnProgramStartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.displayNullValuesAsGrayedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openLastDirectoryOnProgramStartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.setReferencePathsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.licenceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.statusStrip1.SuspendLayout();
             this.panelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).BeginInit();
@@ -250,7 +250,7 @@ namespace ResxTranslator.Windows
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Size = new System.Drawing.Size(238, 123);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Languages";
+            this.tabPage1.Text = "Displayed languages";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // languageSettings1
@@ -518,17 +518,22 @@ namespace ResxTranslator.Windows
             this.markToTranslateOnlyIfDefaultValueIsInBracketsToolStripMenuItem.Size = new System.Drawing.Size(402, 22);
             this.markToTranslateOnlyIfDefaultValueIsInBracketsToolStripMenuItem.Text = "Mark as translatable only if the default value is in [ ] brackets";
             // 
+            // displayNullValuesAsGrayedToolStripMenuItem
+            // 
+            this.displayNullValuesAsGrayedToolStripMenuItem.Name = "displayNullValuesAsGrayedToolStripMenuItem";
+            this.displayNullValuesAsGrayedToolStripMenuItem.Size = new System.Drawing.Size(402, 22);
+            this.displayNullValuesAsGrayedToolStripMenuItem.Text = "Mark values that will not be saved (null) with gray background";
+            // 
             // openLastDirectoryOnProgramStartToolStripMenuItem
             // 
             this.openLastDirectoryOnProgramStartToolStripMenuItem.Name = "openLastDirectoryOnProgramStartToolStripMenuItem";
             this.openLastDirectoryOnProgramStartToolStripMenuItem.Size = new System.Drawing.Size(402, 22);
             this.openLastDirectoryOnProgramStartToolStripMenuItem.Text = "Open last directory on program start";
             // 
-            // displayNullValuesAsGrayedToolStripMenuItem
+            // toolStripSeparator2
             // 
-            this.displayNullValuesAsGrayedToolStripMenuItem.Name = "displayNullValuesAsGrayedToolStripMenuItem";
-            this.displayNullValuesAsGrayedToolStripMenuItem.Size = new System.Drawing.Size(402, 22);
-            this.displayNullValuesAsGrayedToolStripMenuItem.Text = "Mark values that will not be saved (null) with gray background";
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(399, 6);
             // 
             // setReferencePathsToolStripMenuItem
             // 
@@ -568,11 +573,6 @@ namespace ResxTranslator.Windows
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.aboutToolStripMenuItem.Text = "&About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(399, 6);
             // 
             // MainWindow
             // 
