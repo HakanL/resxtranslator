@@ -273,8 +273,8 @@ namespace ResxTranslator.Controls
         {
             foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
             {
-                if (!cell.ReadOnly)
-                    cell.Value = null;
+                if (!cell.ReadOnly && cell.Value is string)
+                    cell.Value = DBNull.Value;
             }
         }
 
