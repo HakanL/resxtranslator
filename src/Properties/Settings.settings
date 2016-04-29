@@ -32,13 +32,13 @@
     <Setting Name="WindowState" Provider="PortableSettingsProvider.PortableSettingsProvider" Type="System.Windows.Forms.FormWindowState" Scope="User">
       <Value Profile="(Default)">Normal</Value>
     </Setting>
-    <Setting Name="TranslatableInBrackets" Type="System.Boolean" Scope="User">
+    <Setting Name="TranslatableInBrackets" Provider="PortableSettingsProvider.PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="ShowNullValuesAsGrayed" Type="System.Boolean" Scope="User">
+    <Setting Name="ShowNullValuesAsGrayed" Provider="PortableSettingsProvider.PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="ReferencePaths" Type="System.String" Scope="User">
+    <Setting Name="ReferencePaths" Provider="PortableSettingsProvider.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>
