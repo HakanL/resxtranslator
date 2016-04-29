@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
@@ -27,7 +28,8 @@ namespace ResxTranslator.Windows
 
             _defaultWindowTitle = $"{Text} {Assembly.GetAssembly(typeof(MainWindow)).GetName().Version.ToString(2)}";
 
-            LoadAssemblies(Settings.Default.ReferencePaths);
+            if (Settings.Default.ReferencePaths != null)
+                LoadAssemblies(Settings.Default.ReferencePaths.Cast<string>().ToArray());
 
             ResourceLoader = new ResourceLoader();
             ResourceLoader.ResourceLoadProgress += OnResourceLoaderOnResourceLoadProgress;
@@ -451,11 +453,18 @@ namespace ResxTranslator.Windows
 
         private void setReferencePathsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var referencePaths = EditReferencePaths.ShowDialog(this, Settings.Default.ReferencePaths);
+            var referencePaths = EditReferencePaths.ShowDialog(this, Settings.Default.ReferencePaths?.Cast<string>().ToArray() ?? new string[] { });
 
-            Settings.Default.ReferencePaths = referencePaths;
+            if (referencePaths != null)
+            {
+                if(Settings.Default.ReferencePaths == null)
+                    Settings.Default.ReferencePaths = new StringCollection();
 
-            LoadAssemblies(referencePaths);
+                Settings.Default.ReferencePaths.Clear();
+                Settings.Default.ReferencePaths.AddRange(referencePaths);
+
+                LoadAssemblies(referencePaths);
+            }
         }
     }
 }

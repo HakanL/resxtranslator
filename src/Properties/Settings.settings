@@ -38,7 +38,7 @@
     <Setting Name="ShowNullValuesAsGrayed" Provider="PortableSettingsProvider.PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="ReferencePaths" Provider="PortableSettingsProvider.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
+    <Setting Name="ReferencePaths" Provider="PortableSettingsProvider.PortableSettingsProvider" Roaming="true" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

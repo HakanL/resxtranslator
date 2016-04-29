@@ -190,11 +190,10 @@ namespace ResxTranslator.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public string ReferencePaths {
+        public global::System.Collections.Specialized.StringCollection ReferencePaths {
             get {
-                return ((string)(this["ReferencePaths"]));
+                return ((global::System.Collections.Specialized.StringCollection)(this["ReferencePaths"]));
             }
             set {
                 this["ReferencePaths"] = value;
