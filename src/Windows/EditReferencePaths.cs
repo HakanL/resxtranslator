@@ -1,54 +1,43 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+using System.Collections;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.IO;
 
 namespace ResxTranslator.Windows
 {
     public partial class EditReferencePaths : Form
     {
+        private string[] _result;
+
+        private EditReferencePaths(IEnumerable paths)
+        {
+            InitializeComponent();
+
+            if (paths != null)
+                listBox1.Items.AddRange(paths.Cast<object>().ToArray());
+
+            buttonRemove.Enabled = false;
+        }
+
+        /// <summary>
+        ///     Returns null if user did not accept the changes
+        /// </summary>
         public static string[] ShowDialog(Form owner, string[] referencePaths)
         {
             using (var window = new EditReferencePaths(referencePaths))
             {
                 window.Icon = owner.Icon;
                 window.StartPosition = FormStartPosition.CenterParent;
-                window.ShowDialog();
-                return window.ReferencePaths;
+                window.ShowDialog(owner);
+                return window._result;
             }
-        }
-
-        public string[] ReferencePaths
-        {
-            get { return listBox1.Items.Cast<string>().ToArray(); }
-        }
-
-        public EditReferencePaths(string[] paths)
-        {
-            InitializeComponent();
-
-            if (paths != null)
-                listBox1.Items.AddRange(paths);
-            
-            buttonRemove.Enabled = false;
-            buttonAdd.Enabled = false;
         }
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            string dir = textBox1.Text;
-            if (Directory.Exists(dir))
+            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
             {
-                listBox1.Items.Add(dir);
-            }
-            else
-            {
-                MessageBox.Show("The specified directory is not valid or does not exist.");
+                listBox1.Items.Add(folderBrowserDialog1.SelectedPath);
             }
         }
 
@@ -57,29 +46,19 @@ namespace ResxTranslator.Windows
             buttonRemove.Enabled = listBox1.SelectedIndex != -1;
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-            buttonAdd.Enabled = !string.IsNullOrEmpty(textBox1.Text);
-        }
-
         private void buttonRemove_Click(object sender, EventArgs e)
         {
-            int index = listBox1.SelectedIndex;
+            var index = listBox1.SelectedIndex;
             if (index != -1)
             {
                 listBox1.Items.RemoveAt(index);
             }
         }
 
-        private void buttonBrowse_Click(object sender, EventArgs e)
+        private void buttonAccept_Click(object sender, EventArgs e)
         {
-            using (var dialog = new FolderBrowserDialog())
-            {
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    textBox1.Text = dialog.SelectedPath;
-                }
-            }
+            _result = listBox1.Items.Cast<string>().ToArray();
+            DialogResult = DialogResult.OK;
         }
     }
 }
