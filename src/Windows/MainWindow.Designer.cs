@@ -81,6 +81,7 @@ namespace ResxTranslator.Windows
             this.helpToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.licenceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.statusStrip1.SuspendLayout();
             this.panelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).BeginInit();
@@ -485,8 +486,9 @@ namespace ResxTranslator.Windows
             this.ignoreEmptyResourcesToolStripMenuItem,
             this.doNotShowResourcesWithoutAnyTranslationsToolStripMenuItem,
             this.markToTranslateOnlyIfDefaultValueIsInBracketsToolStripMenuItem,
-            this.openLastDirectoryOnProgramStartToolStripMenuItem,
             this.displayNullValuesAsGrayedToolStripMenuItem,
+            this.openLastDirectoryOnProgramStartToolStripMenuItem,
+            this.toolStripSeparator2,
             this.setReferencePathsToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
@@ -495,44 +497,44 @@ namespace ResxTranslator.Windows
             // copyDefaultValuesOnLanguageAddToolStripMenuItem
             // 
             this.copyDefaultValuesOnLanguageAddToolStripMenuItem.Name = "copyDefaultValuesOnLanguageAddToolStripMenuItem";
-            this.copyDefaultValuesOnLanguageAddToolStripMenuItem.Size = new System.Drawing.Size(391, 22);
+            this.copyDefaultValuesOnLanguageAddToolStripMenuItem.Size = new System.Drawing.Size(402, 22);
             this.copyDefaultValuesOnLanguageAddToolStripMenuItem.Text = "Copy default values when adding languages";
             // 
             // ignoreEmptyResourcesToolStripMenuItem
             // 
             this.ignoreEmptyResourcesToolStripMenuItem.Name = "ignoreEmptyResourcesToolStripMenuItem";
-            this.ignoreEmptyResourcesToolStripMenuItem.Size = new System.Drawing.Size(391, 22);
+            this.ignoreEmptyResourcesToolStripMenuItem.Size = new System.Drawing.Size(402, 22);
             this.ignoreEmptyResourcesToolStripMenuItem.Text = "Do not show resources with no strings";
             // 
             // doNotShowResourcesWithoutAnyTranslationsToolStripMenuItem
             // 
             this.doNotShowResourcesWithoutAnyTranslationsToolStripMenuItem.Name = "doNotShowResourcesWithoutAnyTranslationsToolStripMenuItem";
-            this.doNotShowResourcesWithoutAnyTranslationsToolStripMenuItem.Size = new System.Drawing.Size(391, 22);
+            this.doNotShowResourcesWithoutAnyTranslationsToolStripMenuItem.Size = new System.Drawing.Size(402, 22);
             this.doNotShowResourcesWithoutAnyTranslationsToolStripMenuItem.Text = "Do not show resources with no translations";
             // 
             // markToTranslateOnlyIfDefaultValueIsInBracketsToolStripMenuItem
             // 
             this.markToTranslateOnlyIfDefaultValueIsInBracketsToolStripMenuItem.Name = "markToTranslateOnlyIfDefaultValueIsInBracketsToolStripMenuItem";
-            this.markToTranslateOnlyIfDefaultValueIsInBracketsToolStripMenuItem.Size = new System.Drawing.Size(391, 22);
+            this.markToTranslateOnlyIfDefaultValueIsInBracketsToolStripMenuItem.Size = new System.Drawing.Size(402, 22);
             this.markToTranslateOnlyIfDefaultValueIsInBracketsToolStripMenuItem.Text = "Mark as translatable only if the default value is in [ ] brackets";
             // 
             // openLastDirectoryOnProgramStartToolStripMenuItem
             // 
             this.openLastDirectoryOnProgramStartToolStripMenuItem.Name = "openLastDirectoryOnProgramStartToolStripMenuItem";
-            this.openLastDirectoryOnProgramStartToolStripMenuItem.Size = new System.Drawing.Size(391, 22);
+            this.openLastDirectoryOnProgramStartToolStripMenuItem.Size = new System.Drawing.Size(402, 22);
             this.openLastDirectoryOnProgramStartToolStripMenuItem.Text = "Open last directory on program start";
             // 
             // displayNullValuesAsGrayedToolStripMenuItem
             // 
             this.displayNullValuesAsGrayedToolStripMenuItem.Name = "displayNullValuesAsGrayedToolStripMenuItem";
-            this.displayNullValuesAsGrayedToolStripMenuItem.Size = new System.Drawing.Size(391, 22);
-            this.displayNullValuesAsGrayedToolStripMenuItem.Text = "Display values that will not be saved (null) as grayed";
+            this.displayNullValuesAsGrayedToolStripMenuItem.Size = new System.Drawing.Size(402, 22);
+            this.displayNullValuesAsGrayedToolStripMenuItem.Text = "Mark values that will not be saved (null) with gray background";
             // 
             // setReferencePathsToolStripMenuItem
             // 
             this.setReferencePathsToolStripMenuItem.Name = "setReferencePathsToolStripMenuItem";
-            this.setReferencePathsToolStripMenuItem.Size = new System.Drawing.Size(391, 22);
-            this.setReferencePathsToolStripMenuItem.Text = "Set paths to referenced assemblies";
+            this.setReferencePathsToolStripMenuItem.Size = new System.Drawing.Size(402, 22);
+            this.setReferencePathsToolStripMenuItem.Text = "Set paths to referenced assemblies...";
             this.setReferencePathsToolStripMenuItem.Click += new System.EventHandler(this.setReferencePathsToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
@@ -566,6 +568,11 @@ namespace ResxTranslator.Windows
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.aboutToolStripMenuItem.Text = "&About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(399, 6);
             // 
             // MainWindow
             // 
@@ -658,6 +665,7 @@ namespace ResxTranslator.Windows
         private ToolStripMenuItem markToTranslateOnlyIfDefaultValueIsInBracketsToolStripMenuItem;
         private ToolStripMenuItem displayNullValuesAsGrayedToolStripMenuItem;
         private ToolStripMenuItem setReferencePathsToolStripMenuItem;
+        private ToolStripSeparator toolStripSeparator2;
     }
 }
 
