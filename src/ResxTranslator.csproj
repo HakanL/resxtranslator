@@ -168,11 +168,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Service References\TranslatorSvc\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Tools\SettingBinder.cs" />
     <Compile Include="Tools\SettingChangedEventArgs.cs" />
     <Compile Include="Properties\Settings.cs" />
@@ -218,26 +213,6 @@
     <Compile Include="Windows\CellEditorWindow.Designer.cs">
       <DependentUpon>CellEditorWindow.cs</DependentUpon>
     </Compile>
-    <None Include="Service References\TranslatorSvc\ResxTranslator.TranslatorSvc.GetTranslationsResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\TranslatorSvc\ResxTranslator.TranslatorSvc.TranslateArrayResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\TranslatorSvc\soap.wsdl" />
-    <None Include="Service References\TranslatorSvc\soap.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\TranslatorSvc\soap1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\TranslatorSvc\soap2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\TranslatorSvc\soap3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\TranslatorSvc\SoapService.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -255,24 +230,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\TranslatorSvc\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\TranslatorSvc\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\TranslatorSvc\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\TranslatorSvc\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Edit_UndoHS.png" />
