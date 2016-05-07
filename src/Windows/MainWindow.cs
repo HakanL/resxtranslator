@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Drawing;
@@ -26,13 +27,10 @@ namespace ResxTranslator.Windows
             Opacity = 0;
             InitializeComponent();
 
-            _defaultWindowTitle = $"{Text} {Assembly.GetAssembly(typeof (MainWindow)).GetName().Version.ToString(2)}";
-
-            if (Settings.Default.ReferencePaths != null)
-                LoadAssemblies(Settings.Default.ReferencePaths.Cast<string>().ToArray());
+            _defaultWindowTitle = $"{Text} {Assembly.GetAssembly(typeof(MainWindow)).GetName().Version.ToString(2)}";
 
             ResourceLoader = new ResourceLoader();
-            ResourceLoader.ResourceLoadProgress += OnResourceLoaderOnResourceLoadProgress;
+            ResourceLoader.ResourceLoadProgress += OnResourceLoadProgress;
             ResourceLoader.ResourcesChanged += OnResourceLoaderOnResourcesChanged;
 
             missingTranslationView1.ResourceLoader = ResourceLoader;
@@ -77,6 +75,8 @@ namespace ResxTranslator.Windows
                 settings => settings.TranslatableInBrackets, this);
             Settings.Binder.BindControl(displayNullValuesAsGrayedToolStripMenuItem,
                 settings => settings.ShowNullValuesAsGrayed, this);
+            Settings.Binder.BindControl(loadAssembliesFromResourcePathToolStripMenuItem,
+                settings => settings.ReferencePathsFromResourceDir, this);
 
             Settings.Binder.Subscribe((sender, args) => ResourceLoader.HideEmptyResources = args.NewValue,
                 settings => settings.HideEmptyResources, this);
@@ -87,7 +87,7 @@ namespace ResxTranslator.Windows
 
             Settings.Binder.SendUpdates(this);
 
-            Icon = Icon.ExtractAssociatedIcon(Assembly.GetAssembly(typeof (MainWindow)).Location);
+            Icon = Icon.ExtractAssociatedIcon(Assembly.GetAssembly(typeof(MainWindow)).Location);
         }
 
         public SearchParams CurrentSearch
@@ -141,29 +141,59 @@ namespace ResxTranslator.Windows
             });
         }
 
-        private static void LoadAssemblies(string[] paths)
+        private void LoadReferenceAssemblies()
         {
-            if (paths == null)
-                return;
+            OnResourceLoadProgress(this, new ResourceLoadProgressEventArgs("Loading reference assemblies..."));
 
-            foreach (var path in paths)
+            var assembliesToLoad = new List<string>();
+
+            if (Settings.Default.ReferencePaths != null)
             {
-                var assemblyLocations = AppDomain.CurrentDomain.GetAssemblies().Where(x=>!x.IsDynamic)
-                    .Select(x => x.Location.ToLowerInvariant()).Distinct().ToList();
-
-                foreach (var filename in Directory.EnumerateFiles(path, "*.dll"))
+                foreach (var path in Settings.Default.ReferencePaths.Cast<string>().Where(Directory.Exists))
                 {
-                    try
-                    {
-                        if (assemblyLocations.All(x => !string.Equals(x, filename, StringComparison.OrdinalIgnoreCase)))
-                            Assembly.LoadFile(filename);
-                    }
-                    catch (NotSupportedException)
-                    {
-                        // Ignore
-                    }
+                    assembliesToLoad.AddRange(Directory.EnumerateFiles(path, "*.dll", SearchOption.TopDirectoryOnly));
                 }
             }
+
+            if (Settings.Default.ReferencePathsFromResourceDir && Directory.Exists(ResourceLoader.OpenedPath))
+            {
+                assembliesToLoad.AddRange(Directory.EnumerateFiles(ResourceLoader.OpenedPath, "*.dll", SearchOption.AllDirectories));
+            }
+
+            var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies().Where(x => !x.IsDynamic)
+                .Select(x => x.Location).Distinct().ToList();
+
+            assembliesToLoad = assembliesToLoad.Select(x => x.ToLowerInvariant()).Distinct().ToList();
+
+            if (assembliesToLoad.Count > 300 && MessageBox.Show(
+                $"With current settings this operation will try to load {assembliesToLoad.Count} assemblies. Do you really want to load them all? If you select no, loading will be skipped.",
+                "Load reference assemblies", MessageBoxButtons.YesNo) != DialogResult.Yes)
+            {
+                OnResourceLoadProgress(this, new ResourceLoadProgressEventArgs("Done", null, 0, 0));
+                return;
+            }
+
+            var count = 0;
+            foreach (var filename in assembliesToLoad)
+            {
+                count++;
+                OnResourceLoadProgress(this, new ResourceLoadProgressEventArgs($"Loading reference assemblies",
+                    Path.GetFileName(filename), count, assembliesToLoad.Count));
+
+                try
+                {
+                    if (loadedAssemblies.All(x => !string.Equals(x, filename, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        Assembly.LoadFile(filename);
+                        loadedAssemblies.Add(filename);
+                    }
+                }
+                catch (NotSupportedException) { }
+                catch (BadImageFormatException) { }
+                catch (FileLoadException) { }
+            }
+
+            OnResourceLoadProgress(this, new ResourceLoadProgressEventArgs("Done", null, 0, 0));
         }
 
         private void UpdateMenuStrip()
@@ -330,7 +360,7 @@ namespace ResxTranslator.Windows
             }
         }
 
-        private void OnResourceLoaderOnResourceLoadProgress(object sender, ResourceLoadProgressEventArgs args)
+        private void OnResourceLoadProgress(object sender, ResourceLoadProgressEventArgs args)
         {
             this.InvokeIfRequired(_ =>
             {
@@ -368,6 +398,8 @@ namespace ResxTranslator.Windows
                 var usedLanguages = ResourceLoader.GetUsedLanguages().ToList();
 
                 languageSettings1.RefreshLanguages(usedLanguages, false);
+
+                LoadReferenceAssemblies();
             });
         }
 
@@ -408,7 +440,7 @@ namespace ResxTranslator.Windows
 
         private void removeLanguageToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            CurrentResource.DeleteLanguage(((CultureInfo) e.ClickedItem.Tag).Name);
+            CurrentResource.DeleteLanguage(((CultureInfo)e.ClickedItem.Tag).Name);
 
             UpdateMenuStrip();
             resourceGrid1.RefreshResourceDisplay();
@@ -454,14 +486,14 @@ namespace ResxTranslator.Windows
         private void licenceToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start(Path.Combine(
-                Path.GetDirectoryName(Assembly.GetAssembly(typeof (MainWindow)).Location) ?? string.Empty,
+                Path.GetDirectoryName(Assembly.GetAssembly(typeof(MainWindow)).Location) ?? string.Empty,
                 "Licence.txt"));
         }
 
         private void setReferencePathsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var referencePaths = EditReferencePaths.ShowDialog(this,
-                Settings.Default.ReferencePaths?.Cast<string>().ToArray() ?? new string[] {});
+                Settings.Default.ReferencePaths?.Cast<string>().ToArray() ?? new string[] { });
 
             if (referencePaths != null)
             {
@@ -471,7 +503,7 @@ namespace ResxTranslator.Windows
                 Settings.Default.ReferencePaths.Clear();
                 Settings.Default.ReferencePaths.AddRange(referencePaths);
 
-                LoadAssemblies(referencePaths);
+                LoadReferenceAssemblies();
             }
         }
     }

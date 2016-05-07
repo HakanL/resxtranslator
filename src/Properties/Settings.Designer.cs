@@ -199,5 +199,19 @@ namespace ResxTranslator.Properties {
                 this["ReferencePaths"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(PortableSettingsProvider.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public bool ReferencePathsFromResourceDir {
+            get {
+                return ((bool)(this["ReferencePathsFromResourceDir"]));
+            }
+            set {
+                this["ReferencePathsFromResourceDir"] = value;
+            }
+        }
     }
 }
