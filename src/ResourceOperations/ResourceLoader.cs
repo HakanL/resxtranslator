@@ -1,20 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace ResxTranslator.ResourceOperations
 {
     public class ResourceLoader
     {
-        private Thread _dictBuilderThread;
         private string _openedPath;
-        private volatile bool _requestDictBuilderStop;
         private bool _hideEmptyResources;
         private readonly Dictionary<string, ResourceHolder> _resourceStore;
         private bool _hideNontranslatedResources;
@@ -102,13 +97,8 @@ namespace ResxTranslator.ResourceOperations
                 // Return false only if user presses cancel
                 if (dialogResult != DialogResult.Yes)
                     return dialogResult == DialogResult.No;
-
-                StopDictBuilderThread();
+                
                 SaveAll();
-            }
-            else
-            {
-                StopDictBuilderThread();
             }
             return true;
         }
@@ -117,8 +107,7 @@ namespace ResxTranslator.ResourceOperations
         {
             if (!CanClose())
                 throw new InvalidOperationException("Can't close at this time");
-
-            StopDictBuilderThread();
+            
             _resourceStore.Clear();
             OpenedPath = string.Empty;
         }
@@ -140,9 +129,7 @@ namespace ResxTranslator.ResourceOperations
             FindResx(selectedPath);
             OpenedPath = selectedPath;
 
-            OnResourceLoadProgress(new ResourceLoadProgressEventArgs("Building local dictionary..."));
-
-            StartDictBuilderThread();
+            OnResourceLoadProgress(new ResourceLoadProgressEventArgs("Done"));
         }
 
         public void SaveAll()
@@ -151,19 +138,6 @@ namespace ResxTranslator.ResourceOperations
             {
                 SaveResourceHolder(resource);
             }
-        }
-
-        public void StopDictBuilderThread()
-        {
-            if (_dictBuilderThread != null && _dictBuilderThread.IsAlive)
-            {
-                _requestDictBuilderStop = true;
-                while (!_dictBuilderThread.Join(100))
-                {
-                    Application.DoEvents();
-                }
-            }
-            _requestDictBuilderStop = false;
         }
 
         protected virtual void OnResourceLoadProgress(ResourceLoadProgressEventArgs e)
@@ -250,107 +224,6 @@ namespace ResxTranslator.ResourceOperations
             {
                 FindResx(rootDirectory, subfolder);
             }
-        }
-
-        // TODO Is this even working? Cleanup
-        private void StartDictBuilderThread()
-        {
-            if (_dictBuilderThread != null && _dictBuilderThread.IsAlive)
-                throw new InvalidOperationException("Dictionary builder is already running");
-
-            // Make the logic for building the dictionary an anonymous delegate to keep it only callable on the separate thread
-            var buildDictionary = (ThreadStart)delegate
-           {
-               var currentCount = 0;
-               var totalCount = _resourceStore.Count;
-               var currentTask = "Building language lookup";
-
-               foreach (var res in _resourceStore.Values.TakeWhile(_ => !_requestDictBuilderStop))
-               {
-                   OnResourceLoadProgress(new ResourceLoadProgressEventArgs(currentTask, res.Filename, currentCount,
-                       totalCount));
-
-                   var translator = InprojectTranslator.Instance;
-
-                   foreach (var lang in res.Languages.Keys)
-                   {
-                       var sbAllNontranslated = new StringBuilder();
-                       var sbAllTranslated = new StringBuilder();
-                       foreach (DataRow row in res.StringsTable.Rows)
-                       {
-                           sbAllNontranslated.Append(row["NoLanguageValue"]);
-                           sbAllNontranslated.Append(" ");
-
-                           if (row[lang.ToLower()] != DBNull.Value &&
-                               row[lang.ToLower()].ToString().Trim() != "")
-                           {
-                               sbAllTranslated.Append(row[lang.ToLower()].ToString().Trim());
-                               sbAllTranslated.Append(" ");
-                           }
-                       }
-                       var diffArray = translator.RemoveWords(sbAllNontranslated.ToString(),
-                           sbAllTranslated.ToString());
-                       translator.AddWordsToLanguageChecker(lang.ToLower()
-                           , diffArray);
-                   }
-
-                   ++currentCount;
-               }
-
-               currentTask = "Building local translations dictionary";
-               currentCount = 0;
-
-               foreach (var res in _resourceStore.Values.TakeWhile(_ => !_requestDictBuilderStop))
-               {
-                   OnResourceLoadProgress(new ResourceLoadProgressEventArgs(currentTask, res.Filename, currentCount,
-                       totalCount));
-
-                   var resDeflang = res.NoLanguageLanguage;
-                   var sb = new StringBuilder();
-                   foreach (DataRow row in res.StringsTable.Rows)
-                   {
-                       var nontranslated = row["NoLanguageValue"].ToString();
-                       if (!string.IsNullOrEmpty(nontranslated) && nontranslated.Trim() != string.Empty)
-                       {
-                           foreach (var lang in res.Languages.Keys)
-                           {
-                               if (row[lang.ToLower()] != DBNull.Value &&
-                                   row[lang.ToLower()].ToString().Trim() != string.Empty)
-                               {
-                                   sb.Append(" ");
-                                   sb.Append(row[lang.ToLower()]);
-
-                                   InprojectTranslator.Instance.AddTranslation(resDeflang
-                                       , nontranslated
-                                       , lang.ToLower()
-                                       , row[lang.ToLower()].ToString().Trim());
-                                   InprojectTranslator.Instance.AddTranslation(lang.ToLower()
-                                       , row[lang.ToLower()].ToString().Trim()
-                                       , resDeflang
-                                       , nontranslated);
-                               }
-                           }
-                       }
-                       if (!string.IsNullOrEmpty(resDeflang))
-                           InprojectTranslator.Instance.AddWordsToLanguageChecker(resDeflang,
-                               InprojectTranslator.Instance.RemoveWords(sb.ToString(), nontranslated));
-                   }
-
-                   ++currentCount;
-               }
-
-               OnResourceLoadProgress(new ResourceLoadProgressEventArgs("Done", null, 0, 0));
-           };
-
-            _dictBuilderThread = new Thread(buildDictionary)
-            {
-                Name = "DictBuilder",
-                IsBackground = false,
-                Priority = ThreadPriority.BelowNormal
-            };
-            _requestDictBuilderStop = false;
-
-            _dictBuilderThread.Start();
         }
     }
 }

@@ -162,7 +162,6 @@
     <Compile Include="ResourceOperations\ResourceLoader.cs" />
     <Compile Include="ResourceOperations\ResourceLoadProgressEventArgs.cs" />
     <Compile Include="ResourceOperations\SearchParams.cs" />
-    <Compile Include="ResourceOperations\InprojectTranslator.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
