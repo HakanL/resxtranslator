@@ -81,6 +81,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\TranslatableText.cs" />
+    <Compile Include="Data\DictionaryItemChangedEventArgs.cs" />
+    <Compile Include="Data\DictionaryOperationEventArgs.cs" />
+    <Compile Include="Data\IResource.cs" />
+    <Compile Include="Data\IResourceTranslationGroup.cs" />
+    <Compile Include="Data\ITranslatable.cs" />
+    <Compile Include="Data\ObservableDictionary.cs" />
+    <Compile Include="Data\TranslatedResourceGroup.cs" />
     <Compile Include="Tools\ComboBoxWrapper.cs" />
     <Compile Include="Controls\LanguageSettings.cs">
       <SubType>UserControl</SubType>
