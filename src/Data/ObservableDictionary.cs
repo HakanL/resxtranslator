@@ -26,7 +26,7 @@ namespace ResxTranslator.Data
 
         public void Clear()
         {
-            foreach (var key in _values.Keys)
+            foreach (var key in _values.Keys.ToList())
             {
                 Remove(key);
             }

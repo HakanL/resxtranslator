@@ -54,7 +54,7 @@ namespace ResxTranslator.Data
             var filename = Filename;
             if (string.IsNullOrEmpty(filename))
                 throw new ArgumentException("Filename is null or empty");
-
+            
             if (!File.Exists(filename))
                 throw new FileNotFoundException("Filename doesn't point to an existing file", filename);
 
