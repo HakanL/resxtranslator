@@ -1,12 +1,12 @@
 ﻿namespace ResxTranslator.Data
 {
-    public class DictionaryItemChangedEventArgs<TKey, TValue> : DictionaryOperationEventArgs<TKey>
+    public class DictionaryItemChangedEventArgs<TKey, TValue> : DictionaryOperationEventArgs<TKey, TValue>
     {
-        public DictionaryItemChangedEventArgs(TKey key, TValue newValue) : base(key)
+        public DictionaryItemChangedEventArgs(TKey key, TValue newValue, TValue oldValue) : base(key, newValue)
         {
-            NewValue = newValue;
+            OldValue = oldValue;
         }
 
-        public TValue NewValue { get; }
+        public TValue OldValue { get; }
     }
 }

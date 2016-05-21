@@ -64,8 +64,10 @@ namespace ResxTranslator.Data
 
         public bool Remove(TKey key)
         {
+            TValue output;
+            if (!_values.TryGetValue(key, out output)) return false;
             if (!_values.Remove(key)) return false;
-            OnItemRemoved(key);
+            OnItemRemoved(key, output);
             return true;
         }
 
@@ -79,13 +81,17 @@ namespace ResxTranslator.Data
             get { return _values[key]; }
             set
             {
-                if (Equals(value, _values[key])) return;
-                var added = !_values.ContainsKey(key);
-                _values[key] = value;
-                if(added)
+                TValue output;
+                if(!_values.TryGetValue(key, out output))
+                {
+                    _values[key] = value;
                     OnItemAdded(key, value);
-                else
-                    OnItemChanged(key, value);
+                }
+                
+                if (Equals(value, output)) return;
+                
+                _values[key] = value;
+                OnItemChanged(key, value, output);
             }
         }
 
@@ -103,22 +109,22 @@ namespace ResxTranslator.Data
         }
 
         public event EventHandler<DictionaryItemChangedEventArgs<TKey, TValue>> ItemChanged;
-        public event EventHandler<DictionaryOperationEventArgs<TKey>> ItemRemoved;
-        public event EventHandler<DictionaryItemChangedEventArgs<TKey, TValue>> ItemAdded;
+        public event EventHandler<DictionaryOperationEventArgs<TKey, TValue>> ItemRemoved;
+        public event EventHandler<DictionaryOperationEventArgs<TKey, TValue>> ItemAdded;
 
-        protected virtual void OnItemChanged(TKey key, TValue newValue)
+        protected virtual void OnItemChanged(TKey key, TValue newValue, TValue oldValue)
         {
-            ItemChanged?.Invoke(this, new DictionaryItemChangedEventArgs<TKey, TValue>(key, newValue));
+            ItemChanged?.Invoke(this, new DictionaryItemChangedEventArgs<TKey, TValue>(key, newValue, oldValue));
         }
 
         protected virtual void OnItemAdded(TKey key, TValue value)
         {
-            ItemAdded?.Invoke(this, new DictionaryItemChangedEventArgs<TKey, TValue>(key, value));
+            ItemAdded?.Invoke(this, new DictionaryOperationEventArgs<TKey, TValue>(key, value));
         }
 
-        protected virtual void OnItemRemoved(TKey key)
+        protected virtual void OnItemRemoved(TKey key, TValue value)
         {
-            ItemRemoved?.Invoke(this, new DictionaryOperationEventArgs<TKey>(key));
+            ItemRemoved?.Invoke(this, new DictionaryOperationEventArgs<TKey, TValue>(key, value));
         }
     }
 }

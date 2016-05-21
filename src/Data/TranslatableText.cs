@@ -5,23 +5,24 @@ using System.Linq;
 
 namespace ResxTranslator.Data
 {
-    /// <summary>
-    ///     Todo unsubscribe from events by implementing IDisposable
-    /// </summary>
-    internal class TranslatableText : ITranslatable
+    internal class TranslatableText : ITranslatable, IDisposable
     {
-        private readonly IResourceTranslationGroup _resources;
+        private TranslatedResourceGroup _resources;
 
-        private readonly ObservableDictionary<CultureInfo, string> _translations;
+        private ObservableDictionary<CultureInfo, string> _translations;
         private string _defaultTranslation;
 
-        public TranslatableText(string keyName, IResourceTranslationGroup resources)
+        public TranslatableText(string keyName, TranslatedResourceGroup resources)
         {
             if (keyName == null) throw new ArgumentNullException(nameof(keyName));
             if (resources == null) throw new ArgumentNullException(nameof(resources));
 
             KeyName = keyName;
             _resources = resources;
+
+            _resources.Translations.ItemAdded += TranslationsOnItemAddedChanged;
+            _resources.Translations.ItemChanged += TranslationsOnItemAddedChanged;
+            _resources.Translations.ItemRemoved += TranslationsOnItemRemoved;
 
             string output;
             if (resources.DefaultTranslation.LocalizableData.TryGetValue(keyName, out output))
@@ -43,9 +44,26 @@ namespace ResxTranslator.Data
             }
 
             _translations = new ObservableDictionary<CultureInfo, string>(results);
-            _translations.ItemAdded += (sender, args) => OnTranslationAdded(args.Key, args.NewValue);
-            _translations.ItemRemoved += (sender, args) => OnTranslationRemoved(args.Key);
-            _translations.ItemChanged += (sender, args) => OnTranslationChanged(args.Key, args.NewValue);
+            _translations.ItemAdded += (sender, args) => OnTranslationAdded(args.Key, args.Value);
+            _translations.ItemRemoved += (sender, args) => OnTranslationRemoved(args.Key, args.Value);
+            _translations.ItemChanged += (sender, args) => OnTranslationChanged(args.Key, args.Value, args.OldValue);
+        }
+
+        private void TranslationsOnItemRemoved(object sender, DictionaryOperationEventArgs<CultureInfo, IResource> dictionaryOperationEventArgs)
+        {
+            SetTranslationByCulture(dictionaryOperationEventArgs.Key, null);
+        }
+
+        private void TranslationsOnItemAddedChanged(object sender, DictionaryOperationEventArgs<CultureInfo, IResource> dictionaryOperationEventArgs)
+        {
+            var resource = dictionaryOperationEventArgs.Value;
+
+            resource.LocalizableData.ItemAdded += LocalizableDataOnItemChanged;
+            resource.LocalizableData.ItemRemoved += LocalizableDataOnItemRemoved;
+            resource.LocalizableData.ItemChanged += LocalizableDataOnItemChanged;
+
+            if (resource.LocalizableData.ContainsKey(KeyName))
+                SetTranslationByCulture(dictionaryOperationEventArgs.Key, resource.LocalizableData[KeyName]);
         }
 
         public IDictionary<CultureInfo, string> Translations => _translations;
@@ -54,65 +72,91 @@ namespace ResxTranslator.Data
 
         public string DefaultTranslation
         {
-            get { return _defaultTranslation; }
+            get
+            {
+                if (Disposed) throw new ObjectDisposedException(nameof(TranslatableText));
+
+                return _defaultTranslation;
+            }
             set
             {
+                if (Disposed) throw new ObjectDisposedException(nameof(TranslatableText));
+
                 if (!Equals(_defaultTranslation, value))
                 {
+                    var previous = _defaultTranslation;
                     _defaultTranslation = value;
-                    OnTranslationChanged(null, value);
+                    OnTranslationChanged(null, value, previous);
                 }
             }
         }
 
         public IEnumerable<CultureInfo> GetTranslatedLanguages()
         {
+            if (Disposed) throw new ObjectDisposedException(nameof(TranslatableText));
+
             return _translations.Keys;
         }
 
         public bool HasDefaultTranslation()
         {
+            if (Disposed) throw new ObjectDisposedException(nameof(TranslatableText));
+
             return DefaultTranslation != null;
         }
 
-        private void LocalizableDataOnItemChanged(object sender,
-            DictionaryItemChangedEventArgs<string, string> dictionaryItemChangedEventArgs)
+        private static readonly CultureInfo DefaultTranslationCultureInfo = CultureInfo.InvariantCulture;
+        private CultureInfo FindResourceCulture(object sender)
         {
-            if (dictionaryItemChangedEventArgs.Key.Equals(KeyName))
+            return sender == _resources.DefaultTranslation ?
+                DefaultTranslationCultureInfo :
+                _resources.Translations.SingleOrDefault(x => sender.Equals(x.Value)).Key;
+        }
+
+        /*private string GetTranslationByCulture(CultureInfo culture)
+        {
+            if (culture == null)
+                return null;
+            if (Equals(culture, DefaultTranslationCultureInfo))
+                return DefaultTranslation;
+            return Translations.ContainsKey(culture) ? Translations[culture] : null;
+        }*/
+
+        private void SetTranslationByCulture(CultureInfo culture, string translation)
+        {
+            if (culture == null)
+                return;
+            if (Equals(culture, DefaultTranslationCultureInfo))
+                DefaultTranslation = translation;
+
+            if (translation == null)
+                Translations.Remove(culture);
+            else
+                Translations[culture] = translation;
+        }
+
+        private void LocalizableDataOnItemChanged(object sender,
+            DictionaryOperationEventArgs<string, string> dictionaryOperationEventArgs)
+        {
+            if (dictionaryOperationEventArgs.Key.Equals(KeyName))
             {
-                if (sender.Equals(_resources.DefaultTranslation))
-                {
-                    DefaultTranslation = dictionaryItemChangedEventArgs.NewValue;
-                }
-                else
-                {
-                    var resource = _resources.Translations.SingleOrDefault(x => sender.Equals(x.Value));
-                    if (!Equals(resource, default(KeyValuePair<CultureInfo, IResource>)))
-                        Translations[resource.Key] = dictionaryItemChangedEventArgs.NewValue;
-                }
+                SetTranslationByCulture(FindResourceCulture(sender), dictionaryOperationEventArgs.Value);
             }
         }
 
         private void LocalizableDataOnItemRemoved(object sender,
-            DictionaryOperationEventArgs<string> dictionaryOperationEventArgs)
+            DictionaryOperationEventArgs<string, string> dictionaryOperationEventArgs)
         {
             if (dictionaryOperationEventArgs.Key.Equals(KeyName))
             {
-                if (sender.Equals(_resources.DefaultTranslation))
-                {
-                    DefaultTranslation = null;
-                }
-                else
-                {
-                    var resource = _resources.Translations.SingleOrDefault(x => sender.Equals(x.Value));
-                    if (!Equals(resource, default(KeyValuePair<CultureInfo, IResource>)))
-                        Translations.Remove(resource.Key);
-                }
+                SetTranslationByCulture(FindResourceCulture(sender), null);
             }
         }
 
         public string GetTranslation(CultureInfo language)
         {
+            if (Disposed) throw new ObjectDisposedException(nameof(TranslatableText));
+
             if (language == null) return DefaultTranslation;
             string output;
             return _translations.TryGetValue(language, out output) ? output : null;
@@ -123,22 +167,51 @@ namespace ResxTranslator.Data
         /// </summary>
         public event EventHandler<DictionaryItemChangedEventArgs<CultureInfo, string>> TranslationChanged;
 
-        public event EventHandler<DictionaryOperationEventArgs<CultureInfo>> TranslationRemoved;
-        public event EventHandler<DictionaryItemChangedEventArgs<CultureInfo, string>> TranslationAdded;
+        public event EventHandler<DictionaryOperationEventArgs<CultureInfo, string>> TranslationRemoved;
+        public event EventHandler<DictionaryOperationEventArgs<CultureInfo, string>> TranslationAdded;
 
-        protected virtual void OnTranslationChanged(CultureInfo language, string newValue)
+        protected virtual void OnTranslationChanged(CultureInfo language, string newValue, string oldValue)
         {
-            TranslationChanged?.Invoke(this, new DictionaryItemChangedEventArgs<CultureInfo, string>(language, newValue));
+            TranslationChanged?.Invoke(this, new DictionaryItemChangedEventArgs<CultureInfo, string>(language, newValue, oldValue));
         }
 
-        protected virtual void OnTranslationRemoved(CultureInfo language)
+        protected virtual void OnTranslationRemoved(CultureInfo language, string oldValue)
         {
-            TranslationRemoved?.Invoke(this, new DictionaryOperationEventArgs<CultureInfo>(language));
+            TranslationRemoved?.Invoke(this, new DictionaryOperationEventArgs<CultureInfo, string>(language, oldValue));
         }
 
         protected virtual void OnTranslationAdded(CultureInfo language, string newValue)
         {
-            TranslationAdded?.Invoke(this, new DictionaryItemChangedEventArgs<CultureInfo, string>(language, newValue));
+            TranslationAdded?.Invoke(this, new DictionaryOperationEventArgs<CultureInfo, string>(language, newValue));
+        }
+
+        public bool Disposed { get; private set; }
+
+        public void Dispose()
+        {
+            if (Disposed) return;
+            Disposed = true;
+
+            TranslationAdded = null;
+            TranslationChanged = null;
+            TranslationRemoved = null;
+
+            _resources.Translations.ItemAdded -= TranslationsOnItemAddedChanged;
+            _resources.Translations.ItemChanged -= TranslationsOnItemAddedChanged;
+            _resources.Translations.ItemRemoved -= TranslationsOnItemRemoved;
+            _resources.DefaultTranslation.LocalizableData.ItemAdded -= LocalizableDataOnItemChanged;
+            _resources.DefaultTranslation.LocalizableData.ItemRemoved -= LocalizableDataOnItemRemoved;
+            _resources.DefaultTranslation.LocalizableData.ItemChanged -= LocalizableDataOnItemChanged;
+
+            foreach (var translation in _resources.Translations)
+            {
+                translation.Value.LocalizableData.ItemAdded -= LocalizableDataOnItemChanged;
+                translation.Value.LocalizableData.ItemRemoved -= LocalizableDataOnItemRemoved;
+                translation.Value.LocalizableData.ItemChanged -= LocalizableDataOnItemChanged;
+            }
+
+            _resources = null;
+            _translations = null;
         }
     }
 }
