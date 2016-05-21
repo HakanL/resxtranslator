@@ -4,7 +4,7 @@ using System.Resources;
 
 namespace ResxTranslator.Data
 {
-    internal interface IResource : IDisposable
+    public interface IResource : IDisposable
     {
         /// <summary>
         ///     Filename of the resource file
@@ -29,7 +29,7 @@ namespace ResxTranslator.Data
         /// <summary>
         ///     Fired if the resource has been changed by an external application
         /// </summary>
-        event EventHandler FileChangedExternally;
+        event EventHandler ChangedExternally;
 
         /// <summary>
         ///     Reload the resource

@@ -8,7 +8,7 @@ namespace ResxTranslator.Data
     /// <summary>
     ///     Contains related IResources and allows easy editing of their localizable strings.
     /// </summary>
-    internal class TranslatedResourceGroup : ITranslatable
+    public class TranslatedResourceGroup : ITranslatable
     {
         private readonly Dictionary<string, TranslatableText> _localizableStrings;
 

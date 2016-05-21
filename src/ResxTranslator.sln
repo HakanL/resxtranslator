@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResxTranslator", "ResxTrans
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortableSettingsProvider", "PortableSettingsProvider\PortableSettingsProvider.csproj", "{68C10A7E-883F-443A-B7A0-41E06AD56602}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResxTranslatorTests", "ResxTranslatorTests\ResxTranslatorTests.csproj", "{CC99DA13-EE29-4419-9E53-4E10FDC0BCC1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{68C10A7E-883F-443A-B7A0-41E06AD56602}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68C10A7E-883F-443A-B7A0-41E06AD56602}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68C10A7E-883F-443A-B7A0-41E06AD56602}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC99DA13-EE29-4419-9E53-4E10FDC0BCC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC99DA13-EE29-4419-9E53-4E10FDC0BCC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC99DA13-EE29-4419-9E53-4E10FDC0BCC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC99DA13-EE29-4419-9E53-4E10FDC0BCC1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

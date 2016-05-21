@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace ResxTranslator.Data
 {
-    internal class TranslatableText : ITranslatable, IDisposable
+    public class TranslatableText : ITranslatable, IDisposable
     {
         private TranslatedResourceGroup _resources;
 
@@ -172,16 +172,22 @@ namespace ResxTranslator.Data
 
         protected virtual void OnTranslationChanged(CultureInfo language, string newValue, string oldValue)
         {
+            (language == null ? _resources.DefaultTranslation : _resources.Translations[language]).LocalizableData[KeyName] = newValue;
+
             TranslationChanged?.Invoke(this, new DictionaryItemChangedEventArgs<CultureInfo, string>(language, newValue, oldValue));
         }
 
         protected virtual void OnTranslationRemoved(CultureInfo language, string oldValue)
         {
+            _resources.Translations.Remove(language);
+
             TranslationRemoved?.Invoke(this, new DictionaryOperationEventArgs<CultureInfo, string>(language, oldValue));
         }
 
         protected virtual void OnTranslationAdded(CultureInfo language, string newValue)
         {
+            _resources.Translations[language].LocalizableData[KeyName] = newValue;
+
             TranslationAdded?.Invoke(this, new DictionaryOperationEventArgs<CultureInfo, string>(language, newValue));
         }
 
