@@ -34,7 +34,7 @@ namespace ResxTranslator.Data
         /// <summary>
         ///     Reload the resource
         /// </summary>
-        void Reload();
+        void Read();
 
         /// <summary>
         ///     Write the resource to specified Filename

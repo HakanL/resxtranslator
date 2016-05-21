@@ -36,7 +36,7 @@ namespace ResxTranslator.Data.Tests
         public IDictionary<string, ResXDataNode> OtherData { get; }
         public event EventHandler ChangedExternally;
 
-        public void Reload()
+        public void Read()
         {
             throw new NotImplementedException();
         }

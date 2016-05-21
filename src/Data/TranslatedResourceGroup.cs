@@ -12,11 +12,6 @@ namespace ResxTranslator.Data
     {
         private readonly Dictionary<string, TranslatableText> _localizableStrings;
 
-        /// <summary>
-        ///     Read-write list of translated resources
-        /// </summary>
-        public ObservableDictionary<CultureInfo, IResource> Translations { get; }
-        
         public TranslatedResourceGroup(IResource defaultTranslation, IDictionary<CultureInfo, IResource> translations)
         {
             Translations = new ObservableDictionary<CultureInfo, IResource>(translations);
@@ -30,7 +25,16 @@ namespace ResxTranslator.Data
                 .ToDictionary(keyName => keyName, keyName => new TranslatableText(keyName, this));
             LocalizableStrings = new ReadOnlyDictionaryWrapper<string, TranslatableText>(_localizableStrings);
         }
-        
+
+        /// <summary>
+        ///     Read-write list of translated resources
+        /// </summary>
+        public ObservableDictionary<CultureInfo, IResource> Translations { get; }
+
+        public IResource DefaultTranslation { get; }
+
+        public ReadOnlyDictionaryWrapper<string, TranslatableText> LocalizableStrings { get; }
+
         public IEnumerable<CultureInfo> GetTranslatedLanguages()
         {
             return Translations.Keys;
@@ -40,10 +44,6 @@ namespace ResxTranslator.Data
         {
             return DefaultTranslation != null;
         }
-
-        public IResource DefaultTranslation { get; }
-
-        public ReadOnlyDictionaryWrapper<string, TranslatableText> LocalizableStrings { get; }
 
         public void AddLocalizableString(string keyName, string defaultValue,
             IDictionary<CultureInfo, string> translations)
@@ -65,7 +65,7 @@ namespace ResxTranslator.Data
         }
 
         /// <summary>
-        /// Remove and dispose of the specified localizable string
+        ///     Remove and dispose of the specified localizable string
         /// </summary>
         public bool RemoveLocalizableString(string keyName)
         {

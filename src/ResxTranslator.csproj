@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\ReadOnlyDictionaryWrapper.cs" />
+    <Compile Include="Data\ResxResource.cs" />
     <Compile Include="Data\TranslatableText.cs" />
     <Compile Include="Data\DictionaryItemChangedEventArgs.cs" />
     <Compile Include="Data\DictionaryOperationEventArgs.cs" />

@@ -21,7 +21,7 @@ namespace ResxTranslator.Data
 
         public void Add(KeyValuePair<TKey, TValue> item)
         {
-            throw new NotImplementedException();
+            Add(item.Key, item.Value);
         }
 
         public void Clear()
@@ -82,14 +82,14 @@ namespace ResxTranslator.Data
             set
             {
                 TValue output;
-                if(!_values.TryGetValue(key, out output))
+                if (!_values.TryGetValue(key, out output))
                 {
                     _values[key] = value;
                     OnItemAdded(key, value);
                 }
-                
+
                 if (Equals(value, output)) return;
-                
+
                 _values[key] = value;
                 OnItemChanged(key, value, output);
             }
