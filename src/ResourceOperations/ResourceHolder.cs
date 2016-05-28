@@ -153,9 +153,7 @@ namespace ResxTranslator.ResourceOperations
                         originalResources.Add(key, (ResXDataNode)dataEnumerator.Value);
                 }
             }
-
-            var wasModified = false;
-
+            
             // Get rid of keys marked as deleted. If they have been restored they will be re-added later
             // Only support localizable strings to avoid removing other resources by mistake
             // BUG Clear the _deletedKeys?
@@ -165,7 +163,6 @@ namespace ResxTranslator.ResourceOperations
                 .ToList())
             {
                 originalResources.Remove(originalResource.Key);
-                wasModified = true;
             }
 
             // Precache the valid keys
@@ -193,18 +190,12 @@ namespace ResxTranslator.ResourceOperations
                         continue;
                     
                     originalResources[key] = new ResXDataNode(originalResources[key].Name, stringValueData) { Comment = stringCommentData };
-                    wasModified = true;
                 }
                 else
                 {
                     originalResources.Add(key, new ResXDataNode(key, stringValueData));
-                    wasModified = true;
                 }
             }
-            
-            // Skip writing unmodified files
-            if (!wasModified)
-                return;
 
             // Write the cached resources to the drive
             using (var writer = new ResXResourceWriter(filename))
@@ -261,6 +252,12 @@ namespace ResxTranslator.ResourceOperations
                         continue;
 
                     var value = dataNode.GetValueAsString();
+
+                    if (!valueColumn.Equals(ResourceGrid.ColNameNoLang) && string.IsNullOrWhiteSpace(value))
+                    {
+                        Dirty = true;
+                        continue;
+                    }
 
                     var r = FindByKey(key);
                     if (r == null)

@@ -131,14 +131,13 @@ namespace ResxTranslator.Controls
             }
 
             var leafNode = new TreeNode(resource.Id) {Tag = resource, ImageIndex = 1};
+            parentNode?.Nodes.Add(leafNode);
 
-            resource.DirtyChanged += (sender, args) => SetTreeNodeDirty(leafNode, resource);
-
+            SetTreeNodeDirty(leafNode, resource);
             SetTreeNodeTitle(leafNode, resource);
 
+            resource.DirtyChanged += (sender, args) => SetTreeNodeDirty(leafNode, resource);
             resource.LanguageChange += (sender, args) => SetTreeNodeTitle(leafNode, resource);
-
-            parentNode?.Nodes.Add(leafNode);
         }
 
         private void SelectResourceFromTree()
