@@ -5,6 +5,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Resources;
+using System.Windows.Forms;
 using ResxTranslator.Controls;
 using ResxTranslator.Properties;
 using ResxTranslator.Tools;
@@ -220,17 +221,26 @@ namespace ResxTranslator.ResourceOperations
         }
 
         /// <summary>
-        ///     Save this resource holders data
+        ///     Save this resource holder's data
         /// </summary>
         public void Save()
         {
-            UpdateFile(Filename, ResourceGrid.ColNameNoLang);
-
-            foreach (var languageHolder in Languages.Values)
+            if (!IsDirty)
+                return;
+            try
             {
-                UpdateFile(languageHolder.Filename, languageHolder.LanguageId);
+                UpdateFile(Filename, ResourceGrid.ColNameNoLang);
+
+                foreach (var languageHolder in Languages.Values)
+                {
+                    UpdateFile(languageHolder.Filename, languageHolder.LanguageId);
+                }
+                Dirty = false;
             }
-            Dirty = false;
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Exception while saving: " + Id, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>

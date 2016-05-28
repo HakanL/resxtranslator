@@ -424,13 +424,16 @@ namespace ResxTranslator.Windows
 
         private void revertCurrentToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (CurrentResource == null)
+                return;
+
             CurrentResource.Revert();
             resourceGrid1.RefreshResourceDisplay();
         }
 
         private void saveCurrentToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ResourceLoader.SaveResourceHolder(CurrentResource);
+            CurrentResource?.Save();
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)

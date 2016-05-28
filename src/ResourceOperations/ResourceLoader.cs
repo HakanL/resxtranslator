@@ -66,21 +66,6 @@ namespace ResxTranslator.ResourceOperations
 
         public event EventHandler ResourcesChanged;
 
-        public static void SaveResourceHolder(ResourceHolder resource)
-        {
-            if (resource.IsDirty)
-            {
-                try
-                {
-                    resource.Save();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Exception while saving: " + resource.Id, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
-
         /// <summary>
         ///     Check and prompt for save
         /// </summary>
@@ -136,7 +121,7 @@ namespace ResxTranslator.ResourceOperations
         {
             foreach (var resource in _resourceStore.Values)
             {
-                SaveResourceHolder(resource);
+                resource.Save();
             }
         }
 
