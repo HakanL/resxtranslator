@@ -195,6 +195,7 @@ namespace ResxTranslator.ResourceOperations
                 else
                 {
                     originalResources.Add(key, new ResXDataNode(key, stringValueData));
+                    localizableResourceKeys.Add(key);
                 }
             }
 
