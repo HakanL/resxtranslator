@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 using ResxTranslator.Properties;
 using ScintillaNET;
@@ -19,15 +18,16 @@ namespace ResxTranslator.Windows
             nums.Type = MarginType.Number;
             nums.Mask = 0;
 
-            var defaultTextEditorStyle = textBoxString.Styles.FirstOrDefault();
+            textBoxString.Styles[0].Font = Font.Name;
 
-            if (defaultTextEditorStyle != null)
-            {
-                defaultTextEditorStyle.Font = Font.Name;
-            }
+            textBoxString.SetWhitespaceForeColor(true, Color.Brown);
 
             Settings.Binder.BindControl(checkBox1, settings => settings.CellEditorWrapContents, this);
             Settings.Binder.Subscribe((sender, args) => textBoxString.WrapMode = args.NewValue ? WrapMode.Word : WrapMode.None, settings => settings.CellEditorWrapContents, this);
+
+            Settings.Binder.BindControl(chbShowWhitespace, settings => settings.CellEditorShowWhitespace, this);
+            Settings.Binder.Subscribe((sender, args) => textBoxString.ViewWhitespace = args.NewValue ? WhitespaceMode.VisibleAlways : WhitespaceMode.Invisible, settings => settings.CellEditorShowWhitespace, this);
+
             Settings.Binder.SendUpdates(this);
         }
 

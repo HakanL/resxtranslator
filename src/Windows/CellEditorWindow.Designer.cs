@@ -33,11 +33,13 @@
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.textBoxString = new ScintillaNET.Scintilla();
+            this.chbShowWhitespace = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.chbShowWhitespace);
             this.panel1.Controls.Add(this.checkBox1);
             this.panel1.Controls.Add(this.buttonOK);
             this.panel1.Controls.Add(this.buttonCancel);
@@ -51,7 +53,7 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(6, 16);
+            this.checkBox1.Location = new System.Drawing.Point(6, 6);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(78, 17);
             this.checkBox1.TabIndex = 2;
@@ -89,6 +91,17 @@
             this.textBoxString.ScrollWidth = 200;
             this.textBoxString.Size = new System.Drawing.Size(428, 205);
             this.textBoxString.TabIndex = 0;
+            this.textBoxString.WhitespaceSize = 2;
+            // 
+            // chbShowWhitespace
+            // 
+            this.chbShowWhitespace.AutoSize = true;
+            this.chbShowWhitespace.Location = new System.Drawing.Point(6, 29);
+            this.chbShowWhitespace.Name = "chbShowWhitespace";
+            this.chbShowWhitespace.Size = new System.Drawing.Size(113, 17);
+            this.chbShowWhitespace.TabIndex = 3;
+            this.chbShowWhitespace.Text = "Show Whitespace";
+            this.chbShowWhitespace.UseVisualStyleBackColor = true;
             // 
             // CellEditorWindow
             // 
@@ -121,5 +134,6 @@
         private System.Windows.Forms.Button buttonOK;
         private System.Windows.Forms.CheckBox checkBox1;
         internal ScintillaNET.Scintilla textBoxString;
+        private System.Windows.Forms.CheckBox chbShowWhitespace;
     }
 }
