@@ -157,7 +157,7 @@ namespace ResxTranslator.Controls
             }
             if (dataGridView1.CurrentCell.IsInEditMode)
             {
-                return;
+                dataGridView1.EndEdit();
             }
 
             var frm = new CellEditorWindow();
