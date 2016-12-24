@@ -39,18 +39,19 @@
             // panel1
             // 
             this.panel1.Controls.Add(this.checkBox1);
-            this.panel1.Controls.Add(this.buttonCancel);
             this.panel1.Controls.Add(this.buttonOK);
+            this.panel1.Controls.Add(this.buttonCancel);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 225);
+            this.panel1.Location = new System.Drawing.Point(3, 208);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(434, 36);
+            this.panel1.Padding = new System.Windows.Forms.Padding(3);
+            this.panel1.Size = new System.Drawing.Size(428, 50);
             this.panel1.TabIndex = 1;
             // 
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(12, 10);
+            this.checkBox1.Location = new System.Drawing.Point(6, 16);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(78, 17);
             this.checkBox1.TabIndex = 2;
@@ -59,34 +60,35 @@
             // 
             // buttonCancel
             // 
-            this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(347, 6);
+            this.buttonCancel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.buttonCancel.Location = new System.Drawing.Point(350, 3);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(75, 23);
+            this.buttonCancel.Size = new System.Drawing.Size(75, 44);
             this.buttonCancel.TabIndex = 1;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
             // 
             // buttonOK
             // 
-            this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.buttonOK.Location = new System.Drawing.Point(266, 6);
+            this.buttonOK.Dock = System.Windows.Forms.DockStyle.Right;
+            this.buttonOK.Location = new System.Drawing.Point(275, 3);
             this.buttonOK.Name = "buttonOK";
-            this.buttonOK.Size = new System.Drawing.Size(75, 23);
+            this.buttonOK.Size = new System.Drawing.Size(75, 44);
             this.buttonOK.TabIndex = 0;
             this.buttonOK.Text = "Accept";
             this.buttonOK.UseVisualStyleBackColor = true;
             // 
             // textBoxString
             // 
+            this.textBoxString.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxString.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxString.Location = new System.Drawing.Point(0, 0);
+            this.textBoxString.Location = new System.Drawing.Point(3, 3);
             this.textBoxString.Name = "textBoxString";
             this.textBoxString.ScrollWidth = 200;
-            this.textBoxString.Size = new System.Drawing.Size(434, 225);
-            this.textBoxString.TabIndex = 2;
+            this.textBoxString.Size = new System.Drawing.Size(428, 205);
+            this.textBoxString.TabIndex = 0;
             // 
             // CellEditorWindow
             // 
@@ -98,7 +100,12 @@
             this.Controls.Add(this.textBoxString);
             this.Controls.Add(this.panel1);
             this.KeyPreview = true;
+            this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(450, 300);
             this.Name = "CellEditorWindow";
+            this.Padding = new System.Windows.Forms.Padding(3);
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Cell editor";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ZoomWindow_FormClosed);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.CellEditorWindow_KeyPress);
