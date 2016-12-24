@@ -160,20 +160,22 @@ namespace ResxTranslator.Controls
                 dataGridView1.EndEdit();
             }
 
-            var frm = new CellEditorWindow();
-            var value = dataGridView1.CurrentCell.Value;
-            if (value == DBNull.Value)
-                frm.textBoxString.Text = string.Empty;
-            else
-                frm.textBoxString.Text = (string) value;
-
-            frm.Icon = ParentForm?.Icon;
-            frm.StartPosition = FormStartPosition.CenterParent;
-
-            if (frm.ShowDialog(ParentForm) == DialogResult.OK)
+            using (var frm = new CellEditorWindow())
             {
-                dataGridView1.CurrentCell.Value = frm.textBoxString.Text;
-                dataGridView1.EndEdit();
+                var value = dataGridView1.CurrentCell.Value;
+                if (value == DBNull.Value)
+                    frm.textBoxString.Text = string.Empty;
+                else
+                    frm.textBoxString.Text = (string) value;
+
+                frm.Icon = ParentForm?.Icon;
+                frm.StartPosition = FormStartPosition.CenterParent;
+
+                if (frm.ShowDialog(ParentForm) == DialogResult.OK)
+                {
+                    dataGridView1.CurrentCell.Value = frm.textBoxString.Text;
+                    dataGridView1.EndEdit();
+                }
             }
         }
 
