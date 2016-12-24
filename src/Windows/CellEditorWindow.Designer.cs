@@ -97,14 +97,18 @@
             // 
             // CellEditorWindow
             // 
+            this.AcceptButton = this.buttonOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.buttonCancel;
             this.ClientSize = new System.Drawing.Size(434, 261);
             this.Controls.Add(this.textBoxString);
             this.Controls.Add(this.panel1);
+            this.KeyPreview = true;
             this.Name = "CellEditorWindow";
             this.Text = "Cell editor";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ZoomWindow_FormClosed);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.CellEditorWindow_KeyPress);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
