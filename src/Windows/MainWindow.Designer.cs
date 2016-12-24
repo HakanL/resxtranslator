@@ -317,6 +317,7 @@ namespace ResxTranslator.Windows
             // 
             this.reloadCurrentDirectoryToolStripMenuItem.Image = global::ResxTranslator.Properties.Resources.RefreshArrow;
             this.reloadCurrentDirectoryToolStripMenuItem.Name = "reloadCurrentDirectoryToolStripMenuItem";
+            this.reloadCurrentDirectoryToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
             this.reloadCurrentDirectoryToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
             this.reloadCurrentDirectoryToolStripMenuItem.Text = "Reload current directory";
             this.reloadCurrentDirectoryToolStripMenuItem.Click += new System.EventHandler(this.reloadCurrentDirectoryToolStripMenuItem_Click);
@@ -402,6 +403,7 @@ namespace ResxTranslator.Windows
             // 
             this.addNewKeyToolStripMenuItem.Image = global::ResxTranslator.Properties.Resources.Add;
             this.addNewKeyToolStripMenuItem.Name = "addNewKeyToolStripMenuItem";
+            this.addNewKeyToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Add)));
             this.addNewKeyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.addNewKeyToolStripMenuItem.Text = "&Add new Key...";
             this.addNewKeyToolStripMenuItem.Click += new System.EventHandler(this.addNewKeyToolStripMenuItem_Click);
@@ -410,6 +412,7 @@ namespace ResxTranslator.Windows
             // 
             this.deleteKeyToolStripMenuItem.Image = global::ResxTranslator.Properties.Resources.Delete_black_32x32;
             this.deleteKeyToolStripMenuItem.Name = "deleteKeyToolStripMenuItem";
+            this.deleteKeyToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Subtract)));
             this.deleteKeyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.deleteKeyToolStripMenuItem.Text = "&Remove Key";
             this.deleteKeyToolStripMenuItem.Click += new System.EventHandler(this.deleteKeyToolStripMenuItem_Click);
