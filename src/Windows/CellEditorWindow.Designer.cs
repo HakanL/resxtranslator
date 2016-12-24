@@ -28,29 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBoxString = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
+            this.textBoxString = new ScintillaNET.Scintilla();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // textBoxString
-            // 
-            this.textBoxString.AcceptsReturn = true;
-            this.textBoxString.AllowDrop = true;
-            this.textBoxString.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxString.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxString.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxString.HideSelection = false;
-            this.textBoxString.Location = new System.Drawing.Point(0, 0);
-            this.textBoxString.Multiline = true;
-            this.textBoxString.Name = "textBoxString";
-            this.textBoxString.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxString.Size = new System.Drawing.Size(434, 225);
-            this.textBoxString.TabIndex = 0;
-            this.textBoxString.WordWrap = false;
             // 
             // panel1
             // 
@@ -95,6 +79,15 @@
             this.buttonOK.Text = "Accept";
             this.buttonOK.UseVisualStyleBackColor = true;
             // 
+            // textBoxString
+            // 
+            this.textBoxString.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBoxString.Location = new System.Drawing.Point(0, 0);
+            this.textBoxString.Name = "textBoxString";
+            this.textBoxString.ScrollWidth = 200;
+            this.textBoxString.Size = new System.Drawing.Size(434, 225);
+            this.textBoxString.TabIndex = 2;
+            // 
             // CellEditorWindow
             // 
             this.AcceptButton = this.buttonOK;
@@ -112,16 +105,14 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-
-        public System.Windows.Forms.TextBox textBoxString;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Button buttonOK;
         private System.Windows.Forms.CheckBox checkBox1;
+        internal ScintillaNET.Scintilla textBoxString;
     }
 }
