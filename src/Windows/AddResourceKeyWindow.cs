@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 using ResxTranslator.ResourceOperations;
+using ResxTranslator.Resources;
 
 namespace ResxTranslator.Windows
 {
@@ -41,11 +42,11 @@ namespace ResxTranslator.Windows
             string errorString = null;
 
             if (_resourceHolder.FindByKey(keyName) != null)
-                errorString = "Key with this name already exists";
+                errorString = Localization.Error_KeyAlreadyExists;
             else if (string.IsNullOrWhiteSpace(keyName))
-                errorString = "Key name can't be empty";
+                errorString = Localization.Error_KeyCantBeEmpty;
             else if (keyName.Any(x => !char.IsLetterOrDigit(x)))
-                errorString = "Key name can only contain letters and numbers";
+                errorString = Localization.Error_InvalidKeyName;
 
             errorProvider.SetError(textboxKeyName, errorString);
 

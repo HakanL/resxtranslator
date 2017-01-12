@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using ResxTranslator.Properties;
+using ResxTranslator.Resources;
 using ResxTranslator.Tools;
 
 namespace ResxTranslator.Windows
@@ -43,8 +44,8 @@ namespace ResxTranslator.Windows
             }
             else
             {
-                MessageBox.Show(this, "Selected language is invalid, please select one of the entries on the dropdown list.",
-                    "Invalid language", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, Localization.MessageBox_SelectedLanguageInvalid_Message,
+                    Localization.MessageBox_SelectedLanguageInvalid_Title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 

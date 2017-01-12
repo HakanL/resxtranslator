@@ -81,6 +81,51 @@ namespace ResxTranslator.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Comment.
+        /// </summary>
+        internal static string ColNameComment {
+            get {
+                return ResourceManager.GetString("ColNameComment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        internal static string ColNameError {
+            get {
+                return ResourceManager.GetString("ColNameError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Key.
+        /// </summary>
+        internal static string ColNameKey {
+            get {
+                return ResourceManager.GetString("ColNameKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NoLanguageValue.
+        /// </summary>
+        internal static string ColNameNoLang {
+            get {
+                return ResourceManager.GetString("ColNameNoLang", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Translated.
+        /// </summary>
+        internal static string ColNameTranslated {
+            get {
+                return ResourceManager.GetString("ColNameTranslated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Delete_black_32x32 {
@@ -147,6 +192,15 @@ namespace ResxTranslator.Properties {
             get {
                 object obj = ResourceManager.GetObject("Help", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://resxtranslator.codeplex.com/.
+        /// </summary>
+        internal static string Homepage {
+            get {
+                return ResourceManager.GetString("Homepage", resourceCulture);
             }
         }
         

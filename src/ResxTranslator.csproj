@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -81,6 +81,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Resources\Localization.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Localization.resx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\ComboBoxWrapper.cs" />
     <Compile Include="Controls\LanguageSettings.cs">
       <SubType>UserControl</SubType>
@@ -121,32 +126,52 @@
     <EmbeddedResource Include="Controls\ResourceTreeView.resx">
       <DependentUpon>ResourceTreeView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Localization.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Localization.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\AboutBox.es.resx">
+      <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\AboutBox.es.resx" />
     <EmbeddedResource Include="Windows\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Windows\AddResourceKeyWindow.es.resx" />
-    <EmbeddedResource Include="Windows\CellEditorWindow.es.resx" />
-    <EmbeddedResource Include="Windows\EditReferencePaths.es.resx" />
+    <EmbeddedResource Include="Windows\AddResourceKeyWindow.es.resx">
+      <DependentUpon>AddResourceKeyWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\CellEditorWindow.es.resx">
+      <DependentUpon>CellEditorWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\EditReferencePaths.es.resx">
+      <DependentUpon>EditReferencePaths.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Windows\EditReferencePaths.resx">
       <DependentUpon>EditReferencePaths.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\AddResourceKeyWindow.resx">
       <DependentUpon>AddResourceKeyWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Windows\FindWindow.es.resx" />
+    <EmbeddedResource Include="Windows\FindWindow.es.resx">
+      <DependentUpon>FindWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Windows\FindWindow.resx">
       <DependentUpon>FindWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Windows\LanguageSelectDialog.es.resx" />
+    <EmbeddedResource Include="Windows\LanguageSelectDialog.es.resx">
+      <DependentUpon>LanguageSelectDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Windows\LanguageSelectDialog.resx">
       <DependentUpon>LanguageSelectDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Windows\MainWindow.es.resx" />
+    <EmbeddedResource Include="Windows\MainWindow.es.resx">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Windows\MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>

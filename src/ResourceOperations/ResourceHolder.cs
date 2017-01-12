@@ -6,8 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Resources;
 using System.Windows.Forms;
-using ResxTranslator.Controls;
 using ResxTranslator.Properties;
+using ResxTranslator.Resources;
 using ResxTranslator.Tools;
 
 namespace ResxTranslator.ResourceOperations
@@ -175,12 +175,13 @@ namespace ResxTranslator.ResourceOperations
             // Adds keys if they are missing in originalResources
             foreach (DataRow dataRow in _stringsTable.Rows)
             {
-                var key = (string)dataRow[ResourceGrid.ColNameKey];
+                var key = (string)dataRow[Properties.Resources.ColNameKey];
 
                 var valueData = dataRow[valueColumnId] == DBNull.Value ? null : dataRow[valueColumnId];
                 var stringValueData = valueData?.ToString() ?? string.Empty;
 
-                var commentData = dataRow[ResourceGrid.ColNameComment] == DBNull.Value ? null : dataRow[ResourceGrid.ColNameComment];
+                var colNameComment = Properties.Resources.ColNameComment;
+                var commentData = dataRow[colNameComment] == DBNull.Value ? null : dataRow[colNameComment];
                 var stringCommentData = commentData?.ToString() ?? string.Empty;
 
                 if (localizableResourceKeys.Contains(key))
@@ -205,7 +206,7 @@ namespace ResxTranslator.ResourceOperations
                 foreach (var originalResource in originalResources)
                 {
                     // Write localizable resource only if it is not empty, unless we are saving the default file
-                    if (valueColumnId.Equals(ResourceGrid.ColNameNoLang) 
+                    if (valueColumnId.Equals(Properties.Resources.ColNameNoLang) 
                         || !localizableResourceKeys.Contains(originalResource.Key) 
                         || !string.IsNullOrWhiteSpace(originalResource.Value.GetValueAsString()))
                     {
@@ -230,7 +231,7 @@ namespace ResxTranslator.ResourceOperations
                 return;
             try
             {
-                UpdateFile(Filename, ResourceGrid.ColNameNoLang);
+                UpdateFile(Filename, Properties.Resources.ColNameNoLang);
 
                 foreach (var languageHolder in Languages.Values)
                 {
@@ -240,7 +241,8 @@ namespace ResxTranslator.ResourceOperations
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Exception while saving: " + Id, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, string.Format(Localization.Error_FailedSaving, Id), 
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -264,37 +266,39 @@ namespace ResxTranslator.ResourceOperations
 
                     var value = dataNode.GetValueAsString();
 
-                    if (!valueColumn.Equals(ResourceGrid.ColNameNoLang) && string.IsNullOrWhiteSpace(value))
+                    if (!valueColumn.Equals(Properties.Resources.ColNameNoLang) && string.IsNullOrWhiteSpace(value))
                     {
                         Dirty = true;
                         continue;
                     }
 
                     var r = FindByKey(key);
+                    var colNameComment = Properties.Resources.ColNameComment;
+                    var colNameTranslated = Properties.Resources.ColNameTranslated;
                     if (r == null)
                     {
                         var newRow = stringsTable.NewRow();
-                        newRow[ResourceGrid.ColNameKey] = key;
+                        newRow[Properties.Resources.ColNameKey] = key;
 
                         newRow[valueColumn] = value;
 
-                        newRow[ResourceGrid.ColNameComment] = dataNode.Comment;
-                        newRow[ResourceGrid.ColNameError] = false;
-                        newRow[ResourceGrid.ColNameTranslated] = isTranslated && !string.IsNullOrEmpty(value);
+                        newRow[colNameComment] = dataNode.Comment;
+                        newRow[Properties.Resources.ColNameError] = false;
+                        newRow[colNameTranslated] = isTranslated && !string.IsNullOrEmpty(value);
                         stringsTable.Rows.Add(newRow);
                     }
                     else
                     {
                         r[valueColumn] = value;
 
-                        if (string.IsNullOrEmpty((string)r[ResourceGrid.ColNameComment]) &&
+                        if (string.IsNullOrEmpty((string)r[colNameComment]) &&
                             !string.IsNullOrEmpty(dataNode.Comment))
                         {
-                            r[ResourceGrid.ColNameComment] = dataNode.Comment;
+                            r[colNameComment] = dataNode.Comment;
                         }
                         if (isTranslated && !string.IsNullOrEmpty(value))
                         {
-                            r[ResourceGrid.ColNameTranslated] = true;
+                            r[colNameTranslated] = true;
                         }
                     }
                 }
@@ -334,32 +338,34 @@ namespace ResxTranslator.ResourceOperations
         public void EvaluateRow(DataRow row, string[] languagesToCheck)
         {
             _lastLanguagesToCheck = languagesToCheck;
-            foreach (var languageHolder in (languagesToCheck == null || languagesToCheck.Length < 1) ?
+            var colNameError = Properties.Resources.ColNameError;
+            foreach (var languageHolder in languagesToCheck == null || languagesToCheck.Length < 1 ?
                 Languages.Values :
                 Languages.Values.Where(x => languagesToCheck.Any(y => x.LanguageId.Equals(y, StringComparison.OrdinalIgnoreCase))))
             {
                 if (!RowContainsTranslation(row, languageHolder.LanguageId))
                 {
                     // Some translations are missing
-                    row[ResourceGrid.ColNameError] = true;
+                    row[colNameError] = true;
                     return;
                 }
-                if (row[ResourceGrid.ColNameNoLang] == DBNull.Value || string.IsNullOrEmpty((string)row[ResourceGrid.ColNameNoLang]))
+                var colNameNoLang = Properties.Resources.ColNameNoLang;
+                if (row[colNameNoLang] == DBNull.Value || string.IsNullOrEmpty((string)row[colNameNoLang]))
                 {
                     // There are translations, but the main key is missing
-                    row[ResourceGrid.ColNameError] = true;
+                    row[colNameError] = true;
                     return;
                 }
             }
 
-            row[ResourceGrid.ColNameError] = false;
+            row[colNameError] = false;
         }
 
         private static bool RowContainsTranslation(DataRow row, string languageId)
         {
             if (Settings.Default.TranslatableInBrackets)
             {
-                var defaultValue = ((string)row[ResourceGrid.ColNameNoLang]).Trim();
+                var defaultValue = ((string)row[Properties.Resources.ColNameNoLang]).Trim();
                 if (!defaultValue.StartsWith("[", StringComparison.InvariantCultureIgnoreCase) ||
                     !defaultValue.EndsWith("]", StringComparison.InvariantCultureIgnoreCase))
                     return true;
@@ -383,20 +389,22 @@ namespace ResxTranslator.ResourceOperations
 
                 _stringsTable = new DataTable("Strings");
 
-                _stringsTable.Columns.Add(ResourceGrid.ColNameKey);
-                _stringsTable.PrimaryKey = new[] { _stringsTable.Columns[ResourceGrid.ColNameKey] };
-                _stringsTable.Columns.Add(ResourceGrid.ColNameNoLang);
+                var colNameKey = Properties.Resources.ColNameKey;
+                _stringsTable.Columns.Add(colNameKey);
+                _stringsTable.PrimaryKey = new[] { _stringsTable.Columns[colNameKey] };
+                var colNameNoLang = Properties.Resources.ColNameNoLang;
+                _stringsTable.Columns.Add(colNameNoLang);
                 foreach (var languageHolder in Languages.Values)
                 {
                     _stringsTable.Columns.Add(languageHolder.LanguageId);
                 }
-                _stringsTable.Columns.Add(ResourceGrid.ColNameComment);
-                _stringsTable.Columns.Add(ResourceGrid.ColNameTranslated, typeof(bool));
-                _stringsTable.Columns.Add(ResourceGrid.ColNameError, typeof(bool));
+                _stringsTable.Columns.Add(Properties.Resources.ColNameComment);
+                _stringsTable.Columns.Add(Properties.Resources.ColNameTranslated, typeof(bool));
+                _stringsTable.Columns.Add(Properties.Resources.ColNameError, typeof(bool));
 
                 if (!string.IsNullOrEmpty(Filename))
                 {
-                    ReadResourceFile(Filename, _stringsTable, ResourceGrid.ColNameNoLang, false);
+                    ReadResourceFile(Filename, _stringsTable, colNameNoLang, false);
                 }
                 foreach (var languageHolder in Languages.Values)
                 {
@@ -418,7 +426,7 @@ namespace ResxTranslator.ResourceOperations
         /// </summary>
         private void stringsTable_RowDeleting(object sender, DataRowChangeEventArgs e)
         {
-            _deletedKeys[e.Row[ResourceGrid.ColNameKey].ToString()] = true;
+            _deletedKeys[e.Row[Properties.Resources.ColNameKey].ToString()] = true;
             Dirty = true;
         }
 
@@ -435,7 +443,7 @@ namespace ResxTranslator.ResourceOperations
         /// </summary>
         private void stringsTable_ColumnChanged(object sender, DataColumnChangeEventArgs e)
         {
-            if (e.Column != e.Column.Table.Columns[ResourceGrid.ColNameError])
+            if (e.Column != e.Column.Table.Columns[Properties.Resources.ColNameError])
             {
                 Dirty = true;
                 EvaluateRow(e.Row);
@@ -447,14 +455,15 @@ namespace ResxTranslator.ResourceOperations
         /// </summary>
         private void stringsTable_ColumnChanging(object sender, DataColumnChangeEventArgs e)
         {
-            if (e.Column == e.Column.Table.Columns[ResourceGrid.ColNameKey])
+            var colNameKey = Properties.Resources.ColNameKey;
+            if (e.Column == e.Column.Table.Columns[colNameKey])
             {
                 var foundRows = e.Column.Table.Select("Key='" + e.ProposedValue + "'");
                 if (foundRows.Length > 1
                     || (foundRows.Length == 1 && foundRows[0] != e.Row))
                 {
-                    e.Row[ResourceGrid.ColNameError] = true;
-                    throw new DuplicateNameException(e.Row[ResourceGrid.ColNameKey].ToString());
+                    e.Row[Properties.Resources.ColNameError] = true;
+                    throw new DuplicateNameException(e.Row[colNameKey].ToString());
                 }
                 Dirty = true;
             }
@@ -473,14 +482,14 @@ namespace ResxTranslator.ResourceOperations
             _stringsTable.ColumnChanged -= stringsTable_ColumnChanged;
 
             var row = _stringsTable.NewRow();
-            row[ResourceGrid.ColNameKey] = key;
-            row[ResourceGrid.ColNameNoLang] = noXlateValue;
+            row[Properties.Resources.ColNameKey] = key;
+            row[Properties.Resources.ColNameNoLang] = noXlateValue;
             foreach (var languageHolder in Languages.Values)
             {
                 row[languageHolder.LanguageId] = defaultValue;
             }
-            row[ResourceGrid.ColNameComment] = string.Empty;
-            row[ResourceGrid.ColNameError] = false;
+            row[Properties.Resources.ColNameComment] = string.Empty;
+            row[Properties.Resources.ColNameError] = false;
 
             _stringsTable.ColumnChanged += stringsTable_ColumnChanged;
 
@@ -591,7 +600,7 @@ namespace ResxTranslator.ResourceOperations
             {
                 rows.RemoveAll(dataRow =>
                 {
-                    var defaultValue = ((string)dataRow[ResourceGrid.ColNameNoLang]).Trim();
+                    var defaultValue = ((string)dataRow[Properties.Resources.ColNameNoLang]).Trim();
                     return !defaultValue.StartsWith("[", StringComparison.InvariantCultureIgnoreCase)
                     || !defaultValue.EndsWith("]", StringComparison.InvariantCultureIgnoreCase);
                 });
