@@ -81,6 +81,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Resources\Localization.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Localization.resx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\ComboBoxWrapper.cs" />
     <Compile Include="Controls\LanguageSettings.cs">
       <SubType>UserControl</SubType>
@@ -121,9 +126,14 @@
     <EmbeddedResource Include="Controls\ResourceTreeView.resx">
       <DependentUpon>ResourceTreeView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Localization.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Localization.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\AboutBox.es.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>

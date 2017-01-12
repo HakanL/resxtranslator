@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using ResxTranslator.Resources;
 
 namespace ResxTranslator.ResourceOperations
 {
@@ -76,7 +77,8 @@ namespace ResxTranslator.ResourceOperations
 
             if (isDirty)
             {
-                var dialogResult = MessageBox.Show("Do you want save your changes before closing?", "Save Changes",
+                var dialogResult = MessageBox.Show(Localization.MessageBox_SaveChangesBeforeClose_Message, 
+                    Localization.MessageBox_SaveChangesBeforeClose_Title,
                     MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
 
                 // Return false only if user presses cancel
@@ -91,7 +93,7 @@ namespace ResxTranslator.ResourceOperations
         public void Close()
         {
             if (!CanClose())
-                throw new InvalidOperationException("Can't close at this time");
+                throw new InvalidOperationException(Localization.Error_CantClose);
             
             _resourceStore.Clear();
             OpenedPath = string.Empty;
@@ -109,12 +111,12 @@ namespace ResxTranslator.ResourceOperations
         {
             Close();
 
-            OnResourceLoadProgress(new ResourceLoadProgressEventArgs("Loading resources..."));
+            OnResourceLoadProgress(new ResourceLoadProgressEventArgs(Localization.LoadProgress_LoadingResources));
 
             FindResx(selectedPath);
             OpenedPath = selectedPath;
 
-            OnResourceLoadProgress(new ResourceLoadProgressEventArgs("Done"));
+            OnResourceLoadProgress(new ResourceLoadProgressEventArgs(Localization.LoadProgress_Done));
         }
 
         public void SaveAll()
@@ -198,7 +200,7 @@ namespace ResxTranslator.ResourceOperations
                 else
                 {
                     if (resourceHolder.Languages.ContainsKey(languageCode.ToLower()))
-                        throw new InvalidDataException("Duplicate resource file: " + filename);
+                        throw new InvalidDataException(string.Format(Localization.Error_DuplicateResx, filename));
 
                     resourceHolder.Languages.Add(languageCode.ToLower(), new LanguageHolder(languageCode, filename));
                 }

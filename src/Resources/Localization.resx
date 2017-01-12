@@ -117,62 +117,81 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Add" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="MessageBox_SelectedLanguageInvalid_Message" xml:space="preserve">
+    <value>Selected language is invalid, please select one of the entries on the dropdown list.</value>
   </data>
-  <data name="Delete_black_32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Delete_black_32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="MessageBox_SelectedLanguageInvalid_Title" xml:space="preserve">
+    <value>Invalid language</value>
   </data>
-  <data name="DocumentHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DocumentHS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="MessageBox_CreateMissingResource_Message" xml:space="preserve">
+    <value>Resource file for this language is missing, do you want to create it?</value>
   </data>
-  <data name="Edit_UndoHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Edit_UndoHS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="MessageBox_CreateMissingResource_Title" xml:space="preserve">
+    <value>Missing resource file</value>
   </data>
-  <data name="Find_VS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Find_VS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="MessageBox_ConfirmLoadAssemblies_Message" xml:space="preserve">
+    <value>With current settings this operation will try to load {0} assemblies. Do you really want to load them all? If you select no, loading will be skipped.</value>
   </data>
-  <data name="folderHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\openHS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="MessageBox_ConfirmLoadAssemblies_Title" xml:space="preserve">
+    <value>Load reference assemblies</value>
   </data>
-  <data name="GoToParentFolderHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\GoToParentFolderHS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="LoadProgress_ReferenceAssemblies" xml:space="preserve">
+    <value>Loading reference assemblies...</value>
   </data>
-  <data name="openfolderHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\openfolderHS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="LoadProgress_Done" xml:space="preserve">
+    <value>Done</value>
   </data>
-  <data name="SaveAllHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SaveAllHS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="MessageBox_ConfirmDeleteRow_Message" xml:space="preserve">
+    <value>Are you sure you want to delete the currently selected row?</value>
   </data>
-  <data name="saveHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\saveHS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="MessageBox_ConfirmDeleteRow_Title" xml:space="preserve">
+    <value>Delete a key</value>
   </data>
-  <data name="Book_openHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Book_openHS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="MainWindow_OpenDirectory_Description" xml:space="preserve">
+    <value>Browse to the root of the project, typically where the sln file is.</value>
   </data>
-  <data name="Help" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\109_AllAnnotations_Help_16x16_72.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="MainWindow_MoreLanguagesMenuItem" xml:space="preserve">
+    <value>More languages...</value>
   </data>
-  <data name="RefreshArrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\112_RefreshArrow_Blue_16x16_72.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="MainWindow_CurrentResource_NoResourceLoaded" xml:space="preserve">
+    <value>No resource loaded</value>
   </data>
-  <data name="Homepage" xml:space="preserve">
-    <value>https://resxtranslator.codeplex.com/</value>
+  <data name="LoadProgress_OpeningDirectory" xml:space="preserve">
+    <value>Opening "{0}"...</value>
   </data>
-  <data name="ColNameComment" xml:space="preserve">
-    <value>Comment</value>
+  <data name="Error_DirectoryMissing" xml:space="preserve">
+    <value>Folder '{0}' does not exist.</value>
   </data>
-  <data name="ColNameError" xml:space="preserve">
-    <value>Error</value>
+  <data name="Error_InvalidCommandLine" xml:space="preserve">
+    <value>Invalid command line 
+{0}
+Path: {1}</value>
   </data>
-  <data name="ColNameKey" xml:space="preserve">
-    <value>Key</value>
+  <data name="Error_CantClose" xml:space="preserve">
+    <value>Can't close at this time</value>
   </data>
-  <data name="ColNameNoLang" xml:space="preserve">
-    <value>NoLanguageValue</value>
+  <data name="Error_KeyAlreadyExists" xml:space="preserve">
+    <value>Key with this name already exists</value>
   </data>
-  <data name="ColNameTranslated" xml:space="preserve">
-    <value>Translated</value>
+  <data name="Error_KeyCantBeEmpty" xml:space="preserve">
+    <value>Key name can't be empty</value>
+  </data>
+  <data name="Error_InvalidKeyName" xml:space="preserve">
+    <value>Key name can only contain letters and numbers</value>
+  </data>
+  <data name="MessageBox_SaveChangesBeforeClose_Message" xml:space="preserve">
+    <value>Do you want save your changes before closing?</value>
+  </data>
+  <data name="MessageBox_SaveChangesBeforeClose_Title" xml:space="preserve">
+    <value>Save Changes</value>
+  </data>
+  <data name="LoadProgress_LoadingResources" xml:space="preserve">
+    <value>Loading resources...</value>
+  </data>
+  <data name="Error_DuplicateResx" xml:space="preserve">
+    <value>Duplicate resource file: {0}</value>
+  </data>
+  <data name="Error_FailedSaving" xml:space="preserve">
+    <value>Exception while saving: {0}</value>
   </data>
 </root>

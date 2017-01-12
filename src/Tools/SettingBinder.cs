@@ -159,11 +159,11 @@ namespace ResxTranslator.Tools
         {
             var memberSelectorExpression = targetSetting.Body as MemberExpression;
             if (memberSelectorExpression == null)
-                throw new ArgumentException("Invalid lambda format", nameof(targetSetting));
+                throw new ArgumentException(@"Invalid lambda format", nameof(targetSetting));
 
             var property = memberSelectorExpression.Member as PropertyInfo;
             if (property == null)
-                throw new ArgumentException("Invalid lambda format", nameof(targetSetting));
+                throw new ArgumentException(@"Invalid lambda format", nameof(targetSetting));
 
             EventHandler checkedChanged = (x, y) => { property.SetValue(Settings, getter(), null); };
 
