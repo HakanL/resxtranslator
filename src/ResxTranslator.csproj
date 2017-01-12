@@ -125,28 +125,42 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Windows\AboutBox.es.resx" />
+    <EmbeddedResource Include="Windows\AboutBox.es.resx">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Windows\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Windows\AddResourceKeyWindow.es.resx" />
-    <EmbeddedResource Include="Windows\CellEditorWindow.es.resx" />
-    <EmbeddedResource Include="Windows\EditReferencePaths.es.resx" />
+    <EmbeddedResource Include="Windows\AddResourceKeyWindow.es.resx">
+      <DependentUpon>AddResourceKeyWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\CellEditorWindow.es.resx">
+      <DependentUpon>CellEditorWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\EditReferencePaths.es.resx">
+      <DependentUpon>EditReferencePaths.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Windows\EditReferencePaths.resx">
       <DependentUpon>EditReferencePaths.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\AddResourceKeyWindow.resx">
       <DependentUpon>AddResourceKeyWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Windows\FindWindow.es.resx" />
+    <EmbeddedResource Include="Windows\FindWindow.es.resx">
+      <DependentUpon>FindWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Windows\FindWindow.resx">
       <DependentUpon>FindWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Windows\LanguageSelectDialog.es.resx" />
+    <EmbeddedResource Include="Windows\LanguageSelectDialog.es.resx">
+      <DependentUpon>LanguageSelectDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Windows\LanguageSelectDialog.resx">
       <DependentUpon>LanguageSelectDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Windows\MainWindow.es.resx" />
+    <EmbeddedResource Include="Windows\MainWindow.es.resx">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Windows\MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
