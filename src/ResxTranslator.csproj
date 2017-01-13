@@ -138,7 +138,6 @@
     <EmbeddedResource Include="Windows\AboutBox.es.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Windows\AboutBox.es.resx" />
     <EmbeddedResource Include="Windows\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
