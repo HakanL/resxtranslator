@@ -295,6 +295,9 @@ namespace ResxTranslator.Windows
 
         private void LoadResourcesFromFolder(string path)
         {
+            if (!ResourceLoader.CanClose())
+                return;
+
             Enabled = false;
             toolStripStatusLabel1.Text = string.Format(Localization.LoadProgress_OpeningDirectory, path);
             Application.DoEvents();
