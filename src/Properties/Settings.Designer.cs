@@ -213,5 +213,17 @@ namespace ResxTranslator.Properties {
                 this["ReferencePathsFromResourceDir"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CellEditorShowWhitespace {
+            get {
+                return ((bool)(this["CellEditorShowWhitespace"]));
+            }
+            set {
+                this["CellEditorShowWhitespace"] = value;
+            }
+        }
     }
 }
