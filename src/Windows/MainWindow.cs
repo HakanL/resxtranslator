@@ -10,13 +10,14 @@ using System.Reflection;
 using System.Windows.Forms;
 using ResxTranslator.Properties;
 using ResxTranslator.ResourceOperations;
+using ResxTranslator.Resources;
 using ResxTranslator.Tools;
 
 namespace ResxTranslator.Windows
 {
     public sealed partial class MainWindow : Form
     {
-        private const string MoreLanguagesMenuitemName = "More languages...";
+        private static readonly string MoreLanguagesMenuitemName = Localization.MainWindow_MoreLanguagesMenuItem;
         private readonly string _defaultWindowTitle;
 
         private ResourceHolder _currentResource;
@@ -41,8 +42,8 @@ namespace ResxTranslator.Windows
             {
                 if (!args.Item.Languages.ContainsKey(args.Language.Name))
                 {
-                    if (MessageBox.Show(this, "Resource file for this language is missing, do you want to create it?",
-                        "Missing resource file", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    if (MessageBox.Show(this, Localization.MessageBox_CreateMissingResource_Message,
+                        Localization.MessageBox_CreateMissingResource_Title, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                         return;
 
                     args.Item.AddLanguage(args.Language.Name, Settings.Default.AddDefaultValuesOnLanguageAdd);
@@ -126,7 +127,7 @@ namespace ResxTranslator.Windows
                     resourceGrid1.SetVisibleLanguageColumns(
                         languageSettings1.EnabledLanguages.Select(x => x.Name).ToArray());
 
-                    tabPageEditedResource.Text = value?.Filename ?? "No resource loaded";
+                    tabPageEditedResource.Text = value?.Filename ?? Localization.MainWindow_CurrentResource_NoResourceLoaded;
                     UpdateMenuStrip();
                 });
             }
@@ -143,7 +144,7 @@ namespace ResxTranslator.Windows
 
         private void LoadReferenceAssemblies()
         {
-            OnResourceLoadProgress(this, new ResourceLoadProgressEventArgs("Loading reference assemblies..."));
+            OnResourceLoadProgress(this, new ResourceLoadProgressEventArgs(Localization.LoadProgress_ReferenceAssemblies));
 
             var assembliesToLoad = new List<string>();
 
@@ -166,10 +167,12 @@ namespace ResxTranslator.Windows
             assembliesToLoad = assembliesToLoad.Select(x => x.ToLowerInvariant()).Distinct().ToList();
 
             if (assembliesToLoad.Count > 300 && MessageBox.Show(
-                $"With current settings this operation will try to load {assembliesToLoad.Count} assemblies. Do you really want to load them all? If you select no, loading will be skipped.",
-                "Load reference assemblies", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                string.Format(
+                    Localization.MessageBox_ConfirmLoadAssemblies_Message,
+                    assembliesToLoad.Count),
+                Localization.MessageBox_ConfirmLoadAssemblies_Title, MessageBoxButtons.YesNo) != DialogResult.Yes)
             {
-                OnResourceLoadProgress(this, new ResourceLoadProgressEventArgs("Done", null, 0, 0));
+                OnResourceLoadProgress(this, new ResourceLoadProgressEventArgs(Localization.LoadProgress_Done, null, 0, 0));
                 return;
             }
 
@@ -177,7 +180,7 @@ namespace ResxTranslator.Windows
             foreach (var filename in assembliesToLoad)
             {
                 count++;
-                OnResourceLoadProgress(this, new ResourceLoadProgressEventArgs($"Loading reference assemblies",
+                OnResourceLoadProgress(this, new ResourceLoadProgressEventArgs(Localization.LoadProgress_ReferenceAssemblies,
                     Path.GetFileName(filename), count, assembliesToLoad.Count));
 
                 try
@@ -193,7 +196,7 @@ namespace ResxTranslator.Windows
                 catch (FileLoadException) { }
             }
 
-            OnResourceLoadProgress(this, new ResourceLoadProgressEventArgs("Done", null, 0, 0));
+            OnResourceLoadProgress(this, new ResourceLoadProgressEventArgs(Localization.LoadProgress_Done, null, 0, 0));
         }
 
         private void UpdateMenuStrip()
@@ -271,7 +274,7 @@ namespace ResxTranslator.Windows
             if (CurrentResource == null || resourceGrid1.RowCount == 0)
                 return;
 
-            if (MessageBox.Show("Are you sure you want to delete the currently selected row?", "Delete a key",
+            if (MessageBox.Show(Localization.MessageBox_ConfirmDeleteRow_Message, Localization.MessageBox_ConfirmDeleteRow_Title,
                 MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 resourceGrid1.DeleteSelectedRow();
@@ -293,7 +296,7 @@ namespace ResxTranslator.Windows
         private void LoadResourcesFromFolder(string path)
         {
             Enabled = false;
-            toolStripStatusLabel1.Text = $"Opening \"{path}\"...";
+            toolStripStatusLabel1.Text = string.Format(Localization.LoadProgress_OpeningDirectory, path);
             Application.DoEvents();
 
             ResourceLoader.OpenProject(path);
@@ -342,14 +345,14 @@ namespace ResxTranslator.Windows
                 {
                     var fldr = new DirectoryInfo(path);
                     if (!fldr.Exists)
-                        throw new ArgumentException("Folder '" + path + "' does not exist.");
+                        throw new ArgumentException(string.Format(Localization.Error_DirectoryMissing, path));
                     path = (fldr.FullName + "\\").Replace("\\\\", "\\");
                     LoadResourcesFromFolder(path);
                 }
                 catch (Exception inner)
                 {
                     throw new ArgumentException(
-                        "Invalid command line \r\n" + Environment.CommandLine + "\r\nPath: " + path, inner);
+                        string.Format(Localization.Error_InvalidCommandLine, Environment.CommandLine, path), inner);
                 }
             }
             else if (Settings.Default.OpenLastDirOnStart &&
@@ -411,7 +414,7 @@ namespace ResxTranslator.Windows
             var folderDialog = new FolderBrowserDialog
             {
                 SelectedPath = Settings.Default.LastOpenedDirectory,
-                Description = "Browse to the root of the project, typically where the sln file is."
+                Description = Localization.MainWindow_OpenDirectory_Description
             };
 
             if (folderDialog.ShowDialog(this) == DialogResult.OK)
@@ -483,7 +486,7 @@ namespace ResxTranslator.Windows
 
         private void helpToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            Process.Start(@"https://resxtranslator.codeplex.com/");
+            Process.Start(Properties.Resources.Homepage);
         }
 
         private void licenceToolStripMenuItem_Click(object sender, EventArgs e)

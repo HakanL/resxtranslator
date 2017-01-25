@@ -117,67 +117,81 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="columnHeaderCode.Text" xml:space="preserve">
-    <value>Code</value>
+  <data name="MessageBox_SelectedLanguageInvalid_Message" xml:space="preserve">
+    <value>Selected language is invalid, please select one of the entries on the dropdown list.</value>
   </data>
-  <data name="columnHeaderName.Text" xml:space="preserve">
-    <value>Language name</value>
+  <data name="MessageBox_SelectedLanguageInvalid_Title" xml:space="preserve">
+    <value>Invalid language</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="columnHeaderName.Width" type="System.Int32, mscorlib">
-    <value>95</value>
+  <data name="MessageBox_CreateMissingResource_Message" xml:space="preserve">
+    <value>Resource file for this language is missing, do you want to create it?</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="listView1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="MessageBox_CreateMissingResource_Title" xml:space="preserve">
+    <value>Missing resource file</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="listView1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+  <data name="MessageBox_ConfirmLoadAssemblies_Message" xml:space="preserve">
+    <value>With current settings this operation will try to load {0} assemblies. Do you really want to load them all? If you select no, loading will be skipped.</value>
   </data>
-  <data name="listView1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>372, 349</value>
+  <data name="MessageBox_ConfirmLoadAssemblies_Title" xml:space="preserve">
+    <value>Load reference assemblies</value>
   </data>
-  <data name="listView1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="LoadProgress_ReferenceAssemblies" xml:space="preserve">
+    <value>Loading reference assemblies...</value>
   </data>
-  <data name="&gt;&gt;listView1.Name" xml:space="preserve">
-    <value>listView1</value>
+  <data name="LoadProgress_Done" xml:space="preserve">
+    <value>Done</value>
   </data>
-  <data name="&gt;&gt;listView1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="MessageBox_ConfirmDeleteRow_Message" xml:space="preserve">
+    <value>Are you sure you want to delete the currently selected row?</value>
   </data>
-  <data name="&gt;&gt;listView1.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="MessageBox_ConfirmDeleteRow_Title" xml:space="preserve">
+    <value>Delete a key</value>
   </data>
-  <data name="&gt;&gt;listView1.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="MainWindow_OpenDirectory_Description" xml:space="preserve">
+    <value>Browse to the root of the project, typically where the sln file is.</value>
   </data>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+  <data name="MainWindow_MoreLanguagesMenuItem" xml:space="preserve">
+    <value>More languages...</value>
   </data>
-  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>372, 349</value>
+  <data name="MainWindow_CurrentResource_NoResourceLoaded" xml:space="preserve">
+    <value>No resource loaded</value>
   </data>
-  <data name="&gt;&gt;columnHeaderCode.Name" xml:space="preserve">
-    <value>columnHeaderCode</value>
+  <data name="LoadProgress_OpeningDirectory" xml:space="preserve">
+    <value>Opening "{0}"...</value>
   </data>
-  <data name="&gt;&gt;columnHeaderCode.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="Error_DirectoryMissing" xml:space="preserve">
+    <value>Folder '{0}' does not exist.</value>
   </data>
-  <data name="&gt;&gt;columnHeaderName.Name" xml:space="preserve">
-    <value>columnHeaderName</value>
+  <data name="Error_InvalidCommandLine" xml:space="preserve">
+    <value>Invalid command line 
+{0}
+Path: {1}</value>
   </data>
-  <data name="&gt;&gt;columnHeaderName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="Error_CantClose" xml:space="preserve">
+    <value>Can't close at this time</value>
   </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>LanguageSettings</value>
+  <data name="Error_KeyAlreadyExists" xml:space="preserve">
+    <value>Key with this name already exists</value>
   </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="Error_KeyCantBeEmpty" xml:space="preserve">
+    <value>Key name can't be empty</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
+  <data name="Error_InvalidKeyName" xml:space="preserve">
+    <value>Key name can only contain letters and numbers</value>
+  </data>
+  <data name="MessageBox_SaveChangesBeforeClose_Message" xml:space="preserve">
+    <value>Do you want save your changes before closing?</value>
+  </data>
+  <data name="MessageBox_SaveChangesBeforeClose_Title" xml:space="preserve">
+    <value>Save Changes</value>
+  </data>
+  <data name="LoadProgress_LoadingResources" xml:space="preserve">
+    <value>Loading resources...</value>
+  </data>
+  <data name="Error_DuplicateResx" xml:space="preserve">
+    <value>Duplicate resource file: {0}</value>
+  </data>
+  <data name="Error_FailedSaving" xml:space="preserve">
+    <value>Exception while saving: {0}</value>
+  </data>
 </root>

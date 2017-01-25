@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using ResxTranslator.Properties;
 using ResxTranslator.ResourceOperations;
 using ResxTranslator.Tools;
 
@@ -18,9 +17,9 @@ namespace ResxTranslator.Controls
             InitializeComponent();
 
             treeViewResx.ImageList = new ImageList();
-            treeViewResx.ImageList.Images.Add(Resources.folderHS);
-            treeViewResx.ImageList.Images.Add(Resources.DocumentHS);
-            treeViewResx.ImageList.Images.Add(Resources.Book_openHS);
+            treeViewResx.ImageList.Images.Add(Properties.Resources.folderHS);
+            treeViewResx.ImageList.Images.Add(Properties.Resources.DocumentHS);
+            treeViewResx.ImageList.Images.Add(Properties.Resources.Book_openHS);
 
             treeViewResx.SelectedImageIndex = 2;
         }
@@ -92,9 +91,9 @@ namespace ResxTranslator.Controls
 
             foreach (DataRow row in resource.StringsTable.Rows)
             {
-                if (searchParams.Match(SearchParams.TargetType.Key, row["Key"].ToString()))
+                if (searchParams.Match(SearchParams.TargetType.Key, row[Properties.Resources.ColNameKey].ToString()))
                     return true;
-                if (searchParams.Match(SearchParams.TargetType.Text, row["NoLanguageValue"].ToString()))
+                if (searchParams.Match(SearchParams.TargetType.Text, row[Properties.Resources.ColNameNoLang].ToString()))
                     return true;
                 if (resource.Languages.Values.Any(
                     lng => searchParams.Match(SearchParams.TargetType.Text, row[lng.LanguageId].ToString())))

@@ -11,16 +11,13 @@ namespace ResxTranslator.Controls
 {
     public partial class ResourceGrid : UserControl
     {
-        public const string ColNameComment = "Comment";
-        public const string ColNameError = "Error";
-        public const string ColNameKey = "Key";
-        public const string ColNameNoLang = "NoLanguageValue";
-        public const string ColNameTranslated = "Translated";
-
         private static readonly string[] SpecialColNames =
         {
-            ColNameComment, ColNameError, ColNameKey, ColNameNoLang,
-            ColNameTranslated
+            Properties.Resources.ColNameComment,
+            Properties.Resources.ColNameError,
+            Properties.Resources.ColNameKey,
+            Properties.Resources.ColNameNoLang,
+            Properties.Resources.ColNameTranslated
         };
 
         private ResourceHolder _currentResource;
@@ -102,7 +99,8 @@ namespace ResxTranslator.Controls
 
         private void ApplyConditionalFormatting(DataGridViewRow r)
         {
-            if (r.Cells[ColNameError].Value != null && (bool) r.Cells[ColNameError].Value)
+            var colNameError = Properties.Resources.ColNameError;
+            if (r.Cells[colNameError].Value != null && (bool) r.Cells[colNameError].Value)
             {
                 r.DefaultCellStyle.ForeColor = Color.Red;
             }
@@ -114,9 +112,9 @@ namespace ResxTranslator.Controls
             if (r == dataGridView1.Rows[RowCount - 1])
                 return;            
 
-            ApplyConditionalCellFormatting(r.Cells[ColNameKey], SearchParams.TargetType.Key);
+            ApplyConditionalCellFormatting(r.Cells[Properties.Resources.ColNameKey], SearchParams.TargetType.Key);
 
-            ApplyConditionalCellFormatting(r.Cells[ColNameNoLang], SearchParams.TargetType.Text);
+            ApplyConditionalCellFormatting(r.Cells[Properties.Resources.ColNameNoLang], SearchParams.TargetType.Text);
 
             foreach (var lng in CurrentResource.Languages.Values)
             {
@@ -205,13 +203,13 @@ namespace ResxTranslator.Controls
                 dataGridView1.Columns[languageHolder.LanguageId].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             }
 
-            dataGridView1.Columns[ColNameNoLang].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            dataGridView1.Columns[ColNameComment].DisplayIndex = dataGridView1.Columns.Count - 1;
+            dataGridView1.Columns[Properties.Resources.ColNameNoLang].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            dataGridView1.Columns[Properties.Resources.ColNameComment].DisplayIndex = dataGridView1.Columns.Count - 1;
 
-            dataGridView1.Columns[ColNameTranslated].Visible = false;
-            dataGridView1.Columns[ColNameError].Visible = false;
+            dataGridView1.Columns[Properties.Resources.ColNameTranslated].Visible = false;
+            dataGridView1.Columns[Properties.Resources.ColNameError].Visible = false;
 
-            dataGridView1.Columns[ColNameKey].ReadOnly = true;
+            dataGridView1.Columns[Properties.Resources.ColNameKey].ReadOnly = true;
 
             ApplyConditionalFormatting();
         }

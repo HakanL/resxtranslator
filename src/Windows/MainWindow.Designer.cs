@@ -3,33 +3,33 @@
 namespace ResxTranslator.Windows
 {
     sealed partial class MainWindow
-	{
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.IContainer components = null;
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing && (components != null))
-			{
-				components.Dispose();
-			}
-			base.Dispose(disposing);
-		}
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
 
-		#region Windows Form Designer generated code
+        #region Windows Form Designer generated code
 
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
@@ -622,9 +622,65 @@ namespace ResxTranslator.Windows
             this.ResumeLayout(false);
             this.PerformLayout();
 
-		}
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
+            resources.ApplyResources(this.statusStrip1, "statusStrip1");
+            resources.ApplyResources(this.toolStripStatusLabel1, "toolStripStatusLabel1");
+            resources.ApplyResources(this.toolStripProgressBar1, "toolStripProgressBar1");
+            resources.ApplyResources(this.toolStripStatusLabelCurrentItem, "toolStripStatusLabelCurrentItem");
+            resources.ApplyResources(this.panelMain, "panelMain");
+            resources.ApplyResources(this.splitContainerMain, "splitContainerMain");
+            resources.ApplyResources(this.splitContainer1, "splitContainer1");
+            resources.ApplyResources(this.tabControl2, "tabControl2");
+            resources.ApplyResources(this.tabPage3, "tabPage3");
+            resources.ApplyResources(this.resourceTreeView1, "resourceTreeView1");
+            resources.ApplyResources(this.tabPage5, "tabPage5");
+            resources.ApplyResources(this.missingTranslationView1, "missingTranslationView1");
+            resources.ApplyResources(this.tabControl1, "tabControl1");
+            resources.ApplyResources(this.tabPage1, "tabPage1");
+            resources.ApplyResources(this.languageSettings1, "languageSettings1");
+            resources.ApplyResources(this.tabControl3, "tabControl3");
+            resources.ApplyResources(this.tabPageEditedResource, "tabPageEditedResource");
+            resources.ApplyResources(this.resourceGrid1, "resourceGrid1");
+            resources.ApplyResources(this.menuStripMain, "menuStripMain");
+            resources.ApplyResources(this.fileToolStripMenuItem, "fileToolStripMenuItem");
+            resources.ApplyResources(this.openToolStripMenuItem, "openToolStripMenuItem");
+            resources.ApplyResources(this.saveAllModifiedToolStripMenuItem, "saveAllModifiedToolStripMenuItem");
+            resources.ApplyResources(this.closeToolStripMenuItem, "closeToolStripMenuItem");
+            resources.ApplyResources(this.reloadCurrentDirectoryToolStripMenuItem, "reloadCurrentDirectoryToolStripMenuItem");
+            resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
+            resources.ApplyResources(this.saveToolStripMenuItem, "saveToolStripMenuItem");
+            resources.ApplyResources(this.revertCurrentFileToolStripMenuItem, "revertCurrentFileToolStripMenuItem");
+            resources.ApplyResources(this.openResourceLocationToolStripMenuItem, "openResourceLocationToolStripMenuItem");
+            resources.ApplyResources(this.toolStripMenuItem1, "toolStripMenuItem1");
+            resources.ApplyResources(this.exitToolStripMenuItem, "exitToolStripMenuItem");
+            resources.ApplyResources(this.findToolStripMenuItem, "findToolStripMenuItem");
+            resources.ApplyResources(this.findToolStripMenuItem1, "findToolStripMenuItem1");
+            resources.ApplyResources(this.clearSearchToolStripMenuItem, "clearSearchToolStripMenuItem");
+            resources.ApplyResources(this.keysToolStripMenuItem, "keysToolStripMenuItem");
+            resources.ApplyResources(this.addNewKeyToolStripMenuItem, "addNewKeyToolStripMenuItem");
+            resources.ApplyResources(this.deleteKeyToolStripMenuItem, "deleteKeyToolStripMenuItem");
+            resources.ApplyResources(this.languagesToolStripMenuItem, "languagesToolStripMenuItem");
+            resources.ApplyResources(this.addLanguageToolStripMenuItem, "addLanguageToolStripMenuItem");
+            resources.ApplyResources(this.removeLanguageToolStripMenuItem, "removeLanguageToolStripMenuItem");
+            resources.ApplyResources(this.settingsToolStripMenuItem, "settingsToolStripMenuItem");
+            resources.ApplyResources(this.copyDefaultValuesOnLanguageAddToolStripMenuItem, "copyDefaultValuesOnLanguageAddToolStripMenuItem");
+            resources.ApplyResources(this.ignoreEmptyResourcesToolStripMenuItem, "ignoreEmptyResourcesToolStripMenuItem");
+            resources.ApplyResources(this.doNotShowResourcesWithoutAnyTranslationsToolStripMenuItem, "doNotShowResourcesWithoutAnyTranslationsToolStripMenuItem");
+            resources.ApplyResources(this.markToTranslateOnlyIfDefaultValueIsInBracketsToolStripMenuItem, "markToTranslateOnlyIfDefaultValueIsInBracketsToolStripMenuItem");
+            resources.ApplyResources(this.displayNullValuesAsGrayedToolStripMenuItem, "displayNullValuesAsGrayedToolStripMenuItem");
+            resources.ApplyResources(this.openLastDirectoryOnProgramStartToolStripMenuItem, "openLastDirectoryOnProgramStartToolStripMenuItem");
+            resources.ApplyResources(this.toolStripSeparator2, "toolStripSeparator2");
+            resources.ApplyResources(this.loadAssembliesFromResourcePathToolStripMenuItem, "loadAssembliesFromResourcePathToolStripMenuItem");
+            resources.ApplyResources(this.setReferencePathsToolStripMenuItem, "setReferencePathsToolStripMenuItem");
+            resources.ApplyResources(this.helpToolStripMenuItem, "helpToolStripMenuItem");
+            resources.ApplyResources(this.helpToolStripMenuItem1, "helpToolStripMenuItem1");
+            resources.ApplyResources(this.licenceToolStripMenuItem, "licenceToolStripMenuItem");
+            resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
+            resources.ApplyResources(this, "$this");
+        }
 
-		#endregion
+        #endregion
+
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;

@@ -126,6 +126,13 @@
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CellEditorWindow));
+            resources.ApplyResources(this.textBoxString, "textBoxString");
+            resources.ApplyResources(this.panel1, "panel1");
+            resources.ApplyResources(this.checkBox1, "checkBox1");
+            resources.ApplyResources(this.buttonCancel, "buttonCancel");
+            resources.ApplyResources(this.buttonOK, "buttonOK");
+            resources.ApplyResources(this, "$this");
         }
 
         #endregion
