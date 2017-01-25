@@ -5,7 +5,7 @@ using ScintillaNET;
 
 namespace ResxTranslator.Windows
 {
-    public partial class CellEditorWindow : Form
+    public sealed partial class CellEditorWindow : Form
     {
         public CellEditorWindow()
         {
@@ -14,7 +14,7 @@ namespace ResxTranslator.Windows
             textBoxString.Styles[Style.LineNumber].BackColor = Color.DarkGray;
             textBoxString.Styles[Style.LineNumber].ForeColor = Color.LightGray;
 
-            Margin nums = textBoxString.Margins[1];
+            var nums = textBoxString.Margins[1];
             nums.Type = MarginType.Number;
             nums.Mask = 0;
 
@@ -23,10 +23,12 @@ namespace ResxTranslator.Windows
             textBoxString.SetWhitespaceForeColor(true, Color.Brown);
 
             Settings.Binder.BindControl(checkBox1, settings => settings.CellEditorWrapContents, this);
-            Settings.Binder.Subscribe((sender, args) => textBoxString.WrapMode = args.NewValue ? WrapMode.Word : WrapMode.None, settings => settings.CellEditorWrapContents, this);
+            Settings.Binder.Subscribe((sender, args) => textBoxString.WrapMode = args.NewValue ? WrapMode.Word : WrapMode.None,
+                settings => settings.CellEditorWrapContents, this);
 
             Settings.Binder.BindControl(chbShowWhitespace, settings => settings.CellEditorShowWhitespace, this);
-            Settings.Binder.Subscribe((sender, args) => textBoxString.ViewWhitespace = args.NewValue ? WhitespaceMode.VisibleAlways : WhitespaceMode.Invisible, settings => settings.CellEditorShowWhitespace, this);
+            Settings.Binder.Subscribe((sender, args) => textBoxString.ViewWhitespace = args.NewValue ? WhitespaceMode.VisibleAlways : WhitespaceMode.Invisible,
+                settings => settings.CellEditorShowWhitespace, this);
 
             Settings.Binder.SendUpdates(this);
         }

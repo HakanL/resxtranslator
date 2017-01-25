@@ -1,6 +1,6 @@
 ﻿namespace ResxTranslator.Windows
 {
-    partial class CellEditorWindow
+    sealed partial class CellEditorWindow
     {
         /// <summary>
         /// Required designer variable.
@@ -35,14 +35,16 @@
             this.buttonOK = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.textBoxString = new ScintillaNET.Scintilla();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.chbShowWhitespace);
-            this.panel1.Controls.Add(this.checkBox1);
             this.panel1.Controls.Add(this.buttonOK);
+            this.panel1.Controls.Add(this.panel2);
+            this.panel1.Controls.Add(this.checkBox1);
+            this.panel1.Controls.Add(this.chbShowWhitespace);
             this.panel1.Controls.Add(this.buttonCancel);
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
@@ -81,6 +83,11 @@
             this.textBoxString.ScrollWidth = 200;
             this.textBoxString.WhitespaceSize = 2;
             // 
+            // panel2
+            // 
+            resources.ApplyResources(this.panel2, "panel2");
+            this.panel2.Name = "panel2";
+            // 
             // CellEditorWindow
             // 
             this.AcceptButton = this.buttonOK;
@@ -108,5 +115,6 @@
         private System.Windows.Forms.CheckBox checkBox1;
         internal ScintillaNET.Scintilla textBoxString;
         private System.Windows.Forms.CheckBox chbShowWhitespace;
+        private System.Windows.Forms.Panel panel2;
     }
 }
