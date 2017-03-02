@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -186,18 +187,14 @@ namespace ResxTranslator.ResourceOperations
                         DisplayFolder = displayFolder
                     };
 
-                    if (string.IsNullOrEmpty(languageCode))
-                        resourceHolder.Filename = filename;
+                    var dir = Path.GetDirectoryName(filename);
+                    Debug.Assert(dir != null, "dir != null");
+                    resourceHolder.Filename = Path.Combine(dir, filenameNoExt + ".resx");
 
                     _resourceStore.Add(key, resourceHolder);
                 }
-
-                if (string.IsNullOrEmpty(languageCode))
-                {
-                    // This is the main file
-                    resourceHolder.Filename = filename;
-                }
-                else
+                
+                if (!string.IsNullOrEmpty(languageCode))
                 {
                     if (resourceHolder.Languages.ContainsKey(languageCode.ToLower()))
                         throw new InvalidDataException(string.Format(Localization.Error_DuplicateResx, filename));

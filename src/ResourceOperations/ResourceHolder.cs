@@ -125,45 +125,50 @@ namespace ResxTranslator.ResourceOperations
         {
             // Read the entire resource file to a buffer
             var originalMetadatas = new Dictionary<string, object>();
-
-            using (var reader = new ResXResourceReader(filename, 
-                AppDomain.CurrentDomain.GetAssemblies().Select(x => x.GetName()).ToArray()))
-            {
-                // Set base path so that relative paths work
-                reader.BasePath = Path.GetDirectoryName(filename);
-
-                // If UseResXDataNodes == true before you call GetMetadataEnumerator, no resource nodes are retrieved
-                var metadataEnumerator = reader.GetMetadataEnumerator();
-                while (metadataEnumerator.MoveNext())
-                {
-                    originalMetadatas.Add((string)metadataEnumerator.Key, metadataEnumerator.Value);
-                }
-            }
             var originalResources = new Dictionary<string, ResXDataNode>();
-            using (var reader = new ResXResourceReader(filename))
+
+            var fileExists = filename != null && File.Exists(filename);
+            if (fileExists)
             {
-                // If GetMetadataEnumerator was already called setting the UseResXDataNodes to true will have no effect
-                // Because of this creating a new reader is necessary
-                reader.UseResXDataNodes = true;
-                var dataEnumerator = reader.GetEnumerator();
-                while (dataEnumerator.MoveNext())
+                using (var reader = new ResXResourceReader(filename, 
+                    AppDomain.CurrentDomain.GetAssemblies().Select(x => x.GetName()).ToArray()))
                 {
-                    var key = (string)dataEnumerator.Key;
-                    // GetEnumerator will also get metadata items, filter them out
-                    if (!originalMetadatas.ContainsKey(key))
-                        originalResources.Add(key, (ResXDataNode)dataEnumerator.Value);
+                    // Set base path so that relative paths work
+                    reader.BasePath = Path.GetDirectoryName(filename);
+
+                    // If UseResXDataNodes == true before you call GetMetadataEnumerator, no resource nodes are retrieved
+                    var metadataEnumerator = reader.GetMetadataEnumerator();
+                    while (metadataEnumerator.MoveNext())
+                    {
+                        originalMetadatas.Add((string)metadataEnumerator.Key, metadataEnumerator.Value);
+                    }
                 }
-            }
+
+                using (var reader = new ResXResourceReader(filename))
+                {
+                    // If GetMetadataEnumerator was already called setting the UseResXDataNodes to true will have no effect
+                    // Because of this creating a new reader is necessary
+                    reader.UseResXDataNodes = true;
+                    var dataEnumerator = reader.GetEnumerator();
+                    while (dataEnumerator.MoveNext())
+                    {
+                        var key = (string)dataEnumerator.Key;
+                        // GetEnumerator will also get metadata items, filter them out
+                        if (!originalMetadatas.ContainsKey(key))
+                            originalResources.Add(key, (ResXDataNode)dataEnumerator.Value);
+                    }
+                }
             
-            // Get rid of keys marked as deleted. If they have been restored they will be re-added later
-            // Only support localizable strings to avoid removing other resources by mistake
-            // BUG Clear the _deletedKeys?
-            foreach (var originalResource in originalResources
-                .Where(originalResource => _deletedKeys.ContainsKey(originalResource.Key))
-                .Where(originalResource => IsLocalizableString(originalResource.Key, originalResource.Value))
-                .ToList())
-            {
-                originalResources.Remove(originalResource.Key);
+                // Get rid of keys marked as deleted. If they have been restored they will be re-added later
+                // Only support localizable strings to avoid removing other resources by mistake
+                // BUG Clear the _deletedKeys?
+                foreach (var originalResource in originalResources
+                    .Where(originalResource => _deletedKeys.ContainsKey(originalResource.Key))
+                    .Where(originalResource => IsLocalizableString(originalResource.Key, originalResource.Value))
+                    .ToList())
+                {
+                    originalResources.Remove(originalResource.Key);
+                }
             }
 
             // Precache the valid keys
@@ -199,7 +204,7 @@ namespace ResxTranslator.ResourceOperations
                     localizableResourceKeys.Add(key);
                 }
             }
-
+            
             // Write the cached resources to the drive
             using (var writer = new ResXResourceWriter(filename))
             {
@@ -217,8 +222,8 @@ namespace ResxTranslator.ResourceOperations
                 {
                     writer.AddMetadata(originalMetadata.Key, originalMetadata.Value);
                 }
-
-                writer.Generate();
+                
+                    writer.Generate();
             }
         }
 
@@ -402,7 +407,7 @@ namespace ResxTranslator.ResourceOperations
                 _stringsTable.Columns.Add(Properties.Resources.ColNameTranslated, typeof(bool));
                 _stringsTable.Columns.Add(Properties.Resources.ColNameError, typeof(bool));
 
-                if (!string.IsNullOrEmpty(Filename))
+                if (Filename != null && File.Exists(Filename))
                 {
                     ReadResourceFile(Filename, _stringsTable, colNameNoLang, false);
                 }
