@@ -194,4 +194,10 @@ Path: {1}</value>
   <data name="Error_FailedSaving" xml:space="preserve">
     <value>Exception while saving: {0}</value>
   </data>
+  <data name="MessageBox_RemoveNontranslatableQuestion_Message" xml:space="preserve">
+    <value>This action will remove everything that is not text from translated resources (not the base resource). Resources will be saved to the drive in process, so make sure you have a backup.</value>
+  </data>
+  <data name="MessageBox_RemoveNontranslatableQuestion_Title" xml:space="preserve">
+    <value>Do you really want to remove non-translatable data?</value>
+  </data>
 </root>

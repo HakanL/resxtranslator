@@ -121,7 +121,7 @@ namespace ResxTranslator.ResourceOperations
         /// <summary>
         ///     Save one resource file
         /// </summary>
-        private void UpdateFile(string filename, string valueColumnId)
+        private void UpdateFile(string filename, string valueColumnId, bool skipNontranslatableData)
         {
             // Read the entire resource file to a buffer
             var originalMetadatas = new Dictionary<string, object>();
@@ -130,7 +130,7 @@ namespace ResxTranslator.ResourceOperations
             var fileExists = filename != null && File.Exists(filename);
             if (fileExists)
             {
-                using (var reader = new ResXResourceReader(filename, 
+                using (var reader = new ResXResourceReader(filename,
                     AppDomain.CurrentDomain.GetAssemblies().Select(x => x.GetName()).ToArray()))
                 {
                     // Set base path so that relative paths work
@@ -158,7 +158,7 @@ namespace ResxTranslator.ResourceOperations
                             originalResources.Add(key, (ResXDataNode)dataEnumerator.Value);
                     }
                 }
-            
+
                 // Get rid of keys marked as deleted. If they have been restored they will be re-added later
                 // Only support localizable strings to avoid removing other resources by mistake
                 // BUG Clear the _deletedKeys?
@@ -195,7 +195,7 @@ namespace ResxTranslator.ResourceOperations
                     if (originalResources[key].GetValueAsString()
                         .Equals(stringValueData, StringComparison.InvariantCulture))
                         continue;
-                    
+
                     originalResources[key] = new ResXDataNode(originalResources[key].Name, stringValueData) { Comment = stringCommentData };
                 }
                 else
@@ -204,29 +204,54 @@ namespace ResxTranslator.ResourceOperations
                     localizableResourceKeys.Add(key);
                 }
             }
-            
+
             // Write the cached resources to the drive
             using (var writer = new ResXResourceWriter(filename))
             {
                 foreach (var originalResource in originalResources)
                 {
                     // Write localizable resource only if it is not empty, unless we are saving the default file
-                    if (valueColumnId.Equals(Properties.Resources.ColNameNoLang) 
-                        || !localizableResourceKeys.Contains(originalResource.Key) 
+                    if (valueColumnId.Equals(Properties.Resources.ColNameNoLang)
+                        || !localizableResourceKeys.Contains(originalResource.Key)
                         || !string.IsNullOrWhiteSpace(originalResource.Value.GetValueAsString()))
                     {
-                        writer.AddResource(originalResource.Value);
+                        if (!skipNontranslatableData || IsLocalizableString(originalResource.Key, originalResource.Value))
+                            writer.AddResource(originalResource.Value);
                     }
                 }
                 foreach (var originalMetadata in originalMetadatas)
                 {
                     writer.AddMetadata(originalMetadata.Key, originalMetadata.Value);
                 }
-                
-                    writer.Generate();
+
+                writer.Generate();
             }
         }
 
+        /// <summary>
+        ///     Save translations of this resource without any non-translatable data, effectively removing it.
+        ///     The base (no language) resource is left intact.
+        /// </summary>
+        public void SaveWithoutNontranslatableData()
+        {
+            try
+            {
+                if (IsDirty)
+                    UpdateFile(Filename, Properties.Resources.ColNameNoLang, false);
+
+                foreach (var languageHolder in Languages.Values)
+                {
+                    UpdateFile(languageHolder.Filename, languageHolder.LanguageId, true);
+                }
+                Dirty = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, string.Format(Localization.Error_FailedSaving, Id),
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        
         /// <summary>
         ///     Save this resource holder's data
         /// </summary>
@@ -236,17 +261,17 @@ namespace ResxTranslator.ResourceOperations
                 return;
             try
             {
-                UpdateFile(Filename, Properties.Resources.ColNameNoLang);
+                UpdateFile(Filename, Properties.Resources.ColNameNoLang, false);
 
                 foreach (var languageHolder in Languages.Values)
                 {
-                    UpdateFile(languageHolder.Filename, languageHolder.LanguageId);
+                    UpdateFile(languageHolder.Filename, languageHolder.LanguageId, false);
                 }
                 Dirty = false;
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, string.Format(Localization.Error_FailedSaving, Id), 
+                MessageBox.Show(ex.Message, string.Format(Localization.Error_FailedSaving, Id),
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

@@ -205,20 +205,20 @@ namespace ResxTranslator.Windows
             keysToolStripMenuItem.Enabled = notNull;
             addNewKeyToolStripMenuItem.Enabled = notNull;
             languagesToolStripMenuItem.Enabled = notNull;
+            removeNonTLFromOpenedTranslationsToolStripMenuItem.Enabled = notNull;
 
             removeLanguageToolStripMenuItem.DropDownItems.Clear();
             addLanguageToolStripMenuItem.DropDownItems.Clear();
 
             if (_currentResource == null) return;
 
-            foreach (
-                var info in
-                    ResourceLoader.GetUsedLanguages()
-                        .Where(x => !_currentResource.Languages.Values.Any(y => y.CultureInfo.Equals(x)))
-                        .OrderBy(x => x.Name))
+            foreach (var info in ResourceLoader.GetUsedLanguages()
+                .Where(x => !_currentResource.Languages.Values.Any(y => y.CultureInfo.Equals(x)))
+                .OrderBy(x => x.Name))
             {
                 addLanguageToolStripMenuItem.DropDownItems.Add($"{info.Name} - {info.DisplayName}").Tag = info;
             }
+
             if (addLanguageToolStripMenuItem.DropDownItems.Count > 0)
                 addLanguageToolStripMenuItem.DropDownItems.Add(new ToolStripSeparator());
             addLanguageToolStripMenuItem.DropDownItems.Add(MoreLanguagesMenuitemName);
@@ -513,6 +513,30 @@ namespace ResxTranslator.Windows
                 Settings.Default.ReferencePaths.AddRange(referencePaths);
 
                 LoadReferenceAssemblies();
+            }
+        }
+
+        private void fromOpenedTranslationsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!AskToRemoveNontranslatable()) return;
+
+            CurrentResource?.SaveWithoutNontranslatableData();
+        }
+
+        private static bool AskToRemoveNontranslatable()
+        {
+            return MessageBox.Show(Localization.MessageBox_RemoveNontranslatableQuestion_Message,
+                Localization.MessageBox_RemoveNontranslatableQuestion_Title, MessageBoxButtons.OKCancel, 
+                MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.OK;
+        }
+
+        private void fromAllTranslationsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!AskToRemoveNontranslatable()) return;
+
+            foreach (var resource in ResourceLoader.Resources)
+            {
+                resource.SaveWithoutNontranslatableData();
             }
         }
     }

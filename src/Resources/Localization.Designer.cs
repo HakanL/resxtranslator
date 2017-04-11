@@ -252,6 +252,24 @@ namespace ResxTranslator.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This action will remove everything that is not text from translated resources (not the base resource). Resources will be saved to the drive in process, so make sure you have a backup..
+        /// </summary>
+        internal static string MessageBox_RemoveNontranslatableQuestion_Message {
+            get {
+                return ResourceManager.GetString("MessageBox_RemoveNontranslatableQuestion_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you really want to remove non-translatable data?.
+        /// </summary>
+        internal static string MessageBox_RemoveNontranslatableQuestion_Title {
+            get {
+                return ResourceManager.GetString("MessageBox_RemoveNontranslatableQuestion_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you want save your changes before closing?.
         /// </summary>
         internal static string MessageBox_SaveChangesBeforeClose_Message {
