@@ -20,7 +20,7 @@ namespace ResxTranslator.Windows
 
             _resourceHolder = resourceHolder;
         }
-        
+
         public static bool ShowDialog(Form owner, ResourceHolder resource)
         {
             using (var window = new AddResourceKeyWindow(resource))
@@ -45,7 +45,7 @@ namespace ResxTranslator.Windows
                 errorString = Localization.Error_KeyAlreadyExists;
             else if (string.IsNullOrWhiteSpace(keyName))
                 errorString = Localization.Error_KeyCantBeEmpty;
-            else if (keyName.Any(x => !char.IsLetterOrDigit(x)))
+            else if (keyName.Any(x => !char.IsLetterOrDigit(x) && x != '_'))
                 errorString = Localization.Error_InvalidKeyName;
 
             errorProvider.SetError(textboxKeyName, errorString);
