@@ -61,7 +61,7 @@ namespace ResxTranslator.Windows
                 var languageIds = languageSettings1.EnabledLanguages.Select(x => x.Name).ToArray();
                 resourceGrid1.CurrentResource.EvaluateAllRows(languageIds);
                 resourceGrid1.SetVisibleLanguageColumns(languageIds);
-                resourceGrid1.ApplyConditionalFormatting();
+                resourceGrid1.Refresh();
             };
 
             Settings.Binder.BindControl(ignoreEmptyResourcesToolStripMenuItem,

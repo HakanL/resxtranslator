@@ -47,7 +47,7 @@ namespace ResxTranslator.Controls
             set
             {
                 _currentSearch = value;
-                ApplyConditionalFormatting();
+                dataGridView1.Refresh();
             }
         }
 
@@ -57,15 +57,7 @@ namespace ResxTranslator.Controls
             set
             {
                 _showNullValuesAsGrayed = value;
-                ApplyConditionalFormatting();
-            }
-        }
-
-        public void ApplyConditionalFormatting()
-        {
-            foreach (DataGridViewRow r in dataGridView1.Rows)
-            {
-                ApplyConditionalFormatting(r);
+                dataGridView1.Refresh();
             }
         }
 
@@ -176,12 +168,7 @@ namespace ResxTranslator.Controls
                 }
             }
         }
-
-        private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            ApplyConditionalFormatting(dataGridView1.Rows[e.RowIndex]);
-        }
-
+        
         private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
             ((DataGridViewTextBoxEditingControl) e.Control).AcceptsReturn = true;
@@ -210,8 +197,6 @@ namespace ResxTranslator.Controls
             dataGridView1.Columns[Properties.Resources.ColNameError].Visible = false;
 
             dataGridView1.Columns[Properties.Resources.ColNameKey].ReadOnly = true;
-
-            ApplyConditionalFormatting();
         }
 
         private void CopyToClipboard()
@@ -322,6 +307,11 @@ namespace ResxTranslator.Controls
         private void setToEmptyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DeleteSelection();
+        }
+
+        private void dataGridView1_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
+        {
+            ApplyConditionalFormatting(dataGridView1.Rows[e.RowIndex]);
         }
     }
 }
