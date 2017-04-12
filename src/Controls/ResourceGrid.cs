@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -30,6 +31,8 @@ namespace ResxTranslator.Controls
         }
 
         public int RowCount => dataGridView1.RowCount;
+
+        public int SelectedCellCount => dataGridView1.SelectedCells.Count;
 
         public ResourceHolder CurrentResource
         {
@@ -312,6 +315,34 @@ namespace ResxTranslator.Controls
         private void dataGridView1_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
         {
             ApplyConditionalFormatting(dataGridView1.Rows[e.RowIndex]);
+        }
+
+        public void TrimWhitespaceFromSelectedCells()
+        {
+            foreach (DataGridViewCell selectedCell in dataGridView1.SelectedCells)
+            {
+                var str = selectedCell.Value as string;
+                if (str != null)
+                {
+                    var start = str.TakeWhile(char.IsWhiteSpace).Count();
+                    var end = str.Reverse().TakeWhile(char.IsWhiteSpace).Count();
+                    var len = str.Length - start - end;
+
+                    // Don't update the cells if no changes will be made
+                    if(len < str.Length)
+                    {
+                        if (len > 0)
+                        {
+                            selectedCell.Value = str.Substring(start, len);
+                        }
+                        else
+                        {
+                            Debug.Assert(len == 0);
+                            selectedCell.Value = string.Empty;
+                        }
+                    }
+                }
+            }
         }
     }
 }

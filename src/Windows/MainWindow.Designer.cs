@@ -40,11 +40,15 @@ namespace ResxTranslator.Windows
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.resourceTreeView1 = new ResxTranslator.Controls.ResourceTreeView();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.missingTranslationView1 = new ResxTranslator.Controls.MissingTranslationView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.languageSettings1 = new ResxTranslator.Controls.LanguageSettings();
             this.tabControl3 = new System.Windows.Forms.TabControl();
             this.tabPageEditedResource = new System.Windows.Forms.TabPage();
+            this.resourceGrid1 = new ResxTranslator.Controls.ResourceGrid();
             this.menuStripMain = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -84,10 +88,7 @@ namespace ResxTranslator.Windows
             this.helpToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.licenceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.resourceTreeView1 = new ResxTranslator.Controls.ResourceTreeView();
-            this.missingTranslationView1 = new ResxTranslator.Controls.MissingTranslationView();
-            this.languageSettings1 = new ResxTranslator.Controls.LanguageSettings();
-            this.resourceGrid1 = new ResxTranslator.Controls.ResourceGrid();
+            this.trimWhitespaceFromCellsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.panelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).BeginInit();
@@ -181,12 +182,23 @@ namespace ResxTranslator.Windows
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // resourceTreeView1
+            // 
+            resources.ApplyResources(this.resourceTreeView1, "resourceTreeView1");
+            this.resourceTreeView1.Name = "resourceTreeView1";
+            // 
             // tabPage5
             // 
             this.tabPage5.Controls.Add(this.missingTranslationView1);
             resources.ApplyResources(this.tabPage5, "tabPage5");
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // missingTranslationView1
+            // 
+            resources.ApplyResources(this.missingTranslationView1, "missingTranslationView1");
+            this.missingTranslationView1.Name = "missingTranslationView1";
+            this.missingTranslationView1.ResourceLoader = null;
             // 
             // tabControl1
             // 
@@ -202,6 +214,11 @@ namespace ResxTranslator.Windows
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // languageSettings1
+            // 
+            resources.ApplyResources(this.languageSettings1, "languageSettings1");
+            this.languageSettings1.Name = "languageSettings1";
+            // 
             // tabControl3
             // 
             this.tabControl3.Controls.Add(this.tabPageEditedResource);
@@ -215,6 +232,14 @@ namespace ResxTranslator.Windows
             resources.ApplyResources(this.tabPageEditedResource, "tabPageEditedResource");
             this.tabPageEditedResource.Name = "tabPageEditedResource";
             this.tabPageEditedResource.UseVisualStyleBackColor = true;
+            // 
+            // resourceGrid1
+            // 
+            this.resourceGrid1.CurrentResource = null;
+            this.resourceGrid1.CurrentSearch = null;
+            resources.ApplyResources(this.resourceGrid1, "resourceGrid1");
+            this.resourceGrid1.Name = "resourceGrid1";
+            this.resourceGrid1.ShowNullValuesAsGrayed = false;
             // 
             // menuStripMain
             // 
@@ -378,9 +403,11 @@ namespace ResxTranslator.Windows
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.removeNontranslatableDataToolStripMenuItem});
+            this.removeNontranslatableDataToolStripMenuItem,
+            this.trimWhitespaceFromCellsToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             resources.ApplyResources(this.toolsToolStripMenuItem, "toolsToolStripMenuItem");
+            this.toolsToolStripMenuItem.DropDownOpening += new System.EventHandler(this.toolsToolStripMenuItem_DropDownOpening);
             // 
             // removeNontranslatableDataToolStripMenuItem
             // 
@@ -491,29 +518,11 @@ namespace ResxTranslator.Windows
             resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
-            // resourceTreeView1
+            // trimWhitespaceFromCellsToolStripMenuItem
             // 
-            resources.ApplyResources(this.resourceTreeView1, "resourceTreeView1");
-            this.resourceTreeView1.Name = "resourceTreeView1";
-            // 
-            // missingTranslationView1
-            // 
-            resources.ApplyResources(this.missingTranslationView1, "missingTranslationView1");
-            this.missingTranslationView1.Name = "missingTranslationView1";
-            this.missingTranslationView1.ResourceLoader = null;
-            // 
-            // languageSettings1
-            // 
-            resources.ApplyResources(this.languageSettings1, "languageSettings1");
-            this.languageSettings1.Name = "languageSettings1";
-            // 
-            // resourceGrid1
-            // 
-            this.resourceGrid1.CurrentResource = null;
-            this.resourceGrid1.CurrentSearch = null;
-            resources.ApplyResources(this.resourceGrid1, "resourceGrid1");
-            this.resourceGrid1.Name = "resourceGrid1";
-            this.resourceGrid1.ShowNullValuesAsGrayed = false;
+            this.trimWhitespaceFromCellsToolStripMenuItem.Name = "trimWhitespaceFromCellsToolStripMenuItem";
+            resources.ApplyResources(this.trimWhitespaceFromCellsToolStripMenuItem, "trimWhitespaceFromCellsToolStripMenuItem");
+            this.trimWhitespaceFromCellsToolStripMenuItem.Click += new System.EventHandler(this.trimWhitespaceFromCellsToolStripMenuItem_Click);
             // 
             // MainWindow
             // 
@@ -609,6 +618,7 @@ namespace ResxTranslator.Windows
         private ToolStripMenuItem removeNontranslatableDataToolStripMenuItem;
         private ToolStripMenuItem removeNonTLFromOpenedTranslationsToolStripMenuItem;
         private ToolStripMenuItem removeNonTLFromAllTranslationsToolStripMenuItem;
+        private ToolStripMenuItem trimWhitespaceFromCellsToolStripMenuItem;
     }
 }
 

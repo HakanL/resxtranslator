@@ -205,7 +205,6 @@ namespace ResxTranslator.Windows
             keysToolStripMenuItem.Enabled = notNull;
             addNewKeyToolStripMenuItem.Enabled = notNull;
             languagesToolStripMenuItem.Enabled = notNull;
-            removeNonTLFromOpenedTranslationsToolStripMenuItem.Enabled = notNull;
 
             removeLanguageToolStripMenuItem.DropDownItems.Clear();
             addLanguageToolStripMenuItem.DropDownItems.Clear();
@@ -227,6 +226,14 @@ namespace ResxTranslator.Windows
             {
                 removeLanguageToolStripMenuItem.DropDownItems.Add($"{info.Name} - {info.DisplayName}").Tag = info;
             }
+        }
+
+        private void toolsToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
+        {
+            var notNull = _currentResource != null;
+            removeNonTLFromOpenedTranslationsToolStripMenuItem.Enabled = notNull && CurrentResource.Languages.Count > 0;
+            removeNonTLFromAllTranslationsToolStripMenuItem.Enabled = ResourceLoader.Resources.Any(x => x.Languages.Count > 0);
+            trimWhitespaceFromCellsToolStripMenuItem.Enabled = notNull && resourceGrid1.SelectedCellCount > 0;
         }
 
         private void addLanguageToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -526,7 +533,7 @@ namespace ResxTranslator.Windows
         private static bool AskToRemoveNontranslatable()
         {
             return MessageBox.Show(Localization.MessageBox_RemoveNontranslatableQuestion_Message,
-                Localization.MessageBox_RemoveNontranslatableQuestion_Title, MessageBoxButtons.OKCancel, 
+                Localization.MessageBox_RemoveNontranslatableQuestion_Title, MessageBoxButtons.OKCancel,
                 MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.OK;
         }
 
@@ -538,6 +545,11 @@ namespace ResxTranslator.Windows
             {
                 resource.SaveWithoutNontranslatableData();
             }
+        }
+
+        private void trimWhitespaceFromCellsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            resourceGrid1.TrimWhitespaceFromSelectedCells();
         }
     }
 }
