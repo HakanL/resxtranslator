@@ -76,5 +76,47 @@ namespace ResxTranslator.Controls
         {
             OnEnabledLanguagesChanged();
         }
+
+        private void toolStripButtonSelectAll_Click(object sender, EventArgs e)
+        {
+            SetAllItemsChecked(CheckState.Checked);
+        }
+
+        private void toolStripButtonSelectNone_Click(object sender, EventArgs e)
+        {
+            SetAllItemsChecked(CheckState.Unchecked);
+        }
+
+        private void toolStripButtonSelectInvert_Click(object sender, EventArgs e)
+        {
+            SetAllItemsChecked(CheckState.Indeterminate);
+        }
+
+        private void SetAllItemsChecked(CheckState state)
+        {
+            listView1.BeginUpdate();
+            listView1.ItemChecked -= listView1_ItemChecked;
+
+            foreach (ListViewItem item in listView1.Items)
+            {
+                switch (state)
+                {
+                    case CheckState.Checked:
+                        item.Checked = true;
+                        break;
+                    case CheckState.Unchecked:
+                        item.Checked = false;
+                        break;
+                    case CheckState.Indeterminate:
+                        item.Checked = !item.Checked;
+                        break;
+                }
+            }
+
+            listView1.ItemChecked += listView1_ItemChecked;
+            listView1.EndUpdate();
+
+            OnEnabledLanguagesChanged();
+        }
     }
 }

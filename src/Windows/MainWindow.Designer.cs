@@ -74,6 +74,7 @@ namespace ResxTranslator.Windows
             this.removeNontranslatableDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeNonTLFromOpenedTranslationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeNonTLFromAllTranslationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.trimWhitespaceFromCellsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyDefaultValuesOnLanguageAddToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ignoreEmptyResourcesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -88,7 +89,6 @@ namespace ResxTranslator.Windows
             this.helpToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.licenceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.trimWhitespaceFromCellsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.panelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).BeginInit();
@@ -429,6 +429,12 @@ namespace ResxTranslator.Windows
             resources.ApplyResources(this.removeNonTLFromAllTranslationsToolStripMenuItem, "removeNonTLFromAllTranslationsToolStripMenuItem");
             this.removeNonTLFromAllTranslationsToolStripMenuItem.Click += new System.EventHandler(this.fromAllTranslationsToolStripMenuItem_Click);
             // 
+            // trimWhitespaceFromCellsToolStripMenuItem
+            // 
+            this.trimWhitespaceFromCellsToolStripMenuItem.Name = "trimWhitespaceFromCellsToolStripMenuItem";
+            resources.ApplyResources(this.trimWhitespaceFromCellsToolStripMenuItem, "trimWhitespaceFromCellsToolStripMenuItem");
+            this.trimWhitespaceFromCellsToolStripMenuItem.Click += new System.EventHandler(this.trimWhitespaceFromCellsToolStripMenuItem_Click);
+            // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -517,12 +523,6 @@ namespace ResxTranslator.Windows
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
-            // 
-            // trimWhitespaceFromCellsToolStripMenuItem
-            // 
-            this.trimWhitespaceFromCellsToolStripMenuItem.Name = "trimWhitespaceFromCellsToolStripMenuItem";
-            resources.ApplyResources(this.trimWhitespaceFromCellsToolStripMenuItem, "trimWhitespaceFromCellsToolStripMenuItem");
-            this.trimWhitespaceFromCellsToolStripMenuItem.Click += new System.EventHandler(this.trimWhitespaceFromCellsToolStripMenuItem_Click);
             // 
             // MainWindow
             // 

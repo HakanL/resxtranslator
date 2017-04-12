@@ -32,6 +32,11 @@
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeaderCode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripButtonSelectAll = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonSelectNone = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonSelectInvert = new System.Windows.Forms.ToolStripButton();
+            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // listView1
@@ -61,13 +66,47 @@
             // 
             resources.ApplyResources(this.columnHeaderName, "columnHeaderName");
             // 
+            // toolStrip1
+            // 
+            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButtonSelectAll,
+            this.toolStripButtonSelectNone,
+            this.toolStripButtonSelectInvert});
+            resources.ApplyResources(this.toolStrip1, "toolStrip1");
+            this.toolStrip1.Name = "toolStrip1";
+            // 
+            // toolStripButtonSelectAll
+            // 
+            resources.ApplyResources(this.toolStripButtonSelectAll, "toolStripButtonSelectAll");
+            this.toolStripButtonSelectAll.Name = "toolStripButtonSelectAll";
+            this.toolStripButtonSelectAll.Click += new System.EventHandler(this.toolStripButtonSelectAll_Click);
+            // 
+            // toolStripButtonSelectNone
+            // 
+            resources.ApplyResources(this.toolStripButtonSelectNone, "toolStripButtonSelectNone");
+            this.toolStripButtonSelectNone.Name = "toolStripButtonSelectNone";
+            this.toolStripButtonSelectNone.Click += new System.EventHandler(this.toolStripButtonSelectNone_Click);
+            // 
+            // toolStripButtonSelectInvert
+            // 
+            this.toolStripButtonSelectInvert.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonSelectInvert.Image = global::ResxTranslator.Properties.Resources.clipboard;
+            resources.ApplyResources(this.toolStripButtonSelectInvert, "toolStripButtonSelectInvert");
+            this.toolStripButtonSelectInvert.Name = "toolStripButtonSelectInvert";
+            this.toolStripButtonSelectInvert.Click += new System.EventHandler(this.toolStripButtonSelectInvert_Click);
+            // 
             // LanguageSettings
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.listView1);
             this.Name = "LanguageSettings";
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -75,5 +114,9 @@
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader columnHeaderCode;
         private System.Windows.Forms.ColumnHeader columnHeaderName;
+        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStripButton toolStripButtonSelectAll;
+        private System.Windows.Forms.ToolStripButton toolStripButtonSelectNone;
+        private System.Windows.Forms.ToolStripButton toolStripButtonSelectInvert;
     }
 }
