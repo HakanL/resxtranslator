@@ -30,12 +30,12 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CellEditorWindow));
             this.panel1 = new System.Windows.Forms.Panel();
-            this.chbShowWhitespace = new System.Windows.Forms.CheckBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.buttonOK = new System.Windows.Forms.Button();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.chbShowWhitespace = new System.Windows.Forms.CheckBox();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.textBoxString = new ScintillaNET.Scintilla();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -49,11 +49,17 @@
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
             // 
-            // chbShowWhitespace
+            // buttonOK
             // 
-            resources.ApplyResources(this.chbShowWhitespace, "chbShowWhitespace");
-            this.chbShowWhitespace.Name = "chbShowWhitespace";
-            this.chbShowWhitespace.UseVisualStyleBackColor = true;
+            resources.ApplyResources(this.buttonOK, "buttonOK");
+            this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.buttonOK.Name = "buttonOK";
+            this.buttonOK.UseVisualStyleBackColor = true;
+            // 
+            // panel2
+            // 
+            resources.ApplyResources(this.panel2, "panel2");
+            this.panel2.Name = "panel2";
             // 
             // checkBox1
             // 
@@ -61,12 +67,11 @@
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
-            // buttonOK
+            // chbShowWhitespace
             // 
-            resources.ApplyResources(this.buttonOK, "buttonOK");
-            this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.buttonOK.Name = "buttonOK";
-            this.buttonOK.UseVisualStyleBackColor = true;
+            resources.ApplyResources(this.chbShowWhitespace, "chbShowWhitespace");
+            this.chbShowWhitespace.Name = "chbShowWhitespace";
+            this.chbShowWhitespace.UseVisualStyleBackColor = true;
             // 
             // buttonCancel
             // 
@@ -82,11 +87,6 @@
             this.textBoxString.Name = "textBoxString";
             this.textBoxString.ScrollWidth = 200;
             this.textBoxString.WhitespaceSize = 2;
-            // 
-            // panel2
-            // 
-            resources.ApplyResources(this.panel2, "panel2");
-            this.panel2.Name = "panel2";
             // 
             // CellEditorWindow
             // 

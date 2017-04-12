@@ -10,15 +10,16 @@ namespace ResxTranslator.Windows
         public CellEditorWindow()
         {
             InitializeComponent();
+            
+            textBoxString.Styles[Style.Default].Font = "Microsoft Sans Serif";
+            textBoxString.Styles[Style.Default].Size = 11;
+            textBoxString.StyleClearAll();
 
             textBoxString.Styles[Style.LineNumber].BackColor = Color.DarkGray;
             textBoxString.Styles[Style.LineNumber].ForeColor = Color.LightGray;
-
             var nums = textBoxString.Margins[1];
             nums.Type = MarginType.Number;
             nums.Mask = 0;
-
-            textBoxString.Styles[0].Font = Font.Name;
 
             textBoxString.SetWhitespaceForeColor(true, Color.Brown);
 
