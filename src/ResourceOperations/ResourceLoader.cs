@@ -11,10 +11,13 @@ namespace ResxTranslator.ResourceOperations
 {
     public class ResourceLoader
     {
-        private string _openedPath;
-        private bool _hideEmptyResources;
+        private static readonly IEnumerable<CultureInfo> SupportedCultureCache
+            = CultureInfo.GetCultures(CultureTypes.AllCultures).Where(x => x.Name != string.Empty).ToList();
+
         private readonly Dictionary<string, ResourceHolder> _resourceStore;
+        private bool _hideEmptyResources;
         private bool _hideNontranslatedResources;
+        private string _openedPath;
 
         public ResourceLoader()
         {
@@ -69,7 +72,7 @@ namespace ResxTranslator.ResourceOperations
         public event EventHandler ResourcesChanged;
 
         /// <summary>
-        ///     Check and prompt for save
+        /// Check and prompt for save
         /// </summary>
         /// <returns>True if we can safely close</returns>
         public bool CanClose()
@@ -78,14 +81,14 @@ namespace ResxTranslator.ResourceOperations
 
             if (isDirty)
             {
-                var dialogResult = MessageBox.Show(Localization.MessageBox_SaveChangesBeforeClose_Message, 
+                var dialogResult = MessageBox.Show(Localization.MessageBox_SaveChangesBeforeClose_Message,
                     Localization.MessageBox_SaveChangesBeforeClose_Title,
                     MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
 
                 // Return false only if user presses cancel
                 if (dialogResult != DialogResult.Yes)
                     return dialogResult == DialogResult.No;
-                
+
                 SaveAll();
             }
             return true;
@@ -95,7 +98,7 @@ namespace ResxTranslator.ResourceOperations
         {
             if (!CanClose())
                 throw new InvalidOperationException(Localization.Error_CantClose);
-            
+
             _resourceStore.Clear();
             OpenedPath = string.Empty;
         }
@@ -147,13 +150,9 @@ namespace ResxTranslator.ResourceOperations
         {
             var displayFolder = string.Empty;
             if (currentDirectory.StartsWith(rootDirectory, StringComparison.InvariantCultureIgnoreCase))
-            {
                 displayFolder = currentDirectory.Substring(rootDirectory.Length);
-            }
-            if (displayFolder.StartsWith("\\"))
-            {
-                displayFolder = displayFolder.Remove(0, 1);
-            }
+
+            displayFolder = displayFolder.TrimStart('\\', '/');
 
             var files = Directory.GetFiles(currentDirectory, "*.resx");
 
@@ -163,16 +162,13 @@ namespace ResxTranslator.ResourceOperations
                 if (string.IsNullOrEmpty(filenameNoExt)) continue;
 
                 // Try to get the language code
-                var potentialLanguageCode = Path.GetExtension(filenameNoExt).Replace(".", string.Empty);
+                var potentialLanguageCode = Path.GetExtension(filenameNoExt).TrimStart('.');
 
-                string languageCode = null;
+                var culture = SupportedCultureCache.FirstOrDefault(
+                    info => info.Name.Equals(potentialLanguageCode, StringComparison.InvariantCultureIgnoreCase));
 
-                // Full language code: xx-yy Short language code: xx
-                if ((potentialLanguageCode.Length == 5 && potentialLanguageCode[2] == '-')
-                    || potentialLanguageCode.Length == 2)
+                if (culture != null)
                 {
-                    languageCode = potentialLanguageCode;
-
                     // Get rid of the language code to get the base filename
                     filenameNoExt = Path.GetFileNameWithoutExtension(filenameNoExt);
                 }
@@ -193,13 +189,13 @@ namespace ResxTranslator.ResourceOperations
 
                     _resourceStore.Add(key, resourceHolder);
                 }
-                
-                if (!string.IsNullOrEmpty(languageCode))
+
+                if (culture != null)
                 {
-                    if (resourceHolder.Languages.ContainsKey(languageCode.ToLower()))
+                    if (resourceHolder.Languages.ContainsKey(culture.Name.ToLower()))
                         throw new InvalidDataException(string.Format(Localization.Error_DuplicateResx, filename));
 
-                    resourceHolder.Languages.Add(languageCode.ToLower(), new LanguageHolder(languageCode, filename));
+                    resourceHolder.Languages.Add(culture.Name.ToLower(), new LanguageHolder(culture.Name, filename));
                 }
             }
 
