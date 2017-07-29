@@ -263,7 +263,16 @@ namespace ResxTranslator.Windows
         {
             if (CurrentResource != null)
             {
-                AddResourceKeyWindow.ShowDialog(this, CurrentResource);
+                try
+                {
+                    AddResourceKeyWindow.ShowDialog(this, CurrentResource);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString(), Localization.MainWindow_FailedToCreateANewRow, 
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
                 resourceGrid1.RefreshResourceDisplay();
             }
         }

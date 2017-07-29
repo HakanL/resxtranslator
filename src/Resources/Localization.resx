@@ -200,4 +200,7 @@ Path: {1}</value>
   <data name="MessageBox_RemoveNontranslatableQuestion_Title" xml:space="preserve">
     <value>Do you really want to remove non-translatable data?</value>
   </data>
+  <data name="MainWindow_Failed_to_create_a_new_row" xml:space="preserve">
+    <value>Failed to create a new row</value>
+  </data>
 </root>

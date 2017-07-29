@@ -180,6 +180,15 @@ namespace ResxTranslator.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to create a new row.
+        /// </summary>
+        internal static string MainWindow_Failed_to_create_a_new_row {
+            get {
+                return ResourceManager.GetString("MainWindow_Failed_to_create_a_new_row", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to More languages....
         /// </summary>
         internal static string MainWindow_MoreLanguagesMenuItem {
