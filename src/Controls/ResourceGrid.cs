@@ -29,7 +29,7 @@ namespace ResxTranslator.Controls
         {
             InitializeComponent();
         }
-
+        
         public int RowCount => dataGridView1.RowCount;
 
         public int SelectedCellCount => dataGridView1.SelectedCells.Count;
@@ -95,7 +95,7 @@ namespace ResxTranslator.Controls
         private void ApplyConditionalFormatting(DataGridViewRow r)
         {
             var colNameError = Properties.Resources.ColNameError;
-            if (r.Cells[colNameError].Value != null && (bool) r.Cells[colNameError].Value)
+            if (!string.IsNullOrEmpty(r.Cells[colNameError].Value?.ToString()) && (bool) r.Cells[colNameError].Value)
             {
                 r.DefaultCellStyle.ForeColor = Color.Red;
             }
