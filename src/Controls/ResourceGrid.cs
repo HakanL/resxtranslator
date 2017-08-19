@@ -344,5 +344,10 @@ namespace ResxTranslator.Controls
                 }
             }
         }
+
+        public void ApplyCurrentCellEdit()
+        {
+            dataGridView1.CommitEdit(DataGridViewDataErrorContexts.Commit);
+        }
     }
 }

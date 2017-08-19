@@ -455,11 +455,13 @@ namespace ResxTranslator.Windows
 
         private void saveCurrentToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            resourceGrid1.ApplyCurrentCellEdit();
             CurrentResource?.Save();
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            resourceGrid1.ApplyCurrentCellEdit();
             ResourceLoader.SaveAll();
         }
 
