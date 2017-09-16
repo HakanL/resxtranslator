@@ -29,7 +29,7 @@ namespace ResxTranslator.Controls
         {
             InitializeComponent();
         }
-        
+
         public int RowCount => dataGridView1.RowCount;
 
         public int SelectedCellCount => dataGridView1.SelectedCells.Count;
@@ -66,6 +66,8 @@ namespace ResxTranslator.Controls
 
         public void DeleteSelectedRow()
         {
+            if (dataGridView1.SelectedRows.Count == 0) return;
+
             var dataRow = dataGridView1.SelectedRows[0].DataBoundItem as DataRowView;
             dataRow?.Row.Delete();
         }
@@ -95,7 +97,7 @@ namespace ResxTranslator.Controls
         private void ApplyConditionalFormatting(DataGridViewRow r)
         {
             var colNameError = Properties.Resources.ColNameError;
-            if (!string.IsNullOrEmpty(r.Cells[colNameError].Value?.ToString()) && (bool) r.Cells[colNameError].Value)
+            if (!string.IsNullOrEmpty(r.Cells[colNameError].Value?.ToString()) && (bool)r.Cells[colNameError].Value)
             {
                 r.DefaultCellStyle.ForeColor = Color.Red;
             }
@@ -105,7 +107,7 @@ namespace ResxTranslator.Controls
             }
 
             if (r == dataGridView1.Rows[RowCount - 1])
-                return;            
+                return;
 
             ApplyConditionalCellFormatting(r.Cells[Properties.Resources.ColNameKey], SearchParams.TargetType.Key);
 
@@ -159,7 +161,7 @@ namespace ResxTranslator.Controls
                 if (value == DBNull.Value)
                     frm.textBoxString.Text = string.Empty;
                 else
-                    frm.textBoxString.Text = (string) value;
+                    frm.textBoxString.Text = (string)value;
 
                 frm.Icon = ParentForm?.Icon;
                 frm.StartPosition = FormStartPosition.CenterParent;
@@ -171,11 +173,11 @@ namespace ResxTranslator.Controls
                 }
             }
         }
-        
+
         private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
-            ((DataGridViewTextBoxEditingControl) e.Control).AcceptsReturn = true;
-            ((DataGridViewTextBoxEditingControl) e.Control).Multiline = true;
+            ((DataGridViewTextBoxEditingControl)e.Control).AcceptsReturn = true;
+            ((DataGridViewTextBoxEditingControl)e.Control).Multiline = true;
         }
 
         private void ShowResourceInGrid(ResourceHolder resource)
@@ -275,7 +277,7 @@ namespace ResxTranslator.Controls
                 e.Handled = true;
             }
             else if (e.KeyCode == Keys.Delete)
-            {                
+            {
                 DeleteSelection();
             }
         }
@@ -294,7 +296,7 @@ namespace ResxTranslator.Controls
 
         private void dataGridView1_CellContextMenuStripNeeded(object sender, DataGridViewCellContextMenuStripNeededEventArgs e)
         {
-            e.ContextMenuStrip = contextMenuStrip1;     
+            e.ContextMenuStrip = contextMenuStrip1;
         }
 
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
@@ -329,7 +331,7 @@ namespace ResxTranslator.Controls
                     var len = str.Length - start - end;
 
                     // Don't update the cells if no changes will be made
-                    if(len < str.Length)
+                    if (len < str.Length)
                     {
                         if (len > 0)
                         {
