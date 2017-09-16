@@ -191,9 +191,9 @@ namespace ResxTranslator.ResourceOperations
 
                 if (localizableResourceKeys.Contains(key))
                 {
-                    // Skip if the original value is the same as the new one
-                    if (originalResources[key].GetValueAsString()
-                        .Equals(stringValueData, StringComparison.InvariantCulture))
+                    // Skip if the original value and comment is the same as the new one
+                    if (stringCommentData.Equals(originalResources[key].Comment, StringComparison.InvariantCulture) &&
+                        stringValueData.Equals(originalResources[key].GetValueAsString(), StringComparison.InvariantCulture))
                         continue;
 
                     originalResources[key] = new ResXDataNode(originalResources[key].Name, stringValueData) { Comment = stringCommentData };
@@ -251,7 +251,7 @@ namespace ResxTranslator.ResourceOperations
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        
+
         /// <summary>
         ///     Save this resource holder's data
         /// </summary>
