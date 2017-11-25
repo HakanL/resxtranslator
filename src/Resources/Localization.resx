@@ -203,4 +203,13 @@ Path: {1}</value>
   <data name="MainWindow_Failed_to_create_a_new_row" xml:space="preserve">
     <value>Failed to create a new row</value>
   </data>
+  <data name="Dialog_Export_resources_Title" xml:space="preserve">
+    <value>Export resources</value>
+  </data>
+  <data name="Dialog_Export_resources_Filter" xml:space="preserve">
+    <value>.zip Archive|.zip</value>
+  </data>
+  <data name="Dialog_Export_resources_ErrorTitle" xml:space="preserve">
+    <value>Export failed</value>
+  </data>
 </root>

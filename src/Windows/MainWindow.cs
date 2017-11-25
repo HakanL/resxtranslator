@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using Ionic.Zip;
 using ResxTranslator.Properties;
 using ResxTranslator.ResourceOperations;
 using ResxTranslator.Resources;
@@ -269,7 +270,7 @@ namespace ResxTranslator.Windows
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.ToString(), Localization.MainWindow_FailedToCreateANewRow, 
+                    MessageBox.Show(ex.ToString(), Localization.MainWindow_Failed_to_create_a_new_row, 
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
@@ -561,6 +562,37 @@ namespace ResxTranslator.Windows
         private void trimWhitespaceFromCellsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             resourceGrid1.TrimWhitespaceFromSelectedCells();
+        }
+
+        private void exportAllResourcesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var exportDialog = new SaveFileDialog
+            {
+                Title = Localization.Dialog_Export_resources_Title,
+                Filter = Localization.Dialog_Export_resources_Filter,
+                FileName = "Export.zip"
+            };
+
+            if (exportDialog.ShowDialog(this) == DialogResult.OK)
+            {
+                try
+                {
+                    File.Delete(exportDialog.FileName);
+                    using (var zf = new ZipFile(exportDialog.FileName))
+                    {
+                        zf.AddFiles(ResourceLoader.Resources.Select(x=> x.Filename)
+                            // Make sure the base resource exists, it might not. Languages always exist if they are loaded.
+                            .Where(File.Exists));
+                        zf.AddFiles(ResourceLoader.Resources.SelectMany(x=>x.Languages.Select(l=>l.Value.Filename)));
+                        zf.Save();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString(), Localization.Dialog_Export_resources_ErrorTitle,
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
     }
 }

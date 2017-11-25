@@ -61,6 +61,33 @@ namespace ResxTranslator.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export failed.
+        /// </summary>
+        internal static string Dialog_Export_resources_ErrorTitle {
+            get {
+                return ResourceManager.GetString("Dialog_Export_resources_ErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .zip Archive|.zip.
+        /// </summary>
+        internal static string Dialog_Export_resources_Filter {
+            get {
+                return ResourceManager.GetString("Dialog_Export_resources_Filter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export resources.
+        /// </summary>
+        internal static string Dialog_Export_resources_Title {
+            get {
+                return ResourceManager.GetString("Dialog_Export_resources_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Can&apos;t close at this time.
         /// </summary>
         internal static string Error_CantClose {
@@ -182,7 +209,7 @@ namespace ResxTranslator.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Failed to create a new row.
         /// </summary>
-        internal static string MainWindow_FailedToCreateANewRow {
+        internal static string MainWindow_Failed_to_create_a_new_row {
             get {
                 return ResourceManager.GetString("MainWindow_Failed_to_create_a_new_row", resourceCulture);
             }
