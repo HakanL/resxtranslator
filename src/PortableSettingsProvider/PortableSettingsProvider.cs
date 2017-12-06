@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using System.Xml;
 using System.Windows.Forms;
 
@@ -11,11 +12,11 @@ namespace PortableSettingsProvider
     public class PortableSettingsProvider : SettingsProvider
     {
         //XML Root Node
-        const string SETTINGSROOT = "Settings";
+        const string SettingsRoot = "Settings";
 
         public override void Initialize(string name, NameValueCollection col)
         {
-            base.Initialize(this.ApplicationName, col);
+            base.Initialize(ApplicationName, col);
         }
 
         public override string ApplicationName
@@ -26,10 +27,9 @@ namespace PortableSettingsProvider
                 {
                     return Application.ProductName;
                 }
-                else {
-                    FileInfo fi = new FileInfo(Application.ExecutablePath);
-                    return fi.Name.Substring(0, fi.Name.Length - fi.Extension.Length);
-                }
+
+                var fi = new FileInfo(Application.ExecutablePath);
+                return fi.Name.Substring(0, fi.Name.Length - fi.Extension.Length);
             }
             //Do nothing
             set { }
@@ -59,7 +59,7 @@ namespace PortableSettingsProvider
 
             try
             {
-                SettingsXML.Save(Path.Combine(GetAppSettingsPath(), GetAppSettingsFilename()));
+                SettingsXml.Save(Path.Combine(GetAppSettingsPath(), GetAppSettingsFilename()));
             }
             catch (Exception)
             {
@@ -85,72 +85,63 @@ namespace PortableSettingsProvider
         }
 
 
-        private XmlDocument m_SettingsXML = null;
-        private XmlDocument SettingsXML
+        private XmlDocument _mSettingsXml;
+        private XmlDocument SettingsXml
         {
             get
             {
                 //If we dont hold an xml document, try opening one.  
                 //If it doesnt exist then create a new one ready.
-                if (m_SettingsXML == null)
+                if (_mSettingsXml == null)
                 {
-                    m_SettingsXML = new XmlDocument();
+                    _mSettingsXml = new XmlDocument();
 
                     try
                     {
-                        m_SettingsXML.Load(Path.Combine(GetAppSettingsPath(), GetAppSettingsFilename()));
+                        _mSettingsXml.Load(Path.Combine(GetAppSettingsPath(), GetAppSettingsFilename()));
                     }
                     catch (Exception)
                     {
                         //Create new document
-                        XmlDeclaration dec = m_SettingsXML.CreateXmlDeclaration("1.0", "utf-8", string.Empty);
-                        m_SettingsXML.AppendChild(dec);
+                        XmlDeclaration dec = _mSettingsXml.CreateXmlDeclaration("1.0", "utf-8", string.Empty);
+                        _mSettingsXml.AppendChild(dec);
 
-                        XmlNode nodeRoot = default(XmlNode);
-
-                        nodeRoot = m_SettingsXML.CreateNode(XmlNodeType.Element, SETTINGSROOT, "");
-                        m_SettingsXML.AppendChild(nodeRoot);
+                        var nodeRoot = _mSettingsXml.CreateNode(XmlNodeType.Element, SettingsRoot, "");
+                        _mSettingsXml.AppendChild(nodeRoot);
                     }
                 }
 
-                return m_SettingsXML;
+                return _mSettingsXml;
             }
         }
 
         private string GetValue(SettingsProperty setting)
         {
-            string ret = "";
-
             try
             {
                 if (IsRoaming(setting))
                 {
-                    ret = SettingsXML.SelectSingleNode(SETTINGSROOT + "/" + setting.Name).InnerText;
-                }
-                else {
-                    ret = SettingsXML.SelectSingleNode(SETTINGSROOT + "/" + Environment.MachineName + "/" + setting.Name).InnerText;
+                    return SettingsXml.SelectSingleNode(SettingsRoot + "/" + setting.Name)?.InnerText 
+                        ?? GetDefaultValue(setting);
                 }
 
+                return SettingsXml.SelectSingleNode(SettingsRoot + "/" + Environment.MachineName 
+                    + "/" + setting.Name)?.InnerText ?? GetDefaultValue(setting);
             }
             catch (Exception)
             {
-                if ((setting.DefaultValue != null))
-                {
-                    ret = setting.DefaultValue.ToString();
-                }
-                else {
-                    ret = "";
-                }
+                return GetDefaultValue(setting);
             }
-
-            return ret;
         }
 
+        private static string GetDefaultValue(SettingsProperty setting)
+        {
+            return setting.DefaultValue?.ToString() ?? string.Empty;
+        }
 
         private void SetValue(SettingsPropertyValue propVal)
         {
-            XmlElement MachineNode = default(XmlElement);
-            XmlElement SettingNode = default(XmlElement);
+            XmlElement settingNode;
 
             //Determine if the setting is roaming.
             //If roaming then the value is stored as an element under the root
@@ -159,52 +150,57 @@ namespace PortableSettingsProvider
             {
                 if (IsRoaming(propVal.Property))
                 {
-                    SettingNode = (XmlElement)SettingsXML.SelectSingleNode(SETTINGSROOT + "/" + propVal.Name);
+                    settingNode = (XmlElement)SettingsXml.SelectSingleNode(SettingsRoot + "/" + propVal.Name);
                 }
-                else {
-                    SettingNode = (XmlElement)SettingsXML.SelectSingleNode(SETTINGSROOT + "/" + Environment.MachineName + "/" + propVal.Name);
+                else
+                {
+                    settingNode = (XmlElement)SettingsXml.SelectSingleNode(SettingsRoot + "/" + Environment.MachineName 
+                        + "/" + propVal.Name);
                 }
             }
             catch (Exception)
             {
-                SettingNode = null;
+                settingNode = null;
             }
 
             //Check to see if the node exists, if so then set its new value
-            if ((SettingNode != null))
+            if ((settingNode != null))
             {
-                SettingNode.InnerText = propVal.SerializedValue.ToString();
+                settingNode.InnerText = propVal.SerializedValue.ToString();
             }
-            else {
+            else
+            {
                 if (IsRoaming(propVal.Property))
                 {
                     //Store the value as an element of the Settings Root Node
-                    SettingNode = SettingsXML.CreateElement(propVal.Name);
-                    SettingNode.InnerText = propVal.SerializedValue.ToString();
-                    SettingsXML.SelectSingleNode(SETTINGSROOT).AppendChild(SettingNode);
+                    settingNode = SettingsXml.CreateElement(propVal.Name);
+                    settingNode.InnerText = propVal.SerializedValue.ToString();
+                    SettingsXml.SelectSingleNode(SettingsRoot).AppendChild(settingNode);
                 }
-                else {
+                else
+                {
                     //Its machine specific, store as an element of the machine name node,
                     //creating a new machine name node if one doesnt exist.
+                    XmlElement machineNode;
                     try
                     {
-                        MachineNode = (XmlElement)SettingsXML.SelectSingleNode(SETTINGSROOT + "/" + Environment.MachineName);
+                        machineNode = (XmlElement)SettingsXml.SelectSingleNode(SettingsRoot + "/" + Environment.MachineName);
                     }
                     catch (Exception)
                     {
-                        MachineNode = SettingsXML.CreateElement(Environment.MachineName);
-                        SettingsXML.SelectSingleNode(SETTINGSROOT).AppendChild(MachineNode);
+                        machineNode = SettingsXml.CreateElement(Environment.MachineName);
+                        SettingsXml.SelectSingleNode(SettingsRoot).AppendChild(machineNode);
                     }
 
-                    if (MachineNode == null)
+                    if (machineNode == null)
                     {
-                        MachineNode = SettingsXML.CreateElement(Environment.MachineName);
-                        SettingsXML.SelectSingleNode(SETTINGSROOT).AppendChild(MachineNode);
+                        machineNode = SettingsXml.CreateElement(Environment.MachineName);
+                        SettingsXml.SelectSingleNode(SettingsRoot).AppendChild(machineNode);
                     }
 
-                    SettingNode = SettingsXML.CreateElement(propVal.Name);
-                    SettingNode.InnerText = propVal.SerializedValue.ToString();
-                    MachineNode.AppendChild(SettingNode);
+                    settingNode = SettingsXml.CreateElement(propVal.Name);
+                    settingNode.InnerText = propVal.SerializedValue.ToString();
+                    machineNode.AppendChild(settingNode);
                 }
             }
         }
@@ -212,7 +208,10 @@ namespace PortableSettingsProvider
         private bool IsRoaming(SettingsProperty prop)
         {
             //Determine if the setting is marked as Roaming
-            foreach (DictionaryEntry d in prop.Attributes)
+            return prop.Attributes.Cast<DictionaryEntry>().Select(x=>x.Value)
+                .OfType<SettingsManageabilityAttribute>().Any();
+            
+            /*foreach (DictionaryEntry d in prop.Attributes)
             {
                 Attribute a = (Attribute)d.Value;
                 if (a is SettingsManageabilityAttribute)
@@ -220,7 +219,7 @@ namespace PortableSettingsProvider
                     return true;
                 }
             }
-            return false;
+            return false;*/
         }
     }
 }
