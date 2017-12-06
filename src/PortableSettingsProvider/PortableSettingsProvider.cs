@@ -4,20 +4,21 @@ using System.Collections.Specialized;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Xml;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace PortableSettingsProvider
 {
+    /// <summary>
+    /// License: The Code Project Open License (CPOL) 1.02
+    /// 18 Oct 2007 - CodeChimp - Public VB release
+    /// Mar 26, 2016 - HakanL - Converted project to C#, cleanup
+    /// 2010-2017 - Marcin Szeniak - Bugfixes, cleanup, improvements
+    /// </summary>
     public class PortableSettingsProvider : SettingsProvider
     {
-        //XML Root Node
-        const string SettingsRoot = "Settings";
-
-        public override void Initialize(string name, NameValueCollection col)
-        {
-            base.Initialize(ApplicationName, col);
-        }
+        //XML Root Node name
+        private const string SettingsRootName = "Settings";
 
         public override string ApplicationName
         {
@@ -34,11 +35,46 @@ namespace PortableSettingsProvider
             //Do nothing
             set { }
         }
+        
+        private XmlDocument _settingsXml;
+        private XmlDocument SettingsXml
+        {
+            get
+            {
+                //If we dont hold an xml document, try opening one.  
+                //If it doesnt exist then create a new one ready.
+                if (_settingsXml == null)
+                {
+                    _settingsXml = new XmlDocument();
+
+                    try
+                    {
+                        _settingsXml.Load(Path.Combine(GetAppSettingsPath(), GetAppSettingsFilename()));
+                    }
+                    catch (Exception)
+                    {
+                        //Create new document
+                        var dec = _settingsXml.CreateXmlDeclaration("1.0", "utf-8", string.Empty);
+                        _settingsXml.AppendChild(dec);
+
+                        var nodeRoot = _settingsXml.CreateNode(XmlNodeType.Element, SettingsRootName, "");
+                        _settingsXml.AppendChild(nodeRoot);
+                    }
+                }
+
+                return _settingsXml;
+            }
+        }
+
+        public override void Initialize(string name, NameValueCollection col)
+        {
+            base.Initialize(ApplicationName, col);
+        }
 
         public virtual string GetAppSettingsPath()
         {
             //Used to determine where to store the settings
-            FileInfo fi = new FileInfo(Application.ExecutablePath);
+            var fi = new FileInfo(Application.ExecutablePath);
             return fi.DirectoryName;
         }
 
@@ -67,52 +103,22 @@ namespace PortableSettingsProvider
             }
         }
 
-        public override SettingsPropertyValueCollection GetPropertyValues(SettingsContext context, SettingsPropertyCollection props)
+        public override SettingsPropertyValueCollection GetPropertyValues(SettingsContext context,
+            SettingsPropertyCollection props)
         {
             //Create new collection of values
-            SettingsPropertyValueCollection values = new SettingsPropertyValueCollection();
+            var values = new SettingsPropertyValueCollection();
 
             //Iterate through the settings to be retrieved
 
             foreach (SettingsProperty setting in props)
             {
-                SettingsPropertyValue value = new SettingsPropertyValue(setting);
+                var value = new SettingsPropertyValue(setting);
                 value.IsDirty = false;
                 value.SerializedValue = GetValue(setting);
                 values.Add(value);
             }
             return values;
-        }
-
-
-        private XmlDocument _mSettingsXml;
-        private XmlDocument SettingsXml
-        {
-            get
-            {
-                //If we dont hold an xml document, try opening one.  
-                //If it doesnt exist then create a new one ready.
-                if (_mSettingsXml == null)
-                {
-                    _mSettingsXml = new XmlDocument();
-
-                    try
-                    {
-                        _mSettingsXml.Load(Path.Combine(GetAppSettingsPath(), GetAppSettingsFilename()));
-                    }
-                    catch (Exception)
-                    {
-                        //Create new document
-                        XmlDeclaration dec = _mSettingsXml.CreateXmlDeclaration("1.0", "utf-8", string.Empty);
-                        _mSettingsXml.AppendChild(dec);
-
-                        var nodeRoot = _mSettingsXml.CreateNode(XmlNodeType.Element, SettingsRoot, "");
-                        _mSettingsXml.AppendChild(nodeRoot);
-                    }
-                }
-
-                return _mSettingsXml;
-            }
         }
 
         private string GetValue(SettingsProperty setting)
@@ -121,12 +127,12 @@ namespace PortableSettingsProvider
             {
                 if (IsRoaming(setting))
                 {
-                    return SettingsXml.SelectSingleNode(SettingsRoot + "/" + setting.Name)?.InnerText 
-                        ?? GetDefaultValue(setting);
+                    return SettingsXml.SelectSingleNode(SettingsRootName + "/" + setting.Name)?.InnerText
+                           ?? GetDefaultValue(setting);
                 }
 
-                return SettingsXml.SelectSingleNode(SettingsRoot + "/" + Environment.MachineName 
-                    + "/" + setting.Name)?.InnerText ?? GetDefaultValue(setting);
+                return SettingsXml.SelectSingleNode(SettingsRootName + "/" + Environment.MachineName
+                                                    + "/" + setting.Name)?.InnerText ?? GetDefaultValue(setting);
             }
             catch (Exception)
             {
@@ -150,12 +156,12 @@ namespace PortableSettingsProvider
             {
                 if (IsRoaming(propVal.Property))
                 {
-                    settingNode = (XmlElement)SettingsXml.SelectSingleNode(SettingsRoot + "/" + propVal.Name);
+                    settingNode = (XmlElement) SettingsXml.SelectSingleNode(SettingsRootName + "/" + propVal.Name);
                 }
                 else
                 {
-                    settingNode = (XmlElement)SettingsXml.SelectSingleNode(SettingsRoot + "/" + Environment.MachineName 
-                        + "/" + propVal.Name);
+                    settingNode = (XmlElement) SettingsXml.SelectSingleNode(SettingsRootName + "/" + Environment.MachineName
+                                                                            + "/" + propVal.Name);
                 }
             }
             catch (Exception)
@@ -164,7 +170,7 @@ namespace PortableSettingsProvider
             }
 
             //Check to see if the node exists, if so then set its new value
-            if ((settingNode != null))
+            if (settingNode != null)
             {
                 settingNode.InnerText = propVal.SerializedValue.ToString();
             }
@@ -175,7 +181,7 @@ namespace PortableSettingsProvider
                     //Store the value as an element of the Settings Root Node
                     settingNode = SettingsXml.CreateElement(propVal.Name);
                     settingNode.InnerText = propVal.SerializedValue.ToString();
-                    SettingsXml.SelectSingleNode(SettingsRoot).AppendChild(settingNode);
+                    SettingsXml.SelectSingleNode(SettingsRootName).AppendChild(settingNode);
                 }
                 else
                 {
@@ -184,18 +190,19 @@ namespace PortableSettingsProvider
                     XmlElement machineNode;
                     try
                     {
-                        machineNode = (XmlElement)SettingsXml.SelectSingleNode(SettingsRoot + "/" + Environment.MachineName);
+                        machineNode =
+                            (XmlElement) SettingsXml.SelectSingleNode(SettingsRootName + "/" + Environment.MachineName);
                     }
                     catch (Exception)
                     {
                         machineNode = SettingsXml.CreateElement(Environment.MachineName);
-                        SettingsXml.SelectSingleNode(SettingsRoot).AppendChild(machineNode);
+                        SettingsXml.SelectSingleNode(SettingsRootName).AppendChild(machineNode);
                     }
 
                     if (machineNode == null)
                     {
                         machineNode = SettingsXml.CreateElement(Environment.MachineName);
-                        SettingsXml.SelectSingleNode(SettingsRoot).AppendChild(machineNode);
+                        SettingsXml.SelectSingleNode(SettingsRootName).AppendChild(machineNode);
                     }
 
                     settingNode = SettingsXml.CreateElement(propVal.Name);
@@ -208,9 +215,9 @@ namespace PortableSettingsProvider
         private bool IsRoaming(SettingsProperty prop)
         {
             //Determine if the setting is marked as Roaming
-            return prop.Attributes.Cast<DictionaryEntry>().Select(x=>x.Value)
+            return prop.Attributes.Cast<DictionaryEntry>().Select(x => x.Value)
                 .OfType<SettingsManageabilityAttribute>().Any();
-            
+
             /*foreach (DictionaryEntry d in prop.Attributes)
             {
                 Attribute a = (Attribute)d.Value;
