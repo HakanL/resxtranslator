@@ -219,14 +219,14 @@ namespace ResxTranslator.Controls
             var currentCell = dataGridView1.CurrentCell;
             var dataObject = Clipboard.GetDataObject() as DataObject;
 
-            if (dataObject == null || !dataObject.GetDataPresent(DataFormats.Text) || currentCell == null) return;
+            if (dataObject == null || !dataObject.GetDataPresent(DataFormats.UnicodeText) || currentCell == null) return;
 
             var columns = dataGridView1.Columns.Cast<DataGridViewColumn>().OrderBy(c => c.DisplayIndex)
                 .Where(c => c.Visible && c.ValueType == typeof(string) &&
                             c.DisplayIndex >= dataGridView1.Columns[currentCell.ColumnIndex].DisplayIndex);
 
             var rowData = Regex.Split(
-                dataObject.GetData(DataFormats.Text).ToString().TrimEnd(Environment.NewLine.ToCharArray()), Environment.NewLine);
+                dataObject.GetData(DataFormats.UnicodeText).ToString().TrimEnd(Environment.NewLine.ToCharArray()), Environment.NewLine);
 
             var data = rowData.Select(r => r.Split('\t')).ToArray();
 
