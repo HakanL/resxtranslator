@@ -231,8 +231,8 @@ namespace ResxTranslator.Controls
             var data = rowData.Select(r => r.Split('\t')).ToArray();
 
             var pasteRows = data.Length;
-            if (currentCell.RowIndex + pasteRows > dataGridView1.RowCount - 1)
-                pasteRows = dataGridView1.RowCount - currentCell.RowIndex - 1;
+            if (currentCell.RowIndex + pasteRows > dataGridView1.RowCount)
+                pasteRows = dataGridView1.RowCount - currentCell.RowIndex;
 
             if (data.Min(x => x.Length) != data.Max(x => x.Length))
                 return;
