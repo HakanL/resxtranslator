@@ -200,7 +200,7 @@ namespace ResxTranslator.ResourceOperations
                 }
                 else
                 {
-                    originalResources.Add(key, new ResXDataNode(key, stringValueData));
+                    originalResources.Add(key, new ResXDataNode(key, stringValueData) { Comment = stringCommentData });
                     localizableResourceKeys.Add(key);
                 }
             }
