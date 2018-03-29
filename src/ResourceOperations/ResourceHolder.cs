@@ -121,7 +121,7 @@ namespace ResxTranslator.ResourceOperations
         /// <summary>
         ///     Save one resource file
         /// </summary>
-        private void UpdateFile(string filename, string valueColumnId, bool skipNontranslatableData)
+        private void UpdateFile(string filename, string valueColumnId, bool skipNontranslatableData, bool saveComments)
         {
             // Read the entire resource file to a buffer
             var originalMetadatas = new Dictionary<string, object>();
@@ -185,9 +185,7 @@ namespace ResxTranslator.ResourceOperations
                 var valueData = dataRow[valueColumnId] == DBNull.Value ? null : dataRow[valueColumnId];
                 var stringValueData = valueData?.ToString() ?? string.Empty;
 
-                var colNameComment = Properties.Resources.ColNameComment;
-                var commentData = dataRow[colNameComment] == DBNull.Value ? null : dataRow[colNameComment];
-                var stringCommentData = commentData?.ToString() ?? string.Empty;
+                var stringCommentData = saveComments ? TryGetCommentFromRow(dataRow) : string.Empty;
 
                 if (localizableResourceKeys.Contains(key))
                 {
@@ -228,6 +226,13 @@ namespace ResxTranslator.ResourceOperations
             }
         }
 
+        private static string TryGetCommentFromRow(DataRow dataRow)
+        {
+            var colNameComment = Properties.Resources.ColNameComment;
+            var commentData = dataRow[colNameComment] == DBNull.Value ? null : dataRow[colNameComment];
+            return commentData?.ToString() ?? string.Empty;
+        }
+
         /// <summary>
         ///     Save translations of this resource without any non-translatable data, effectively removing it.
         ///     The base (no language) resource is left intact.
@@ -237,11 +242,11 @@ namespace ResxTranslator.ResourceOperations
             try
             {
                 if (IsDirty)
-                    UpdateFile(Filename, Properties.Resources.ColNameNoLang, false);
+                    UpdateFile(Filename, Properties.Resources.ColNameNoLang, false, true);
 
                 foreach (var languageHolder in Languages.Values)
                 {
-                    UpdateFile(languageHolder.Filename, languageHolder.LanguageId, true);
+                    UpdateFile(languageHolder.Filename, languageHolder.LanguageId, true, Settings.Default.StoreCommentsInAllFiles);
                 }
                 Dirty = false;
             }
@@ -261,11 +266,11 @@ namespace ResxTranslator.ResourceOperations
                 return;
             try
             {
-                UpdateFile(Filename, Properties.Resources.ColNameNoLang, false);
+                UpdateFile(Filename, Properties.Resources.ColNameNoLang, false, true);
 
                 foreach (var languageHolder in Languages.Values)
                 {
-                    UpdateFile(languageHolder.Filename, languageHolder.LanguageId, false);
+                    UpdateFile(languageHolder.Filename, languageHolder.LanguageId, false, Settings.Default.StoreCommentsInAllFiles);
                 }
                 Dirty = false;
             }
@@ -282,6 +287,11 @@ namespace ResxTranslator.ResourceOperations
         private void ReadResourceFile(string filename, DataTable stringsTable,
             string valueColumn, bool isTranslated)
         {
+            var loadComments = !isTranslated || Settings.Default.StoreCommentsInAllFiles;
+
+            var colNameComment = Properties.Resources.ColNameComment;
+            var colNameTranslated = Properties.Resources.ColNameTranslated;
+
             using (var reader = new ResXResourceReader(filename))
             {
                 reader.UseResXDataNodes = true;
@@ -303,8 +313,6 @@ namespace ResxTranslator.ResourceOperations
                     }
 
                     var r = FindByKey(key);
-                    var colNameComment = Properties.Resources.ColNameComment;
-                    var colNameTranslated = Properties.Resources.ColNameTranslated;
                     if (r == null)
                     {
                         var newRow = stringsTable.NewRow();
@@ -312,7 +320,7 @@ namespace ResxTranslator.ResourceOperations
 
                         newRow[valueColumn] = value;
 
-                        newRow[colNameComment] = dataNode.Comment;
+                        if (loadComments) newRow[colNameComment] = dataNode.Comment;
                         newRow[Properties.Resources.ColNameError] = false;
                         newRow[colNameTranslated] = isTranslated && !string.IsNullOrEmpty(value);
                         stringsTable.Rows.Add(newRow);
@@ -321,11 +329,12 @@ namespace ResxTranslator.ResourceOperations
                     {
                         r[valueColumn] = value;
 
-                        if (string.IsNullOrEmpty((string)r[colNameComment]) &&
+                        if (loadComments && string.IsNullOrEmpty(r[colNameComment] as string) &&
                             !string.IsNullOrEmpty(dataNode.Comment))
                         {
                             r[colNameComment] = dataNode.Comment;
                         }
+
                         if (isTranslated && !string.IsNullOrEmpty(value))
                         {
                             r[colNameTranslated] = true;

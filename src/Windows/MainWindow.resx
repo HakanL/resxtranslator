@@ -196,7 +196,7 @@
     <value>resourceTreeView1</value>
   </data>
   <data name="&gt;&gt;resourceTreeView1.Type" xml:space="preserve">
-    <value>ResxTranslator.Controls.ResourceTreeView, ResxTranslator, Version=2.5.6538.21496, Culture=neutral, PublicKeyToken=null</value>
+    <value>ResxTranslator.Controls.ResourceTreeView, ResxTranslator, Version=2.5.6580.33796, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;resourceTreeView1.Parent" xml:space="preserve">
     <value>tabPage3</value>
@@ -250,7 +250,7 @@
     <value>missingTranslationView1</value>
   </data>
   <data name="&gt;&gt;missingTranslationView1.Type" xml:space="preserve">
-    <value>ResxTranslator.Controls.MissingTranslationView, ResxTranslator, Version=2.5.6538.21496, Culture=neutral, PublicKeyToken=null</value>
+    <value>ResxTranslator.Controls.MissingTranslationView, ResxTranslator, Version=2.5.6580.33796, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;missingTranslationView1.Parent" xml:space="preserve">
     <value>tabPage5</value>
@@ -340,7 +340,7 @@
     <value>languageSettings1</value>
   </data>
   <data name="&gt;&gt;languageSettings1.Type" xml:space="preserve">
-    <value>ResxTranslator.Controls.LanguageSettings, ResxTranslator, Version=2.5.6538.21496, Culture=neutral, PublicKeyToken=null</value>
+    <value>ResxTranslator.Controls.LanguageSettings, ResxTranslator, Version=2.5.6580.33796, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;languageSettings1.Parent" xml:space="preserve">
     <value>tabPage1</value>
@@ -466,7 +466,7 @@
     <value>resourceGrid1</value>
   </data>
   <data name="&gt;&gt;resourceGrid1.Type" xml:space="preserve">
-    <value>ResxTranslator.Controls.ResourceGrid, ResxTranslator, Version=2.5.6538.21496, Culture=neutral, PublicKeyToken=null</value>
+    <value>ResxTranslator.Controls.ResourceGrid, ResxTranslator, Version=2.5.6580.33796, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;resourceGrid1.Parent" xml:space="preserve">
     <value>tabPageEditedResource</value>
@@ -811,6 +811,15 @@ from beginning and end of the selected cells.</value>
   <data name="openLastDirectoryOnProgramStartToolStripMenuItem.Text" xml:space="preserve">
     <value>Open last directory on program start</value>
   </data>
+  <data name="storeAndLoadCommentsFromAllLanguageFilesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>402, 22</value>
+  </data>
+  <data name="storeAndLoadCommentsFromAllLanguageFilesToolStripMenuItem.Text" xml:space="preserve">
+    <value>Store and load comments from all language files</value>
+  </data>
+  <data name="storeAndLoadCommentsFromAllLanguageFilesToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>If disabled, only store and load comments from the main language file.</value>
+  </data>
   <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
     <value>399, 6</value>
   </data>
@@ -833,19 +842,19 @@ from beginning and end of the selected cells.</value>
     <value>&amp;Settings</value>
   </data>
   <data name="helpToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>139, 22</value>
+    <value>152, 22</value>
   </data>
   <data name="helpToolStripMenuItem1.Text" xml:space="preserve">
     <value>&amp;Help</value>
   </data>
   <data name="licenceToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>139, 22</value>
+    <value>152, 22</value>
   </data>
   <data name="licenceToolStripMenuItem.Text" xml:space="preserve">
     <value>View licence</value>
   </data>
   <data name="aboutToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>139, 22</value>
+    <value>152, 22</value>
   </data>
   <data name="aboutToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;About</value>
@@ -947,6 +956,12 @@ from beginning and end of the selected cells.</value>
     <value>reloadCurrentDirectoryToolStripMenuItem</value>
   </data>
   <data name="&gt;&gt;reloadCurrentDirectoryToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;exportAllResourcesToolStripMenuItem.Name" xml:space="preserve">
+    <value>exportAllResourcesToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;exportAllResourcesToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripSeparator1.Name" xml:space="preserve">
@@ -1069,10 +1084,28 @@ from beginning and end of the selected cells.</value>
   <data name="&gt;&gt;trimWhitespaceFromCellsToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;settingsToolStripMenuItem.Name" xml:space="preserve">
-    <value>settingsToolStripMenuItem</value>
+  <data name="&gt;&gt;helpToolStripMenuItem.Name" xml:space="preserve">
+    <value>helpToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;settingsToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;helpToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;helpToolStripMenuItem1.Name" xml:space="preserve">
+    <value>helpToolStripMenuItem1</value>
+  </data>
+  <data name="&gt;&gt;helpToolStripMenuItem1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;licenceToolStripMenuItem.Name" xml:space="preserve">
+    <value>licenceToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;licenceToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;aboutToolStripMenuItem.Name" xml:space="preserve">
+    <value>aboutToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;aboutToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;copyDefaultValuesOnLanguageAddToolStripMenuItem.Name" xml:space="preserve">
@@ -1129,34 +1162,16 @@ from beginning and end of the selected cells.</value>
   <data name="&gt;&gt;setReferencePathsToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;helpToolStripMenuItem.Name" xml:space="preserve">
-    <value>helpToolStripMenuItem</value>
+  <data name="&gt;&gt;settingsToolStripMenuItem.Name" xml:space="preserve">
+    <value>settingsToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;helpToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;settingsToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;helpToolStripMenuItem1.Name" xml:space="preserve">
-    <value>helpToolStripMenuItem1</value>
+  <data name="&gt;&gt;storeAndLoadCommentsFromAllLanguageFilesToolStripMenuItem.Name" xml:space="preserve">
+    <value>storeAndLoadCommentsFromAllLanguageFilesToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;helpToolStripMenuItem1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;licenceToolStripMenuItem.Name" xml:space="preserve">
-    <value>licenceToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;licenceToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;aboutToolStripMenuItem.Name" xml:space="preserve">
-    <value>aboutToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;aboutToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;exportAllResourcesToolStripMenuItem.Name" xml:space="preserve">
-    <value>exportAllResourcesToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;exportAllResourcesToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;storeAndLoadCommentsFromAllLanguageFilesToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">

@@ -79,6 +79,8 @@ namespace ResxTranslator.Windows
                 settings => settings.ShowNullValuesAsGrayed, this);
             Settings.Binder.BindControl(loadAssembliesFromResourcePathToolStripMenuItem,
                 settings => settings.ReferencePathsFromResourceDir, this);
+            Settings.Binder.BindControl(storeAndLoadCommentsFromAllLanguageFilesToolStripMenuItem,
+                settings => settings.StoreCommentsInAllFiles, this);
 
             Settings.Binder.Subscribe((sender, args) => ResourceLoader.HideEmptyResources = args.NewValue,
                 settings => settings.HideEmptyResources, this);
