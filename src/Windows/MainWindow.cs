@@ -115,13 +115,18 @@ namespace ResxTranslator.Windows
                 this.InvokeIfRequired(_ =>
                 {
                     if (_currentResource != null)
+                    {
                         _currentResource.LanguageChange -= OnCurrentResourceLanguageChange;
+                        _currentResource.DirtyChanged -= _currentResource_DirtyChanged;
+                    }
 
                     _currentResource = value;
 
                     if (_currentResource != null)
                     {
                         _currentResource.LanguageChange += OnCurrentResourceLanguageChange;
+                        _currentResource.DirtyChanged += _currentResource_DirtyChanged;
+
                         _currentResource.EvaluateAllRows(
                             languageSettings1.EnabledLanguages.Select(x => x.Name).ToArray());
                     }
@@ -134,6 +139,11 @@ namespace ResxTranslator.Windows
                     UpdateMenuStrip();
                 });
             }
+        }
+
+        private void _currentResource_DirtyChanged(object sender, EventArgs e)
+        {
+            UpdateTitlebar();
         }
 
         private void OnCurrentResourceLanguageChange(object sender, EventArgs eventArgs)
@@ -272,7 +282,7 @@ namespace ResxTranslator.Windows
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.ToString(), Localization.MainWindow_Failed_to_create_a_new_row, 
+                    MessageBox.Show(ex.ToString(), Localization.MainWindow_Failed_to_create_a_new_row,
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
@@ -407,14 +417,12 @@ namespace ResxTranslator.Windows
 
         private void OnResourceLoaderOnResourcesChanged(object sender, EventArgs args)
         {
-            this.InvokeIfRequired(_ =>
+            (this).InvokeIfRequired(_ =>
             {
                 var nothingLoaded = string.IsNullOrEmpty(ResourceLoader.OpenedPath);
                 findToolStripMenuItem.Enabled = !nothingLoaded;
 
-                Text = string.IsNullOrEmpty(ResourceLoader.OpenedPath)
-                    ? _defaultWindowTitle
-                    : $"{ResourceLoader.OpenedPath} - {_defaultWindowTitle}";
+                UpdateTitlebar();
 
                 CurrentResource = null;
 
@@ -426,6 +434,13 @@ namespace ResxTranslator.Windows
 
                 LoadReferenceAssemblies();
             });
+        }
+
+        private void UpdateTitlebar()
+        {
+            Text = string.IsNullOrEmpty(ResourceLoader.OpenedPath)
+                                ? _defaultWindowTitle
+                                : $"{ResourceLoader.OpenedPath}{(CurrentResource?.IsDirty == true ? "*" : "")} - {_defaultWindowTitle}";
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -582,10 +597,10 @@ namespace ResxTranslator.Windows
                     File.Delete(exportDialog.FileName);
                     using (var zf = new ZipFile(exportDialog.FileName))
                     {
-                        zf.AddFiles(ResourceLoader.Resources.Select(x=> x.Filename)
+                        zf.AddFiles(ResourceLoader.Resources.Select(x => x.Filename)
                             // Make sure the base resource exists, it might not. Languages always exist if they are loaded.
                             .Where(File.Exists));
-                        zf.AddFiles(ResourceLoader.Resources.SelectMany(x=>x.Languages.Select(l=>l.Value.Filename)));
+                        zf.AddFiles(ResourceLoader.Resources.SelectMany(x => x.Languages.Select(l => l.Value.Filename)));
                         zf.Save();
                     }
                 }
