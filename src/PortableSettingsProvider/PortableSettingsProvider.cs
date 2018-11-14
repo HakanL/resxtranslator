@@ -13,7 +13,7 @@ namespace PortableSettingsProvider
     /// License: The Code Project Open License (CPOL) 1.02
     /// 18 Oct 2007 - CodeChimp - Public VB release
     /// Mar 26, 2016 - HakanL - Converted project to C#, cleanup
-    /// 2010-2017 - Marcin Szeniak - Bugfixes, cleanup, improvements
+    /// 2010-2018 - Marcin Szeniak - Bugfixes, cleanup, improvements
     /// </summary>
     public class PortableSettingsProvider : SettingsProvider
     {
@@ -38,6 +38,15 @@ namespace PortableSettingsProvider
 
         private XmlDocument _settingsXml;
         private XmlNode _settingsRootNode;
+        private readonly string _localMachineName;
+
+        public PortableSettingsProvider()
+        {
+            var machineName = Environment.MachineName;
+            if (string.IsNullOrEmpty(machineName))
+                machineName = $"{Environment.UserDomainName}-{Environment.UserName}";
+            _localMachineName = XmlConvert.EncodeName(machineName);
+        }
 
         private XmlDocument SettingsXml
         {
@@ -53,7 +62,7 @@ namespace PortableSettingsProvider
                     {
                         _settingsXml.Load(Path.Combine(GetAppSettingsPath(), GetAppSettingsFilename()));
 
-                        if(_settingsXml.SelectSingleNode(SettingsRootName) == null)
+                        if (_settingsXml.SelectSingleNode(SettingsRootName) == null)
                             throw new Exception("Invalid config file");
                     }
                     catch (Exception)
@@ -146,7 +155,7 @@ namespace PortableSettingsProvider
                            ?? GetDefaultValue(setting);
                 }
 
-                return SettingsXml.SelectSingleNode(SettingsRootName + "/" + Environment.MachineName
+                return SettingsXml.SelectSingleNode(SettingsRootName + "/" + _localMachineName
                                                     + "/" + setting.Name)?.InnerText ?? GetDefaultValue(setting);
             }
             catch (Exception)
@@ -182,7 +191,7 @@ namespace PortableSettingsProvider
                 else
                 {
                     settingNode = (XmlElement)SettingsXml.SelectSingleNode(
-                        SettingsRootName + "/" + Environment.MachineName + "/" + propVal.Name);
+                        SettingsRootName + "/" + _localMachineName + "/" + propVal.Name);
                 }
             }
             catch (Exception)
@@ -217,17 +226,17 @@ namespace PortableSettingsProvider
             try
             {
                 machineNode = (XmlElement)SettingsXml.SelectSingleNode(
-                    SettingsRootName + "/" + Environment.MachineName);
+                    SettingsRootName + "/" + _localMachineName);
             }
             catch (Exception)
             {
-                machineNode = SettingsXml.CreateElement(Environment.MachineName);
+                machineNode = SettingsXml.CreateElement(_localMachineName);
                 SettingsRootNode.AppendChild(machineNode);
             }
 
             if (machineNode == null)
             {
-                machineNode = SettingsXml.CreateElement(Environment.MachineName);
+                machineNode = SettingsXml.CreateElement(_localMachineName);
                 SettingsRootNode.AppendChild(machineNode);
             }
 
@@ -244,6 +253,8 @@ namespace PortableSettingsProvider
             var serializedValue = propVal.SerializedValue;
             if (serializedValue != null)
             {
+                if (SettingsRootNode == null) throw new ArgumentNullException(nameof(SettingsRootNode));
+                if (SettingsXml == null) throw new ArgumentNullException(nameof(SettingsXml));
                 var settingNode = SettingsXml.CreateElement(propVal.Name);
                 settingNode.InnerText = serializedValue.ToString();
                 SettingsRootNode.AppendChild(settingNode);
