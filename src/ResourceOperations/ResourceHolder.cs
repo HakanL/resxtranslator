@@ -163,7 +163,7 @@ namespace ResxTranslator.ResourceOperations
                 // Only support localizable strings to avoid removing other resources by mistake
                 // BUG Clear the _deletedKeys?
                 foreach (var originalResource in originalResources
-                    .Where(originalResource => _deletedKeys.ContainsKey(originalResource.Key))
+                    //.Where(originalResource => _deletedKeys.ContainsKey(originalResource.Key))
                     .Where(originalResource => IsLocalizableString(originalResource.Key, originalResource.Value))
                     .ToList())
                 {
