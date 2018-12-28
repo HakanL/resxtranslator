@@ -592,7 +592,7 @@
     <value>133, 17</value>
   </metadata>
   <data name="openToolStripMenuItem.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Ctrl+O</value>
+    <value>Control+O</value>
   </data>
   <data name="openToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>205, 22</value>
@@ -601,7 +601,7 @@
     <value>&amp;Open directory...</value>
   </data>
   <data name="saveAllModifiedToolStripMenuItem.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Ctrl+S</value>
+    <value>Control+S</value>
   </data>
   <data name="saveAllModifiedToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>205, 22</value>
@@ -667,10 +667,10 @@
     <value>&amp;File</value>
   </data>
   <data name="findToolStripMenuItem1.ShortcutKeyDisplayString" xml:space="preserve">
-    <value>Ctrl+F</value>
+    <value>Control+F</value>
   </data>
   <data name="findToolStripMenuItem1.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Ctrl+F</value>
+    <value>Control+F</value>
   </data>
   <data name="findToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
     <value>146, 22</value>
@@ -691,7 +691,7 @@
     <value>Fi&amp;nd</value>
   </data>
   <data name="addNewKeyToolStripMenuItem.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Ctrl+N</value>
+    <value>Control+N</value>
   </data>
   <data name="addNewKeyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>195, 22</value>
@@ -700,7 +700,7 @@
     <value>&amp;Add new Key...</value>
   </data>
   <data name="deleteKeyToolStripMenuItem.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Ctrl+Del</value>
+    <value>Control+Delete</value>
   </data>
   <data name="deleteKeyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>195, 22</value>
@@ -757,7 +757,7 @@ Useful for resetting UI values of WinForms controls to their
 default values. (usually to values of the default resource)</value>
   </data>
   <data name="trimWhitespaceFromCellsToolStripMenuItem.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Ctrl+T</value>
+    <value>Control+T</value>
   </data>
   <data name="trimWhitespaceFromCellsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>256, 22</value>

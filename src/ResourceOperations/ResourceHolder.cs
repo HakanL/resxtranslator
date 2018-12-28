@@ -15,17 +15,19 @@ namespace ResxTranslator.ResourceOperations
     public class ResourceHolder
     {
         private readonly object _lockObject = new object();
-        private readonly Dictionary<string, bool> _deletedKeys;
+        private readonly List<string> _deletedKeys;
         private bool _dirty;
         private string _noLanguageLanguage = string.Empty;
         private DataTable _stringsTable;
+        private object _columnChangePreviousValue;
+
         public event EventHandler DirtyChanged;
         public event EventHandler LanguageChange;
 
         public ResourceHolder()
         {
             Languages = new SortedDictionary<string, LanguageHolder>();
-            _deletedKeys = new Dictionary<string, bool>();
+            _deletedKeys = new List<string>();
         }
 
         public string Filename { get; set; }
@@ -163,7 +165,7 @@ namespace ResxTranslator.ResourceOperations
                 // Only support localizable strings to avoid removing other resources by mistake
                 // BUG Clear the _deletedKeys?
                 foreach (var originalResource in originalResources
-                    .Where(originalResource => _deletedKeys.ContainsKey(originalResource.Key))
+                    .Where(originalResource => _deletedKeys.Contains(originalResource.Key))
                     .Where(originalResource => IsLocalizableString(originalResource.Key, originalResource.Value))
                     .ToList())
                 {
@@ -465,7 +467,7 @@ namespace ResxTranslator.ResourceOperations
         /// </summary>
         private void stringsTable_RowDeleting(object sender, DataRowChangeEventArgs e)
         {
-            _deletedKeys[e.Row[Properties.Resources.ColNameKey].ToString()] = true;
+            _deletedKeys.Add((string)e.Row[Properties.Resources.ColNameKey]);
             Dirty = true;
         }
 
@@ -484,9 +486,21 @@ namespace ResxTranslator.ResourceOperations
         {
             if (e.Column != e.Column.Table.Columns[Properties.Resources.ColNameError])
             {
+                var colNameKey = Properties.Resources.ColNameKey;
+                if (e.Column == e.Column.Table.Columns[colNameKey])
+                {
+                    // row key was changed -> treat old as being delete
+                    _deletedKeys.Add((string)_columnChangePreviousValue);
+
+                    // maybe we create/renamed a key to a previously deleted one -> remove that
+                    _deletedKeys.Remove((string)e.ProposedValue);
+                }
+
                 Dirty = true;
                 EvaluateRow(e.Row);
             }
+
+            _columnChangePreviousValue = null;
         }
 
         /// <summary>
@@ -494,6 +508,8 @@ namespace ResxTranslator.ResourceOperations
         /// </summary>
         private void stringsTable_ColumnChanging(object sender, DataColumnChangeEventArgs e)
         {
+            _columnChangePreviousValue = e.Row[e.Column];
+
             var colNameKey = Properties.Resources.ColNameKey;
             if (e.Column == e.Column.Table.Columns[colNameKey])
             {
