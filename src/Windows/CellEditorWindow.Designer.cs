@@ -87,6 +87,7 @@
             this.textBoxString.Name = "textBoxString";
             this.textBoxString.ScrollWidth = 200;
             this.textBoxString.WhitespaceSize = 2;
+            this.textBoxString.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBoxString_KeyDown);
             // 
             // CellEditorWindow
             // 

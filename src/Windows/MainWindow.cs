@@ -611,5 +611,116 @@ namespace ResxTranslator.Windows
                 }
             }
         }
+
+       
+        /// <summary>
+        /// Fill resx with translations for google
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void translateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            {
+
+                var dt = CurrentResource.StringsTable;
+                var totalRows = dt.Rows.Count;
+                var currentRow = 0;
+
+                foreach (System.Data.DataRow row in dt.Rows)
+                {
+                    currentRow++;
+                    this.InvokeIfRequired(s =>
+                   {
+
+                       toolStripProgressBar1.Visible = true;
+                       if (toolStripProgressBar1.Maximum != totalRows)
+                           toolStripProgressBar1.Maximum = totalRows;
+                       toolStripProgressBar1.Value = currentRow;
+                   });
+
+                    if (string.IsNullOrEmpty(row["NoLanguageValue"]?.ToString()))
+                        continue;
+                    var originalText = row["NoLanguageValue"].ToString();
+                    foreach (var lang in CurrentResource.Languages)
+                    {
+                        Console.WriteLine($"[{lang.Key}]: {row[lang.Key].ToString()}");
+                        //If value translated, continue with next
+                        if ((!string.IsNullOrEmpty(row[lang.Key].ToString())))
+                            continue;
+
+                        string translatedText = string.Empty;
+                        bool success = false;
+                        int trycount = 0;
+                        do
+                        {
+                            try
+                            {
+                                if (IsGoogleTranslatorLoaded())
+                                    success = GTranslateService.Translate(originalText, "es", lang.Key, "", out translatedText);
+                                System.Threading.Thread.Sleep(400);
+                            }
+                            catch (Exception)
+                            {
+                                success = false;
+                            }
+                            trycount++;
+
+                            if (!success)
+                            {
+                                //row[lang.Key] = translatedText;
+                                //var key = ResxTranslator.GetDataKeyName(node);
+                                //status = "Translating language: " + destLng + " , key '" + key + "' failed to translate in try " + trycount;
+                                //progress.BeginInvoke(max, pos, status, null, null);
+                            }
+                            else
+                            {
+                                row[lang.Key] = translatedText + "$$";
+
+                            }
+
+                        } while (success == false && trycount <= 2);
+                    }
+                }
+
+                this.InvokeIfRequired(s =>
+               {
+                   toolStripProgressBar1.Visible = false;
+               });
+            });
+        }
+
+        private void Browser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+            HtmlDocument doc = browser.Document;
+            if (doc != null)
+                foreach (HtmlElement imgElemt in doc.Images)
+                {
+                    imgElemt.SetAttribute("src", "");
+                }
+        }
+
+        WebBrowser browser;
+        private void MainWindow_Load(object sender, EventArgs e)
+        {
+
+            browser = new System.Windows.Forms.WebBrowser();
+            browser.Url = new System.Uri("https://translate.google.com/", System.UriKind.Absolute);
+            browser.ScriptErrorsSuppressed = true;
+            browser.DocumentCompleted += Browser_DocumentCompleted;
+        }
+
+
+
+        bool IsGoogleTranslatorLoaded()
+        {
+            if (browser.Document != null &&
+                (browser.ReadyState == WebBrowserReadyState.Loaded ||
+                 browser.ReadyState == WebBrowserReadyState.Complete))
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

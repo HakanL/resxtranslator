@@ -226,7 +226,7 @@ namespace ResxTranslator.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://resxtranslator.codeplex.com/.
+        ///   Looks up a localized string similar to https://github.com/HakanL/resxtranslator/.
         /// </summary>
         internal static string Homepage {
             get {

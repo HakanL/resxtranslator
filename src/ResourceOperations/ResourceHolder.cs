@@ -144,6 +144,7 @@ namespace ResxTranslator.ResourceOperations
                     {
                         originalMetadatas.Add((string)metadataEnumerator.Key, metadataEnumerator.Value);
                     }
+                    reader.Close();
                 }
 
                 using (var reader = new ResXResourceReader(filename))
@@ -159,6 +160,7 @@ namespace ResxTranslator.ResourceOperations
                         if (!originalMetadatas.ContainsKey(key))
                             originalResources.Add(key, (ResXDataNode)dataEnumerator.Value);
                     }
+                    reader.Close();
                 }
 
                 // Get rid of keys marked as deleted. If they have been restored they will be re-added later
@@ -206,8 +208,32 @@ namespace ResxTranslator.ResourceOperations
             }
 
             // Write the cached resources to the drive
-            using (var writer = new ResXResourceWriter(filename))
+            using (var writer = new ResXResourceWriter(filename))//$"{filename.Replace(".resx","")}_.resx"))
             {
+                //Retiramos el atributo de solo lectura, si existe
+
+                FileAttributes attrs = File.GetAttributes(filename);
+                if (attrs.HasFlag(FileAttributes.ReadOnly))
+                    File.SetAttributes(filename, attrs & ~FileAttributes.ReadOnly & ~FileAttributes.Hidden);
+
+                //FileAttributes attributes = File.GetAttributes(filename);
+
+                //if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                //{
+                //    // Make the file RW
+                //    attributes = RemoveAttribute(attributes, FileAttributes.ReadOnly);
+                //    File.SetAttributes(filename, attributes);
+                //    Console.WriteLine("The {0} file is no longer RO.", filename);
+                //}
+                //oculta el fichero
+                //else
+                //{
+                //    // Make the file RO
+                //    File.SetAttributes(filename, File.GetAttributes(filename) | FileAttributes.Hidden);
+                //    Console.WriteLine("The {0} file is now RO.", filename);
+                //}
+
+
                 foreach (var originalResource in originalResources)
                 {
                     // Write localizable resource only if it is not empty, unless we are saving the default file
@@ -226,6 +252,12 @@ namespace ResxTranslator.ResourceOperations
 
                 writer.Generate();
             }
+        }
+
+
+        private static FileAttributes RemoveAttribute(FileAttributes attributes, FileAttributes attributesToRemove)
+        {
+            return attributes & ~attributesToRemove;
         }
 
         private static string TryGetCommentFromRow(DataRow dataRow)
@@ -351,7 +383,7 @@ namespace ResxTranslator.ResourceOperations
         /// </summary>
         private static bool IsLocalizableString(string key, ResXDataNode dataNode)
         {
-            if (key.StartsWith(">>") || (key.StartsWith("$") && key != "$this.Text"))
+            if ((key.StartsWith(">>") && !key.ToLower().Contains(".caption")) || ((key.StartsWith("$") && key != "$this.Text")))
                 return false;
 
             if (dataNode == null)

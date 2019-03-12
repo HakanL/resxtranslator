@@ -96,6 +96,7 @@ namespace ResxTranslator.Controls
 
         private void ApplyConditionalFormatting(DataGridViewRow r)
         {
+
             var colNameError = Properties.Resources.ColNameError;
             if (!string.IsNullOrEmpty(r.Cells[colNameError].Value?.ToString()) && (bool)r.Cells[colNameError].Value)
             {
@@ -109,6 +110,7 @@ namespace ResxTranslator.Controls
             if (r == dataGridView1.Rows[RowCount - 1])
                 return;
 
+
             ApplyConditionalCellFormatting(r.Cells[Properties.Resources.ColNameKey], SearchParams.TargetType.Key);
 
             ApplyConditionalCellFormatting(r.Cells[Properties.Resources.ColNameNoLang], SearchParams.TargetType.Text);
@@ -117,11 +119,30 @@ namespace ResxTranslator.Controls
             {
                 ApplyConditionalCellFormatting(r.Cells[lng.LanguageId], SearchParams.TargetType.Text);
             }
+
+
+            var colNameKey = Properties.Resources.ColNameKey;
+            if (!string.IsNullOrEmpty(r.Cells[colNameKey].Value?.ToString()) && r.Cells[colNameKey].Value.ToString().ToLower().Contains(".name"))
+            {
+                foreach (DataGridViewCell cell in r.Cells)
+                {
+                    cell.Style.BackColor = Color.LightYellow;
+                    if(cell.Value.ToString().EndsWith("$$"))
+                    {
+                        cell.Value = cell.Value.ToString().Replace("$$","");
+                        cell.Style.ForeColor = Color.Green;
+                    }
+                }               
+                
+            }
+            
+
         }
 
         private void ApplyConditionalCellFormatting(DataGridViewCell cell, SearchParams.TargetType targType)
         {
             var modified = false;
+
 
             if (CurrentSearch != null)
             {
@@ -134,6 +155,9 @@ namespace ResxTranslator.Controls
                 }
             }
 
+            if (cell.Style.BackColor == Color.LightYellow || cell.Style.ForeColor == Color.Green)
+                return;
+
             if (ShowNullValuesAsGrayed && string.IsNullOrWhiteSpace(cell.Value as string))
             {
                 cell.Style.BackColor = Color.Gainsboro;
@@ -142,6 +166,9 @@ namespace ResxTranslator.Controls
 
             if (!modified)
                 cell.Style.BackColor = dataGridView1.DefaultCellStyle.BackColor;
+
+            if (!string.IsNullOrEmpty(cell.Value?.ToString()) && cell.Value.ToString().ToLower().Contains(".name"))
+                cell.Style.BackColor = Color.LightYellow;
         }
 
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -279,6 +306,42 @@ namespace ResxTranslator.Controls
             else if (e.KeyCode == Keys.Delete)
             {
                 DeleteSelection();
+            }
+
+            if (e.Control && e.Shift && e.KeyCode == Keys.F2)
+            {
+
+                if (dataGridView1.SelectedCells.Count == 0)
+                    return;
+
+                bool? toUpper = null;
+                foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
+                {
+                    string texto = cell.Value.ToString();
+                    if (string.IsNullOrEmpty(texto))
+                        continue;
+
+                    if (toUpper == null)
+                    {
+                        string lastChar = texto.Substring(texto.Length - 1, 1);
+                        if (lastChar.ToUpper().Equals(lastChar))
+                            toUpper = true;
+                        else
+                            toUpper = false;
+                    }
+
+                    if ((bool)toUpper)
+                    {
+                        char[] chars = texto.ToLower().ToCharArray();
+                        chars[0] = System.Convert.ToChar(chars[0].ToString().ToUpper());
+                        texto = new string(chars);
+                    }
+
+                    else
+                        texto = texto.ToUpper();
+
+                    cell.Value = texto;
+                }
             }
         }
 

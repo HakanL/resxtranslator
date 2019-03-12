@@ -53,5 +53,26 @@ namespace ResxTranslator.Windows
                 buttonCancel.PerformClick();
             }
         }
+
+        
+        private void textBoxString_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.Shift && e.KeyCode == Keys.F2)
+            {
+                if (string.IsNullOrEmpty(textBoxString.Text))
+                    return;
+
+                string lastChar = textBoxString.Text.Substring(textBoxString.Text.Length - 1, 1);
+                if (lastChar.ToUpper().Equals(lastChar))
+                {
+                    char[] chars = textBoxString.Text.ToLower().ToCharArray();
+                    chars[0] = System.Convert.ToChar(chars[0].ToString().ToUpper());
+                    textBoxString.Text = new string(chars);
+                }
+
+                else
+                    textBoxString.Text = textBoxString.Text.ToUpper();
+            }
+        }
     }
 }
