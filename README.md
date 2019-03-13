@@ -24,6 +24,12 @@ You can navigate between the different resources without saving and without losi
 
 The rows that are red means one or more languages are missing values. I have a special case in here where {"[]"} around a value means it's not translated. For example if I haven't done the translation for the _ErrorHeader_ value then I just enter {"[ErrorHeader]"} under that language. That way I will still see something when I develop using that value, but the ResxTranslator will show it red since it's not translated because of the brackets.
 
+## Translations
+Can generate automatic google translations with Tools > Translate empty fields options. this will create automatic translations for empty rows and it will use Green texto color for later review. Because google blocks reiterated connections application tries to reconnect every five minutes to finish translations.
+
+## Short cuts
+Use Ctrl + Shift + F2 to alternate selected cell values between uppercase, lowercase and first capital letter.
+
 ## Credit
 A big thanks to my friend _Peter Wallin_ who encouraged this development and helped with testing.
 Another huge thanks for JorgenLindell for further development of this project!
