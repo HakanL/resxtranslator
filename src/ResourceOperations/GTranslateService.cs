@@ -1,18 +1,11 @@
 ﻿
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
 using System.Web;
-/* 
- * AutoResxTranslator
- * by Salar Khalilzadeh
- * 
- * https://autoresxtranslator.codeplex.com/
- * Mozilla Public License v2
- */
+
 namespace ResxTranslator.ResourceOperations
 {
 
@@ -66,7 +59,7 @@ namespace ResxTranslator.ResourceOperations
             catch (Exception ex)
             {
                 result = ex.Message;
-                return false;
+                throw;
             }
         }
 

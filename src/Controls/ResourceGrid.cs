@@ -98,6 +98,7 @@ namespace ResxTranslator.Controls
         {
 
             var colNameError = Properties.Resources.ColNameError;
+            var colNameKey = Properties.Resources.ColNameKey;
             if (!string.IsNullOrEmpty(r.Cells[colNameError].Value?.ToString()) && (bool)r.Cells[colNameError].Value)
             {
                 r.DefaultCellStyle.ForeColor = Color.Red;
@@ -107,7 +108,7 @@ namespace ResxTranslator.Controls
                 r.DefaultCellStyle.ForeColor = dataGridView1.DefaultCellStyle.ForeColor;
             }
 
-            if (r == dataGridView1.Rows[RowCount - 1])
+            if (r == dataGridView1.Rows[RowCount - 1] && string.IsNullOrEmpty(r.Cells[colNameKey].Value?.ToString()))
                 return;
 
 
@@ -121,17 +122,11 @@ namespace ResxTranslator.Controls
             }
 
 
-            var colNameKey = Properties.Resources.ColNameKey;
             if (!string.IsNullOrEmpty(r.Cells[colNameKey].Value?.ToString()) && r.Cells[colNameKey].Value.ToString().ToLower().Contains(".name"))
             {
                 foreach (DataGridViewCell cell in r.Cells)
                 {
-                    cell.Style.BackColor = Color.LightYellow;
-                    if(cell.Value.ToString().EndsWith("$$"))
-                    {
-                        cell.Value = cell.Value.ToString().Replace("$$","");
-                        cell.Style.ForeColor = Color.Green;
-                    }
+                    cell.Style.BackColor = Color.LightYellow;                   
                 }               
                 
             }
@@ -155,7 +150,13 @@ namespace ResxTranslator.Controls
                 }
             }
 
-            if (cell.Style.BackColor == Color.LightYellow || cell.Style.ForeColor == Color.Green)
+            if (cell.Value.ToString().EndsWith("$$"))
+            {
+                cell.Value = cell.Value.ToString().Replace("$$", "");
+                cell.Style.ForeColor = Color.Green;
+            }
+
+            if (cell.Style.BackColor == Color.LightYellow)
                 return;
 
             if (ShowNullValuesAsGrayed && string.IsNullOrWhiteSpace(cell.Value as string))

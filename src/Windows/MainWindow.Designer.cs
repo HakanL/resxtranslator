@@ -30,6 +30,7 @@ namespace ResxTranslator.Windows
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -88,6 +89,7 @@ namespace ResxTranslator.Windows
             this.helpToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.licenceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tmrGoogleServices = new System.Windows.Forms.Timer(this.components);
             this.resourceTreeView1 = new ResxTranslator.Controls.ResourceTreeView();
             this.missingTranslationView1 = new ResxTranslator.Controls.MissingTranslationView();
             this.languageSettings1 = new ResxTranslator.Controls.LanguageSettings();
@@ -523,6 +525,11 @@ namespace ResxTranslator.Windows
             resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
+            // tmrGoogleServices
+            // 
+            this.tmrGoogleServices.Interval = 300000;
+            this.tmrGoogleServices.Tick += new System.EventHandler(this.tmrGoogleServices_Tick);
+            // 
             // resourceTreeView1
             // 
             resources.ApplyResources(this.resourceTreeView1, "resourceTreeView1");
@@ -646,6 +653,7 @@ namespace ResxTranslator.Windows
         private ToolStripMenuItem loadAssembliesFromResourcePathToolStripMenuItem;
         private ToolStripMenuItem setReferencePathsToolStripMenuItem;
         private ToolStripMenuItem translateToolStripMenuItem;
+        private Timer tmrGoogleServices;
     }
 }
 
