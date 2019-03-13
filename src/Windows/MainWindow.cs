@@ -695,7 +695,7 @@ namespace ResxTranslator.Windows
                             {
                                 if (isBrowserReady)
                                     success = GTranslateService.Translate(originalText, originalLang, lang.Key, "", out translatedText);
-                                System.Threading.Thread.Sleep(300);
+                                //System.Threading.Thread.Sleep(300);
                             }
                             catch (Exception ex)
                             {
@@ -703,9 +703,9 @@ namespace ResxTranslator.Windows
                                 UpdateProgressBar(totalRows, currentRow, false);
                                 this.InvokeIfRequired(s =>
                                 {
-                                    toolStripStatusLabel1.Text = $"Total rows translated: {currentRow}/{totalRows}";
-                                    MessageBox.Show(ex.Message, "Web request failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                     tmrEnabledTime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+                                    toolStripStatusLabel1.Text = $"Total rows translated: {currentRow-1}/{totalRows} Timer now is ON [{tmrEnabledTime}]";
+                                    MessageBox.Show(ex.Message, "Web request failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                     tmrGoogleServices.Start();
                                 });
                                 return;
