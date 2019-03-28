@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using ResxTranslator.ResourceOperations;
 using ResxTranslator.Windows;
 using System.Text.RegularExpressions;
+using ResxTranslator.Tools;
 
 namespace ResxTranslator.Controls
 {
@@ -350,6 +351,34 @@ namespace ResxTranslator.Controls
         public void ApplyCurrentCellEdit()
         {
             dataGridView1.CommitEdit(DataGridViewDataErrorContexts.Commit);
+        }
+        
+        public void SelectNextMissingTranslation(string languageName)
+        {
+            if (!dataGridView1.Columns.Contains(languageName)) return;
+
+            var targets = dataGridView1.Rows.Cast<DataGridViewRow>();
+
+            // Get the next element after the current selection if something is already selected
+            if (dataGridView1.CurrentCell != null)
+            {
+                var rowIndex = dataGridView1.Rows.IndexOf(dataGridView1.CurrentCell.OwningRow);
+                targets = targets.ToList().Rotate(rowIndex + 1);
+            }
+
+            var missingCell = targets.Select((x,i) =>
+            {
+                var cell = x.Cells[languageName];
+                if (cell == null) return null;
+
+                var hasTranslation = cell.Value is string s &&
+                    !string.IsNullOrWhiteSpace(s) &&
+                    !(s.StartsWith("[") && s.TrimEnd().EndsWith("]"));
+
+                return hasTranslation ? null : cell;
+            }).FirstOrDefault(x => x != null);
+
+            if (missingCell != null) dataGridView1.CurrentCell = missingCell;
         }
     }
 }

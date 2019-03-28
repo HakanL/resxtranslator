@@ -53,6 +53,7 @@ namespace ResxTranslator.Windows
 
                 languageSettings1.SetLanguageState(args.Language.Name, true);
                 CurrentResource = args.Item;
+                resourceGrid1.SelectNextMissingTranslation(args.Language.Name);
             };
 
             languageSettings1.EnabledLanguagesChanged += (sender, args) =>
