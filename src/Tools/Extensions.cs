@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Design;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Resources;
 using System.Windows.Forms;
@@ -41,6 +42,15 @@ namespace ResxTranslator.Tools
                     "You must pass a lambda of the form: 'x => x.Property' or 'x => class.Property'");
 
             return memberSelectorExpression.Member.Name;
+        }
+
+        /// <summary>
+        /// Rotate the collection to the left so that the item at startIndex becomes index 0. 
+        /// Elements rotated to the left wrap around, so the number of elements stays the same. 
+        /// </summary>
+        public static System.Collections.Generic.IEnumerable<T> Rotate<T>(this System.Collections.Generic.ICollection<T> targets, int startIndex)
+        {
+            return targets.Skip(startIndex).Concat(targets.Take(startIndex));
         }
     }
 }

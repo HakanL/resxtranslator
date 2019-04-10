@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using ResxTranslator.ResourceOperations;
 using ResxTranslator.Windows;
 using System.Text.RegularExpressions;
+using ResxTranslator.Tools;
 
 namespace ResxTranslator.Controls
 {
@@ -51,6 +52,7 @@ namespace ResxTranslator.Controls
             {
                 _currentSearch = value;
                 dataGridView1.Refresh();
+                SelectNextSearchResult();
             }
         }
 
@@ -350,6 +352,62 @@ namespace ResxTranslator.Controls
         public void ApplyCurrentCellEdit()
         {
             dataGridView1.CommitEdit(DataGridViewDataErrorContexts.Commit);
+        }
+
+        public void SelectNextMissingTranslation(string languageName)
+        {
+            if (!dataGridView1.Columns.Contains(languageName)) return;
+
+            var targets = dataGridView1.Rows.Cast<DataGridViewRow>();
+
+            // Get the next element after the current selection if something is already selected
+            if (dataGridView1.CurrentCell != null)
+            {
+                var rowIndex = dataGridView1.Rows.IndexOf(dataGridView1.CurrentCell.OwningRow);
+                targets = targets.ToList().Rotate(rowIndex + 1);
+            }
+
+            var missingCell = targets.Select((x, i) =>
+            {
+                var cell = x.Cells[languageName];
+                if (cell == null) return null;
+
+                var hasTranslation = cell.Value is string s &&
+                    !string.IsNullOrWhiteSpace(s) &&
+                    !(s.StartsWith("[") && s.TrimEnd().EndsWith("]"));
+
+                return hasTranslation ? null : cell;
+            }).FirstOrDefault(x => x != null);
+
+            if (missingCell != null) dataGridView1.CurrentCell = missingCell;
+        }
+
+        public void SelectNextSearchResult()
+        {
+            if (CurrentSearch == null) return;
+
+            var keyColumn = dataGridView1.Columns[Properties.Resources.ColNameKey];
+
+            var currentRow = dataGridView1.CurrentCell?.RowIndex ?? dataGridView1.RowCount;
+            var currentColumn = dataGridView1.CurrentCell?.ColumnIndex ?? -1;
+
+            foreach (DataGridViewRow row in dataGridView1.Rows.Cast<DataGridViewRow>().ToList().Rotate(currentRow))
+            {
+                foreach (DataGridViewCell cell in row.Cells)
+                {
+                    if (cell.ColumnIndex <= currentColumn) continue;
+
+                    if (!(cell.Value is string s)) continue;
+
+                    if (CurrentSearch.Match(cell.OwningColumn == keyColumn ? SearchParams.TargetType.Key : SearchParams.TargetType.Text, s))
+                    {
+                        dataGridView1.CurrentCell = cell;
+                        return;
+                    }
+                }
+                // Skip cells only in the currently selected row (the selected row is first in order thanks to Rotate call)
+                currentColumn = -1;
+            }
         }
     }
 }
