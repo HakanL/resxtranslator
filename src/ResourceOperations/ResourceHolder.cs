@@ -296,6 +296,8 @@ namespace ResxTranslator.ResourceOperations
 
             using (var reader = new ResXResourceReader(filename))
             {
+                try
+                {
                 reader.UseResXDataNodes = true;
                 var dataEnumerator = reader.GetEnumerator();
                 while (dataEnumerator.MoveNext())
@@ -342,6 +344,11 @@ namespace ResxTranslator.ResourceOperations
                             r[colNameTranslated] = true;
                         }
                     }
+                }
+                }
+                catch(Exception ex)
+                {
+                    
                 }
             }
         }
