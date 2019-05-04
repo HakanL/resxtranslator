@@ -298,53 +298,53 @@ namespace ResxTranslator.ResourceOperations
             {
                 try
                 {
-                reader.UseResXDataNodes = true;
-                var dataEnumerator = reader.GetEnumerator();
-                while (dataEnumerator.MoveNext())
-                {
-                    var key = (string)dataEnumerator.Key;
-                    var dataNode = (ResXDataNode)dataEnumerator.Value;
-
-                    if (!IsLocalizableString(key, dataNode))
-                        continue;
-
-                    var value = dataNode.GetValueAsString();
-
-                    if (!valueColumn.Equals(Properties.Resources.ColNameNoLang) && string.IsNullOrWhiteSpace(value))
+                    reader.UseResXDataNodes = true;
+                    var dataEnumerator = reader.GetEnumerator();
+                    while (dataEnumerator.MoveNext())
                     {
-                        Dirty = true;
-                        continue;
-                    }
+                        var key = (string)dataEnumerator.Key;
+                        var dataNode = (ResXDataNode)dataEnumerator.Value;
 
-                    var r = FindByKey(key);
-                    if (r == null)
-                    {
-                        var newRow = stringsTable.NewRow();
-                        newRow[Properties.Resources.ColNameKey] = key;
+                        if (!IsLocalizableString(key, dataNode))
+                            continue;
 
-                        newRow[valueColumn] = value;
+                        var value = dataNode.GetValueAsString();
 
-                        if (loadComments) newRow[colNameComment] = dataNode.Comment;
-                        newRow[Properties.Resources.ColNameError] = false;
-                        newRow[colNameTranslated] = isTranslated && !string.IsNullOrEmpty(value);
-                        stringsTable.Rows.Add(newRow);
-                    }
-                    else
-                    {
-                        r[valueColumn] = value;
-
-                        if (loadComments && string.IsNullOrEmpty(r[colNameComment] as string) &&
-                            !string.IsNullOrEmpty(dataNode.Comment))
+                        if (!valueColumn.Equals(Properties.Resources.ColNameNoLang) && string.IsNullOrWhiteSpace(value))
                         {
-                            r[colNameComment] = dataNode.Comment;
+                            Dirty = true;
+                            continue;
                         }
 
-                        if (isTranslated && !string.IsNullOrEmpty(value))
+                        var r = FindByKey(key);
+                        if (r == null)
                         {
-                            r[colNameTranslated] = true;
+                            var newRow = stringsTable.NewRow();
+                            newRow[Properties.Resources.ColNameKey] = key;
+
+                            newRow[valueColumn] = value;
+
+                            if (loadComments) newRow[colNameComment] = dataNode.Comment;
+                            newRow[Properties.Resources.ColNameError] = false;
+                            newRow[colNameTranslated] = isTranslated && !string.IsNullOrEmpty(value);
+                            stringsTable.Rows.Add(newRow);
+                        }
+                        else
+                        {
+                            r[valueColumn] = value;
+
+                            if (loadComments && string.IsNullOrEmpty(r[colNameComment] as string) &&
+                                !string.IsNullOrEmpty(dataNode.Comment))
+                            {
+                                r[colNameComment] = dataNode.Comment;
+                            }
+
+                            if (isTranslated && !string.IsNullOrEmpty(value))
+                            {
+                                r[colNameTranslated] = true;
+                            }
                         }
                     }
-                }
                 }
                 catch(Exception ex)
                 {
