@@ -13,6 +13,7 @@ using ResxTranslator.Properties;
 using ResxTranslator.ResourceOperations;
 using ResxTranslator.Resources;
 using ResxTranslator.Tools;
+using System.Data;
 
 namespace ResxTranslator.Windows
 {
@@ -666,24 +667,35 @@ namespace ResxTranslator.Windows
         /// <param name="originalLang"></param>
         private void LaunchAutoTranslate(string originalLang)
         {
+            object lockObj = new object();
             System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
                 var dt = CurrentResource.StringsTable;
                 var totalRows = dt.Rows.Count;
                 var currentRow = 0;
 
-                foreach (System.Data.DataRow row in dt.Rows)
+
+
+                var loopResult = System.Threading.Tasks.Parallel.ForEach(dt.AsEnumerable(), (System.Data.DataRow row, System.Threading.Tasks.ParallelLoopState state) =>
                 {
-                    currentRow++;
+                    // });
+
+                    //foreach (System.Data.DataRow row in dt.Rows)
+                    //{
+                    lock (lockObj)
+                    {
+                        currentRow++;
+                    }
                     UpdateProgressBar(totalRows, currentRow, true);
 
                     if (string.IsNullOrEmpty(row["NoLanguageValue"]?.ToString()))
-                        continue;
+                        return;
+
                     var originalText = row["NoLanguageValue"].ToString();
                     foreach (var lang in CurrentResource.Languages)
                     {
-                        //If value already is translated, continue with next
-                        if ((!string.IsNullOrEmpty(row[lang.Key].ToString())))
+                    //If value already is translated, continue with next
+                    if ((!string.IsNullOrEmpty(row[lang.Key].ToString())))
                             continue;
 
                         string translatedText = string.Empty;
@@ -695,30 +707,22 @@ namespace ResxTranslator.Windows
                             {
                                 if (isBrowserReady)
                                     success = GTranslateService.Translate(originalText, originalLang, lang.Key, "", out translatedText);
-                                //System.Threading.Thread.Sleep(300);
-                            }
+                            //System.Threading.Thread.Sleep(300);
+                        }
                             catch (Exception ex)
                             {
                                 success = false;
-                                UpdateProgressBar(totalRows, currentRow, false);
-                                this.InvokeIfRequired(s =>
-                                {
-                                    tmrEnabledTime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
-                                    toolStripStatusLabel1.Text = $"Total rows translated: {currentRow-1}/{totalRows} Timer now is ON [{tmrEnabledTime}]";
-                                    MessageBox.Show(ex.Message, "Web request failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                    tmrGoogleServices.Start();
-                                });
-                                return;
+                                state.Break();                               
                             }
                             trycount++;
 
                             if (!success)
                             {
-                                //row[lang.Key] = translatedText;
-                                //var key = ResxTranslator.GetDataKeyName(node);
-                                //status = "Translating language: " + destLng + " , key '" + key + "' failed to translate in try " + trycount;
-                                //progress.BeginInvoke(max, pos, status, null, null);
-                            }
+                            //row[lang.Key] = translatedText;
+                            //var key = ResxTranslator.GetDataKeyName(node);
+                            //status = "Translating language: " + destLng + " , key '" + key + "' failed to translate in try " + trycount;
+                            //progress.BeginInvoke(max, pos, status, null, null);
+                        }
                             else
                             {
                                 row[lang.Key] = translatedText + "$$";
@@ -727,10 +731,23 @@ namespace ResxTranslator.Windows
 
                         } while (success == false && trycount <= 2);
                     }
-                }
+                });
 
                 UpdateProgressBar(totalRows, currentRow, false);
-               
+                
+                if(!loopResult.IsCompleted)
+                {
+                    UpdateProgressBar(totalRows, currentRow, false);
+                    this.InvokeIfRequired(s =>
+                    {
+                        tmrEnabledTime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+                        toolStripStatusLabel1.Text = $"Total rows translated: {currentRow - 1}/{totalRows} Timer now is ON [{tmrEnabledTime}]";
+                        MessageBox.Show("Web request failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        tmrGoogleServices.Start();
+                    });
+                    return;
+                }
+
             });
         }
 
@@ -742,6 +759,8 @@ namespace ResxTranslator.Windows
                 toolStripProgressBar1.Visible = visible;
                 if (toolStripProgressBar1.Maximum != max)
                     toolStripProgressBar1.Maximum = max;
+                if (pos < 0)
+                    pos = 0;
                 toolStripProgressBar1.Value = pos;
             });
         }
