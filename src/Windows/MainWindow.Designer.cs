@@ -66,6 +66,7 @@ namespace ResxTranslator.Windows
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.findToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.findToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.findNextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearSearchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.keysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addNewKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -94,7 +95,7 @@ namespace ResxTranslator.Windows
             this.helpToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.licenceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tmrGoogleServices = new System.Windows.Forms.Timer(this.components);
+          this.tmrGoogleServices = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1.SuspendLayout();
             this.panelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).BeginInit();
@@ -359,6 +360,7 @@ namespace ResxTranslator.Windows
             // 
             this.findToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.findToolStripMenuItem1,
+            this.findNextToolStripMenuItem,
             this.clearSearchToolStripMenuItem});
             this.findToolStripMenuItem.Name = "findToolStripMenuItem";
             resources.ApplyResources(this.findToolStripMenuItem, "findToolStripMenuItem");
@@ -370,6 +372,12 @@ namespace ResxTranslator.Windows
             this.findToolStripMenuItem1.Name = "findToolStripMenuItem1";
             resources.ApplyResources(this.findToolStripMenuItem1, "findToolStripMenuItem1");
             this.findToolStripMenuItem1.Click += new System.EventHandler(this.findToolStripMenuItem1_Click);
+            // 
+            // findNextToolStripMenuItem
+            // 
+            this.findNextToolStripMenuItem.Name = "findNextToolStripMenuItem";
+            resources.ApplyResources(this.findNextToolStripMenuItem, "findNextToolStripMenuItem");
+            this.findNextToolStripMenuItem.Click += new System.EventHandler(this.findNextToolStripMenuItem_Click);
             // 
             // clearSearchToolStripMenuItem
             // 
@@ -666,6 +674,7 @@ namespace ResxTranslator.Windows
         private ToolStripMenuItem translateToolStripMenuItem;
         private Timer tmrGoogleServices;
         private ToolStripSplitButton tsCancelTimer;
+        private ToolStripMenuItem findNextToolStripMenuItem;
     }
 }
 
