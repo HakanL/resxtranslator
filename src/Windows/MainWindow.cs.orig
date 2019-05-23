@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using Ionic.Zip;
 using ResxTranslator.Properties;
 using ResxTranslator.ResourceOperations;
+using ResxTranslator.Resources;
 using ResxTranslator.Tools;
 using System.Data;
 
