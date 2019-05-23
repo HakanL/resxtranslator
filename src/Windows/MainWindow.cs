@@ -712,7 +712,16 @@ namespace ResxTranslator.Windows
                             catch (Exception ex)
                             {
                                 success = false;
-                                state.Break();                               
+                                UpdateProgressBar(totalRows, currentRow, false);
+                                this.InvokeIfRequired(s =>
+                                {
+                                    tmrEnabledTime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+                                    toolStripStatusLabel1.Text = $"Total rows translated: {currentRow-1}/{totalRows} Timer now is ON [{tmrEnabledTime}]";
+                                    MessageBox.Show(ex.Message, "Web request failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    tmrGoogleServices.Start();
+				    tsCancelTimer.Visible = tmrGoogleServices.Enabled;
+                                });
+                                return;
                             }
                             trycount++;
 
@@ -796,7 +805,15 @@ namespace ResxTranslator.Windows
                 tmrGoogleServices.Start();
             }
 
+            tsCancelTimer.Visible = tmrGoogleServices.Enabled;
             toolStripStatusLabel1.Text = $"Timer enabled: {tmrGoogleServices.Enabled}, {message}, since {tmrEnabledTime}";
+        }
+
+        private void tsCancelTimer_ButtonClick(object sender, EventArgs e)
+        {
+            tmrGoogleServices.Stop();
+            toolStripStatusLabel1.Text = $"{toolStripStatusLabel1.Text} | STOPPED: {DateTime.Now.ToString("G")}";
+            tsCancelTimer.Visible = tmrGoogleServices.Enabled;
         }
     }
 }
