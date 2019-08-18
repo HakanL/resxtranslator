@@ -212,12 +212,4 @@ Path: {1}</value>
   <data name="Dialog_Export_resources_ErrorTitle" xml:space="preserve">
     <value>Export failed</value>
   </data>
-  <data name="MessageBox_ResourcesFailedToLoad_Message" xml:space="preserve">
-    <value>Following resources failed to load. Make sure they are in correct format and not currupted.
-
-{0}</value>
-  </data>
-  <data name="MessageBox_ResourcesFailedToLoad_Title" xml:space="preserve">
-    <value>Failed to load some resources</value>
-  </data>
 </root>

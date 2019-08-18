@@ -156,8 +156,6 @@ namespace ResxTranslator.ResourceOperations
 
             var files = Directory.GetFiles(currentDirectory, "*.resx");
 
-            var failedList = new List<string>();
-
             foreach (var filename in files)
             {
                 var filenameNoExt = Path.GetFileNameWithoutExtension(filename);
@@ -189,22 +187,7 @@ namespace ResxTranslator.ResourceOperations
                     Debug.Assert(dir != null, "dir != null");
                     resourceHolder.Filename = Path.Combine(dir, filenameNoExt + ".resx");
 
-                    try
-                    {
-                        resourceHolder.LoadResource();
-
-                        _resourceStore.Add(key, resourceHolder);
-                    }
-                    catch (SystemException)
-                    {
-                        failedList.Add(resourceHolder.Filename);
-                    }
-                }
-
-                if (failedList.Any())
-                {
-                    MessageBox.Show(string.Format(Localization.MessageBox_ResourcesFailedToLoad_Message, string.Join("\n", failedList)),
-                        Localization.MessageBox_ResourcesFailedToLoad_Title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    _resourceStore.Add(key, resourceHolder);
                 }
 
                 if (culture != null)

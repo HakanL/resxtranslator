@@ -54,9 +54,6 @@ namespace ResxTranslator.Windows
 
                 languageSettings1.SetLanguageState(args.Language.Name, true);
                 CurrentResource = args.Item;
-
-                resourceGrid1.Focus();
-                resourceGrid1.SelectNextMissingTranslation(args.Language.Name);
             };
 
             languageSettings1.EnabledLanguagesChanged += (sender, args) =>
@@ -324,18 +321,6 @@ namespace ResxTranslator.Windows
             var result = FindWindow.ShowDialog(this);
             if (result != null)
                 CurrentSearch = result;
-        }
-
-        private void findNextToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if(CurrentSearch == null)
-            {
-                findToolStripMenuItem1_Click(sender, e);
-                return;
-            }
-
-            resourceGrid1.Focus();
-            resourceGrid1.SelectNextSearchResult();
         }
 
         private void LoadResourcesFromFolder(string path)
