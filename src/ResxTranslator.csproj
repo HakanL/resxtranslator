@@ -87,6 +87,7 @@
   <ItemGroup>
     <Compile Include="ResourceOperations\GTranslateService.cs" />
     <Compile Include="ResourceOperations\SimpleJson.cs" />
+    <Compile Include="ResourceOperations\Translator.cs" />
     <Compile Include="Resources\Localization.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

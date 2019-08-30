@@ -108,6 +108,7 @@ namespace ResxTranslator.Controls
                 r.DefaultCellStyle.ForeColor = dataGridView1.DefaultCellStyle.ForeColor;
             }
 
+            
             if (r == dataGridView1.Rows[RowCount - 1] && string.IsNullOrEmpty(r.Cells[colNameKey].Value?.ToString()))
                 return;
 

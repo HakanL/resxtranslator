@@ -208,7 +208,7 @@
     <value>resourceTreeView1</value>
   </data>
   <data name="&gt;&gt;resourceTreeView1.Type" xml:space="preserve">
-    <value>ResxTranslator.Controls.ResourceTreeView, ResxTranslator, Version=2.6.7065.29245, Culture=neutral, PublicKeyToken=null</value>
+    <value>ResxTranslator.Controls.ResourceTreeView, ResxTranslator, Version=2.6.7181.27061, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;resourceTreeView1.Parent" xml:space="preserve">
     <value>tabPage3</value>
@@ -262,7 +262,7 @@
     <value>missingTranslationView1</value>
   </data>
   <data name="&gt;&gt;missingTranslationView1.Type" xml:space="preserve">
-    <value>ResxTranslator.Controls.MissingTranslationView, ResxTranslator, Version=2.6.7065.29245, Culture=neutral, PublicKeyToken=null</value>
+    <value>ResxTranslator.Controls.MissingTranslationView, ResxTranslator, Version=2.6.7181.27061, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;missingTranslationView1.Parent" xml:space="preserve">
     <value>tabPage5</value>
@@ -352,7 +352,7 @@
     <value>languageSettings1</value>
   </data>
   <data name="&gt;&gt;languageSettings1.Type" xml:space="preserve">
-    <value>ResxTranslator.Controls.LanguageSettings, ResxTranslator, Version=2.6.7065.29245, Culture=neutral, PublicKeyToken=null</value>
+    <value>ResxTranslator.Controls.LanguageSettings, ResxTranslator, Version=2.6.7181.27061, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;languageSettings1.Parent" xml:space="preserve">
     <value>tabPage1</value>
@@ -478,7 +478,7 @@
     <value>resourceGrid1</value>
   </data>
   <data name="&gt;&gt;resourceGrid1.Type" xml:space="preserve">
-    <value>ResxTranslator.Controls.ResourceGrid, ResxTranslator, Version=2.6.7065.29245, Culture=neutral, PublicKeyToken=null</value>
+    <value>ResxTranslator.Controls.ResourceGrid, ResxTranslator, Version=2.6.7181.27061, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;resourceGrid1.Parent" xml:space="preserve">
     <value>tabPageEditedResource</value>
@@ -844,6 +844,12 @@ from beginning and end of the selected cells.</value>
   <data name="storeAndLoadCommentsFromAllLanguageFilesToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>If disabled, only store and load comments from the main language file.</value>
   </data>
+  <data name="changeNoToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>402, 22</value>
+  </data>
+  <data name="changeNoToolStripMenuItem.Text" xml:space="preserve">
+    <value>Change language for default resx</value>
+  </data>
   <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
     <value>399, 6</value>
   </data>
@@ -1187,6 +1193,12 @@ from beginning and end of the selected cells.</value>
     <value>setReferencePathsToolStripMenuItem</value>
   </data>
   <data name="&gt;&gt;setReferencePathsToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;changeNoToolStripMenuItem.Name" xml:space="preserve">
+    <value>changeNoToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;changeNoToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;helpToolStripMenuItem.Name" xml:space="preserve">

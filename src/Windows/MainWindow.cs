@@ -624,7 +624,7 @@ namespace ResxTranslator.Windows
         /// <param name="e"></param>
         private void translateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LaunchAutoTranslate("es");
+            LaunchAutoTranslate(Settings.Default.NoLanguageColumn_Language);
         }
 
         private void Browser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
@@ -788,6 +788,7 @@ namespace ResxTranslator.Windows
             bool isOk = false;
             try
             {
+                //hardcoded just to get service availability
                 isOk= GTranslateService.Translate("prueba", "es", "en", "", out text);
             }
             catch (Exception ex)
@@ -797,7 +798,7 @@ namespace ResxTranslator.Windows
 
             if(isOk)
             {
-                LaunchAutoTranslate("es");
+                LaunchAutoTranslate(Settings.Default.NoLanguageColumn_Language);
                 tmrEnabledTime = string.Empty;
             }
             else
@@ -814,6 +815,17 @@ namespace ResxTranslator.Windows
             tmrGoogleServices.Stop();
             toolStripStatusLabel1.Text = $"{toolStripStatusLabel1.Text} | STOPPED: {DateTime.Now.ToString("G")}";
             tsCancelTimer.Visible = tmrGoogleServices.Enabled;
+        }
+
+        private void ChangeNoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var result = LanguageSelectDialog.ShowLanguageSelectDialog(this, true);
+            if (result == null )
+                return;
+
+            var newItem = new ComboBoxWrapper<CultureInfo>(result, info => $"{info.Name} - {info.DisplayName}");
+            Settings.Default.NoLanguageColumn_Language = newItem.WrappedObject.Name;
+
         }
     }
 }
