@@ -127,7 +127,7 @@
     <value>Seleziona tutto</value>
   </data>
   <data name="toolStripButtonSelectNone.Text" xml:space="preserve">
-    <value>Seleziona nessuno</value>
+    <value>Deseleziona tutto</value>
   </data>
   <data name="toolStripButtonSelectInvert.Text" xml:space="preserve">
     <value>Inverti selezione</value>

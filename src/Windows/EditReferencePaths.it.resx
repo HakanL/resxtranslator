@@ -127,13 +127,13 @@
     <value>Cartelle in cui cercare i moduli da assemblare</value>
   </data>
   <data name="buttonAccept.Text" xml:space="preserve">
-    <value>Accetta</value>
+    <value>OK</value>
   </data>
   <data name="buttonCancel.Text" xml:space="preserve">
     <value>Annulla</value>
   </data>
   <data name="folderBrowserDialog1.Description" xml:space="preserve">
-    <value>Select a directory to search for reference assemblies.</value>
+    <value>Seleziona le cartelle dove cercare i riferimenti per l'assemblaggio.</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Percorsi riferimenti assemblaggio</value>
