@@ -118,6 +118,23 @@ namespace ResxTranslator.ResourceOperations
             OnResourceLoadProgress(new ResourceLoadProgressEventArgs(Localization.LoadProgress_LoadingResources));
 
             FindResx(selectedPath);
+
+            // Test for bad files
+            foreach (var pair in _resourceStore.ToList())
+            {
+                try
+                {
+                    pair.Value.LoadResource();
+                }
+                catch (SystemException ex)
+                {
+                    _resourceStore.Remove(pair.Key);
+
+                    MessageBox.Show(string.Format(Localization.MessageBox_ResourcesFailedToLoad_Message + "\n\n" + ex.Message, pair.Value.Filename + "\n" + string.Join("\n", pair.Value.Languages.Values.Select(x=>x.Filename))),
+                        Localization.MessageBox_ResourcesFailedToLoad_Title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+
             OpenedPath = selectedPath;
 
             OnResourceLoadProgress(new ResourceLoadProgressEventArgs(Localization.LoadProgress_Done));
@@ -156,8 +173,6 @@ namespace ResxTranslator.ResourceOperations
 
             var files = Directory.GetFiles(currentDirectory, "*.resx");
 
-            var failedList = new List<string>();
-
             foreach (var filename in files)
             {
                 var filenameNoExt = Path.GetFileNameWithoutExtension(filename);
@@ -189,22 +204,7 @@ namespace ResxTranslator.ResourceOperations
                     Debug.Assert(dir != null, "dir != null");
                     resourceHolder.Filename = Path.Combine(dir, filenameNoExt + ".resx");
 
-                    try
-                    {
-                        resourceHolder.LoadResource();
-
-                        _resourceStore.Add(key, resourceHolder);
-                    }
-                    catch (SystemException)
-                    {
-                        failedList.Add(resourceHolder.Filename);
-                    }
-                }
-
-                if (failedList.Any())
-                {
-                    MessageBox.Show(string.Format(Localization.MessageBox_ResourcesFailedToLoad_Message, string.Join("\n", failedList)),
-                        Localization.MessageBox_ResourcesFailedToLoad_Title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    _resourceStore.Add(key, resourceHolder);
                 }
 
                 if (culture != null)
