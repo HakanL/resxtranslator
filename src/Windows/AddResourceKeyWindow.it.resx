@@ -127,7 +127,7 @@
     <value>Nuova chiave</value>
   </data>
   <data name="textboxDefault.Text" xml:space="preserve">
-    <value>[PlaceholderText]</value>
+    <value>[MarcatorePostoTesto]</value>
   </data>
   <data name="labelDefaultValue.Text" xml:space="preserve">
     <value>Valori tradotti</value>

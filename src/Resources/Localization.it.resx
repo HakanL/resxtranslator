@@ -118,19 +118,19 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MessageBox_SelectedLanguageInvalid_Message" xml:space="preserve">
-    <value>Lingua selezionata non valida. Seleziona uno degli elementi nell'lenco a discesa.</value>
+    <value>Lingua selezionata non valida.&#13;Seleziona uno degli elementi nell'lenco a discesa.</value>
   </data>
   <data name="MessageBox_SelectedLanguageInvalid_Title" xml:space="preserve">
     <value>Lingua non valida</value>
   </data>
   <data name="MessageBox_CreateMissingResource_Message" xml:space="preserve">
-    <value>File risorsa mancante per questa lingua. Vuoi creare il file risorsa?</value>
+    <value>File risorsa mancante per questa lingua.&#13;Vuoi creare il file risorsa?</value>
   </data>
   <data name="MessageBox_CreateMissingResource_Title" xml:space="preserve">
     <value>File risorsa mancante</value>
   </data>
   <data name="MessageBox_ConfirmLoadAssemblies_Message" xml:space="preserve">
-    <value>Con le impostazioni attuali caricherai {0} riferimenti assemblaggio. Vuoi realmente caricarli tutti? Se selezioni NO, il caricamento verrà saltato.</value>
+    <value>Con le impostazioni attuali caricherai {0} riferimenti assemblaggio.&#13;Vuoi realmente caricarli tutti? Se selezioni NO, il caricamento verrà saltato.</value>
   </data>
   <data name="MessageBox_ConfirmLoadAssemblies_Title" xml:space="preserve">
     <value>Carica riferimenti assemblaggio</value>
@@ -148,7 +148,7 @@
     <value>Elimina una chiave</value>
   </data>
   <data name="MainWindow_OpenDirectory_Description" xml:space="preserve">
-    <value>Seleziona la radice del progetto, tipicamente dove è presente il file. sln.</value>
+    <value>Seleziona la radice del progetto.&#13;Tipicamente dove è presente il file '.sln'.</value>
   </data>
   <data name="MainWindow_MoreLanguagesMenuItem" xml:space="preserve">
     <value>Altre lingue...</value>
@@ -195,7 +195,7 @@ Percorso: {1}</value>
     <value>Eccezione durante il salvataggio: {0}</value>
   </data>
   <data name="MessageBox_RemoveNontranslatableQuestion_Message" xml:space="preserve">
-    <value>Questa azione rimuoverà qualsiasi cosa che non è testo dalle risorse traduzione (non dalle risorse base). Le risorse verranno salvate nell'unità in uso, in modo da avere un backup.</value>
+    <value>Questa azione rimuoverà qualsiasi cosa che non è testo dalle risorse traduzione (non dalle risorse base).&#13;Le risorse verranno salvate nell'unità in uso, in modo da avere un backup.</value>
   </data>
   <data name="MessageBox_RemoveNontranslatableQuestion_Title" xml:space="preserve">
     <value>Vuoi realmente rimuovere i dati non tradotti?</value>
@@ -213,7 +213,7 @@ Percorso: {1}</value>
     <value>Esportazione fallita</value>
   </data>
   <data name="MessageBox_ResourcesFailedToLoad_Message" xml:space="preserve">
-    <value>Impossibile caricare le seguenti risorse. Assicurati che le risorse siano nel formato corretto e non corrotte.
+    <value>Impossibile caricare le seguenti risorse.&#13;Assicurati che le risorse siano nel formato corretto e non corrotte.
 
 {0}</value>
   </data>
