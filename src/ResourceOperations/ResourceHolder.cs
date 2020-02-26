@@ -144,6 +144,7 @@ namespace ResxTranslator.ResourceOperations
                     {
                         originalMetadatas.Add((string)metadataEnumerator.Key, metadataEnumerator.Value);
                     }
+                    reader.Close();
                 }
 
                 using (var reader = new ResXResourceReader(filename))
@@ -159,6 +160,7 @@ namespace ResxTranslator.ResourceOperations
                         if (!originalMetadatas.ContainsKey(key))
                             originalResources.Add(key, (ResXDataNode)dataEnumerator.Value);
                     }
+                    reader.Close();
                 }
 
                 // Get rid of keys marked as deleted. If they have been restored they will be re-added later
@@ -205,9 +207,15 @@ namespace ResxTranslator.ResourceOperations
                 }
             }
 
+            //Remove readonly attrib if exist
+            FileAttributes attrs = File.GetAttributes(filename);
+            if (attrs.HasFlag(FileAttributes.ReadOnly))
+                File.SetAttributes(filename, attrs & ~FileAttributes.ReadOnly & ~FileAttributes.Hidden);
+
             // Write the cached resources to the drive
             using (var writer = new ResXResourceWriter(filename))
             {
+               
                 foreach (var originalResource in originalResources)
                 {
                     // Write localizable resource only if it is not empty, unless we are saving the default file
@@ -351,7 +359,7 @@ namespace ResxTranslator.ResourceOperations
         /// </summary>
         private static bool IsLocalizableString(string key, ResXDataNode dataNode)
         {
-            if (key.StartsWith(">>") || (key.StartsWith("$") && key != "$this.Text"))
+            if ((key.StartsWith(">>") && !key.ToLower().Contains(".caption")) || ((key.StartsWith("$") && key != "$this.Text")))
                 return false;
 
             if (dataNode == null)

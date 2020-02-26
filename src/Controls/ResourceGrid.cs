@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using ResxTranslator.ResourceOperations;
 using ResxTranslator.Windows;
 using System.Text.RegularExpressions;
-using ResxTranslator.Tools;
 
 namespace ResxTranslator.Controls
 {
@@ -52,7 +51,6 @@ namespace ResxTranslator.Controls
             {
                 _currentSearch = value;
                 dataGridView1.Refresh();
-                SelectNextSearchResult();
             }
         }
 
@@ -98,7 +96,9 @@ namespace ResxTranslator.Controls
 
         private void ApplyConditionalFormatting(DataGridViewRow r)
         {
+
             var colNameError = Properties.Resources.ColNameError;
+            var colNameKey = Properties.Resources.ColNameKey;
             if (!string.IsNullOrEmpty(r.Cells[colNameError].Value?.ToString()) && (bool)r.Cells[colNameError].Value)
             {
                 r.DefaultCellStyle.ForeColor = Color.Red;
@@ -108,8 +108,10 @@ namespace ResxTranslator.Controls
                 r.DefaultCellStyle.ForeColor = dataGridView1.DefaultCellStyle.ForeColor;
             }
 
-            if (r == dataGridView1.Rows[RowCount - 1])
+            
+            if (r == dataGridView1.Rows[RowCount - 1] && string.IsNullOrEmpty(r.Cells[colNameKey].Value?.ToString()))
                 return;
+
 
             ApplyConditionalCellFormatting(r.Cells[Properties.Resources.ColNameKey], SearchParams.TargetType.Key);
 
@@ -119,11 +121,24 @@ namespace ResxTranslator.Controls
             {
                 ApplyConditionalCellFormatting(r.Cells[lng.LanguageId], SearchParams.TargetType.Text);
             }
+
+
+            if (!string.IsNullOrEmpty(r.Cells[colNameKey].Value?.ToString()) && r.Cells[colNameKey].Value.ToString().ToLower().Contains(".name"))
+            {
+                foreach (DataGridViewCell cell in r.Cells)
+                {
+                    cell.Style.BackColor = Color.LightYellow;                   
+                }               
+                
+            }
+            
+
         }
 
         private void ApplyConditionalCellFormatting(DataGridViewCell cell, SearchParams.TargetType targType)
         {
             var modified = false;
+
 
             if (CurrentSearch != null)
             {
@@ -136,6 +151,15 @@ namespace ResxTranslator.Controls
                 }
             }
 
+            if (cell.Value.ToString().EndsWith("$$"))
+            {
+                cell.Value = cell.Value.ToString().Replace("$$", "");
+                cell.Style.ForeColor = Color.Green;
+            }
+
+            if (cell.Style.BackColor == Color.LightYellow)
+                return;
+
             if (ShowNullValuesAsGrayed && string.IsNullOrWhiteSpace(cell.Value as string))
             {
                 cell.Style.BackColor = Color.Gainsboro;
@@ -144,6 +168,9 @@ namespace ResxTranslator.Controls
 
             if (!modified)
                 cell.Style.BackColor = dataGridView1.DefaultCellStyle.BackColor;
+
+            if (!string.IsNullOrEmpty(cell.Value?.ToString()) && cell.Value.ToString().ToLower().Contains(".name"))
+                cell.Style.BackColor = Color.LightYellow;
         }
 
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -282,6 +309,42 @@ namespace ResxTranslator.Controls
             {
                 DeleteSelection();
             }
+
+            if (e.Control && e.Shift && e.KeyCode == Keys.F2)
+            {
+
+                if (dataGridView1.SelectedCells.Count == 0)
+                    return;
+
+                bool? toUpper = null;
+                foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
+                {
+                    string texto = cell.Value.ToString();
+                    if (string.IsNullOrEmpty(texto))
+                        continue;
+
+                    if (toUpper == null)
+                    {
+                        string lastChar = texto.Substring(texto.Length - 1, 1);
+                        if (lastChar.ToUpper().Equals(lastChar))
+                            toUpper = true;
+                        else
+                            toUpper = false;
+                    }
+
+                    if ((bool)toUpper)
+                    {
+                        char[] chars = texto.ToLower().ToCharArray();
+                        chars[0] = System.Convert.ToChar(chars[0].ToString().ToUpper());
+                        texto = new string(chars);
+                    }
+
+                    else
+                        texto = texto.ToUpper();
+
+                    cell.Value = texto;
+                }
+            }
         }
 
         private void dataGridView1_CellMouseUp(object sender, DataGridViewCellMouseEventArgs e)
@@ -352,62 +415,6 @@ namespace ResxTranslator.Controls
         public void ApplyCurrentCellEdit()
         {
             dataGridView1.CommitEdit(DataGridViewDataErrorContexts.Commit);
-        }
-
-        public void SelectNextMissingTranslation(string languageName)
-        {
-            if (!dataGridView1.Columns.Contains(languageName)) return;
-
-            var targets = dataGridView1.Rows.Cast<DataGridViewRow>();
-
-            // Get the next element after the current selection if something is already selected
-            if (dataGridView1.CurrentCell != null)
-            {
-                var rowIndex = dataGridView1.Rows.IndexOf(dataGridView1.CurrentCell.OwningRow);
-                targets = targets.ToList().Rotate(rowIndex + 1);
-            }
-
-            var missingCell = targets.Select((x, i) =>
-            {
-                var cell = x.Cells[languageName];
-                if (cell == null) return null;
-
-                var hasTranslation = cell.Value is string s &&
-                    !string.IsNullOrWhiteSpace(s) &&
-                    !(s.StartsWith("[") && s.TrimEnd().EndsWith("]"));
-
-                return hasTranslation ? null : cell;
-            }).FirstOrDefault(x => x != null);
-
-            if (missingCell != null) dataGridView1.CurrentCell = missingCell;
-        }
-
-        public void SelectNextSearchResult()
-        {
-            if (CurrentSearch == null) return;
-
-            var keyColumn = dataGridView1.Columns[Properties.Resources.ColNameKey];
-
-            var currentRow = dataGridView1.CurrentCell?.RowIndex ?? dataGridView1.RowCount;
-            var currentColumn = dataGridView1.CurrentCell?.ColumnIndex ?? -1;
-
-            foreach (DataGridViewRow row in dataGridView1.Rows.Cast<DataGridViewRow>().ToList().Rotate(currentRow))
-            {
-                foreach (DataGridViewCell cell in row.Cells)
-                {
-                    if (cell.ColumnIndex <= currentColumn) continue;
-
-                    if (!(cell.Value is string s)) continue;
-
-                    if (CurrentSearch.Match(cell.OwningColumn == keyColumn ? SearchParams.TargetType.Key : SearchParams.TargetType.Text, s))
-                    {
-                        dataGridView1.CurrentCell = cell;
-                        return;
-                    }
-                }
-                // Skip cells only in the currently selected row (the selected row is first in order thanks to Rotate call)
-                currentColumn = -1;
-            }
         }
     }
 }

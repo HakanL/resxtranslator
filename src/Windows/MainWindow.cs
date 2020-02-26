@@ -13,6 +13,7 @@ using ResxTranslator.Properties;
 using ResxTranslator.ResourceOperations;
 using ResxTranslator.Resources;
 using ResxTranslator.Tools;
+using System.Data;
 
 namespace ResxTranslator.Windows
 {
@@ -53,9 +54,6 @@ namespace ResxTranslator.Windows
 
                 languageSettings1.SetLanguageState(args.Language.Name, true);
                 CurrentResource = args.Item;
-
-                resourceGrid1.Focus();
-                resourceGrid1.SelectNextMissingTranslation(args.Language.Name);
             };
 
             languageSettings1.EnabledLanguagesChanged += (sender, args) =>
@@ -325,18 +323,6 @@ namespace ResxTranslator.Windows
                 CurrentSearch = result;
         }
 
-        private void findNextToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if(CurrentSearch == null)
-            {
-                findToolStripMenuItem1_Click(sender, e);
-                return;
-            }
-
-            resourceGrid1.Focus();
-            resourceGrid1.SelectNextSearchResult();
-        }
-
         private void LoadResourcesFromFolder(string path)
         {
             if (!ResourceLoader.CanClose())
@@ -453,9 +439,12 @@ namespace ResxTranslator.Windows
 
         private void UpdateTitlebar()
         {
-            Text = string.IsNullOrEmpty(ResourceLoader.OpenedPath)
-                                ? _defaultWindowTitle
-                                : $"{ResourceLoader.OpenedPath}{(CurrentResource?.IsDirty == true ? "*" : "")} - {_defaultWindowTitle}";
+            this.InvokeIfRequired(s =>
+            {
+                Text = string.IsNullOrEmpty(ResourceLoader.OpenedPath)
+                                    ? _defaultWindowTitle
+                                    : $"{ResourceLoader.OpenedPath}{(CurrentResource?.IsDirty == true ? "*" : "")} - {_defaultWindowTitle}";
+            });
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -625,6 +614,218 @@ namespace ResxTranslator.Windows
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
+
+       
+        /// <summary>
+        /// Fill resx with translations from google
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void translateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LaunchAutoTranslate(Settings.Default.NoLanguageColumn_Language);
+        }
+
+        private void Browser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+            HtmlDocument doc = browser.Document;
+            if (doc != null)
+                foreach (HtmlElement imgElemt in doc.Images)
+                {
+                    imgElemt.SetAttribute("src", "");
+                }
+            isBrowserReady = true;
+        }
+
+        WebBrowser browser;
+        private void MainWindow_Load(object sender, EventArgs e)
+        {
+
+            browser = new System.Windows.Forms.WebBrowser();
+            browser.Url = new System.Uri("https://translate.google.com/", System.UriKind.Absolute);
+            browser.ScriptErrorsSuppressed = true;
+            browser.DocumentCompleted += Browser_DocumentCompleted;
+        }
+
+
+        bool isBrowserReady = false;
+        bool IsGoogleTranslatorLoaded()
+        {
+            if (browser.Document != null &&
+                (browser.ReadyState == WebBrowserReadyState.Loaded ||
+                 browser.ReadyState == WebBrowserReadyState.Complete))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Translates empty cells from resx with translate.googleapis.com
+        /// </summary>
+        /// <param name="originalLang"></param>
+        private void LaunchAutoTranslate(string originalLang)
+        {
+            object lockObj = new object();
+            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            {
+                var dt = CurrentResource.StringsTable;
+                var totalRows = dt.Rows.Count;
+                var currentRow = 0;
+
+
+
+                var loopResult = System.Threading.Tasks.Parallel.ForEach(dt.AsEnumerable(), (System.Data.DataRow row, System.Threading.Tasks.ParallelLoopState state) =>
+                {
+                    // });
+
+                    //foreach (System.Data.DataRow row in dt.Rows)
+                    //{
+                    lock (lockObj)
+                    {
+                        currentRow++;
+                    }
+                    UpdateProgressBar(totalRows, currentRow, true);
+
+                    if (string.IsNullOrEmpty(row["NoLanguageValue"]?.ToString()))
+                        return;
+
+                    var originalText = row["NoLanguageValue"].ToString();
+                    foreach (var lang in CurrentResource.Languages)
+                    {
+                    //If value already is translated, continue with next
+                    if ((!string.IsNullOrEmpty(row[lang.Key].ToString())))
+                            continue;
+
+                        string translatedText = string.Empty;
+                        bool success = false;
+                        int trycount = 0;
+                        do
+                        {
+                            try
+                            {
+                                if (isBrowserReady)
+                                    success = GTranslateService.Translate(originalText, originalLang, lang.Key, "", out translatedText);
+                            //System.Threading.Thread.Sleep(300);
+                        }
+                            catch (Exception ex)
+                            {
+                                success = false;
+                                UpdateProgressBar(totalRows, currentRow, false);
+                                this.InvokeIfRequired(s =>
+                                {
+                                    tmrEnabledTime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+                                    toolStripStatusLabel1.Text = $"Total rows translated: {currentRow-1}/{totalRows} Timer now is ON [{tmrEnabledTime}]";
+                                    MessageBox.Show(ex.Message, "Web request failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    tmrGoogleServices.Start();
+				    tsCancelTimer.Visible = tmrGoogleServices.Enabled;
+                                });
+                                return;
+                            }
+                            trycount++;
+
+                            if (!success)
+                            {
+                            //row[lang.Key] = translatedText;
+                            //var key = ResxTranslator.GetDataKeyName(node);
+                            //status = "Translating language: " + destLng + " , key '" + key + "' failed to translate in try " + trycount;
+                            //progress.BeginInvoke(max, pos, status, null, null);
+                        }
+                            else
+                            {
+                                row[lang.Key] = translatedText + "$$";
+
+                            }
+
+                        } while (success == false && trycount <= 2);
+                    }
+                });
+
+                UpdateProgressBar(totalRows, currentRow, false);
+                
+                if(!loopResult.IsCompleted)
+                {
+                    UpdateProgressBar(totalRows, currentRow, false);
+                    this.InvokeIfRequired(s =>
+                    {
+                        tmrEnabledTime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+                        toolStripStatusLabel1.Text = $"Total rows translated: {currentRow - 1}/{totalRows} Timer now is ON [{tmrEnabledTime}]";
+                        MessageBox.Show("Web request failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        tmrGoogleServices.Start();
+                    });
+                    return;
+                }
+
+            });
+        }
+
+        private void UpdateProgressBar(int max, int pos, bool visible)
+        {
+            this.InvokeIfRequired(s =>
+            {
+
+                toolStripProgressBar1.Visible = visible;
+                if (toolStripProgressBar1.Maximum != max)
+                    toolStripProgressBar1.Maximum = max;
+                if (pos < 0)
+                    pos = 0;
+                toolStripProgressBar1.Value = pos;
+            });
+        }
+
+        string tmrEnabledTime = string.Empty;
+        /// <summary>
+        /// timer used for retry to google api and continue when allowed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tmrGoogleServices_Tick(object sender, EventArgs e)
+        {
+            tmrGoogleServices.Stop();
+            string message = string.Empty;
+            string text = string.Empty;
+            bool isOk = false;
+            try
+            {
+                //hardcoded just to get service availability
+                isOk= GTranslateService.Translate("prueba", "es", "en", "", out text);
+            }
+            catch (Exception ex)
+            {
+                message = $"[{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}]: {ex.Message} ";
+            }
+
+            if(isOk)
+            {
+                LaunchAutoTranslate(Settings.Default.NoLanguageColumn_Language);
+                tmrEnabledTime = string.Empty;
+            }
+            else
+            {
+                tmrGoogleServices.Start();
+            }
+
+            tsCancelTimer.Visible = tmrGoogleServices.Enabled;
+            toolStripStatusLabel1.Text = $"Timer enabled: {tmrGoogleServices.Enabled}, {message}, since {tmrEnabledTime}";
+        }
+
+        private void tsCancelTimer_ButtonClick(object sender, EventArgs e)
+        {
+            tmrGoogleServices.Stop();
+            toolStripStatusLabel1.Text = $"{toolStripStatusLabel1.Text} | STOPPED: {DateTime.Now.ToString("G")}";
+            tsCancelTimer.Visible = tmrGoogleServices.Enabled;
+        }
+
+        private void ChangeNoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var result = LanguageSelectDialog.ShowLanguageSelectDialog(this, true);
+            if (result == null )
+                return;
+
+            var newItem = new ComboBoxWrapper<CultureInfo>(result, info => $"{info.Name} - {info.DisplayName}");
+            Settings.Default.NoLanguageColumn_Language = newItem.WrappedObject.Name;
+
         }
     }
 }

@@ -124,10 +124,22 @@
   <data name="toolStripStatusLabel1.Size" type="System.Drawing.Size, System.Drawing">
     <value>0, 17</value>
   </data>
+  <data name="tsCancelTimer.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>DarkRed</value>
+  </data>
+  <data name="tsCancelTimer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 20</value>
+  </data>
+  <data name="tsCancelTimer.Text" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="tsCancelTimer.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="toolStripProgressBar1.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 16</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="toolStripProgressBar1.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
@@ -196,7 +208,7 @@
     <value>resourceTreeView1</value>
   </data>
   <data name="&gt;&gt;resourceTreeView1.Type" xml:space="preserve">
-    <value>ResxTranslator.Controls.ResourceTreeView, ResxTranslator, Version=2.7.7039.25208, Culture=neutral, PublicKeyToken=null</value>
+    <value>ResxTranslator.Controls.ResourceTreeView, ResxTranslator, Version=2.6.7181.27061, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;resourceTreeView1.Parent" xml:space="preserve">
     <value>tabPage3</value>
@@ -250,7 +262,7 @@
     <value>missingTranslationView1</value>
   </data>
   <data name="&gt;&gt;missingTranslationView1.Type" xml:space="preserve">
-    <value>ResxTranslator.Controls.MissingTranslationView, ResxTranslator, Version=2.7.7039.25208, Culture=neutral, PublicKeyToken=null</value>
+    <value>ResxTranslator.Controls.MissingTranslationView, ResxTranslator, Version=2.6.7181.27061, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;missingTranslationView1.Parent" xml:space="preserve">
     <value>tabPage5</value>
@@ -340,7 +352,7 @@
     <value>languageSettings1</value>
   </data>
   <data name="&gt;&gt;languageSettings1.Type" xml:space="preserve">
-    <value>ResxTranslator.Controls.LanguageSettings, ResxTranslator, Version=2.7.7039.25208, Culture=neutral, PublicKeyToken=null</value>
+    <value>ResxTranslator.Controls.LanguageSettings, ResxTranslator, Version=2.6.7181.27061, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;languageSettings1.Parent" xml:space="preserve">
     <value>tabPage1</value>
@@ -466,7 +478,7 @@
     <value>resourceGrid1</value>
   </data>
   <data name="&gt;&gt;resourceGrid1.Type" xml:space="preserve">
-    <value>ResxTranslator.Controls.ResourceGrid, ResxTranslator, Version=2.7.7039.25208, Culture=neutral, PublicKeyToken=null</value>
+    <value>ResxTranslator.Controls.ResourceGrid, ResxTranslator, Version=2.6.7181.27061, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;resourceGrid1.Parent" xml:space="preserve">
     <value>tabPageEditedResource</value>
@@ -595,67 +607,73 @@
     <value>Ctrl+O</value>
   </data>
   <data name="openToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 22</value>
+    <value>236, 22</value>
   </data>
   <data name="openToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Open directory...</value>
   </data>
   <data name="saveAllModifiedToolStripMenuItem.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Ctrl+S</value>
+    <value>Ctrl+Shift+S</value>
   </data>
   <data name="saveAllModifiedToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 22</value>
+    <value>236, 22</value>
   </data>
   <data name="saveAllModifiedToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Save all modified</value>
   </data>
   <data name="closeToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 22</value>
+    <value>236, 22</value>
   </data>
   <data name="closeToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Close directory</value>
   </data>
   <data name="reloadCurrentDirectoryToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 22</value>
+    <value>236, 22</value>
   </data>
   <data name="reloadCurrentDirectoryToolStripMenuItem.Text" xml:space="preserve">
     <value>Reload current directory</value>
   </data>
   <data name="exportAllResourcesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 22</value>
+    <value>236, 22</value>
   </data>
   <data name="exportAllResourcesToolStripMenuItem.Text" xml:space="preserve">
     <value>Export all resources...</value>
   </data>
   <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>202, 6</value>
+    <value>233, 6</value>
+  </data>
+  <data name="saveToolStripMenuItem.ShortcutKeyDisplayString" xml:space="preserve">
+    <value />
+  </data>
+  <data name="saveToolStripMenuItem.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
+    <value>Ctrl+S</value>
   </data>
   <data name="saveToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 22</value>
+    <value>236, 22</value>
   </data>
   <data name="saveToolStripMenuItem.Text" xml:space="preserve">
     <value>Save current resource</value>
   </data>
   <data name="revertCurrentFileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 22</value>
+    <value>236, 22</value>
   </data>
   <data name="revertCurrentFileToolStripMenuItem.Text" xml:space="preserve">
     <value>Revert current resource</value>
   </data>
   <data name="openResourceLocationToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 22</value>
+    <value>236, 22</value>
   </data>
   <data name="openResourceLocationToolStripMenuItem.Text" xml:space="preserve">
     <value>Open resource location</value>
   </data>
   <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>202, 6</value>
+    <value>233, 6</value>
   </data>
   <data name="exitToolStripMenuItem.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
     <value>Alt+F4</value>
   </data>
   <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 22</value>
+    <value>236, 22</value>
   </data>
   <data name="exitToolStripMenuItem.Text" xml:space="preserve">
     <value>E&amp;xit</value>
@@ -673,22 +691,13 @@
     <value>Ctrl+F</value>
   </data>
   <data name="findToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>167, 22</value>
   </data>
   <data name="findToolStripMenuItem1.Text" xml:space="preserve">
     <value>&amp;Find...</value>
   </data>
-  <data name="findNextToolStripMenuItem.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>F3</value>
-  </data>
-  <data name="findNextToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
-  </data>
-  <data name="findNextToolStripMenuItem.Text" xml:space="preserve">
-    <value>Find &amp;next</value>
-  </data>
   <data name="clearSearchToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>167, 22</value>
   </data>
   <data name="clearSearchToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Clear search</value>
@@ -724,13 +733,13 @@
     <value>&amp;Keys</value>
   </data>
   <data name="addLanguageToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>176, 22</value>
   </data>
   <data name="addLanguageToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Add new Language</value>
   </data>
   <data name="removeLanguageToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>176, 22</value>
   </data>
   <data name="removeLanguageToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Remove Language</value>
@@ -777,6 +786,12 @@ default values. (usually to values of the default resource)</value>
   <data name="trimWhitespaceFromCellsToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>Remove whitespace characters (spaces, newlines, tabs, etc.) 
 from beginning and end of the selected cells.</value>
+  </data>
+  <data name="translateToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>256, 22</value>
+  </data>
+  <data name="translateToolStripMenuItem.Text" xml:space="preserve">
+    <value>Translate empty values</value>
   </data>
   <data name="toolsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>47, 20</value>
@@ -828,6 +843,12 @@ from beginning and end of the selected cells.</value>
   </data>
   <data name="storeAndLoadCommentsFromAllLanguageFilesToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>If disabled, only store and load comments from the main language file.</value>
+  </data>
+  <data name="changeNoToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>402, 22</value>
+  </data>
+  <data name="changeNoToolStripMenuItem.Text" xml:space="preserve">
+    <value>Change language for default resx</value>
   </data>
   <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
     <value>399, 6</value>
@@ -898,6 +919,9 @@ from beginning and end of the selected cells.</value>
   <data name="&gt;&gt;menuStripMain.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <metadata name="tmrGoogleServices.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>268, 17</value>
+  </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -924,6 +948,12 @@ from beginning and end of the selected cells.</value>
   </data>
   <data name="&gt;&gt;toolStripStatusLabel1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsCancelTimer.Name" xml:space="preserve">
+    <value>tsCancelTimer</value>
+  </data>
+  <data name="&gt;&gt;tsCancelTimer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSplitButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripProgressBar1.Name" xml:space="preserve">
     <value>toolStripProgressBar1</value>
@@ -1021,12 +1051,6 @@ from beginning and end of the selected cells.</value>
   <data name="&gt;&gt;findToolStripMenuItem1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;findNextToolStripMenuItem.Name" xml:space="preserve">
-    <value>findNextToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;findNextToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;clearSearchToolStripMenuItem.Name" xml:space="preserve">
     <value>clearSearchToolStripMenuItem</value>
   </data>
@@ -1099,6 +1123,12 @@ from beginning and end of the selected cells.</value>
   <data name="&gt;&gt;trimWhitespaceFromCellsToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;translateToolStripMenuItem.Name" xml:space="preserve">
+    <value>translateToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;translateToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;settingsToolStripMenuItem.Name" xml:space="preserve">
     <value>settingsToolStripMenuItem</value>
   </data>
@@ -1165,6 +1195,12 @@ from beginning and end of the selected cells.</value>
   <data name="&gt;&gt;setReferencePathsToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;changeNoToolStripMenuItem.Name" xml:space="preserve">
+    <value>changeNoToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;changeNoToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;helpToolStripMenuItem.Name" xml:space="preserve">
     <value>helpToolStripMenuItem</value>
   </data>
@@ -1188,6 +1224,12 @@ from beginning and end of the selected cells.</value>
   </data>
   <data name="&gt;&gt;aboutToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tmrGoogleServices.Name" xml:space="preserve">
+    <value>tmrGoogleServices</value>
+  </data>
+  <data name="&gt;&gt;tmrGoogleServices.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>MainWindow</value>

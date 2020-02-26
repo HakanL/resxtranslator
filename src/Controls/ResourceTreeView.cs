@@ -109,11 +109,12 @@ namespace ResxTranslator.Controls
             var topFolders = resource.DisplayFolder.Split('\\');
             foreach (var subFolder in topFolders)
             {
+                var searchNodes = parentNode?.Nodes ?? treeViewResx.Nodes;
                 var found = false;
-                foreach (TreeNode treeNode in parentNode != null ? parentNode.Nodes : treeViewResx.Nodes)
+                foreach (TreeNode treeNode in searchNodes)
                 {
-                    if (treeNode.Tag is PathHolder holder && 
-                        holder.Id.Equals(subFolder, StringComparison.InvariantCultureIgnoreCase))
+                    var holder = treeNode.Tag as PathHolder;
+                    if (holder != null && holder.Id.Equals(subFolder, StringComparison.InvariantCultureIgnoreCase))
                     {
                         found = true;
                         parentNode = treeNode;
@@ -124,7 +125,7 @@ namespace ResxTranslator.Controls
                 if (found) continue;
 
                 var pathTreeNode = new TreeNode("[" + subFolder + "]") {Tag = new PathHolder(subFolder), ImageIndex = 0};
-                (parentNode != null ? parentNode.Nodes : treeViewResx.Nodes).Add(pathTreeNode);
+                searchNodes.Add(pathTreeNode);
                 parentNode = pathTreeNode;
             }
 

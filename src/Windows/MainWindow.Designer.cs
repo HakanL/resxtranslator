@@ -30,9 +30,11 @@ namespace ResxTranslator.Windows
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsCancelTimer = new System.Windows.Forms.ToolStripSplitButton();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStripStatusLabelCurrentItem = new System.Windows.Forms.ToolStripStatusLabel();
             this.panelMain = new System.Windows.Forms.Panel();
@@ -40,15 +42,11 @@ namespace ResxTranslator.Windows
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.resourceTreeView1 = new ResxTranslator.Controls.ResourceTreeView();
             this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.missingTranslationView1 = new ResxTranslator.Controls.MissingTranslationView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.languageSettings1 = new ResxTranslator.Controls.LanguageSettings();
             this.tabControl3 = new System.Windows.Forms.TabControl();
             this.tabPageEditedResource = new System.Windows.Forms.TabPage();
-            this.resourceGrid1 = new ResxTranslator.Controls.ResourceGrid();
             this.menuStripMain = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,7 +62,6 @@ namespace ResxTranslator.Windows
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.findToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.findToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.findNextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearSearchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.keysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addNewKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -77,6 +74,7 @@ namespace ResxTranslator.Windows
             this.removeNonTLFromOpenedTranslationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeNonTLFromAllTranslationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.trimWhitespaceFromCellsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.translateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyDefaultValuesOnLanguageAddToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ignoreEmptyResourcesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -88,10 +86,16 @@ namespace ResxTranslator.Windows
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.loadAssembliesFromResourcePathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setReferencePathsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeNoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.licenceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tmrGoogleServices = new System.Windows.Forms.Timer(this.components);
+            this.resourceTreeView1 = new ResxTranslator.Controls.ResourceTreeView();
+            this.missingTranslationView1 = new ResxTranslator.Controls.MissingTranslationView();
+            this.languageSettings1 = new ResxTranslator.Controls.LanguageSettings();
+            this.resourceGrid1 = new ResxTranslator.Controls.ResourceGrid();
             this.statusStrip1.SuspendLayout();
             this.panelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).BeginInit();
@@ -116,6 +120,7 @@ namespace ResxTranslator.Windows
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
+            this.tsCancelTimer,
             this.toolStripProgressBar1,
             this.toolStripStatusLabelCurrentItem});
             resources.ApplyResources(this.statusStrip1, "statusStrip1");
@@ -125,6 +130,14 @@ namespace ResxTranslator.Windows
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
             resources.ApplyResources(this.toolStripStatusLabel1, "toolStripStatusLabel1");
+            // 
+            // tsCancelTimer
+            // 
+            this.tsCancelTimer.BackColor = System.Drawing.Color.DarkRed;
+            this.tsCancelTimer.ForeColor = System.Drawing.Color.White;
+            resources.ApplyResources(this.tsCancelTimer, "tsCancelTimer");
+            this.tsCancelTimer.Name = "tsCancelTimer";
+            this.tsCancelTimer.ButtonClick += new System.EventHandler(this.tsCancelTimer_ButtonClick);
             // 
             // toolStripProgressBar1
             // 
@@ -185,23 +198,12 @@ namespace ResxTranslator.Windows
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // resourceTreeView1
-            // 
-            resources.ApplyResources(this.resourceTreeView1, "resourceTreeView1");
-            this.resourceTreeView1.Name = "resourceTreeView1";
-            // 
             // tabPage5
             // 
             this.tabPage5.Controls.Add(this.missingTranslationView1);
             resources.ApplyResources(this.tabPage5, "tabPage5");
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.UseVisualStyleBackColor = true;
-            // 
-            // missingTranslationView1
-            // 
-            resources.ApplyResources(this.missingTranslationView1, "missingTranslationView1");
-            this.missingTranslationView1.Name = "missingTranslationView1";
-            this.missingTranslationView1.ResourceLoader = null;
             // 
             // tabControl1
             // 
@@ -217,11 +219,6 @@ namespace ResxTranslator.Windows
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // languageSettings1
-            // 
-            resources.ApplyResources(this.languageSettings1, "languageSettings1");
-            this.languageSettings1.Name = "languageSettings1";
-            // 
             // tabControl3
             // 
             this.tabControl3.Controls.Add(this.tabPageEditedResource);
@@ -235,14 +232,6 @@ namespace ResxTranslator.Windows
             resources.ApplyResources(this.tabPageEditedResource, "tabPageEditedResource");
             this.tabPageEditedResource.Name = "tabPageEditedResource";
             this.tabPageEditedResource.UseVisualStyleBackColor = true;
-            // 
-            // resourceGrid1
-            // 
-            this.resourceGrid1.CurrentResource = null;
-            this.resourceGrid1.CurrentSearch = null;
-            resources.ApplyResources(this.resourceGrid1, "resourceGrid1");
-            this.resourceGrid1.Name = "resourceGrid1";
-            this.resourceGrid1.ShowNullValuesAsGrayed = false;
             // 
             // menuStripMain
             // 
@@ -347,7 +336,6 @@ namespace ResxTranslator.Windows
             // 
             this.findToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.findToolStripMenuItem1,
-            this.findNextToolStripMenuItem,
             this.clearSearchToolStripMenuItem});
             this.findToolStripMenuItem.Name = "findToolStripMenuItem";
             resources.ApplyResources(this.findToolStripMenuItem, "findToolStripMenuItem");
@@ -359,12 +347,6 @@ namespace ResxTranslator.Windows
             this.findToolStripMenuItem1.Name = "findToolStripMenuItem1";
             resources.ApplyResources(this.findToolStripMenuItem1, "findToolStripMenuItem1");
             this.findToolStripMenuItem1.Click += new System.EventHandler(this.findToolStripMenuItem1_Click);
-            // 
-            // findNextToolStripMenuItem
-            // 
-            this.findNextToolStripMenuItem.Name = "findNextToolStripMenuItem";
-            resources.ApplyResources(this.findNextToolStripMenuItem, "findNextToolStripMenuItem");
-            this.findNextToolStripMenuItem.Click += new System.EventHandler(this.findNextToolStripMenuItem_Click);
             // 
             // clearSearchToolStripMenuItem
             // 
@@ -419,9 +401,11 @@ namespace ResxTranslator.Windows
             // 
             // toolsToolStripMenuItem
             // 
+            this.toolsToolStripMenuItem.BackColor = System.Drawing.SystemColors.Control;
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.removeNontranslatableDataToolStripMenuItem,
-            this.trimWhitespaceFromCellsToolStripMenuItem});
+            this.trimWhitespaceFromCellsToolStripMenuItem,
+            this.translateToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             resources.ApplyResources(this.toolsToolStripMenuItem, "toolsToolStripMenuItem");
             this.toolsToolStripMenuItem.DropDownOpening += new System.EventHandler(this.toolsToolStripMenuItem_DropDownOpening);
@@ -452,6 +436,12 @@ namespace ResxTranslator.Windows
             resources.ApplyResources(this.trimWhitespaceFromCellsToolStripMenuItem, "trimWhitespaceFromCellsToolStripMenuItem");
             this.trimWhitespaceFromCellsToolStripMenuItem.Click += new System.EventHandler(this.trimWhitespaceFromCellsToolStripMenuItem_Click);
             // 
+            // translateToolStripMenuItem
+            // 
+            this.translateToolStripMenuItem.Name = "translateToolStripMenuItem";
+            resources.ApplyResources(this.translateToolStripMenuItem, "translateToolStripMenuItem");
+            this.translateToolStripMenuItem.Click += new System.EventHandler(this.translateToolStripMenuItem_Click);
+            // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -462,6 +452,7 @@ namespace ResxTranslator.Windows
             this.displayNullValuesAsGrayedToolStripMenuItem,
             this.openLastDirectoryOnProgramStartToolStripMenuItem,
             this.storeAndLoadCommentsFromAllLanguageFilesToolStripMenuItem,
+            this.changeNoToolStripMenuItem,
             this.toolStripSeparator2,
             this.loadAssembliesFromResourcePathToolStripMenuItem,
             this.setReferencePathsToolStripMenuItem});
@@ -519,6 +510,12 @@ namespace ResxTranslator.Windows
             resources.ApplyResources(this.setReferencePathsToolStripMenuItem, "setReferencePathsToolStripMenuItem");
             this.setReferencePathsToolStripMenuItem.Click += new System.EventHandler(this.setReferencePathsToolStripMenuItem_Click);
             // 
+            // changeNoToolStripMenuItem
+            // 
+            this.changeNoToolStripMenuItem.Name = "changeNoToolStripMenuItem";
+            resources.ApplyResources(this.changeNoToolStripMenuItem, "changeNoToolStripMenuItem");
+            this.changeNoToolStripMenuItem.Click += new System.EventHandler(this.ChangeNoToolStripMenuItem_Click);
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -547,6 +544,35 @@ namespace ResxTranslator.Windows
             resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
+            // tmrGoogleServices
+            // 
+            this.tmrGoogleServices.Interval = 300000;
+            this.tmrGoogleServices.Tick += new System.EventHandler(this.tmrGoogleServices_Tick);
+            // 
+            // resourceTreeView1
+            // 
+            resources.ApplyResources(this.resourceTreeView1, "resourceTreeView1");
+            this.resourceTreeView1.Name = "resourceTreeView1";
+            // 
+            // missingTranslationView1
+            // 
+            resources.ApplyResources(this.missingTranslationView1, "missingTranslationView1");
+            this.missingTranslationView1.Name = "missingTranslationView1";
+            this.missingTranslationView1.ResourceLoader = null;
+            // 
+            // languageSettings1
+            // 
+            resources.ApplyResources(this.languageSettings1, "languageSettings1");
+            this.languageSettings1.Name = "languageSettings1";
+            // 
+            // resourceGrid1
+            // 
+            this.resourceGrid1.CurrentResource = null;
+            this.resourceGrid1.CurrentSearch = null;
+            resources.ApplyResources(this.resourceGrid1, "resourceGrid1");
+            this.resourceGrid1.Name = "resourceGrid1";
+            this.resourceGrid1.ShowNullValuesAsGrayed = false;
+            // 
             // MainWindow
             // 
             resources.ApplyResources(this, "$this");
@@ -556,6 +582,7 @@ namespace ResxTranslator.Windows
             this.Controls.Add(this.statusStrip1);
             this.Name = "MainWindow";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Load += new System.EventHandler(this.MainWindow_Load);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
@@ -644,7 +671,10 @@ namespace ResxTranslator.Windows
         private ToolStripSeparator toolStripSeparator2;
         private ToolStripMenuItem loadAssembliesFromResourcePathToolStripMenuItem;
         private ToolStripMenuItem setReferencePathsToolStripMenuItem;
-        private ToolStripMenuItem findNextToolStripMenuItem;
+        private ToolStripMenuItem translateToolStripMenuItem;
+        private Timer tmrGoogleServices;
+        private ToolStripSplitButton tsCancelTimer;
+        private ToolStripMenuItem changeNoToolStripMenuItem;
     }
 }
 
