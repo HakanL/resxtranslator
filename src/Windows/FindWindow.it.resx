@@ -117,457 +117,56 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="textBoxSearch.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 17</value>
-  </data>
-  <data name="textBoxSearch.Size" type="System.Drawing.Size, System.Drawing">
-    <value>384, 20</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="textBoxSearch.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;textBoxSearch.Name" xml:space="preserve">
-    <value>textBoxSearch</value>
-  </data>
-  <data name="&gt;&gt;textBoxSearch.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;textBoxSearch.Parent" xml:space="preserve">
-    <value>groupBox2</value>
-  </data>
-  <data name="&gt;&gt;textBoxSearch.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="radioButton1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="radioButton1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 19</value>
-  </data>
-  <data name="radioButton1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>46, 17</value>
-  </data>
-  <data name="radioButton1.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
   <data name="radioButton1.Text" xml:space="preserve">
     <value>Testo</value>
-  </data>
-  <data name="&gt;&gt;radioButton1.Name" xml:space="preserve">
-    <value>radioButton1</value>
-  </data>
-  <data name="&gt;&gt;radioButton1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;radioButton1.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;radioButton1.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="radioButtonRegexp.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="radioButtonRegexp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>79, 19</value>
-  </data>
-  <data name="radioButtonRegexp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>63, 17</value>
-  </data>
-  <data name="radioButtonRegexp.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
   </data>
   <data name="radioButtonRegexp.Text" xml:space="preserve">
     <value>RegExp</value>
   </data>
-  <data name="&gt;&gt;radioButtonRegexp.Name" xml:space="preserve">
-    <value>radioButtonRegexp</value>
-  </data>
-  <data name="&gt;&gt;radioButtonRegexp.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;radioButtonRegexp.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;radioButtonRegexp.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="radioButtonText.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="radioButtonText.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 19</value>
-  </data>
-  <data name="radioButtonText.Size" type="System.Drawing.Size, System.Drawing">
-    <value>46, 17</value>
-  </data>
-  <data name="radioButtonText.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="radioButtonText.Text" xml:space="preserve">
     <value>Testo</value>
-  </data>
-  <data name="&gt;&gt;radioButtonText.Name" xml:space="preserve">
-    <value>radioButtonText</value>
-  </data>
-  <data name="&gt;&gt;radioButtonText.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;radioButtonText.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;radioButtonText.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="radioButton4.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="radioButton4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>79, 19</value>
-  </data>
-  <data name="radioButton4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>63, 17</value>
-  </data>
-  <data name="radioButton4.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
   </data>
   <data name="radioButton4.Text" xml:space="preserve">
     <value>RegExp</value>
   </data>
-  <data name="&gt;&gt;radioButton4.Name" xml:space="preserve">
-    <value>radioButton4</value>
-  </data>
-  <data name="&gt;&gt;radioButton4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;radioButton4.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;radioButton4.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 117</value>
-  </data>
-  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>396, 50</value>
-  </data>
-  <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
   <data name="groupBox1.Text" xml:space="preserve">
     <value>Usa:</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 13</value>
-  </data>
-  <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>396, 49</value>
-  </data>
-  <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
   </data>
   <data name="groupBox2.Text" xml:space="preserve">
     <value>Cerca:</value>
   </data>
-  <data name="&gt;&gt;groupBox2.Name" xml:space="preserve">
-    <value>groupBox2</value>
-  </data>
-  <data name="&gt;&gt;groupBox2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupBox2.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;groupBox2.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="checkBoxText.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="checkBoxText.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 19</value>
-  </data>
-  <data name="checkBoxText.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 17</value>
-  </data>
-  <data name="checkBoxText.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="checkBoxText.Text" xml:space="preserve">
     <value>Testo</value>
-  </data>
-  <data name="&gt;&gt;checkBoxText.Name" xml:space="preserve">
-    <value>checkBoxText</value>
-  </data>
-  <data name="&gt;&gt;checkBoxText.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;checkBoxText.Parent" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="&gt;&gt;checkBoxText.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="checkBoxKey.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="checkBoxKey.Location" type="System.Drawing.Point, System.Drawing">
-    <value>102, 19</value>
-  </data>
-  <data name="checkBoxKey.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 17</value>
-  </data>
-  <data name="checkBoxKey.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
   </data>
   <data name="checkBoxKey.Text" xml:space="preserve">
     <value>Chiave</value>
   </data>
-  <data name="&gt;&gt;checkBoxKey.Name" xml:space="preserve">
-    <value>checkBoxKey</value>
-  </data>
-  <data name="&gt;&gt;checkBoxKey.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;checkBoxKey.Parent" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="&gt;&gt;checkBoxKey.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="checkBoxFile.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="checkBoxFile.Location" type="System.Drawing.Point, System.Drawing">
-    <value>316, 19</value>
-  </data>
-  <data name="checkBoxFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 17</value>
-  </data>
-  <data name="checkBoxFile.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
   <data name="checkBoxFile.Text" xml:space="preserve">
     <value>Nome file</value>
-  </data>
-  <data name="&gt;&gt;checkBoxFile.Name" xml:space="preserve">
-    <value>checkBoxFile</value>
-  </data>
-  <data name="&gt;&gt;checkBoxFile.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;checkBoxFile.Parent" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="&gt;&gt;checkBoxFile.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="checkBoxLang.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="checkBoxLang.Location" type="System.Drawing.Point, System.Drawing">
-    <value>194, 19</value>
-  </data>
-  <data name="checkBoxLang.Size" type="System.Drawing.Size, System.Drawing">
-    <value>74, 17</value>
-  </data>
-  <data name="checkBoxLang.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
   </data>
   <data name="checkBoxLang.Text" xml:space="preserve">
     <value>Lingua</value>
   </data>
-  <data name="&gt;&gt;checkBoxLang.Name" xml:space="preserve">
-    <value>checkBoxLang</value>
-  </data>
-  <data name="&gt;&gt;checkBoxLang.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;checkBoxLang.Parent" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="&gt;&gt;checkBoxLang.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="groupBox3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 68</value>
-  </data>
-  <data name="groupBox3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>396, 43</value>
-  </data>
-  <data name="groupBox3.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
   <data name="groupBox3.Text" xml:space="preserve">
     <value>Che cosa:</value>
-  </data>
-  <data name="&gt;&gt;groupBox3.Name" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
-  <data name="&gt;&gt;groupBox3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupBox3.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;groupBox3.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="checkBoxWord.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="checkBoxWord.Location" type="System.Drawing.Point, System.Drawing">
-    <value>106, 19</value>
-  </data>
-  <data name="checkBoxWord.Size" type="System.Drawing.Size, System.Drawing">
-    <value>83, 17</value>
-  </data>
-  <data name="checkBoxWord.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
   </data>
   <data name="checkBoxWord.Text" xml:space="preserve">
     <value>Parola intera</value>
   </data>
-  <data name="&gt;&gt;checkBoxWord.Name" xml:space="preserve">
-    <value>checkBoxWord</value>
-  </data>
-  <data name="&gt;&gt;checkBoxWord.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;checkBoxWord.Parent" xml:space="preserve">
-    <value>groupBox4</value>
-  </data>
-  <data name="&gt;&gt;checkBoxWord.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="checkBoxCS.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="checkBoxCS.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 20</value>
-  </data>
-  <data name="checkBoxCS.Size" type="System.Drawing.Size, System.Drawing">
-    <value>94, 17</value>
-  </data>
-  <data name="checkBoxCS.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="checkBoxCS.Text" xml:space="preserve">
     <value>Controlla maiuscole/minuscole</value>
-  </data>
-  <data name="&gt;&gt;checkBoxCS.Name" xml:space="preserve">
-    <value>checkBoxCS</value>
-  </data>
-  <data name="&gt;&gt;checkBoxCS.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;checkBoxCS.Parent" xml:space="preserve">
-    <value>groupBox4</value>
-  </data>
-  <data name="&gt;&gt;checkBoxCS.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="groupBox4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 173</value>
-  </data>
-  <data name="groupBox4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>396, 50</value>
-  </data>
-  <data name="groupBox4.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
   </data>
   <data name="groupBox4.Text" xml:space="preserve">
     <value>Opzioni:</value>
   </data>
-  <data name="&gt;&gt;groupBox4.Name" xml:space="preserve">
-    <value>groupBox4</value>
-  </data>
-  <data name="&gt;&gt;groupBox4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupBox4.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;groupBox4.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="buttonFind.Location" type="System.Drawing.Point, System.Drawing">
-    <value>259, 229</value>
-  </data>
-  <data name="buttonFind.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="buttonFind.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
   <data name="buttonFind.Text" xml:space="preserve">
     <value>Trova tutto</value>
-  </data>
-  <data name="&gt;&gt;buttonFind.Name" xml:space="preserve">
-    <value>buttonFind</value>
-  </data>
-  <data name="&gt;&gt;buttonFind.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;buttonFind.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;buttonFind.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="button1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>340, 229</value>
-  </data>
-  <data name="button1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="button1.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
   </data>
   <data name="button1.Text" xml:space="preserve">
     <value>Annulla</value>
   </data>
-  <data name="&gt;&gt;button1.Name" xml:space="preserve">
-    <value>button1</value>
-  </data>
-  <data name="&gt;&gt;button1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;button1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;button1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
-  </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>427, 263</value>
-  </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Trova...</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>FindWindow</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
