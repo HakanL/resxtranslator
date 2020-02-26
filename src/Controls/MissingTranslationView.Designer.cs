@@ -61,6 +61,7 @@
             resources.ApplyResources(this.listView1, "listView1");
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
+            this.listView1.HideSelection = false;
             this.listView1.Name = "listView1";
             this.listView1.ShowItemToolTips = true;
             this.listView1.UseCompatibleStateImageBehavior = false;
@@ -112,6 +113,7 @@
             this.Controls.Add(this.panel1);
             this.Name = "MissingTranslationView";
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
