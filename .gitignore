@@ -32,6 +32,7 @@ obj/
 [Rr]elease*/
 Ankh.NoLoad
 /src/.vs/
+/.vs
 
 #Tooling
 _ReSharper*/
