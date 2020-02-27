@@ -121,7 +121,7 @@
     <value>Chiave</value>
   </data>
   <data name="ColNameNoLang" xml:space="preserve">
-    <value>NessunValoreLingua</value>
+    <value>Valore predefinito</value>
   </data>
   <data name="ColNameComment" xml:space="preserve">
     <value>Commento</value>
