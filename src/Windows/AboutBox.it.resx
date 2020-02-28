@@ -123,22 +123,7 @@
   <data name="labelVersion.Text" xml:space="preserve">
     <value>Versione</value>
   </data>
-  <data name="labelCopyright.Text" xml:space="preserve">
-    <value>Copyright</value>
-  </data>
   <data name="labelCompanyName.Text" xml:space="preserve">
     <value>Nome società</value>
   </data>
-  <data name="textBoxDescription.Text" xml:space="preserve">
-    <value>Descrizione</value>
-  </data>
-  <data name="okButton.Text" xml:space="preserve">
-    <value>&amp;OK</value>
-  </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>AboutBox</value>
-  </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
 </root>
