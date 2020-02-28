@@ -139,7 +139,7 @@
     <value>Caricamento riferimenti assemblaggio...</value>
   </data>
   <data name="LoadProgress_Done" xml:space="preserve">
-    <value>Fatto</value>
+    <value>Operazione completata</value>
   </data>
   <data name="MessageBox_ConfirmDeleteRow_Message" xml:space="preserve">
     <value>Sei sicuro di voler eliminare le colonne attualmente selezionate?</value>
