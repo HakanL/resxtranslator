@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Resx Resource Translator")]
 [assembly: AssemblyDescription("A tool used to translate .resx (ASP.NET Resource data) files. It can work on entire projects at once and save considerable amounts of time and frustration.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("HakanL/resxtranslator")]
 [assembly: AssemblyProduct("ResxTranslator")]
 [assembly: AssemblyCopyright("Copyright © Hakan Lindestaf 2010, Jörgen Lindell 2011, Marcin Szeniak 2017")]
 [assembly: AssemblyTrademark("")]
