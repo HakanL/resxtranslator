@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="button1.Text" xml:space="preserve">
-    <value>Seleziona</value>
+    <value>Aggiungi</value>
   </data>
   <data name="button2.Text" xml:space="preserve">
     <value>Annulla</value>
@@ -127,7 +127,7 @@
     <value>Solo neutrali</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Lingua da aggiungere</value>
+    <value>Aggiungi lingua</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
