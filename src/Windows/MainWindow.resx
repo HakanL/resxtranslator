@@ -168,13 +168,13 @@
   <data name="splitContainerMain.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="splitContainer1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="splitContainerLeft.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="splitContainer1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="splitContainerLeft.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="splitContainer1.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
+  <data name="splitContainerLeft.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
     <value>Horizontal</value>
   </data>
   <data name="resourceTreeView1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -196,7 +196,7 @@
     <value>resourceTreeView1</value>
   </data>
   <data name="&gt;&gt;resourceTreeView1.Type" xml:space="preserve">
-    <value>ResxTranslator.Controls.ResourceTreeView, ResxTranslator, Version=2.7.7039.25208, Culture=neutral, PublicKeyToken=null</value>
+    <value>ResxTranslator.Controls.ResourceTreeView, ResxTranslator, Version=2.8.7366.531, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;resourceTreeView1.Parent" xml:space="preserve">
     <value>tabPage3</value>
@@ -250,7 +250,7 @@
     <value>missingTranslationView1</value>
   </data>
   <data name="&gt;&gt;missingTranslationView1.Type" xml:space="preserve">
-    <value>ResxTranslator.Controls.MissingTranslationView, ResxTranslator, Version=2.7.7039.25208, Culture=neutral, PublicKeyToken=null</value>
+    <value>ResxTranslator.Controls.MissingTranslationView, ResxTranslator, Version=2.8.7366.531, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;missingTranslationView1.Parent" xml:space="preserve">
     <value>tabPage5</value>
@@ -304,21 +304,21 @@
     <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tabControl2.Parent" xml:space="preserve">
-    <value>splitContainer1.Panel1</value>
+    <value>splitContainerLeft.Panel1</value>
   </data>
   <data name="&gt;&gt;tabControl2.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Panel1.Name" xml:space="preserve">
-    <value>splitContainer1.Panel1</value>
+  <data name="&gt;&gt;splitContainerLeft.Panel1.Name" xml:space="preserve">
+    <value>splitContainerLeft.Panel1</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Panel1.Type" xml:space="preserve">
+  <data name="&gt;&gt;splitContainerLeft.Panel1.Type" xml:space="preserve">
     <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Panel1.Parent" xml:space="preserve">
-    <value>splitContainer1</value>
+  <data name="&gt;&gt;splitContainerLeft.Panel1.Parent" xml:space="preserve">
+    <value>splitContainerLeft</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Panel1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;splitContainerLeft.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="languageSettings1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -340,7 +340,7 @@
     <value>languageSettings1</value>
   </data>
   <data name="&gt;&gt;languageSettings1.Type" xml:space="preserve">
-    <value>ResxTranslator.Controls.LanguageSettings, ResxTranslator, Version=2.7.7039.25208, Culture=neutral, PublicKeyToken=null</value>
+    <value>ResxTranslator.Controls.LanguageSettings, ResxTranslator, Version=2.8.7366.531, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;languageSettings1.Parent" xml:space="preserve">
     <value>tabPage1</value>
@@ -394,42 +394,42 @@
     <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tabControl1.Parent" xml:space="preserve">
-    <value>splitContainer1.Panel2</value>
+    <value>splitContainerLeft.Panel2</value>
   </data>
   <data name="&gt;&gt;tabControl1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Panel2.Name" xml:space="preserve">
-    <value>splitContainer1.Panel2</value>
+  <data name="&gt;&gt;splitContainerLeft.Panel2.Name" xml:space="preserve">
+    <value>splitContainerLeft.Panel2</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Panel2.Type" xml:space="preserve">
+  <data name="&gt;&gt;splitContainerLeft.Panel2.Type" xml:space="preserve">
     <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Panel2.Parent" xml:space="preserve">
-    <value>splitContainer1</value>
+  <data name="&gt;&gt;splitContainerLeft.Panel2.Parent" xml:space="preserve">
+    <value>splitContainerLeft</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Panel2.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;splitContainerLeft.Panel2.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="splitContainer1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="splitContainerLeft.Size" type="System.Drawing.Size, System.Drawing">
     <value>246, 465</value>
   </data>
-  <data name="splitContainer1.SplitterDistance" type="System.Int32, mscorlib">
+  <data name="splitContainerLeft.SplitterDistance" type="System.Int32, mscorlib">
     <value>290</value>
   </data>
-  <data name="splitContainer1.TabIndex" type="System.Int32, mscorlib">
+  <data name="splitContainerLeft.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Name" xml:space="preserve">
-    <value>splitContainer1</value>
+  <data name="&gt;&gt;splitContainerLeft.Name" xml:space="preserve">
+    <value>splitContainerLeft</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Type" xml:space="preserve">
+  <data name="&gt;&gt;splitContainerLeft.Type" xml:space="preserve">
     <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;splitContainerLeft.Parent" xml:space="preserve">
     <value>splitContainerMain.Panel1</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;splitContainerLeft.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="&gt;&gt;splitContainerMain.Panel1.Name" xml:space="preserve">
@@ -466,7 +466,7 @@
     <value>resourceGrid1</value>
   </data>
   <data name="&gt;&gt;resourceGrid1.Type" xml:space="preserve">
-    <value>ResxTranslator.Controls.ResourceGrid, ResxTranslator, Version=2.7.7039.25208, Culture=neutral, PublicKeyToken=null</value>
+    <value>ResxTranslator.Controls.ResourceGrid, ResxTranslator, Version=2.8.7366.531, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;resourceGrid1.Parent" xml:space="preserve">
     <value>tabPageEditedResource</value>
@@ -673,7 +673,7 @@
     <value>Ctrl+F</value>
   </data>
   <data name="findToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>167, 22</value>
   </data>
   <data name="findToolStripMenuItem1.Text" xml:space="preserve">
     <value>&amp;Find...</value>
@@ -682,13 +682,13 @@
     <value>F3</value>
   </data>
   <data name="findNextToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>167, 22</value>
   </data>
   <data name="findNextToolStripMenuItem.Text" xml:space="preserve">
     <value>Find &amp;next</value>
   </data>
   <data name="clearSearchToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>167, 22</value>
   </data>
   <data name="clearSearchToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Clear search</value>
@@ -724,13 +724,13 @@
     <value>&amp;Keys</value>
   </data>
   <data name="addLanguageToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>176, 22</value>
   </data>
   <data name="addLanguageToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Add new Language</value>
   </data>
   <data name="removeLanguageToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>176, 22</value>
   </data>
   <data name="removeLanguageToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Remove Language</value>
@@ -754,7 +754,7 @@
     <value>From all resource translations</value>
   </data>
   <data name="removeNontranslatableDataToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>256, 22</value>
+    <value>254, 22</value>
   </data>
   <data name="removeNontranslatableDataToolStripMenuItem.Text" xml:space="preserve">
     <value>Remove non-translatable data</value>
@@ -769,7 +769,7 @@ default values. (usually to values of the default resource)</value>
     <value>Ctrl+T</value>
   </data>
   <data name="trimWhitespaceFromCellsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>256, 22</value>
+    <value>254, 22</value>
   </data>
   <data name="trimWhitespaceFromCellsToolStripMenuItem.Text" xml:space="preserve">
     <value>Trim whitespace from cells</value>
@@ -779,7 +779,7 @@ default values. (usually to values of the default resource)</value>
 from beginning and end of the selected cells.</value>
   </data>
   <data name="toolsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 20</value>
+    <value>46, 20</value>
   </data>
   <data name="toolsToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Tools</value>

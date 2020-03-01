@@ -327,7 +327,7 @@ namespace ResxTranslator.Windows
 
         private void findNextToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(CurrentSearch == null)
+            if (CurrentSearch == null)
             {
                 findToolStripMenuItem1_Click(sender, e);
                 return;
@@ -367,6 +367,9 @@ namespace ResxTranslator.Windows
                     break;
             }
 
+            Settings.Default.SplitterLeft = splitContainerLeft.SplitterDistance;
+            Settings.Default.SplitterMain = splitContainerMain.SplitterDistance;
+
             Settings.Default.Save();
 
             if (!ResourceLoader.CanClose())
@@ -381,6 +384,11 @@ namespace ResxTranslator.Windows
                 Size = Settings.Default.WindowSize;
                 WindowState = Settings.Default.WindowState;
             }
+
+            if (Settings.Default.SplitterLeft > 10)
+                splitContainerLeft.SplitterDistance = Settings.Default.SplitterLeft;
+            if (Settings.Default.SplitterMain > 10)
+                splitContainerMain.SplitterDistance = Settings.Default.SplitterMain;
 
             Opacity = 1;
 

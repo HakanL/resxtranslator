@@ -37,7 +37,7 @@ namespace ResxTranslator.Windows
             this.toolStripStatusLabelCurrentItem = new System.Windows.Forms.ToolStripStatusLabel();
             this.panelMain = new System.Windows.Forms.Panel();
             this.splitContainerMain = new System.Windows.Forms.SplitContainer();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.splitContainerLeft = new System.Windows.Forms.SplitContainer();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.resourceTreeView1 = new ResxTranslator.Controls.ResourceTreeView();
@@ -98,10 +98,10 @@ namespace ResxTranslator.Windows
             this.splitContainerMain.Panel1.SuspendLayout();
             this.splitContainerMain.Panel2.SuspendLayout();
             this.splitContainerMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerLeft)).BeginInit();
+            this.splitContainerLeft.Panel1.SuspendLayout();
+            this.splitContainerLeft.Panel2.SuspendLayout();
+            this.splitContainerLeft.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage5.SuspendLayout();
@@ -150,25 +150,25 @@ namespace ResxTranslator.Windows
             // 
             // splitContainerMain.Panel1
             // 
-            this.splitContainerMain.Panel1.Controls.Add(this.splitContainer1);
+            this.splitContainerMain.Panel1.Controls.Add(this.splitContainerLeft);
             // 
             // splitContainerMain.Panel2
             // 
             this.splitContainerMain.Panel2.Controls.Add(this.tabControl3);
             // 
-            // splitContainer1
+            // splitContainerLeft
             // 
-            resources.ApplyResources(this.splitContainer1, "splitContainer1");
-            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.splitContainer1.Name = "splitContainer1";
+            resources.ApplyResources(this.splitContainerLeft, "splitContainerLeft");
+            this.splitContainerLeft.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainerLeft.Name = "splitContainerLeft";
             // 
-            // splitContainer1.Panel1
+            // splitContainerLeft.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.tabControl2);
+            this.splitContainerLeft.Panel1.Controls.Add(this.tabControl2);
             // 
-            // splitContainer1.Panel2
+            // splitContainerLeft.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
+            this.splitContainerLeft.Panel2.Controls.Add(this.tabControl1);
             // 
             // tabControl2
             // 
@@ -564,10 +564,10 @@ namespace ResxTranslator.Windows
             this.splitContainerMain.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).EndInit();
             this.splitContainerMain.ResumeLayout(false);
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
+            this.splitContainerLeft.Panel1.ResumeLayout(false);
+            this.splitContainerLeft.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerLeft)).EndInit();
+            this.splitContainerLeft.ResumeLayout(false);
             this.tabControl2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
@@ -625,7 +625,7 @@ namespace ResxTranslator.Windows
         private ToolStripMenuItem helpToolStripMenuItem1;
         private ToolStripMenuItem aboutToolStripMenuItem;
         private ToolStripMenuItem licenceToolStripMenuItem;
-        private SplitContainer splitContainer1;
+        private SplitContainer splitContainerLeft;
         private ToolStripSeparator toolStripSeparator3;
         private ToolStripMenuItem toolsToolStripMenuItem;
         private ToolStripMenuItem removeNontranslatableDataToolStripMenuItem;
