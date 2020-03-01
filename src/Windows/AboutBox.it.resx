@@ -123,7 +123,20 @@
   <data name="labelVersion.Text" xml:space="preserve">
     <value>Versione</value>
   </data>
+  <data name="labelCopyright.Text" xml:space="preserve">
+    <value>Copyright</value>
+  </data>
   <data name="labelCompanyName.Text" xml:space="preserve">
     <value>Nome società</value>
+  </data>
+  <data name="textBoxDescription.Text" xml:space="preserve">
+    <value>Uno strumento usato per tradurre i file .resx (dati risorse ASP.NET).
+Può operare su progetti completi e può permettere di risparmiare una considerevole quantità di tempo e frustazioni.</value>
+  </data>
+  <data name="okButton.Text" xml:space="preserve">
+    <value>&amp;OK</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Info su Resx Resource Translator</value>
   </data>
 </root>
