@@ -129,7 +129,7 @@
     <value>1</value>
   </data>
   <data name="button1.Text" xml:space="preserve">
-    <value>Select</value>
+    <value>Add</value>
   </data>
   <data name="&gt;&gt;button1.Name" xml:space="preserve">
     <value>button1</value>
@@ -265,7 +265,7 @@
     <value>CenterParent</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Select language...</value>
+    <value>Add language</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>LanguageSelectDialog</value>

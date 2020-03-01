@@ -229,7 +229,7 @@
     <value>1</value>
   </data>
   <data name="textboxDefault.Text" xml:space="preserve">
-    <value>[PlaceholderText]</value>
+    <value>(PlaceholderText)</value>
   </data>
   <data name="&gt;&gt;textboxDefault.Name" xml:space="preserve">
     <value>textboxDefault</value>
