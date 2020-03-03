@@ -87,11 +87,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Localization.resx</DependentUpon>
     </Compile>
-    <Compile Include="Resources\Localization.es.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Localization.es.resx</DependentUpon>
-    </Compile>
     <Compile Include="Tools\ComboBoxWrapper.cs" />
     <Compile Include="Controls\LanguageSettings.cs">
       <SubType>UserControl</SubType>
@@ -152,7 +147,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.it.resx" />
     <EmbeddedResource Include="Resources\Localization.es.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Localization.es.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Localization.it.resx" />
