@@ -5,8 +5,8 @@ Tool for non-developers to quickly translate resource files (resx) in .NET proje
 [Check the Releases](https://github.com/HakanL/resxtranslator/releases) or compile the source code in any modern version of Visual Studio.
 
 ## Screenshots
-![capture](https://cloud.githubusercontent.com/assets/14913904/14054215/c82f9c82-f2d7-11e5-9e7b-9de37814408a.PNG)
-![capture1](https://cloud.githubusercontent.com/assets/14913904/14054214/c82ecece-f2d7-11e5-9a90-866dee7bc0be.PNG)
+![Main window preview](https://cloud.githubusercontent.com/assets/14913904/14054215/c82f9c82-f2d7-11e5-9e7b-9de37814408a.PNG)
+![Translating preview](https://cloud.githubusercontent.com/assets/14913904/14054214/c82ecece-f2d7-11e5-9a90-866dee7bc0be.PNG)
 
 ## Usage guidelines
 Launch the Resx Resource Translator, go to the File/Open menu option and browse to the root of your Visual Studio project (basically where your SLN file is located). The tool will now iterate thru all sub folders and look for resx files. _(Note that it's not using the SLN or project files, it's just looking for files with file extension resx)._

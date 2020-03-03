@@ -222,6 +222,14 @@
     <EmbeddedResource Include="Windows\CellEditorWindow.resx">
       <DependentUpon>CellEditorWindow.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="..\LICENSE">
+      <Link>LICENSE</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\README.md">
+      <Link>README.md</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -343,9 +351,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.ico" />
-    <Content Include="Licence.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <None Include="Resources\clipboard.png" />
     <None Include="Resources\clipboard.paper.png" />
     <None Include="Resources\clipboard.paper.check.png" />

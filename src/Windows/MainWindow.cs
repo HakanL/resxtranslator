@@ -548,14 +548,20 @@ namespace ResxTranslator.Windows
 
         private void helpToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            Process.Start(Properties.Resources.Homepage);
+            var readmePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "README.md");
+            if (File.Exists(readmePath))
+                Process.Start("notepad.exe", $"\"{readmePath}\"");
+            else
+                Process.Start(Properties.Resources.Homepage);
         }
 
         private void licenceToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process.Start(Path.Combine(
-                Path.GetDirectoryName(Assembly.GetAssembly(typeof(MainWindow)).Location) ?? string.Empty,
-                "Licence.txt"));
+            var licensePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LICENSE");
+            if (File.Exists(licensePath))
+                Process.Start("notepad.exe", $"\"{licensePath}\"");
+            else
+                Process.Start(Properties.Resources.Homepage);
         }
 
         private void setReferencePathsToolStripMenuItem_Click(object sender, EventArgs e)
