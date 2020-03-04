@@ -117,22 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="columnHeaderCode.Text" xml:space="preserve">
-    <value>Código</value>
+  <data name="ColNameKey" xml:space="preserve">
+    <value>Llave</value>
   </data>
-  <data name="columnHeaderName.Text" xml:space="preserve">
-    <value>Nombre de Idioma</value>
+  <data name="ColNameNoLang" xml:space="preserve">
+    <value>Valor por defecto</value>
   </data>
-  <data name="toolStripButtonSelectAll.Text" xml:space="preserve">
-    <value>Seleccionar todo</value>
+  <data name="ColNameComment" xml:space="preserve">
+    <value>Comentario</value>
   </data>
-  <data name="toolStripButtonSelectNone.Text" xml:space="preserve">
-    <value>Deseleccionar todo</value>
+  <data name="ColNameError" xml:space="preserve">
+    <value>Error</value>
   </data>
-  <data name="toolStripButtonSelectInvert.Text" xml:space="preserve">
-    <value>Invertir selección</value>
+  <data name="ColNameTranslated" xml:space="preserve">
+    <value>Traducido</value>
   </data>
-  <data name="toolStrip1.Text" xml:space="preserve">
-    <value>toolstrip</value>
+  <data name="Homepage" xml:space="preserve">
+    <value>https://github.com/HakanL/resxtranslator/</value>
   </data>
 </root>

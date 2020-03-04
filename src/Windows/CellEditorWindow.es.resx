@@ -129,4 +129,7 @@
   <data name="$this.Text" xml:space="preserve">
     <value>Editor de celdas</value>
   </data>
+  <data name="chbShowWhitespace.Text" xml:space="preserve">
+    <value>Mostrar espacio en blanco</value>
+  </data>
 </root>
