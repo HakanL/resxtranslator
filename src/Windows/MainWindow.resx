@@ -761,9 +761,8 @@
   </data>
   <data name="removeNontranslatableDataToolStripMenuItem.ToolTipText" xml:space="preserve">
     <value>Remove data that is not text, e.g. Images, Sizes, Locations.
-
-Useful for resetting UI values of WinForms controls to their 
-default values. (usually to values of the default resource)</value>
+Useful for resetting UI values of WinForms controls to their default values. 
+Usually to values of the default resource.</value>
   </data>
   <data name="trimWhitespaceFromCellsToolStripMenuItem.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
     <value>Ctrl+T</value>
@@ -775,8 +774,7 @@ default values. (usually to values of the default resource)</value>
     <value>Trim whitespace from cells</value>
   </data>
   <data name="trimWhitespaceFromCellsToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>Remove whitespace characters (spaces, newlines, tabs, etc.) 
-from beginning and end of the selected cells.</value>
+    <value>Remove whitespace characters (spaces, newlines, tabs, etc.) from beginning and end of the selected cells.</value>
   </data>
   <data name="toolsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>46, 20</value>

@@ -144,6 +144,9 @@
   <data name="reloadCurrentDirectoryToolStripMenuItem.Text" xml:space="preserve">
     <value>Actualizar el directorio actual</value>
   </data>
+  <data name="exportAllResourcesToolStripMenuItem.Text" xml:space="preserve">
+    <value>Exportar todos los recursos...</value>
+  </data>
   <data name="saveToolStripMenuItem.Text" xml:space="preserve">
     <value>Guardar el recurso actual</value>
   </data>
@@ -164,6 +167,9 @@
   </data>
   <data name="findToolStripMenuItem1.Text" xml:space="preserve">
     <value>&amp;Encontrar...</value>
+  </data>
+  <data name="findNextToolStripMenuItem.Text" xml:space="preserve">
+    <value>E&amp;ncuentra el siguiente</value>
   </data>
   <data name="clearSearchToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Borrar búsqueda</value>
@@ -189,6 +195,29 @@
   <data name="languagesToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Idiomas</value>
   </data>
+  <data name="removeNonTLFromOpenedTranslationsToolStripMenuItem.Text" xml:space="preserve">
+    <value>De traducciones de recursos actuales</value>
+  </data>
+  <data name="removeNonTLFromAllTranslationsToolStripMenuItem.Text" xml:space="preserve">
+    <value>De todas las traducciones de recursos</value>
+  </data>
+  <data name="removeNontranslatableDataToolStripMenuItem.Text" xml:space="preserve">
+    <value>Eliminar datos no traducibles</value>
+  </data>
+  <data name="removeNontranslatableDataToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>Eliminar datos que no son texto, p. Imágenes, tamaños, ubicaciones.
+Útil para restablecer los valores de la interfaz de usuario de los controles WinForms a sus valores predeterminados.
+Por lo general, a los valores del recurso predeterminado.</value>
+  </data>
+  <data name="trimWhitespaceFromCellsToolStripMenuItem.Text" xml:space="preserve">
+    <value>Recortar espacios en blanco de las celdas</value>
+  </data>
+  <data name="trimWhitespaceFromCellsToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>Elimine los caracteres de espacios en blanco (espacios, líneas nuevas, pestañas, etc.) desde el principio y el final de las celdas seleccionadas.</value>
+  </data>
+  <data name="toolsToolStripMenuItem.Text" xml:space="preserve">
+    <value>Herramien&amp;tas</value>
+  </data>
   <data name="copyDefaultValuesOnLanguageAddToolStripMenuItem.Text" xml:space="preserve">
     <value>Copiar valores predeterminados al agregar idiomas</value>
   </data>
@@ -206,6 +235,12 @@
   </data>
   <data name="openLastDirectoryOnProgramStartToolStripMenuItem.Text" xml:space="preserve">
     <value>Abrir el último directorio en el inicio del programa</value>
+  </data>
+  <data name="storeAndLoadCommentsFromAllLanguageFilesToolStripMenuItem.Text" xml:space="preserve">
+    <value>Almacene y cargue comentarios de todos los archivos de idioma</value>
+  </data>
+  <data name="storeAndLoadCommentsFromAllLanguageFilesToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>Si está deshabilitado, solo almacene y cargue comentarios del archivo de idioma principal.</value>
   </data>
   <data name="loadAssembliesFromResourcePathToolStripMenuItem.Text" xml:space="preserve">
     <value>Cargar ensamblajes del directorio de recursos abierto</value>

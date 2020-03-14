@@ -129,4 +129,14 @@
   <data name="okButton.Text" xml:space="preserve">
     <value>&amp;Aceptar</value>
   </data>
+  <data name="labelCopyright.Text" xml:space="preserve">
+    <value>Derechos de autor</value>
+  </data>
+  <data name="textBoxDescription.Text" xml:space="preserve">
+    <value>Una herramienta utilizada para traducir archivos .resx (datos de recursos ASP.NET). 
+Puede funcionar en proyectos completos a la vez y ahorrar una cantidad considerable de tiempo y frustración.</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Acerca de Resx Resource Translator</value>
+  </data>
 </root>

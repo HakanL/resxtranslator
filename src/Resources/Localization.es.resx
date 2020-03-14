@@ -118,7 +118,8 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MessageBox_SelectedLanguageInvalid_Message" xml:space="preserve">
-    <value>El idioma seleccionado no es válido, seleccione una de las entradas de la lista desplegable.</value>
+    <value>El idioma seleccionado no es válido. 
+Seleccione una de las entradas de la lista desplegable.</value>
   </data>
   <data name="MessageBox_SelectedLanguageInvalid_Title" xml:space="preserve">
     <value>Idioma no válido</value>
@@ -130,7 +131,8 @@
     <value>Falta el archivo de recursos</value>
   </data>
   <data name="MessageBox_ConfirmLoadAssemblies_Message" xml:space="preserve">
-    <value>Con la configuración actual, esta operación intentará cargar {0} conjuntos. ¿Realmente quieres cargarlas todas? Si selecciona no, se omitirá la carga.</value>
+    <value>Con la configuración actual, esta operación intentará cargar {0} conjuntos. 
+¿Realmente quieres cargarlas todas? Si selecciona no, se omitirá la carga.</value>
   </data>
   <data name="MessageBox_ConfirmLoadAssemblies_Title" xml:space="preserve">
     <value>Montajes de referencia de carga</value>
@@ -148,7 +150,8 @@
     <value>Eliminar una clave</value>
   </data>
   <data name="MainWindow_OpenDirectory_Description" xml:space="preserve">
-    <value>Vaya a la raíz del proyecto, normalmente donde está el archivo sln.</value>
+    <value>Vaya a la raíz del proyecto.
+Normalmente donde está el archivo sln.</value>
   </data>
   <data name="MainWindow_MoreLanguagesMenuItem" xml:space="preserve">
     <value>Más idiomas ...</value>
@@ -193,5 +196,33 @@ Ruta de acceso: {1}</value>
   </data>
   <data name="Error_FailedSaving" xml:space="preserve">
     <value>Excepción al guardar: {0}</value>
+  </data>
+  <data name="MessageBox_RemoveNontranslatableQuestion_Message" xml:space="preserve">
+    <value>Esta acción eliminará todo lo que no sea texto de los recursos traducidos (no el recurso base).
+Los recursos se guardarán en la unidad en proceso, así que asegúrese de tener una copia de seguridad.</value>
+  </data>
+  <data name="MessageBox_RemoveNontranslatableQuestion_Title" xml:space="preserve">
+    <value>¿Realmente desea eliminar datos no traducibles?</value>
+  </data>
+  <data name="MainWindow_Failed_to_create_a_new_row" xml:space="preserve">
+    <value>Error al crear una nueva fila</value>
+  </data>
+  <data name="Dialog_Export_resources_Title" xml:space="preserve">
+    <value>Recursos de exportación</value>
+  </data>
+  <data name="Dialog_Export_resources_Filter" xml:space="preserve">
+    <value>Archivo .zip|.zip</value>
+  </data>
+  <data name="Dialog_Export_resources_ErrorTitle" xml:space="preserve">
+    <value>Exportación fallida</value>
+  </data>
+  <data name="MessageBox_ResourcesFailedToLoad_Message" xml:space="preserve">
+    <value>Los siguientes recursos no se pudieron cargar. 
+Asegúrese de que estén en el formato correcto y no estén dañados.
+
+{0}</value>
+  </data>
+  <data name="MessageBox_ResourcesFailedToLoad_Title" xml:space="preserve">
+    <value>Error al cargar algunos recursos</value>
   </data>
 </root>

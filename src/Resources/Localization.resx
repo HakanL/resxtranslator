@@ -118,19 +118,22 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MessageBox_SelectedLanguageInvalid_Message" xml:space="preserve">
-    <value>Selected language is invalid, please select one of the entries on the dropdown list.</value>
+    <value>Selected language is invalid. 
+Please select one of the entries on the dropdown list.</value>
   </data>
   <data name="MessageBox_SelectedLanguageInvalid_Title" xml:space="preserve">
     <value>Invalid language</value>
   </data>
   <data name="MessageBox_CreateMissingResource_Message" xml:space="preserve">
-    <value>Resource file for this language is missing, do you want to create it?</value>
+    <value>Resource file for this language is missing. 
+Do you want to create it?</value>
   </data>
   <data name="MessageBox_CreateMissingResource_Title" xml:space="preserve">
     <value>Missing resource file</value>
   </data>
   <data name="MessageBox_ConfirmLoadAssemblies_Message" xml:space="preserve">
-    <value>With current settings this operation will try to load {0} assemblies. Do you really want to load them all? If you select no, loading will be skipped.</value>
+    <value>With current settings this operation will try to load {0} assemblies. 
+Do you really want to load them all? If you select no, loading will be skipped.</value>
   </data>
   <data name="MessageBox_ConfirmLoadAssemblies_Title" xml:space="preserve">
     <value>Load reference assemblies</value>
@@ -195,7 +198,8 @@ Path: {1}</value>
     <value>Exception while saving: {0}</value>
   </data>
   <data name="MessageBox_RemoveNontranslatableQuestion_Message" xml:space="preserve">
-    <value>This action will remove everything that is not text from translated resources (not the base resource). Resources will be saved to the drive in process, so make sure you have a backup.</value>
+    <value>This action will remove everything that is not text from translated resources (not the base resource). 
+Resources will be saved to the drive in process, so make sure you have a backup.</value>
   </data>
   <data name="MessageBox_RemoveNontranslatableQuestion_Title" xml:space="preserve">
     <value>Do you really want to remove non-translatable data?</value>
@@ -213,7 +217,8 @@ Path: {1}</value>
     <value>Export failed</value>
   </data>
   <data name="MessageBox_ResourcesFailedToLoad_Message" xml:space="preserve">
-    <value>Following resources failed to load. Make sure they are in correct format and not currupted.
+    <value>Following resources failed to load. 
+Make sure they are in correct format and not corrupted.
 
 {0}</value>
   </data>
