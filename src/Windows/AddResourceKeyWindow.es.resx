@@ -127,7 +127,7 @@
     <value>Nueva clave</value>
   </data>
   <data name="textboxDefault.Text" xml:space="preserve">
-    <value>[PlaceholderText]</value>
+    <value>[TextoNoTraducido]</value>
   </data>
   <data name="labelDefaultValue.Text" xml:space="preserve">
     <value>Valores traducidos</value>

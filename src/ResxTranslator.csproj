@@ -146,6 +146,7 @@
     <EmbeddedResource Include="Controls\ResourceTreeView.resx">
       <DependentUpon>ResourceTreeView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.es.resx" />
     <EmbeddedResource Include="Properties\Resources.it.resx" />
     <EmbeddedResource Include="Resources\Localization.es.resx">
       <LastGenOutput>Localization.es.Designer.cs</LastGenOutput>
