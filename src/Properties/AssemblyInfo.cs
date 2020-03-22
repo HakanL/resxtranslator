@@ -36,7 +36,7 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyVersion("2.9.0"
 #if DEBUG
-    + ".*")];
+    + ".*")]
 #else
     )]
 #endif
