@@ -1,4 +1,10 @@
-﻿using System;
+﻿using Google.Cloud.Translation.V2;
+using Ionic.Zip;
+using ResxTranslator.Properties;
+using ResxTranslator.ResourceOperations;
+using ResxTranslator.Resources;
+using ResxTranslator.Tools;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
@@ -8,11 +14,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
-using Ionic.Zip;
-using ResxTranslator.Properties;
-using ResxTranslator.ResourceOperations;
-using ResxTranslator.Resources;
-using ResxTranslator.Tools;
 
 namespace ResxTranslator.Windows
 {
@@ -23,6 +24,7 @@ namespace ResxTranslator.Windows
 
         private ResourceHolder _currentResource;
         private SearchParams _currentSearch;
+        private string[] _googleLanguages;
 
         public MainWindow()
         {
@@ -221,6 +223,7 @@ namespace ResxTranslator.Windows
             keysToolStripMenuItem.Enabled = notNull;
             addNewKeyToolStripMenuItem.Enabled = notNull;
             languagesToolStripMenuItem.Enabled = notNull;
+            toolStripMenuItemGT.Enabled = notNull;
 
             removeLanguageToolStripMenuItem.DropDownItems.Clear();
             addLanguageToolStripMenuItem.DropDownItems.Clear();
@@ -638,6 +641,74 @@ namespace ResxTranslator.Windows
                     MessageBox.Show(ex.ToString(), Localization.Dialog_Export_resources_ErrorTitle,
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+            }
+        }
+
+        private async void toolStripMenuItemGT_Click(object sender, EventArgs e)
+        {
+            if (CurrentResource == null)
+            {
+                return;
+            }
+
+            Cursor.Current = Cursors.WaitCursor;
+
+            SortedDictionary<string, LanguageHolder> lngs = CurrentResource?.Languages;
+            var languages = lngs.Select(x => x.Key).ToList();
+
+            using TranslationClient client = await TranslationClient.CreateAsync();
+
+            if (_googleLanguages == null)
+            {
+                IList<Language> gll = await client.ListLanguagesAsync();
+                _googleLanguages = gll.Select(x => x.Code).ToArray();
+            }
+
+            List<string> notSupportedLanguages = languages.Where(language => !_googleLanguages.Contains(language)).ToList();
+
+            foreach (string language in notSupportedLanguages)
+            {
+                languages.Remove(language);
+            }
+
+            if (notSupportedLanguages.Any())
+            {
+                string lngInfoMessage = "Some languages in your resources does not supported by Google Translate API:" + Environment.NewLine + string.Join(", ", notSupportedLanguages);
+                MessageBox.Show(lngInfoMessage, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+            using var tad = new TranslateAPIDialog(languages, _googleLanguages);
+
+            if (tad.ShowDialog() != DialogResult.OK)
+            {
+                Cursor.Current = Cursors.Default;
+
+                return;
+            }
+
+            List<string> textToTranslate = CurrentResource.GetTextForTranslating(tad.TranslateAPIConfig);
+
+            if (textToTranslate == null || !textToTranslate.Any())
+            {
+                Cursor.Current = Cursors.Default;
+
+                return;
+            }
+
+            try
+            {
+                string sourceLanguage = tad.TranslateAPIConfig.SourceLanguage == Properties.Resources.ColNameNoLang ? tad.TranslateAPIConfig.DefaultLanguage : tad.TranslateAPIConfig.SourceLanguage;
+                IList<TranslationResult> result = await client.TranslateTextAsync(textToTranslate, tad.TranslateAPIConfig.TargetLanguage, sourceLanguage);
+                CurrentResource.SetTranslatedText(tad.TranslateAPIConfig, result);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                client.Dispose();
+                Cursor.Current = Cursors.Default;
             }
         }
     }

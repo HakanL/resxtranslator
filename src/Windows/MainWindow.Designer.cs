@@ -92,6 +92,7 @@ namespace ResxTranslator.Windows
             this.helpToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.licenceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemGT = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.panelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).BeginInit();
@@ -253,6 +254,7 @@ namespace ResxTranslator.Windows
             this.languagesToolStripMenuItem,
             this.toolsToolStripMenuItem,
             this.settingsToolStripMenuItem,
+            this.toolStripMenuItemGT,
             this.helpToolStripMenuItem});
             resources.ApplyResources(this.menuStripMain, "menuStripMain");
             this.menuStripMain.Name = "menuStripMain";
@@ -547,6 +549,12 @@ namespace ResxTranslator.Windows
             resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
+            // toolStripMenuItemGT
+            // 
+            this.toolStripMenuItemGT.Name = "toolStripMenuItemGT";
+            resources.ApplyResources(this.toolStripMenuItemGT, "toolStripMenuItemGT");
+            this.toolStripMenuItemGT.Click += new System.EventHandler(this.toolStripMenuItemGT_Click);
+            // 
             // MainWindow
             // 
             resources.ApplyResources(this, "$this");
@@ -645,6 +653,7 @@ namespace ResxTranslator.Windows
         private ToolStripMenuItem loadAssembliesFromResourcePathToolStripMenuItem;
         private ToolStripMenuItem setReferencePathsToolStripMenuItem;
         private ToolStripMenuItem findNextToolStripMenuItem;
+        private ToolStripMenuItem toolStripMenuItemGT;
     }
 }
 
