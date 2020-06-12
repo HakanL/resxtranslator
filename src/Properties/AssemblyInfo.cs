@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("HakanL/resxtranslator")]
 [assembly: AssemblyProduct("ResxTranslator")]
-[assembly: AssemblyCopyright("Copyright © Hakan Lindestaf 2010, Jörgen Lindell 2011, Marcin Szeniak 2017-2020")]
+[assembly: AssemblyCopyright("Copyright © Hakan Lindestaf 2010, Jörgen Lindell 2011, Marcin Szeniak 2017-2020, Ivan Perehynets 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -34,7 +34,7 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("2.9.0"
+[assembly: AssemblyVersion("2.10.0"
 #if DEBUG
     + ".*")]
 #else
