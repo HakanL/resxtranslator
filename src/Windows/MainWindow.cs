@@ -646,6 +646,13 @@ namespace ResxTranslator.Windows
 
         private async void toolStripMenuItemGT_Click(object sender, EventArgs e)
         {
+        /*
+         * If you are there, because you have exception from Google API authentication, please visit next page
+         * https://cloud.google.com/docs/authentication/production
+         * and setup global environment variable GOOGLE_APPLICATION_CREDENTIALS and reboot Visual Studio.
+         * Some time you also need to clear bin and obj files on close Visual Studio.
+         */
+
             if (CurrentResource == null)
             {
                 return;
@@ -656,47 +663,47 @@ namespace ResxTranslator.Windows
             SortedDictionary<string, LanguageHolder> lngs = CurrentResource?.Languages;
             var languages = lngs.Select(x => x.Key).ToList();
 
-            using TranslationClient client = await TranslationClient.CreateAsync();
-
-            if (_googleLanguages == null)
-            {
-                IList<Language> gll = await client.ListLanguagesAsync();
-                _googleLanguages = gll.Select(x => x.Code).ToArray();
-            }
-
-            List<string> notSupportedLanguages = languages.Where(language => !_googleLanguages.Contains(language)).ToList();
-
-            foreach (string language in notSupportedLanguages)
-            {
-                languages.Remove(language);
-            }
-
-            if (notSupportedLanguages.Any())
-            {
-                string lngInfoMessage = "Some languages in your resources does not supported by Google Translate API:" + Environment.NewLine + string.Join(", ", notSupportedLanguages);
-                MessageBox.Show(lngInfoMessage, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-
-            using var tad = new TranslateAPIDialog(languages, _googleLanguages);
-
-            if (tad.ShowDialog() != DialogResult.OK)
-            {
-                Cursor.Current = Cursors.Default;
-
-                return;
-            }
-
-            List<string> textToTranslate = CurrentResource.GetTextForTranslating(tad.TranslateAPIConfig);
-
-            if (textToTranslate == null || !textToTranslate.Any())
-            {
-                Cursor.Current = Cursors.Default;
-
-                return;
-            }
-
             try
             {
+                using TranslationClient client = await TranslationClient.CreateAsync();
+
+                if (_googleLanguages == null)
+                {
+                    IList<Language> gll = await client.ListLanguagesAsync();
+                    _googleLanguages = gll.Select(x => x.Code).ToArray();
+                }
+
+                List<string> notSupportedLanguages = languages.Where(language => !_googleLanguages.Contains(language)).ToList();
+
+                foreach (string language in notSupportedLanguages)
+                {
+                    languages.Remove(language);
+                }
+
+                if (notSupportedLanguages.Any())
+                {
+                    string lngInfoMessage = "Some languages in your resources does not supported by Google Translate API:" + Environment.NewLine + string.Join(", ", notSupportedLanguages);
+                    MessageBox.Show(lngInfoMessage, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
+                using var tad = new TranslateAPIDialog(languages, _googleLanguages);
+
+                if (tad.ShowDialog() != DialogResult.OK)
+                {
+                    Cursor.Current = Cursors.Default;
+
+                    return;
+                }
+
+                List<string> textToTranslate = CurrentResource.GetTextForTranslating(tad.TranslateAPIConfig);
+
+                if (textToTranslate == null || !textToTranslate.Any())
+                {
+                    Cursor.Current = Cursors.Default;
+
+                    return;
+                }
+
                 string sourceLanguage = tad.TranslateAPIConfig.SourceLanguage == Properties.Resources.ColNameNoLang ? tad.TranslateAPIConfig.DefaultLanguage : tad.TranslateAPIConfig.SourceLanguage;
                 IList<TranslationResult> result = await client.TranslateTextAsync(textToTranslate, tad.TranslateAPIConfig.TargetLanguage, sourceLanguage);
                 CurrentResource.SetTranslatedText(tad.TranslateAPIConfig, result);
@@ -707,7 +714,6 @@ namespace ResxTranslator.Windows
             }
             finally
             {
-                client.Dispose();
                 Cursor.Current = Cursors.Default;
             }
         }
