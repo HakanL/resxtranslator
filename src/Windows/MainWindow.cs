@@ -704,8 +704,10 @@ namespace ResxTranslator.Windows
                     return;
                 }
 
+                string targetLanguage = tad.TranslateAPIConfig.TargetLanguage == Properties.Resources.ColNameNoLang ? tad.TranslateAPIConfig.DefaultLanguage : tad.TranslateAPIConfig.TargetLanguage;
                 string sourceLanguage = tad.TranslateAPIConfig.SourceLanguage == Properties.Resources.ColNameNoLang ? tad.TranslateAPIConfig.DefaultLanguage : tad.TranslateAPIConfig.SourceLanguage;
-                IList<TranslationResult> result = await client.TranslateTextAsync(textToTranslate, tad.TranslateAPIConfig.TargetLanguage, sourceLanguage);
+
+                IList<TranslationResult> result = await client.TranslateTextAsync(textToTranslate, targetLanguage, sourceLanguage);
                 CurrentResource.SetTranslatedText(tad.TranslateAPIConfig, result);
             }
             catch (Exception exception)

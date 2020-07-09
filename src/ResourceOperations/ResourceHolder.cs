@@ -710,7 +710,7 @@ namespace ResxTranslator.ResourceOperations
 
                     if (sourceText == translationResult.OriginalText)
                     {
-                        row[translationResult.TargetLanguage] = translationResult.TranslatedText;
+                        row[translateApiConfig.TargetLanguage] = translationResult.TranslatedText;
                     }
                 }
             }

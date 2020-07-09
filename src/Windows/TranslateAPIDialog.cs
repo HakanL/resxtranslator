@@ -27,7 +27,8 @@ namespace ResxTranslator.Windows
             _languagesFrom = new List<string> { ResxTranslator.Properties.Resources.ColNameNoLang };
             _languagesFrom.AddRange(_languages);
 
-            _languagesTo = new List<string>(_languages);
+            _languagesTo = new List<string> { ResxTranslator.Properties.Resources.ColNameNoLang };
+            _languagesTo.AddRange(_languages);
 
             cbSourse.DataSource = _languagesFrom;
             cbTarget.DataSource = _languagesTo;
@@ -49,7 +50,8 @@ namespace ResxTranslator.Windows
 
             init = false;
             object selectedItem = cbTarget.SelectedItem;
-            _languagesTo = new List<string>(_languages);
+            _languagesTo = new List<string> { ResxTranslator.Properties.Resources.ColNameNoLang };
+            _languagesTo.AddRange(_languages);
 
             if (_languagesTo.Contains((string)cbSourse.SelectedItem))
             {
@@ -108,10 +110,18 @@ namespace ResxTranslator.Windows
 
         private void CheckCanContunie()
         {
-            lblDefaultLanguage.Enabled = cbDefaultLanguage.Enabled = (string)cbSourse.SelectedItem == ResxTranslator.Properties.Resources.ColNameNoLang;
+            bool isSourceDefaultLanguage = (string)cbSourse.SelectedItem == ResxTranslator.Properties.Resources.ColNameNoLang;
+            bool isTargetDefaultLanguage = (string)cbTarget.SelectedItem == ResxTranslator.Properties.Resources.ColNameNoLang;
+
+            lblDefaultLanguage.Enabled = cbDefaultLanguage.Enabled = isSourceDefaultLanguage || isTargetDefaultLanguage;
             btnOk.Enabled = !string.IsNullOrWhiteSpace((string)cbSourse.SelectedItem)
-                         && !string.IsNullOrWhiteSpace((string)cbTarget.SelectedItem)
-                         && !string.IsNullOrWhiteSpace((string)cbDefaultLanguage.SelectedItem);
+                         && !string.IsNullOrWhiteSpace((string)cbTarget.SelectedItem);
+
+            if (isSourceDefaultLanguage || isTargetDefaultLanguage)
+            {
+                btnOk.Enabled &= !string.IsNullOrWhiteSpace((string)cbDefaultLanguage.SelectedItem);
+            }
+
             init = true;
 
             TranslateAPIConfig.SourceLanguage = (string)cbSourse.SelectedItem;
