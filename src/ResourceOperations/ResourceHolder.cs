@@ -1,3 +1,4 @@
+using Google.Cloud.Translation.V2;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -9,6 +10,7 @@ using System.Windows.Forms;
 using ResxTranslator.Properties;
 using ResxTranslator.Resources;
 using ResxTranslator.Tools;
+using ResxTranslator.Windows;
 
 namespace ResxTranslator.ResourceOperations
 {
@@ -665,6 +667,53 @@ namespace ResxTranslator.ResourceOperations
                 return false;
 
             return !Languages.ContainsKey(cultureName) || rows.Any(row => !RowContainsTranslation(row, cultureName));
+        }
+
+        public List<string> GetTextForTranslating(TranslateAPIConfig translateApiConfig)
+        {
+            string sl = translateApiConfig.SourceLanguage == translateApiConfig.DefaultLanguage ? Properties.Resources.ColNameNoLang : translateApiConfig.SourceLanguage;
+            var result = new List<string>();
+            IEnumerable<DataRow> rows = _stringsTable.Rows.Cast<DataRow>();
+
+            foreach (DataRow row in rows)
+            {
+                string sourceText = row[sl].ToString();
+                string targetText = row[translateApiConfig.TargetLanguage].ToString();
+
+                if (string.IsNullOrEmpty(targetText))
+                {
+                    result.Add(sourceText);
+                }
+                else
+                {
+                    if (translateApiConfig.Overwrite)
+                    {
+                        result.Add(sourceText);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public void SetTranslatedText(TranslateAPIConfig translateApiConfig, IList<TranslationResult> translationResults)
+        {
+            DataRow[] rows = _stringsTable.Rows.Cast<DataRow>().ToArray();
+
+            foreach (TranslationResult translationResult in translationResults)
+            {
+                string sl = translationResult.SpecifiedSourceLanguage == translateApiConfig.DefaultLanguage ? Properties.Resources.ColNameNoLang : translationResult.SpecifiedSourceLanguage;
+
+                foreach (DataRow row in rows)
+                {
+                    string sourceText = row[sl].ToString();
+
+                    if (sourceText == translationResult.OriginalText)
+                    {
+                        row[translateApiConfig.TargetLanguage] = translationResult.TranslatedText;
+                    }
+                }
+            }
         }
     }
 }
