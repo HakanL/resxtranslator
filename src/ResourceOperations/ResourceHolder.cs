@@ -28,7 +28,7 @@ namespace ResxTranslator.ResourceOperations
 
         public ResourceHolder()
         {
-            Languages = new SortedDictionary<string, LanguageHolder>();
+            Languages = new SortedDictionary<string, LanguageHolder>(StringComparer.OrdinalIgnoreCase);
             _deletedKeys = new List<string>();
         }
 
