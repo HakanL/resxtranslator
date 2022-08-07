@@ -33,29 +33,29 @@
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.radioButtonRegexp = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
             this.checkBoxText = new System.Windows.Forms.CheckBox();
             this.checkBoxKey = new System.Windows.Forms.CheckBox();
-            this.checkBoxFile = new System.Windows.Forms.CheckBox();
             this.checkBoxLang = new System.Windows.Forms.CheckBox();
+            this.checkBoxFile = new System.Windows.Forms.CheckBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.checkBoxWord = new System.Windows.Forms.CheckBox();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.checkBoxCS = new System.Windows.Forms.CheckBox();
+            this.checkBoxWord = new System.Windows.Forms.CheckBox();
             this.buttonFind = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
-            this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox1.SuspendLayout();
+            this.flowLayoutPanel3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            this.groupBox4.SuspendLayout();
-            this.flowLayoutPanel1.SuspendLayout();
-            this.flowLayoutPanel2.SuspendLayout();
-            this.flowLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // textBoxSearch
@@ -82,6 +82,13 @@
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
+            // flowLayoutPanel3
+            // 
+            resources.ApplyResources(this.flowLayoutPanel3, "flowLayoutPanel3");
+            this.flowLayoutPanel3.Controls.Add(this.radioButton1);
+            this.flowLayoutPanel3.Controls.Add(this.radioButtonRegexp);
+            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
+            // 
             // groupBox2
             // 
             resources.ApplyResources(this.groupBox2, "groupBox2");
@@ -95,6 +102,15 @@
             this.groupBox3.Controls.Add(this.flowLayoutPanel4);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.TabStop = false;
+            // 
+            // flowLayoutPanel4
+            // 
+            resources.ApplyResources(this.flowLayoutPanel4, "flowLayoutPanel4");
+            this.flowLayoutPanel4.Controls.Add(this.checkBoxText);
+            this.flowLayoutPanel4.Controls.Add(this.checkBoxKey);
+            this.flowLayoutPanel4.Controls.Add(this.checkBoxLang);
+            this.flowLayoutPanel4.Controls.Add(this.checkBoxFile);
+            this.flowLayoutPanel4.Name = "flowLayoutPanel4";
             // 
             // checkBoxText
             // 
@@ -110,17 +126,17 @@
             this.checkBoxKey.Name = "checkBoxKey";
             this.checkBoxKey.UseVisualStyleBackColor = true;
             // 
-            // checkBoxFile
-            // 
-            resources.ApplyResources(this.checkBoxFile, "checkBoxFile");
-            this.checkBoxFile.Name = "checkBoxFile";
-            this.checkBoxFile.UseVisualStyleBackColor = true;
-            // 
             // checkBoxLang
             // 
             resources.ApplyResources(this.checkBoxLang, "checkBoxLang");
             this.checkBoxLang.Name = "checkBoxLang";
             this.checkBoxLang.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxFile
+            // 
+            resources.ApplyResources(this.checkBoxFile, "checkBoxFile");
+            this.checkBoxFile.Name = "checkBoxFile";
+            this.checkBoxFile.UseVisualStyleBackColor = true;
             // 
             // groupBox4
             // 
@@ -129,17 +145,24 @@
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.TabStop = false;
             // 
-            // checkBoxWord
+            // flowLayoutPanel2
             // 
-            resources.ApplyResources(this.checkBoxWord, "checkBoxWord");
-            this.checkBoxWord.Name = "checkBoxWord";
-            this.checkBoxWord.UseVisualStyleBackColor = true;
+            resources.ApplyResources(this.flowLayoutPanel2, "flowLayoutPanel2");
+            this.flowLayoutPanel2.Controls.Add(this.checkBoxCS);
+            this.flowLayoutPanel2.Controls.Add(this.checkBoxWord);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             // 
             // checkBoxCS
             // 
             resources.ApplyResources(this.checkBoxCS, "checkBoxCS");
             this.checkBoxCS.Name = "checkBoxCS";
             this.checkBoxCS.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxWord
+            // 
+            resources.ApplyResources(this.checkBoxWord, "checkBoxWord");
+            this.checkBoxWord.Name = "checkBoxWord";
+            this.checkBoxWord.UseVisualStyleBackColor = true;
             // 
             // buttonFind
             // 
@@ -162,29 +185,6 @@
             this.flowLayoutPanel1.Controls.Add(this.buttonFind);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             // 
-            // flowLayoutPanel2
-            // 
-            resources.ApplyResources(this.flowLayoutPanel2, "flowLayoutPanel2");
-            this.flowLayoutPanel2.Controls.Add(this.checkBoxCS);
-            this.flowLayoutPanel2.Controls.Add(this.checkBoxWord);
-            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            // 
-            // flowLayoutPanel3
-            // 
-            resources.ApplyResources(this.flowLayoutPanel3, "flowLayoutPanel3");
-            this.flowLayoutPanel3.Controls.Add(this.radioButton1);
-            this.flowLayoutPanel3.Controls.Add(this.radioButtonRegexp);
-            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            // 
-            // flowLayoutPanel4
-            // 
-            resources.ApplyResources(this.flowLayoutPanel4, "flowLayoutPanel4");
-            this.flowLayoutPanel4.Controls.Add(this.checkBoxText);
-            this.flowLayoutPanel4.Controls.Add(this.checkBoxKey);
-            this.flowLayoutPanel4.Controls.Add(this.checkBoxLang);
-            this.flowLayoutPanel4.Controls.Add(this.checkBoxFile);
-            this.flowLayoutPanel4.Name = "flowLayoutPanel4";
-            // 
             // FindWindow
             // 
             this.AcceptButton = this.buttonFind;
@@ -204,19 +204,19 @@
             this.Load += new System.EventHandler(this.FindDialog_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.flowLayoutPanel3.ResumeLayout(false);
+            this.flowLayoutPanel3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
-            this.flowLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel2.ResumeLayout(false);
-            this.flowLayoutPanel2.PerformLayout();
-            this.flowLayoutPanel3.ResumeLayout(false);
-            this.flowLayoutPanel3.PerformLayout();
             this.flowLayoutPanel4.ResumeLayout(false);
             this.flowLayoutPanel4.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            this.flowLayoutPanel2.ResumeLayout(false);
+            this.flowLayoutPanel2.PerformLayout();
+            this.flowLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
