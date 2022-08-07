@@ -49,6 +49,7 @@
             resources.ApplyResources(this.listView1, "listView1");
             this.listView1.GridLines = true;
             this.listView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.listView1.HideSelection = false;
             this.listView1.MultiSelect = false;
             this.listView1.Name = "listView1";
             this.listView1.ShowGroups = false;
@@ -100,8 +101,8 @@
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.listView1);
+            this.Controls.Add(this.toolStrip1);
             this.Name = "LanguageSettings";
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
