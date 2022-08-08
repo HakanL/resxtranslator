@@ -50,13 +50,16 @@
     <Setting Name="StoreCommentsInAllFiles" Provider="PortableSettingsProvider.PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="SplitterMain" Type="System.Int32" Scope="User">
+    <Setting Name="SplitterMain" Provider="PortableSettingsProvider.PortableSettingsProvider" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="SplitterLeft" Type="System.Int32" Scope="User">
+    <Setting Name="SplitterLeft" Provider="PortableSettingsProvider.PortableSettingsProvider" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="DefaultLanguage" Type="System.String" Scope="User">
+    <Setting Name="DisabledDisplayedLanguages" Provider="PortableSettingsProvider.PortableSettingsProvider" Roaming="true" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="DefaultApiLanguage" Provider="PortableSettingsProvider.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

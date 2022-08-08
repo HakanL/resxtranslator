@@ -33,7 +33,7 @@ namespace ResxTranslator.Windows
             cbSourse.DataSource = _languagesFrom;
             cbTarget.DataSource = _languagesTo;
             cbDefaultLanguage.Items.AddRange(googleLanguages);
-            cbDefaultLanguage.SelectedItem = Settings.Binder.Settings.DefaultLanguage;
+            cbDefaultLanguage.SelectedItem = Settings.Binder.Settings.DefaultApiLanguage;
 
             cbSourse.SelectedIndex = 0;
             cbTarget.SelectedIndex = -1;
@@ -126,7 +126,7 @@ namespace ResxTranslator.Windows
 
             TranslateAPIConfig.SourceLanguage = (string)cbSourse.SelectedItem;
             TranslateAPIConfig.TargetLanguage = (string)cbTarget.SelectedItem;
-            TranslateAPIConfig.DefaultLanguage = Settings.Default.DefaultLanguage = (string)cbDefaultLanguage.SelectedItem;
+            TranslateAPIConfig.DefaultLanguage = Settings.Default.DefaultApiLanguage = (string)cbDefaultLanguage.SelectedItem;
         }
 
         private void ChbOverwrite_CheckedChanged(object sender, EventArgs e)

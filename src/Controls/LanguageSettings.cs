@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
+using ResxTranslator.Properties;
 
 namespace ResxTranslator.Controls
 {
@@ -12,12 +14,10 @@ namespace ResxTranslator.Controls
         {
             InitializeComponent();
         }
-        
+
         public void RefreshLanguages(IEnumerable<CultureInfo> languages, bool perserveState)
         {
-            List<CultureInfo> storedDisabled = null;
-            if(perserveState)
-                storedDisabled = DisabledLanguages.ToList();
+            var storedDisabled = perserveState ? DisabledLanguages.ToList() : Settings.Default.DisabledDisplayedLanguages?.Cast<string>().Select(CultureInfo.GetCultureInfo).ToList() ?? new List<CultureInfo>();
 
             listView1.SuspendLayout();
             listView1.BeginUpdate();
@@ -29,10 +29,10 @@ namespace ResxTranslator.Controls
                 listView1.Items.Add(new ListViewItem(new[] { cultureInfo.Name, cultureInfo.DisplayName })
                 {
                     Tag = cultureInfo,
-                    Checked = !perserveState || !storedDisabled.Contains(cultureInfo)
+                    Checked = !storedDisabled.Contains(cultureInfo)
                 });
             }
-            
+
             listView1.AutoResizeColumn(1, ColumnHeaderAutoResizeStyle.ColumnContent);
             if (listView1.Columns[1].Width < 100)
                 listView1.Columns[1].Width = 100;
@@ -58,10 +58,10 @@ namespace ResxTranslator.Controls
         public void SetLanguageState(string languageId, bool newState)
         {
             var item = listView1.Items.Cast<ListViewItem>()
-                .FirstOrDefault(x=>((CultureInfo) x.Tag).Name.Equals(languageId, StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefault(x => ((CultureInfo)x.Tag).Name.Equals(languageId, StringComparison.OrdinalIgnoreCase));
 
             if (item == null || item.Checked == newState) return;
-            
+
             item.Checked = newState;
         }
 
@@ -69,6 +69,9 @@ namespace ResxTranslator.Controls
 
         protected virtual void OnEnabledLanguagesChanged()
         {
+            Settings.Default.DisabledDisplayedLanguages = new StringCollection();
+            Settings.Default.DisabledDisplayedLanguages.AddRange(DisabledLanguages.Select(x => x.Name).ToArray());
+
             EnabledLanguagesChanged?.Invoke(this, EventArgs.Empty);
         }
 
