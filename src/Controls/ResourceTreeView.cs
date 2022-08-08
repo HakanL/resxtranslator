@@ -31,9 +31,9 @@ namespace ResxTranslator.Controls
             treeViewResx.Nodes.Clear();
         }
 
-        public void ExecuteFindInNodes(SearchParams searchParams)
+        public int ExecuteFindInNodes(SearchParams searchParams)
         {
-            ExecuteFindInNodes(treeViewResx.Nodes.Cast<TreeNode>(), searchParams);
+            return ExecuteFindInNodes(treeViewResx.Nodes.Cast<TreeNode>(), searchParams);
         }
 
         public void LoadResources(ResourceLoader loader)
@@ -62,16 +62,21 @@ namespace ResxTranslator.Controls
             ResourceOpened?.Invoke(this, e);
         }
 
-        private static void ExecuteFindInNodes(IEnumerable<TreeNode> searchNodes, SearchParams searchParams)
+        private static int ExecuteFindInNodes(IEnumerable<TreeNode> searchNodes, SearchParams searchParams)
         {
+            var result = 0;
             foreach (var treeNode in searchNodes)
             {
                 treeNode.BackColor = Color.White;
-                ExecuteFindInNodes(treeNode.Nodes.Cast<TreeNode>(), searchParams);
+                result += ExecuteFindInNodes(treeNode.Nodes.Cast<TreeNode>(), searchParams);
 
                 if (MatchNodeToSearch(searchParams, treeNode))
+                {
                     treeNode.BackColor = Color.GreenYellow;
+                    result++;
+                }
             }
+            return result;
         }
 
         private static bool MatchNodeToSearch(SearchParams searchParams, TreeNode treeNode)

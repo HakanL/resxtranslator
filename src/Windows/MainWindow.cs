@@ -99,14 +99,20 @@ namespace ResxTranslator.Windows
             Icon = Icon.ExtractAssociatedIcon(Assembly.GetAssembly(typeof(MainWindow)).Location);
         }
 
-        public SearchParams CurrentSearch
+        public SearchParams CurrentSearch => _currentSearch;
+
+        public void SetCurrentSearch(SearchParams value)
         {
-            get { return _currentSearch; }
-            set
+            _currentSearch = value;
+            var hits = resourceTreeView1.ExecuteFindInNodes(value);
+            resourceGrid1.CurrentSearch = _currentSearch;
+
+            if (value != null)
             {
-                _currentSearch = value;
-                resourceTreeView1.ExecuteFindInNodes(value);
-                resourceGrid1.CurrentSearch = _currentSearch;
+                MessageBox.Show(string.Format(Localization.Message_FindResults_Description, value.Text, hits),
+                                Localization.Message_FindResults_Title,
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
             }
         }
 
@@ -325,7 +331,7 @@ namespace ResxTranslator.Windows
         {
             var result = FindWindow.ShowDialog(this);
             if (result != null)
-                CurrentSearch = result;
+                SetCurrentSearch(result);
         }
 
         private void findNextToolStripMenuItem_Click(object sender, EventArgs e)
@@ -524,7 +530,7 @@ namespace ResxTranslator.Windows
 
         private void clearSearchToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CurrentSearch = null;
+            SetCurrentSearch(null);
         }
 
         private void findToolStripMenuItem_DropDownOpened(object sender, EventArgs e)
@@ -646,12 +652,12 @@ namespace ResxTranslator.Windows
 
         private async void toolStripMenuItemGT_Click(object sender, EventArgs e)
         {
-        /*
-         * If you are there, because you have exception from Google API authentication, please visit next page
-         * https://cloud.google.com/docs/authentication/production
-         * and setup global environment variable GOOGLE_APPLICATION_CREDENTIALS and reboot Visual Studio.
-         * Some time you also need to clear bin and obj files on close Visual Studio.
-         */
+            /*
+             * If you are there, because you have exception from Google API authentication, please visit next page
+             * https://cloud.google.com/docs/authentication/production
+             * and setup global environment variable GOOGLE_APPLICATION_CREDENTIALS and reboot Visual Studio.
+             * Some time you also need to clear bin and obj files on close Visual Studio.
+             */
 
             if (CurrentResource == null)
             {

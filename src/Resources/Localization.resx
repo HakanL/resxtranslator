@@ -225,4 +225,13 @@ Make sure they are in correct format and not corrupted.
   <data name="MessageBox_ResourcesFailedToLoad_Title" xml:space="preserve">
     <value>Failed to load some resources</value>
   </data>
+  <data name="Message_FindResults_Description" xml:space="preserve">
+	  <value>Found the string "{0}" in {1} files.
+
+They have been highlighted green in the "All resources" list.</value>
+	  <comment>0  is what was searched for, 1 is number of files</comment>
+  </data>
+  <data name="Message_FindResults_Title" xml:space="preserve">
+	  <value>Find in files</value>
+  </data>
 </root>

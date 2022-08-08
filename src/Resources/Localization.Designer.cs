@@ -19,7 +19,7 @@ namespace ResxTranslator.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Localization {
@@ -234,6 +234,26 @@ namespace ResxTranslator.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Found the string &quot;{0}&quot; in {1} files.
+        ///
+        ///They have been highlighted green in the &quot;All resources&quot; list..
+        /// </summary>
+        internal static string Message_FindResults_Description {
+            get {
+                return ResourceManager.GetString("Message_FindResults_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find in files.
+        /// </summary>
+        internal static string Message_FindResults_Title {
+            get {
+                return ResourceManager.GetString("Message_FindResults_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete the currently selected row?.
         /// </summary>
         internal static string MessageBox_ConfirmDeleteRow_Message {
@@ -252,7 +272,8 @@ namespace ResxTranslator.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to With current settings this operation will try to load {0} assemblies. Do you really want to load them all? If you select no, loading will be skipped..
+        ///   Looks up a localized string similar to With current settings this operation will try to load {0} assemblies. 
+        ///Do you really want to load them all? If you select no, loading will be skipped..
         /// </summary>
         internal static string MessageBox_ConfirmLoadAssemblies_Message {
             get {
@@ -270,7 +291,8 @@ namespace ResxTranslator.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Resource file for this language is missing, do you want to create it?.
+        ///   Looks up a localized string similar to Resource file for this language is missing. 
+        ///Do you want to create it?.
         /// </summary>
         internal static string MessageBox_CreateMissingResource_Message {
             get {
@@ -288,7 +310,8 @@ namespace ResxTranslator.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This action will remove everything that is not text from translated resources (not the base resource). Resources will be saved to the drive in process, so make sure you have a backup..
+        ///   Looks up a localized string similar to This action will remove everything that is not text from translated resources (not the base resource). 
+        ///Resources will be saved to the drive in process, so make sure you have a backup..
         /// </summary>
         internal static string MessageBox_RemoveNontranslatableQuestion_Message {
             get {
@@ -306,7 +329,8 @@ namespace ResxTranslator.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Following resources failed to load. Make sure they are in correct format and not currupted.
+        ///   Looks up a localized string similar to Following resources failed to load. 
+        ///Make sure they are in correct format and not corrupted.
         ///
         ///{0}.
         /// </summary>
@@ -344,7 +368,8 @@ namespace ResxTranslator.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Selected language is invalid, please select one of the entries on the dropdown list..
+        ///   Looks up a localized string similar to Selected language is invalid. 
+        ///Please select one of the entries on the dropdown list..
         /// </summary>
         internal static string MessageBox_SelectedLanguageInvalid_Message {
             get {
