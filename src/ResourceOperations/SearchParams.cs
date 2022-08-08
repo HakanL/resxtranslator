@@ -11,7 +11,8 @@ namespace ResxTranslator.ResourceOperations
         {
             Lang,
             Key,
-            Text,
+            OriginalText,
+            TranslatedText,
             File
         }
 
@@ -21,20 +22,14 @@ namespace ResxTranslator.ResourceOperations
         {
         }
 
-        public SearchParams(string text
-            , bool searchLanguage
-            , bool searchKeys
-            , bool searchText
-            , bool searchFileName
-            , bool useRegex
-            , bool optCase
-            , bool optWord)
+        public SearchParams(string text, bool searchLanguage, bool searchKeys, bool searchOriginalText, bool searchTranslatedText, bool searchFileName, bool useRegex, bool optCase, bool optWord)
         {
             Text = text;
 
             SearchLanguage = searchLanguage;
             SearchKeys = searchKeys;
-            SearchText = searchText;
+            SearchOriginalText = searchOriginalText;
+            SearchTranslatedText = searchTranslatedText;
             SearchFileName = searchFileName;
             UseRegex = useRegex;
             OptCase = optCase;
@@ -45,7 +40,7 @@ namespace ResxTranslator.ResourceOperations
         [DefaultSettingValue("false")]
         public bool OptCase
         {
-            get { return (bool) this["optCase"]; }
+            get { return (bool)this["optCase"]; }
             set { this["optCase"] = value; }
         }
 
@@ -53,7 +48,7 @@ namespace ResxTranslator.ResourceOperations
         [DefaultSettingValue("false")]
         public bool OptWord
         {
-            get { return (bool) this["optWord"]; }
+            get { return (bool)this["optWord"]; }
             set { this["optWord"] = value; }
         }
 
@@ -61,7 +56,7 @@ namespace ResxTranslator.ResourceOperations
         [DefaultSettingValue("false")]
         public bool SearchKeys
         {
-            get { return (bool) this["searchKeys"]; }
+            get { return (bool)this["searchKeys"]; }
             set { this["searchKeys"] = value; }
         }
 
@@ -69,23 +64,31 @@ namespace ResxTranslator.ResourceOperations
         [DefaultSettingValue("false")]
         public bool SearchLanguage
         {
-            get { return (bool) this["searchLanguage"]; }
+            get { return (bool)this["searchLanguage"]; }
             set { this["searchLanguage"] = value; }
         }
 
         [UserScopedSetting]
         [DefaultSettingValue("true")]
-        public bool SearchText
+        public bool SearchOriginalText
         {
-            get { return (bool) this["searchText"]; }
-            set { this["searchText"] = value; }
+            get { return (bool)this["searchOriginalText"]; }
+            set { this["searchOriginalText"] = value; }
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("true")]
+        public bool SearchTranslatedText
+        {
+            get { return (bool)this["searchTranslatedText"]; }
+            set { this["searchTranslatedText"] = value; }
         }
 
         [UserScopedSetting]
         [DefaultSettingValue("false")]
         public bool SearchFileName
         {
-            get { return (bool) this["searchFileName"]; }
+            get { return (bool)this["searchFileName"]; }
             set { this["searchFileName"] = value; }
         }
 
@@ -93,7 +96,7 @@ namespace ResxTranslator.ResourceOperations
         [DefaultSettingValue("")]
         public string Text
         {
-            get { return (string) this["text"]; }
+            get { return (string)this["text"]; }
             set { this["text"] = value; }
         }
 
@@ -101,7 +104,7 @@ namespace ResxTranslator.ResourceOperations
         [DefaultSettingValue("false")]
         public bool UseRegex
         {
-            get { return (bool) this["useRegex"]; }
+            get { return (bool)this["useRegex"]; }
             set { this["useRegex"] = value; }
         }
 
@@ -132,13 +135,15 @@ namespace ResxTranslator.ResourceOperations
             if (_re == null)
                 _re = GetComparator();
 
-            if (targType == TargetType.Key && SearchKeys && _re.IsMatch(matchText))
-                return true;
-            if (targType == TargetType.Lang && SearchLanguage && _re.IsMatch(matchText))
-                return true;
-            if (targType == TargetType.Text && SearchText && _re.IsMatch(matchText))
-                return true;
-            return targType == TargetType.File && SearchFileName && _re.IsMatch(matchText);
+            switch (targType)
+            {
+                case TargetType.Key: return SearchKeys && _re.IsMatch(matchText);
+                case TargetType.Lang: return SearchLanguage && _re.IsMatch(matchText);
+                case TargetType.OriginalText: return SearchOriginalText && _re.IsMatch(matchText);
+                case TargetType.TranslatedText: return SearchTranslatedText && _re.IsMatch(matchText);
+                case TargetType.File: return SearchFileName && _re.IsMatch(matchText);
+                default: return false;
+            }
         }
     }
 }

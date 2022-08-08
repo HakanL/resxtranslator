@@ -93,10 +93,10 @@ namespace ResxTranslator.Controls
             {
                 if (searchParams.Match(SearchParams.TargetType.Key, row[Properties.Resources.ColNameKey].ToString()))
                     return true;
-                if (searchParams.Match(SearchParams.TargetType.Text, row[Properties.Resources.ColNameNoLang].ToString()))
+                if (searchParams.Match(SearchParams.TargetType.OriginalText, row[Properties.Resources.ColNameNoLang].ToString()))
                     return true;
                 if (resource.Languages.Values.Any(
-                    lng => searchParams.Match(SearchParams.TargetType.Text, row[lng.LanguageId].ToString())))
+                    lng => searchParams.Match(SearchParams.TargetType.TranslatedText, row[lng.LanguageId].ToString())))
                     return true;
             }
 

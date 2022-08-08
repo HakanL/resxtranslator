@@ -37,7 +37,8 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
-            this.checkBoxText = new System.Windows.Forms.CheckBox();
+            this.checkBoxOrigText = new System.Windows.Forms.CheckBox();
+            this.checkBoxTranslText = new System.Windows.Forms.CheckBox();
             this.checkBoxKey = new System.Windows.Forms.CheckBox();
             this.checkBoxLang = new System.Windows.Forms.CheckBox();
             this.checkBoxFile = new System.Windows.Forms.CheckBox();
@@ -66,7 +67,9 @@
             // radioButton1
             // 
             resources.ApplyResources(this.radioButton1, "radioButton1");
+            this.radioButton1.Checked = true;
             this.radioButton1.Name = "radioButton1";
+            this.radioButton1.TabStop = true;
             this.radioButton1.UseVisualStyleBackColor = true;
             // 
             // radioButtonRegexp
@@ -105,20 +108,29 @@
             // 
             // flowLayoutPanel4
             // 
-            resources.ApplyResources(this.flowLayoutPanel4, "flowLayoutPanel4");
-            this.flowLayoutPanel4.Controls.Add(this.checkBoxText);
+            this.flowLayoutPanel4.Controls.Add(this.checkBoxOrigText);
+            this.flowLayoutPanel4.Controls.Add(this.checkBoxTranslText);
             this.flowLayoutPanel4.Controls.Add(this.checkBoxKey);
             this.flowLayoutPanel4.Controls.Add(this.checkBoxLang);
             this.flowLayoutPanel4.Controls.Add(this.checkBoxFile);
+            resources.ApplyResources(this.flowLayoutPanel4, "flowLayoutPanel4");
             this.flowLayoutPanel4.Name = "flowLayoutPanel4";
             // 
-            // checkBoxText
+            // checkBoxOrigText
             // 
-            resources.ApplyResources(this.checkBoxText, "checkBoxText");
-            this.checkBoxText.Checked = true;
-            this.checkBoxText.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxText.Name = "checkBoxText";
-            this.checkBoxText.UseVisualStyleBackColor = true;
+            resources.ApplyResources(this.checkBoxOrigText, "checkBoxOrigText");
+            this.checkBoxOrigText.Checked = true;
+            this.checkBoxOrigText.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxOrigText.Name = "checkBoxOrigText";
+            this.checkBoxOrigText.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxTranslText
+            // 
+            resources.ApplyResources(this.checkBoxTranslText, "checkBoxTranslText");
+            this.checkBoxTranslText.Checked = true;
+            this.checkBoxTranslText.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxTranslText.Name = "checkBoxTranslText";
+            this.checkBoxTranslText.UseVisualStyleBackColor = true;
             // 
             // checkBoxKey
             // 
@@ -209,7 +221,6 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
             this.flowLayoutPanel4.ResumeLayout(false);
             this.flowLayoutPanel4.PerformLayout();
             this.groupBox4.ResumeLayout(false);
@@ -230,7 +241,7 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.CheckBox checkBoxText;
+        private System.Windows.Forms.CheckBox checkBoxOrigText;
         private System.Windows.Forms.CheckBox checkBoxKey;
         private System.Windows.Forms.CheckBox checkBoxLang;
         private System.Windows.Forms.GroupBox groupBox4;
@@ -243,5 +254,6 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel4;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.CheckBox checkBoxTranslText;
     }
 }

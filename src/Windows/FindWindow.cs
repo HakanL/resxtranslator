@@ -29,7 +29,8 @@ namespace ResxTranslator.Windows
                 textBoxSearch.Text
                 , checkBoxLang.Checked
                 , checkBoxKey.Checked
-                , checkBoxText.Checked
+                , checkBoxOrigText.Checked
+                , checkBoxTranslText.Checked
                 , checkBoxFile.Checked
                 , radioButtonRegexp.Checked
                 , checkBoxCS.Checked
@@ -48,7 +49,8 @@ namespace ResxTranslator.Windows
             textBoxSearch.Text = sp.Text;
             checkBoxLang.Checked = sp.SearchLanguage;
             checkBoxKey.Checked = sp.SearchKeys;
-            checkBoxText.Checked = sp.SearchText;
+            checkBoxOrigText.Checked = sp.SearchOriginalText;
+            checkBoxTranslText.Checked = sp.SearchTranslatedText;
             checkBoxFile.Checked = sp.SearchFileName;
             radioButtonRegexp.Checked = sp.UseRegex;
             checkBoxCS.Checked = sp.OptCase;

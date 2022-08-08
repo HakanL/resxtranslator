@@ -113,11 +113,11 @@ namespace ResxTranslator.Controls
 
             ApplyConditionalCellFormatting(r.Cells[Properties.Resources.ColNameKey], SearchParams.TargetType.Key);
 
-            ApplyConditionalCellFormatting(r.Cells[Properties.Resources.ColNameNoLang], SearchParams.TargetType.Text);
+            ApplyConditionalCellFormatting(r.Cells[Properties.Resources.ColNameNoLang], SearchParams.TargetType.OriginalText);
 
             foreach (var lng in CurrentResource.Languages.Values)
             {
-                ApplyConditionalCellFormatting(r.Cells[lng.LanguageId], SearchParams.TargetType.Text);
+                ApplyConditionalCellFormatting(r.Cells[lng.LanguageId], SearchParams.TargetType.TranslatedText);
             }
         }
 
@@ -387,6 +387,7 @@ namespace ResxTranslator.Controls
             if (CurrentSearch == null) return;
 
             var keyColumn = dataGridView1.Columns[Properties.Resources.ColNameKey];
+            var nolangColumn = dataGridView1.Columns[Properties.Resources.ColNameNoLang];
 
             var currentRow = dataGridView1.CurrentCell?.RowIndex ?? dataGridView1.RowCount;
             var currentColumn = dataGridView1.CurrentCell?.ColumnIndex ?? -1;
@@ -399,7 +400,13 @@ namespace ResxTranslator.Controls
 
                     if (!(cell.Value is string s)) continue;
 
-                    if (CurrentSearch.Match(cell.OwningColumn == keyColumn ? SearchParams.TargetType.Key : SearchParams.TargetType.Text, s))
+                    var targetType = cell.OwningColumn == keyColumn
+                        ? SearchParams.TargetType.Key
+                        : cell.OwningColumn == nolangColumn
+                            ? SearchParams.TargetType.OriginalText
+                            : SearchParams.TargetType.TranslatedText;
+
+                    if (CurrentSearch.Match(targetType, s))
                     {
                         dataGridView1.CurrentCell = cell;
                         return;
