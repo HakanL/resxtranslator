@@ -253,6 +253,9 @@ dalla parte iniziale e finale delle celle selezionate.</value>
   <data name="settingsToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Impostazioni</value>
   </data>
+  <data name="toolStripMenuItemGT.Text" xml:space="preserve">
+    <value>Google Translate</value>
+  </data>
   <data name="helpToolStripMenuItem1.Text" xml:space="preserve">
     <value>&amp;Guida in linea (inglese)</value>
   </data>

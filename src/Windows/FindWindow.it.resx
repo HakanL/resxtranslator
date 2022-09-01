@@ -168,6 +168,12 @@
   <data name="$this.Text" xml:space="preserve">
     <value>Trova...</value>
   </data>
+  <data name="checkBoxOrigText.Text" xml:space="preserve">
+    <value>Testo originale</value>
+  </data>
+  <data name="checkBoxTranslText.Text" xml:space="preserve">
+    <value>Testo tradotto</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>

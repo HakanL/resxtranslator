@@ -226,4 +226,13 @@ Assicurati che le risorse siano nel formato corretto e non corrotte.
   <data name="MessageBox_ResourcesFailedToLoad_Title" xml:space="preserve">
     <value>Impossibile caricare alcune risorse</value>
   </data>
+  <data name="Message_FindResults_Description" xml:space="preserve">
+    <value>Trovata la stringa "{0}" in {1} file.
+
+Sono state evidenziate in verde nell'elenco "Tutte le risorse".</value>
+    <comment>0  is what was searched for, 1 is number of files</comment>
+  </data>
+  <data name="Message_FindResults_Title" xml:space="preserve">
+    <value>Trova nei file</value>
+  </data>
 </root>
