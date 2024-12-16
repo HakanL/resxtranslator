@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="MessageBox_SelectedLanguageInvalid_Message" xml:space="preserve">
+    <value>선택한 언어가 잘못되었습니다.
+드롭다운 목록에서 항목 중 하나를 선택해 주세요.</value>
+  </data>
+  <data name="MessageBox_SelectedLanguageInvalid_Title" xml:space="preserve">
+    <value>잘못된 언어</value>
+  </data>
+  <data name="MessageBox_CreateMissingResource_Message" xml:space="preserve">
+    <value>이 언어의 리소스 파일이 없습니다.
+만들고 싶으신가요?</value>
+  </data>
+  <data name="MessageBox_CreateMissingResource_Title" xml:space="preserve">
+    <value>리소스 파일 누락</value>
+  </data>
+  <data name="MessageBox_ConfirmLoadAssemblies_Message" xml:space="preserve">
+    <value>현재 설정에서는 이 작업이 {0}개의 어셈블리를 로드하려고 시도합니다.
+모두 로드하시겠습니까? 아니요를 선택하면 로드가 건너뛸 수 있습니다.</value>
+  </data>
+  <data name="MessageBox_ConfirmLoadAssemblies_Title" xml:space="preserve">
+    <value>참조 어셈블리 로드</value>
+  </data>
+  <data name="LoadProgress_ReferenceAssemblies" xml:space="preserve">
+    <value>참조 어셈블리를 로드하는 중...</value>
+  </data>
+  <data name="LoadProgress_Done" xml:space="preserve">
+    <value>완료</value>
+  </data>
+  <data name="MessageBox_ConfirmDeleteRow_Message" xml:space="preserve">
+    <value>현재 선택한 행을 삭제하시겠습니까?</value>
+  </data>
+  <data name="MessageBox_ConfirmDeleteRow_Title" xml:space="preserve">
+    <value>키 삭제</value>
+  </data>
+  <data name="MainWindow_OpenDirectory_Description" xml:space="preserve">
+    <value>일반적으로 sln 파일이 있는 프로젝트의 루트를 탐색합니다.</value>
+  </data>
+  <data name="MainWindow_MoreLanguagesMenuItem" xml:space="preserve">
+    <value>더 많은 언어...</value>
+  </data>
+  <data name="MainWindow_CurrentResource_NoResourceLoaded" xml:space="preserve">
+    <value>리소스가 로드되지 않음</value>
+  </data>
+  <data name="LoadProgress_OpeningDirectory" xml:space="preserve">
+    <value>"{0}" 열기...</value>
+  </data>
+  <data name="Error_DirectoryMissing" xml:space="preserve">
+    <value>폴더 '{0}'이(가) 존재하지 않습니다.</value>
+  </data>
+  <data name="Error_InvalidCommandLine" xml:space="preserve">
+    <value>잘못된 명령줄
+{0}
+경로: {1}</value>
+  </data>
+  <data name="Error_CantClose" xml:space="preserve">
+    <value>지금은 닫을 수 없습니다</value>
+  </data>
+  <data name="Error_KeyAlreadyExists" xml:space="preserve">
+    <value>이 이름을 가진 키가 이미 존재합니다</value>
+  </data>
+  <data name="Error_KeyCantBeEmpty" xml:space="preserve">
+    <value>키 이름은 비워둘 수 없습니다</value>
+  </data>
+  <data name="Error_InvalidKeyName" xml:space="preserve">
+    <value>키 이름은 문자와 숫자만 포함할 수 있습니다</value>
+  </data>
+  <data name="MessageBox_SaveChangesBeforeClose_Message" xml:space="preserve">
+    <value>닫기 전에 변경 사항을 저장하시겠습니까?</value>
+  </data>
+  <data name="MessageBox_SaveChangesBeforeClose_Title" xml:space="preserve">
+    <value>변경 사항 저장</value>
+  </data>
+  <data name="LoadProgress_LoadingResources" xml:space="preserve">
+    <value>리소스 로드 중...</value>
+  </data>
+  <data name="Error_DuplicateResx" xml:space="preserve">
+    <value>중복 리소스 파일: {0}</value>
+  </data>
+  <data name="Error_FailedSaving" xml:space="preserve">
+    <value>저장 중 예외: {0}</value>
+  </data>
+  <data name="MessageBox_RemoveNontranslatableQuestion_Message" xml:space="preserve">
+    <value>이 작업은 번역된 리소스　(기본 리소스가 아닌)에서 텍스트가 아닌 모든 항목을 제거합니다.
+진행 중인 드라이브에 리소스가 저장되므로 백업이 있는지 확인하세요.</value>
+  </data>
+  <data name="MessageBox_RemoveNontranslatableQuestion_Title" xml:space="preserve">
+    <value>번역 불가능한 데이터를 정말로 제거하시겠습니까?</value>
+  </data>
+  <data name="MainWindow_Failed_to_create_a_new_row" xml:space="preserve">
+    <value>새 행을 만들지 못했습니다</value>
+  </data>
+  <data name="Dialog_Export_resources_Title" xml:space="preserve">
+    <value>리소스 내보내기</value>
+  </data>
+  <data name="Dialog_Export_resources_Filter" xml:space="preserve">
+    <value>.zip 압축파일|.zip</value>
+  </data>
+  <data name="Dialog_Export_resources_ErrorTitle" xml:space="preserve">
+    <value>내보내기 실패</value>
+  </data>
+  <data name="MessageBox_ResourcesFailedToLoad_Message" xml:space="preserve">
+    <value>다음 리소스를 로드하지 못했습니다.
+올바른 형식인지 손상되지 않았는지 확인합니다.
+
+{0}</value>
+  </data>
+  <data name="MessageBox_ResourcesFailedToLoad_Title" xml:space="preserve">
+    <value>일부 리소스를 로드하지 못했습니다</value>
+  </data>
+  <data name="Message_FindResults_Description" xml:space="preserve">
+    <value>{1}개의 파일에서 문자열 "{0}"을 찾았습니다.
+
+"모든 리소스" 목록에서 녹색으로 강조 표시되었습니다.</value>
+    <comment>0은 검색된 항목이고, 1은 파일 수입니다</comment>
+  </data>
+  <data name="Message_FindResults_Title" xml:space="preserve">
+    <value>파일에서 찾기</value>
+  </data>
+</root>
