@@ -279,6 +279,36 @@
     <EmbeddedResource Include="Windows\TranslateAPIDialog.resx">
       <DependentUpon>TranslateAPIDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Windows\MainWindow.zh-Hant.resx">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\LanguageSelectDialog.zh-Hant.resx">
+      <DependentUpon>LanguageSelectDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\FindWindow.zh-Hant.resx">
+      <DependentUpon>FindWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\EditReferencePaths.zh-Hant.resx">
+      <DependentUpon>EditReferencePaths.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\CellEditorWindow.zh-Hant.resx">
+      <DependentUpon>CellEditorWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\AddResourceKeyWindow.zh-Hant.resx">
+      <DependentUpon>AddResourceKeyWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\AboutBox.zh-Hant.resx">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ResourceGrid.zh-Hant.resx">
+      <DependentUpon>ResourceGrid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\MissingTranslationView.zh-Hant.resx">
+      <DependentUpon>MissingTranslationView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\LanguageSettings.zh-Hant.resx">
+      <DependentUpon>LanguageSettings.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="..\LICENSE">
       <Link>LICENSE</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -427,4 +457,5 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+
 </Project>
