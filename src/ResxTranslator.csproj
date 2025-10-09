@@ -198,11 +198,13 @@
     <EmbeddedResource Include="Controls\ResourceTreeView.resx">
       <DependentUpon>ResourceTreeView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.zh-Hant.resx" />
     <EmbeddedResource Include="Properties\Resources.es.resx" />
     <EmbeddedResource Include="Properties\Resources.it.resx" />
     <EmbeddedResource Include="Resources\Localization.es.resx">
       <LastGenOutput>Localization.es.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Localization.zh-Hant.resx" />
     <EmbeddedResource Include="Resources\Localization.it.resx" />
     <EmbeddedResource Include="Resources\Localization.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -459,3 +461,4 @@
   -->
 
 </Project>
+
