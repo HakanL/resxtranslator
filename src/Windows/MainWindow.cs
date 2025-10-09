@@ -1,5 +1,5 @@
 ﻿using Google.Cloud.Translation.V2;
-using Ionic.Zip;
+using System.IO.Compression;
 using ResxTranslator.Properties;
 using ResxTranslator.ResourceOperations;
 using ResxTranslator.Resources;
@@ -633,13 +633,19 @@ namespace ResxTranslator.Windows
                 try
                 {
                     File.Delete(exportDialog.FileName);
-                    using (var zf = new ZipFile(exportDialog.FileName))
+                    using (var zipToOpen = new FileStream(exportDialog.FileName, FileMode.Create))
+                    using (var archive = new ZipArchive(zipToOpen, ZipArchiveMode.Create))
                     {
-                        zf.AddFiles(ResourceLoader.Resources.Select(x => x.Filename)
-                            // Make sure the base resource exists, it might not. Languages always exist if they are loaded.
-                            .Where(File.Exists));
-                        zf.AddFiles(ResourceLoader.Resources.SelectMany(x => x.Languages.Select(l => l.Value.Filename)));
-                        zf.Save();
+                        // Add base resource files
+                        foreach (var file in ResourceLoader.Resources.Select(x => x.Filename).Where(File.Exists))
+                        {
+                            archive.CreateEntryFromFile(file, Path.GetFileName(file));
+                        }
+                        // Add language resource files
+                        foreach (var file in ResourceLoader.Resources.SelectMany(x => x.Languages.Select(l => l.Value.Filename)).Where(File.Exists))
+                        {
+                            archive.CreateEntryFromFile(file, Path.GetFileName(file));
+                        }
                     }
                 }
                 catch (Exception ex)
